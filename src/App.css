@@ -189,6 +189,8 @@ input, select {
   gap: 12px;
 }
 .unit-row:last-child { border-bottom: none; }
+.unit-row.clickable { cursor: pointer; }
+.unit-row.clickable:hover { background: var(--panel-2); }
 .unit-row-main { flex: 1; min-width: 0; }
 .unit-row-name { font-weight: 600; }
 .unit-row-sub { font-size: 12px; margin-top: 2px; }

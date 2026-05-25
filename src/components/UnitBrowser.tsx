@@ -3,16 +3,19 @@ import { CATALOG } from "../data/catalog";
 import { RANK_LABEL, RANK_ORDER } from "../lib/factions";
 import type { FactionId, Rank, Unit } from "../lib/types";
 import { canAdd, type ArmyState } from "../lib/validation";
+import { cardForUnit } from "../lib/cardLookup";
 
 type Props = {
   faction: FactionId;
   army: ArmyState;
   onAdd: (unit: Unit) => void;
+  onOpenReference?: () => void;
 };
 
-export function UnitBrowser({ faction, army, onAdd }: Props) {
+export function UnitBrowser({ faction, army, onAdd, onOpenReference }: Props) {
   const [rankFilter, setRankFilter] = useState<Rank | "all">("all");
   const [search, setSearch] = useState("");
+  const [preview, setPreview] = useState<Unit | null>(null);
 
   const units = useMemo(() => {
     return CATALOG.units
@@ -22,7 +25,7 @@ export function UnitBrowser({ faction, army, onAdd }: Props) {
         search.trim() === ""
           ? true
           : u.name.toLowerCase().includes(search.toLowerCase()) ||
-            u.sub_title?.toLowerCase().includes(search.toLowerCase())
+            u.sub_title?.toLowerCase().includes(search.toLowerCase()),
       )
       .sort((a, b) => {
         const ra = RANK_ORDER.indexOf(a.rank);
@@ -31,6 +34,13 @@ export function UnitBrowser({ faction, army, onAdd }: Props) {
         return a.name.localeCompare(b.name);
       });
   }, [faction, rankFilter, search]);
+
+  const factionHasAnyUnits = useMemo(
+    () => CATALOG.units.some((u) => u.faction === faction),
+    [faction],
+  );
+
+  const previewCard = preview ? cardForUnit(preview) : null;
 
   return (
     <section className="panel unit-browser">
@@ -60,7 +70,12 @@ export function UnitBrowser({ faction, army, onAdd }: Props) {
         {units.map((u) => {
           const check = canAdd(army, u);
           return (
-            <li key={u.id} className="unit-row">
+            <li
+              key={u.id}
+              className="unit-row clickable"
+              onClick={() => setPreview(u)}
+              title="Click to preview card"
+            >
               <div className="unit-row-main">
                 <div className="unit-row-name">
                   {u.name}
@@ -78,7 +93,10 @@ export function UnitBrowser({ faction, army, onAdd }: Props) {
                 className="add-btn"
                 disabled={!check.ok}
                 title={check.ok ? "Add to army" : check.reason}
-                onClick={() => onAdd(u)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onAdd(u);
+                }}
               >
                 +
               </button>
@@ -86,9 +104,62 @@ export function UnitBrowser({ faction, army, onAdd }: Props) {
           );
         })}
         {units.length === 0 && (
-          <li className="muted empty">No units match your filter.</li>
+          <li className="muted empty">
+            {factionHasAnyUnits ? (
+              "No units match your filter."
+            ) : (
+              <>
+                <div>No units in the catalog for this faction yet.</div>
+                {onOpenReference && (
+                  <button
+                    style={{ marginTop: 12 }}
+                    onClick={onOpenReference}
+                  >
+                    Browse cards in Reference
+                  </button>
+                )}
+              </>
+            )}
+          </li>
         )}
       </ul>
+
+      {preview && (
+        <div className="modal-backdrop" onClick={() => setPreview(null)}>
+          <div className="card-zoom" onClick={(e) => e.stopPropagation()}>
+            {previewCard ? (
+              <img src={previewCard} alt={preview.name} />
+            ) : (
+              <div className="empty muted" style={{ padding: 40 }}>
+                No card image found for "{preview.name}".
+              </div>
+            )}
+            <div className="card-zoom-caption">
+              <div>
+                <strong>{preview.name}</strong>
+                <span className="muted small">
+                  {" "}
+                  · {RANK_LABEL[preview.rank]} · {preview.points} pts
+                </span>
+              </div>
+              <div className="saved-row-actions">
+                <button
+                  disabled={!canAdd(army, preview).ok}
+                  onClick={() => {
+                    onAdd(preview);
+                    setPreview(null);
+                  }}
+                >
+                  Add to army
+                </button>
+                <button className="close-btn" onClick={() => setPreview(null)}>
+                  ×
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
