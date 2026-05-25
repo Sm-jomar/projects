@@ -2,18 +2,21 @@ import type { SavedArmy, FactionId } from "./types";
 import { newId } from "./storage";
 
 // CSV format (one row per army entry):
-//   listId,listName,faction,pointsCap,updatedAt,entryId,unitId
+//   listId,listName,faction,battleForce,pointsCap,updatedAt,entryId,unitId,upgrades
 // First row is a header. Lists with zero entries are still represented
-// with a single row whose entryId/unitId columns are empty.
+// with a single row whose entryId/unitId/upgrades columns are empty.
+// `upgrades` is a "|"-separated list of upgrade IDs attached to the entry.
 
 const HEADER = [
   "listId",
   "listName",
   "faction",
+  "battleForce",
   "pointsCap",
   "updatedAt",
   "entryId",
   "unitId",
+  "upgrades",
 ] as const;
 
 function escape(v: string | number): string {
@@ -25,16 +28,28 @@ function escape(v: string | number): string {
 export function armiesToCsv(armies: SavedArmy[]): string {
   const lines: string[] = [HEADER.join(",")];
   for (const a of armies) {
+    const bf = a.battleForce ?? "";
     if (a.entries.length === 0) {
       lines.push(
-        [a.id, a.name, a.faction, a.pointsCap, a.updatedAt, "", ""]
+        [a.id, a.name, a.faction, bf, a.pointsCap, a.updatedAt, "", "", ""]
           .map(escape)
           .join(","),
       );
     } else {
       for (const e of a.entries) {
+        const upgrades = (e.upgrades ?? []).join("|");
         lines.push(
-          [a.id, a.name, a.faction, a.pointsCap, a.updatedAt, e.entryId, e.unitId]
+          [
+            a.id,
+            a.name,
+            a.faction,
+            bf,
+            a.pointsCap,
+            a.updatedAt,
+            e.entryId,
+            e.unitId,
+            upgrades,
+          ]
             .map(escape)
             .join(","),
         );
@@ -127,12 +142,22 @@ export function csvToArmies(text: string): ImportResult {
     const updatedAt = Number.isFinite(updatedAtRaw) && updatedAtRaw > 0 ? updatedAtRaw : Date.now();
     const entryId = (cols[idx("entryId")] || "").trim();
     const unitId = (cols[idx("unitId")] || "").trim();
+    const upgradesRaw = idx("upgrades") >= 0 ? cols[idx("upgrades")] || "" : "";
+    const upgrades = upgradesRaw
+      .split("|")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const battleForce =
+      idx("battleForce") >= 0
+        ? (cols[idx("battleForce")] || "").trim() || undefined
+        : undefined;
     let army = byList.get(listId);
     if (!army) {
       army = {
         id: listId,
         name: listName,
         faction: factionRaw,
+        ...(battleForce ? { battleForce } : {}),
         pointsCap,
         entries: [],
         updatedAt,
@@ -140,7 +165,11 @@ export function csvToArmies(text: string): ImportResult {
       byList.set(listId, army);
     }
     if (unitId) {
-      army.entries.push({ entryId: entryId || newId(), unitId });
+      army.entries.push({
+        entryId: entryId || newId(),
+        unitId,
+        ...(upgrades.length ? { upgrades } : {}),
+      });
     }
   }
   return { armies: Array.from(byList.values()), errors };

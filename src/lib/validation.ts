@@ -1,5 +1,5 @@
-import type { ArmyEntry, FactionId, Rank, Unit } from "./types";
-import { unitById } from "../data/catalog";
+import type { ArmyEntry, FactionId, Rank, Unit, Upgrade } from "./types";
+import { unitById, upgradeById } from "../data/catalog";
 import { RANK_LIMITS, RANK_LABEL, RANK_ORDER } from "./factions";
 
 export type ArmyState = {
@@ -28,8 +28,19 @@ function getUnits(entries: ArmyEntry[]): Unit[] {
     .filter((u): u is Unit => Boolean(u));
 }
 
+export function entryPoints(entry: ArmyEntry): number {
+  const unit = unitById(entry.unitId);
+  if (!unit) return 0;
+  let total = unit.points;
+  for (const upId of entry.upgrades ?? []) {
+    const up = upgradeById(upId);
+    if (up) total += up.points;
+  }
+  return total;
+}
+
 export function totalPoints(entries: ArmyEntry[]): number {
-  return getUnits(entries).reduce((sum, u) => sum + u.points, 0);
+  return entries.reduce((sum, e) => sum + entryPoints(e), 0);
 }
 
 export function countByRank(entries: ArmyEntry[]): Record<Rank, number> {
@@ -45,9 +56,40 @@ export function countByRank(entries: ArmyEntry[]): Record<Rank, number> {
   return counts;
 }
 
+export type SlotUsage = {
+  used: Record<string, number>;
+  available: Record<string, number>;
+};
+
+export function slotUsage(entry: ArmyEntry): SlotUsage {
+  const unit = unitById(entry.unitId);
+  const available: Record<string, number> = {};
+  if (unit?.upgrades) {
+    for (const [k, n] of Object.entries(unit.upgrades)) {
+      if (n) available[k] = (available[k] ?? 0) + n;
+    }
+  }
+  // Some upgrades grant additional slots; fold those in.
+  for (const upId of entry.upgrades ?? []) {
+    const up = upgradeById(upId);
+    if (up?.adds_upgrade_slots) {
+      for (const [k, n] of Object.entries(up.adds_upgrade_slots)) {
+        if (n) available[k] = (available[k] ?? 0) + n;
+      }
+    }
+  }
+  const used: Record<string, number> = {};
+  for (const upId of entry.upgrades ?? []) {
+    const up = upgradeById(upId);
+    if (!up) continue;
+    used[up.type] = (used[up.type] ?? 0) + 1;
+  }
+  return { used, available };
+}
+
 export function validateArmy(state: ArmyState): ValidationReport {
   const units = getUnits(state.entries);
-  const totalPts = units.reduce((s, u) => s + u.points, 0);
+  const totalPts = totalPoints(state.entries);
   const rankCounts = countByRank(state.entries);
   const issues: ValidationIssue[] = [];
 
@@ -103,6 +145,38 @@ export function validateArmy(state: ArmyState): ValidationReport {
     }
   }
 
+  // Unique upgrades (one copy across the army)
+  const seenUniqueUp = new Set<string>();
+  for (const e of state.entries) {
+    for (const upId of e.upgrades ?? []) {
+      const up = upgradeById(upId);
+      if (up?.is_unique) {
+        if (seenUniqueUp.has(up.id)) {
+          issues.push({
+            severity: "error",
+            message: `Upgrade "${up.name}" is unique and can only appear once.`,
+          });
+        }
+        seenUniqueUp.add(up.id);
+      }
+    }
+  }
+
+  // Slot capacity per entry
+  for (const e of state.entries) {
+    const usage = slotUsage(e);
+    for (const [slot, n] of Object.entries(usage.used)) {
+      const cap = usage.available[slot] ?? 0;
+      if (n > cap) {
+        const unit = unitById(e.unitId);
+        issues.push({
+          severity: "error",
+          message: `${unit?.name ?? "Unit"}: too many ${slot} upgrades (max ${cap}, have ${n}).`,
+        });
+      }
+    }
+  }
+
   return {
     totalPoints: totalPts,
     pointsCap: state.pointsCap,
@@ -122,7 +196,10 @@ export function canAdd(state: ArmyState, candidate: Unit): AddCheck {
   if (candidate.faction !== state.faction) {
     return { ok: false, reason: "Wrong faction." };
   }
-  if (candidate.is_unique && state.entries.some((e) => e.unitId === candidate.id)) {
+  if (
+    candidate.is_unique &&
+    state.entries.some((e) => e.unitId === candidate.id)
+  ) {
     return { ok: false, reason: "Unique unit already in the army." };
   }
   const counts = countByRank(state.entries);
@@ -134,6 +211,46 @@ export function canAdd(state: ArmyState, candidate: Unit): AddCheck {
     };
   }
   if (totalPoints(state.entries) + candidate.points > state.pointsCap) {
+    return { ok: false, reason: "Would exceed points cap." };
+  }
+  return { ok: true };
+}
+
+export function canAddUpgrade(
+  state: ArmyState,
+  entry: ArmyEntry,
+  upgrade: Upgrade,
+): AddCheck {
+  // Restricted whitelist
+  if (upgrade.restricted_to_unit && upgrade.restricted_to_unit.length > 0) {
+    if (!upgrade.restricted_to_unit.some((r) => r.id === entry.unitId)) {
+      return { ok: false, reason: "Not allowed on this unit." };
+    }
+  }
+  // Slot available
+  const usage = slotUsage(entry);
+  const cap = usage.available[upgrade.type] ?? 0;
+  if (cap === 0) {
+    return { ok: false, reason: `No ${upgrade.type} slot on this unit.` };
+  }
+  if ((usage.used[upgrade.type] ?? 0) >= cap) {
+    return { ok: false, reason: `${upgrade.type} slot full.` };
+  }
+  // Already attached
+  if ((entry.upgrades ?? []).includes(upgrade.id)) {
+    return { ok: false, reason: "Already attached." };
+  }
+  // Unique across army
+  if (upgrade.is_unique) {
+    const alreadyTaken = state.entries.some((e) =>
+      (e.upgrades ?? []).includes(upgrade.id),
+    );
+    if (alreadyTaken) {
+      return { ok: false, reason: "Unique upgrade already in army." };
+    }
+  }
+  // Points cap
+  if (totalPoints(state.entries) + upgrade.points > state.pointsCap) {
     return { ok: false, reason: "Would exceed points cap." };
   }
   return { ok: true };

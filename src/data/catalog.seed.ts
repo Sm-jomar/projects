@@ -29,11 +29,11 @@ export const SEED_UNITS: Unit[] = [
   {
     id: "republic-obi-wan-kenobi",
     name: "Obi-Wan Kenobi",
-    sub_title: "Mentor and Master",
+    sub_title: "Civilized Warrior",
     is_unique: true,
     faction: "republic",
     type: "trooper",
-    points: 175,
+    points: 150,
     rank: "commander",
     miniatures: 1,
     wounds: 6,
@@ -140,7 +140,7 @@ export const SEED_UNITS: Unit[] = [
     speed: 3,
     defense: "white",
     has_defense_surge: true,
-    upgrades: { comms: 1, hardpoint: 1, pilot: 1 },
+    upgrades: { comms: 1, "hard-point": 1, pilot: 1 },
   },
   {
     id: "republic-at-rt",
@@ -156,7 +156,7 @@ export const SEED_UNITS: Unit[] = [
     speed: 2,
     defense: "white",
     has_defense_surge: true,
-    upgrades: { hardpoint: 1, comms: 1 },
+    upgrades: { "hard-point": 1, comms: 1 },
   },
   {
     id: "republic-saber-tank",
@@ -172,7 +172,7 @@ export const SEED_UNITS: Unit[] = [
     speed: 3,
     defense: "red",
     has_defense_surge: true,
-    upgrades: { hardpoint: 2, comms: 1, pilot: 1 },
+    upgrades: { "hard-point": 2, comms: 1, pilot: 1 },
   },
 
   // ---------- SEPARATIST ALLIANCE ----------
@@ -326,7 +326,7 @@ export const SEED_UNITS: Unit[] = [
     speed: 2,
     defense: "red",
     has_defense_surge: true,
-    upgrades: { hardpoint: 2, comms: 1, pilot: 1 },
+    upgrades: { "hard-point": 2, comms: 1, pilot: 1 },
   },
   {
     id: "separatists-persuader-tank",
@@ -342,6 +342,6 @@ export const SEED_UNITS: Unit[] = [
     speed: 2,
     defense: "red",
     has_defense_surge: true,
-    upgrades: { hardpoint: 2, comms: 1, pilot: 1 },
+    upgrades: { "hard-point": 2, comms: 1, pilot: 1 },
   },
 ];

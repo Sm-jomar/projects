@@ -5,6 +5,7 @@ import { UnitBrowser } from "./components/UnitBrowser";
 import { ArmyRoster } from "./components/ArmyRoster";
 import { SavedListsPanel } from "./components/SavedListsPanel";
 import { ReferencePanel } from "./components/ReferencePanel";
+import { RegisterPanel } from "./components/RegisterPanel";
 import { DEFAULT_POINTS_CAP } from "./lib/factions";
 import type { ArmyEntry, FactionId, SavedArmy, Unit } from "./lib/types";
 import {
@@ -19,6 +20,7 @@ type WorkingArmy = {
   id: string;
   name: string;
   faction: FactionId;
+  battleForce?: string;
   pointsCap: number;
   entries: ArmyEntry[];
 };
@@ -28,6 +30,7 @@ export default function App() {
   const [saved, setSaved] = useState<SavedArmy[]>([]);
   const [showSaved, setShowSaved] = useState(false);
   const [showReference, setShowReference] = useState(false);
+  const [showRegisters, setShowRegisters] = useState(false);
   const [savedToast, setSavedToast] = useState<string | null>(null);
 
   useEffect(() => {
@@ -67,12 +70,40 @@ export default function App() {
     });
   }
 
+  function attachUpgrade(entryId: string, upgradeId: string) {
+    if (!army) return;
+    setArmy({
+      ...army,
+      entries: army.entries.map((e) =>
+        e.entryId === entryId
+          ? { ...e, upgrades: [...(e.upgrades ?? []), upgradeId] }
+          : e,
+      ),
+    });
+  }
+
+  function detachUpgrade(entryId: string, upgradeId: string) {
+    if (!army) return;
+    setArmy({
+      ...army,
+      entries: army.entries.map((e) =>
+        e.entryId === entryId
+          ? {
+              ...e,
+              upgrades: (e.upgrades ?? []).filter((u) => u !== upgradeId),
+            }
+          : e,
+      ),
+    });
+  }
+
   function persist() {
     if (!army) return;
     const toSave: SavedArmy = {
       id: army.id,
       name: army.name.trim() || "Untitled",
       faction: army.faction,
+      ...(army.battleForce ? { battleForce: army.battleForce } : {}),
       pointsCap: army.pointsCap,
       entries: army.entries,
       updatedAt: Date.now(),
@@ -90,6 +121,7 @@ export default function App() {
       id: loaded.id,
       name: loaded.name,
       faction: loaded.faction,
+      battleForce: loaded.battleForce,
       pointsCap: loaded.pointsCap,
       entries: loaded.entries,
     });
@@ -129,6 +161,9 @@ export default function App() {
           <button onClick={() => setShowReference(true)}>
             Reference
           </button>
+          <button onClick={() => setShowRegisters(true)}>
+            Tours of Duty
+          </button>
           <button onClick={() => setShowSaved(true)}>
             Saved lists ({saved.length})
           </button>
@@ -159,9 +194,15 @@ export default function App() {
             }}
             faction={army.faction}
             name={army.name}
+            battleForce={army.battleForce}
             onNameChange={(name) => setArmy({ ...army, name })}
+            onBattleForceChange={(battleForce) =>
+              setArmy({ ...army, battleForce })
+            }
             onCapChange={(cap) => setArmy({ ...army, pointsCap: cap })}
             onRemove={removeEntry}
+            onAttachUpgrade={attachUpgrade}
+            onDetachUpgrade={detachUpgrade}
           />
         </main>
       )}
@@ -178,6 +219,10 @@ export default function App() {
 
       {showReference && (
         <ReferencePanel onClose={() => setShowReference(false)} />
+      )}
+
+      {showRegisters && (
+        <RegisterPanel onClose={() => setShowRegisters(false)} />
       )}
 
       {savedToast && <div className="toast">{savedToast}</div>}
