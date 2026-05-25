@@ -8,7 +8,7 @@ type CardEntry = {
   slug: string;
   file: string;
   source: string;
-  sha1: string;
+  points?: number | null;
 };
 
 const MANIFEST = manifestRaw as CardEntry[];

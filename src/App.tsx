@@ -37,11 +37,12 @@ export default function App() {
     setSaved(listArmies());
   }, []);
 
-  function startNewArmy(faction: FactionId) {
+  function startNewArmy(faction: FactionId, battleForce?: string) {
     setArmy({
       id: newId(),
       name: "",
       faction,
+      ...(battleForce ? { battleForce } : {}),
       pointsCap: DEFAULT_POINTS_CAP,
       entries: [],
     });
