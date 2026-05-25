@@ -1,12 +1,12 @@
 import type { Catalog, Unit, Upgrade } from "../lib/types";
 import baseRaw from "./catalog.base.json";
-import { SEED_UNITS } from "./catalog.seed";
+import { MERCENARY_SEED, SEED_UNITS } from "./catalog.seed";
 
 const base = baseRaw as unknown as Catalog;
 
 export const CATALOG: Catalog = {
   version: base.version,
-  units: [...(base.units as Unit[]), ...SEED_UNITS],
+  units: [...(base.units as Unit[]), ...SEED_UNITS, ...MERCENARY_SEED],
   upgrades: (base.upgrades ?? []) as Upgrade[],
   commandCards: base.commandCards,
 };
