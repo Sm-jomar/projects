@@ -1,0 +1,4849 @@
+{
+  "commandCards": [
+    {
+      "id": "coordinated-fire",
+      "name": "Coordinated Fire",
+      "text": "After a friendly corps unit spends an aim token, another friendly unit at range 1-2 may gain 1 aim token.",
+      "pips": 3,
+      "activated": "3 Corps Unit",
+      "faction": "imperials",
+      "required": [],
+      "waves": [
+        "SWL27"
+      ]
+    },
+    {
+      "id": "covert-observation",
+      "name": "Covert Observation",
+      "text": "Look at up to 2 random command cards from an opponent's hand.",
+      "pips": 1,
+      "activated": "1 Special Forces or Operative Unit",
+      "faction": "imperials",
+      "required": [],
+      "waves": [
+        "SWL27"
+      ]
+    },
+    {
+      "id": "pinned-down",
+      "name": "Pinned Down",
+      "text": "After a friendly supoport or heavy unit performs an attack against a unit with a faceup order token, shuffle that token back into its order pool.",
+      "pips": 2,
+      "activated": "2 Support or Heavy Units",
+      "faction": "imperials",
+      "required": [],
+      "waves": [
+        "SWL27"
+      ]
+    },
+    {
+      "id": "covering-fire",
+      "name": "Covering Fire",
+      "text": "After a friendly corps unit performs a ranged attack, another friendly unit at range 1-2 may gain 1 dodge token.",
+      "pips": 3,
+      "activated": "3 Corps Unit",
+      "faction": "rebels",
+      "required": [],
+      "waves": [
+        "SWL26"
+      ]
+    },
+    {
+      "id": "sabotaged-communications",
+      "name": "Sabotaged Communications",
+      "text": "Your opponent must issue orders to 1 fewer unit than is indicated on their command card, to a minimum of 1.",
+      "pips": 1,
+      "activated": "1 Special Forces or Operative Unit",
+      "faction": "rebels",
+      "required": [],
+      "waves": [
+        "SWL26"
+      ]
+    },
+    {
+      "id": "turning-the-tide",
+      "name": "Turning The Tide",
+      "text": "Each friendly support and heavy unit gains INSPIRE 2.",
+      "pips": 2,
+      "activated": "2 Support or Heavy Units",
+      "faction": "rebels",
+      "required": [],
+      "waves": [
+        "SWL26"
+      ]
+    },
+    {
+      "id": "ambush",
+      "name": "Ambush",
+      "text": "",
+      "pips": 1,
+      "activated": "1 Unit",
+      "faction": "neutral",
+      "required": [],
+      "waves": [
+        "SWL01"
+      ]
+    },
+    {
+      "id": "assault",
+      "name": "Assault",
+      "text": "",
+      "pips": 3,
+      "activated": "3 Units",
+      "faction": "neutral",
+      "required": [],
+      "waves": [
+        "SWL01"
+      ]
+    },
+    {
+      "id": "push",
+      "name": "Push",
+      "text": "",
+      "pips": 2,
+      "activated": "2 Units",
+      "faction": "neutral",
+      "required": [],
+      "waves": [
+        "SWL01"
+      ]
+    },
+    {
+      "id": "standing-orders",
+      "name": "Standing Orders",
+      "text": "At the end of the Command Phase, return this card to your hand.",
+      "pips": 4,
+      "activated": "1 Unit",
+      "faction": "neutral",
+      "required": [],
+      "waves": [
+        "SWL01"
+      ]
+    },
+    {
+      "id": "whipcord-launcher",
+      "name": "Whipcord Launcher",
+      "text": "Boba Fett can perform moves while engaged with a unit that has 1 or more immobilized tokens. During Boba Fett's activation he gains:\n    Choose an enemy trooper unit at range 1 and in line of sight. It gains 2 immobilized tokens and 2 suppression tokens.",
+      "pips": 1,
+      "activated": "Boba Fett",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "boba-fett"
+        }
+      ],
+      "waves": [
+        "SWL18"
+      ]
+    },
+    {
+      "id": "z-6-jetpack-launcher",
+      "name": "Z-6 Jetpack Launcher",
+      "text": "During Boba Fett's activation he gains the following weapon:",
+      "pips": 3,
+      "activated": "Boba Fett",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "boba-fett"
+        }
+      ],
+      "waves": [
+        "SWL18"
+      ],
+      "weapon": {
+        "name": "Z-6 Jetpack Launcher",
+        "dice": {
+          "red": 3
+        },
+        "area_of_effect": 0,
+        "min_range": 3,
+        "keywords": {
+          "blast": "",
+          "impact": 2
+        },
+        "max_range": 4
+      }
+    },
+    {
+      "id": "zx-flame-projector",
+      "name": "ZX Flame Projector",
+      "text": "During Boba Fett's activation he gains the following weapon:",
+      "pips": 2,
+      "activated": "Boba Fett",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "boba-fett"
+        }
+      ],
+      "waves": [
+        "SWL18"
+      ],
+      "weapon": {
+        "name": "ZX Flame Projector",
+        "dice": {
+          "red": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 0,
+        "keywords": {
+          "blast": "",
+          "spray": ""
+        },
+        "max_range": 1
+      }
+    },
+    {
+      "id": "lying-in-wait",
+      "name": "Lying In Wait",
+      "text": "Bossk gains SHARPSHOOTER 1. After an enemy unit activates, Bossk gains 1\n    aim token.",
+      "pips": 3,
+      "activated": "Bossk",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "bossk"
+        }
+      ],
+      "waves": [
+        "SWL38"
+      ]
+    },
+    {
+      "id": "merciless-munititions",
+      "name": "Merciless Munititions",
+      "text": "During the round this card is played, Bossk gains ARM: 1 DIOXIS CHARGE.\n    After he performs this action, he may perform a speed-1 move. Until the end\n    of the game, Bossk gains DETONATE 1: DIOXIS CHARGE. After a trooper unit\n    defends against an attack made by your dioxis charge, it gains 1 poison\n    token. Do not discard this card from play.",
+      "pips": 1,
+      "activated": "Bossk",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "bossk"
+        }
+      ],
+      "waves": [
+        "SWL38"
+      ],
+      "weapon": {
+        "name": "Dioxis Charge",
+        "dice": {
+          "red": 1,
+          "black": 1
+        },
+        "area_of_effect": 1,
+        "min_range": 1,
+        "keywords": {
+          "blast": ""
+        },
+        "max_range": 1,
+        "surge_override": "critical"
+      }
+    },
+    {
+      "id": "reptilian-rampage",
+      "name": "Reptilian Rampage",
+      "text": "During Bossk's Activation, he can perform up to 2 attack actions and he may\n    suffer 1 wound to perform a free move action.",
+      "pips": 2,
+      "activated": "Bossk",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "bossk"
+        }
+      ],
+      "waves": [
+        "SWL38"
+      ]
+    },
+    {
+      "id": "brains-and-brawn",
+      "name": "Brains and Brawn",
+      "text": "When Leia Organa is performing a ranged attack, if Chewbacca is not engaged and has line of sight to and is range 1-3 of the defender, add one\n    of his ranged weapons to the attack pool.",
+      "pips": 2,
+      "activated": "Chewbacca & Leia Organa",
+      "faction": "rebels",
+      "required": [
+        {
+          "id": "chewbacca"
+        },
+        {
+          "id": "leia-organa"
+        }
+      ],
+      "waves": [
+        "SWL24"
+      ]
+    },
+    {
+      "id": "common-cause",
+      "name": "Common Cause",
+      "text": "After Chewbacca activates, if Luke Skywalker has a faceup order token, he may activate.\n    After Luke Skywalker activates, if Chewbacca has a faceup order token, he may activate.",
+      "pips": 1,
+      "activated": "Chewbacca & Luke Skywalker",
+      "faction": "rebels",
+      "required": [
+        {
+          "id": "chewbacca"
+        },
+        {
+          "id": "luke-skywalker"
+        }
+      ],
+      "waves": [
+        "SWL24"
+      ]
+    },
+    {
+      "id": "notorious-scoundrels",
+      "name": "Notorious Scoundrels",
+      "text": "Choose one of Han Solo's command cards in your discard pile. Return that card to your hand.",
+      "pips": 3,
+      "activated": "Chewbacca & Han Solo",
+      "faction": "rebels",
+      "required": [
+        {
+          "id": "chewbacca"
+        },
+        {
+          "id": "han-solo"
+        }
+      ],
+      "waves": [
+        "SWL24"
+      ]
+    },
+    {
+      "id": "implacable",
+      "name": "Implacable",
+      "text": "At the end of Darth Vader’s first activation, he may suffer 1 wound to shuffle his order token into the order pool. During Darth Vader's second activation, he performs 1 fewer action.",
+      "pips": 1,
+      "activated": "Darth Vader",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "darth-vader"
+        }
+      ],
+      "waves": [
+        "SWL01"
+      ]
+    },
+    {
+      "id": "master-of-evil",
+      "name": "Master of Evil",
+      "text": "When Darth Vader is issued an order, he gains 1 dodge token. When Darth Vader activates, each enemy trooper at range 1-2 of him gains 3 suppression tokens.",
+      "pips": 3,
+      "activated": "2 Units & Darth Vader",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "darth-vader"
+        }
+      ],
+      "waves": [
+        "SWL01"
+      ]
+    },
+    {
+      "id": "new-ways-to-motivate-them",
+      "name": "New Ways To Motivate Them",
+      "text": "When a friendly non-Darth Vader trooper unit with a faceup order token activates, it may suffer 1 wound to perform 1 free action.",
+      "pips": 2,
+      "activated": "2 Troopers",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "darth-vader"
+        }
+      ],
+      "waves": [
+        "SWL01"
+      ]
+    },
+    {
+      "id": "annihilation-looms",
+      "name": "Annihilation Looms",
+      "text": "Each trooper unit gains 1 suppression token. If it is round 5 or 6, each\n    trooper unit gains 1 additional suppression token.",
+      "pips": 3,
+      "activated": "Director Orson Krennic & 2 Units",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "director-orson-krennic"
+        }
+      ],
+      "waves": [
+        "SWL33"
+      ]
+    },
+    {
+      "id": "deploy-the-garrison",
+      "name": "Deploy The Garrison",
+      "text": "At the start of the Activation Phase, choose up to 2 friendly trooper\n    units that have faceup order tokens. Each chosen unit may perform a free\n    standby action.",
+      "pips": 2,
+      "activated": "2 Troopers",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "director-orson-krennic"
+        }
+      ],
+      "waves": [
+        "SWL33"
+      ]
+    },
+    {
+      "id": "voracious-ambition",
+      "name": "Voracious Ambition",
+      "text": "At the start of the Activation Phase, place 3 random order tokens from your\n    order pool facedown on this card. You may look at these order tokens at any\n    time. When you would draw an order token from your order pool, you may\n    choose 1 of the order tokens on this card and use that order token instead.",
+      "pips": 1,
+      "activated": "Director Orson Krennic",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "director-orson-krennic"
+        }
+      ],
+      "waves": [
+        "SWL33"
+      ]
+    },
+    {
+      "id": "an-entire-legion",
+      "name": "An Entire Legion",
+      "text": "",
+      "pips": 3,
+      "activated": "Each Eligible Unit",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "emperor-palpatine"
+        }
+      ],
+      "waves": [
+        "SWL22"
+      ]
+    },
+    {
+      "id": "and-now-you-will-die",
+      "name": "And Now... You Will Die",
+      "text": "During Emperor Palpatine's activation, he may suffer 1 wound and gain 1 suppression token to perform an attack. He may do this any number of times. After Emperor Palpatine performs an attack, the defender gains 1 immobilized token.",
+      "pips": 1,
+      "activated": "Emperor Palpatine",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "emperor-palpatine"
+        }
+      ],
+      "waves": [
+        "SWL22"
+      ]
+    },
+    {
+      "id": "give-in-to-your-anger",
+      "name": "Give in to Your Anger",
+      "text": "Before an opponent would activate their first unit, you may choose an enemy trooper unit.\n    If you do, your opponent must activate that unit instread.\n    Assign it an order token from its order pool unless it has a faceup order token.\n    At the end of that units's activation, if it did not perform an attack, it gains 4 suppression tokens.",
+      "pips": 2,
+      "activated": "Emperor Palpatine",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "emperor-palpatine"
+        }
+      ],
+      "waves": [
+        "SWL22"
+      ]
+    },
+    {
+      "id": "evasive-maneuvers",
+      "name": "Evasive Maneuvers",
+      "text": "When a friendly vehicle unit is issued an order it gains 1 dodge token.\n    Friendly vehicle units can spend dodge tokens to cancel critical hit results.",
+      "pips": 2,
+      "activated": "2 Vehicles",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "general-veers"
+        }
+      ],
+      "waves": [
+        "SWL10"
+      ]
+    },
+    {
+      "id": "imperial-discipline",
+      "name": "Imperial Discipline",
+      "text": "When a friendly unit is issued an order it may recover.",
+      "pips": 3,
+      "activated": "General Veers & 2 Units",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "general-veers"
+        }
+      ],
+      "waves": [
+        "SWL10"
+      ]
+    },
+    {
+      "id": "maximum-firepower",
+      "name": "Maximum Firepower",
+      "text": "At the end of General Veers’ activation, he may perform an attacking using the following weapon.",
+      "pips": 1,
+      "activated": "General Veers",
+      "faction": "imperials",
+      "required": [
+        {
+          "id": "general-veers"
+        }
+      ],
+      "waves": [
+        "SWL10"
+      ],
+      "weapon": {
+        "name": "Maximum Firepower",
+        "dice": {
+          "red": 4
+        },
+        "area_of_effect": 0,
+        "min_range": 4,
+        "keywords": {
+          "impact": 2,
+          "immune-deflect": ""
+        }
+      }
+    },
+    {
+      "id": "change-of-plans",
+      "name": "Change of Plans",
+      "text": "When this card is revealed, you may discard it to return an opponent's command card to their hand. If you do, return to the Select Command Card step. That opponent cannot select the command card that was returned to their hand.",
+      "pips": 3,
+      "activated": "Han Solo and 2 Troopers",
+      "faction": "rebels",
+      "required": [
+        {
+          "id": "han-solo"
+        }
+      ],
+      "waves": [
+        "SWL20"
+      ]
+    },
+    {
+      "id": "reckless-diversion",
+      "name": "Reckless Diversion",
+      "text": "When an enemy unit performs an attack, it must attack a trooper unit that has a faceup order token, if available.",
+      "pips": 2,
+      "activated": "Han Solo and 1 Trooper",
+      "faction": "rebels",
+      "required": [
+        {
+          "id": "han-solo"
+        }
+      ],
+      "waves": [
+        "SWL20"
+      ]
+    },
+    {
+      "id": "sorry-about-the-mess",
+      "name": "Sorry About The Mess",
+      "text": "While building a command hand, treat this card as though it has 1 pip. When Han Solo is issued an order, he gains 1 aim token and 1 dodge token.",
+      "pips": 0,
+      "activated": "Han Solo",
+      "faction": "rebels",
+      "required": [
+        {
+          "id": "han-solo"
+        }
+      ],
+      "waves": [
+        "SWL20"
+      ]
+    },
+    {
+      "id": "complete-the-mission",
+      "name": "Complete The Mission",
+      "text": "Jyn Erso gains LOW PROFILE.\n    When a friendly trooper unit is issued an order, it may gain 1 suppression token.\n    When a friendly trooper unit with a faceup order token activates, during its activation, it cannot become panicked or suppressed.\n    At the end of that unit's activation, it may remove 1 suppression token.",
+      "pips": 3,
+      "activated": "3 Troopers",
+      "faction": "rebels",
+      "required": [
+        {
+          "id": "jyn-erso"
+        }
+      ],
+      "waves": [
+        "SWL31"
+      ]
+    },
+    {
+      "id": "rebellious",
+      "name": "Rebellious",
+      "text": "Jyn Erso gains CHARGE.\n    Once per round, when an enemy unit at range 1-2 and in line of sight of Jyn Erso activates, before it performs its Rally Step, Jyn Erso may gain 1 suppression token to either perform an attack against that unit or perform a free move action.",
+      "pips": 1,
+      "activated": "Jyn Erso",
+      "faction": "rebels",
+      "required": [
+        {
+          "id": "jyn-erso"
+        }
+      ],
+      "waves": [
+        "SWL31"
+      ]
+    },
+    {
+      "id": "trust-goes-both-ways",
+      "name": "Trust Goes Both Ways",
+      "text": "Jyn Erso gains INSPIRE 2.\n    When Jyn Erso issues an order to another friendly trooper, that unit gains TEARMWORK: JYN ERSO.",
+      "pips": 2,
+      "activated": "Jyn Erso & 1 Trooper",
+      "faction": "rebels",
+      "required": [
+        {
+          "id": "jyn-erso"
+        }
+      ],
+      "waves": [
+        "SWL31"
+      ]
+    },
+    {
+      "id": "coordinated-bombardment",
+      "name": "Coordinated Bombardment",
+      "text": "At the end of Leia Organa's activation, you may perform up to 3 attacks against different enemy units using the following weapon.",
+      "pips": 1,
+      "activated": "Leia Organa",
+      "faction": "rebels",
+      "required": [
+        {
+          "id": "leia-organa"
+        }
+      ],
+      "waves": [
+        "SWL12"
+      ],
+      "weapon": {
+        "name": "Coordinated Bombardment",
+        "dice": {
+          "red": 2
+        },
+        "area_of_effect": 0,
+        "min_range": 4,
+        "keywords": {
+          "immune-deflect": ""
+        }
+      }
+    },
+    {
+      "id": "no-time-for-sorrows",
+      "name": "No Time for Sorrows",
+      "text": "When a friendly Trooper unit is issued an order, it may perform a speed-1 move.",
+      "pips": 2,
+      "activated": "2 Troopers",
+      "faction": "rebels",
+      "required": [
+        {
+          "id": "leia-organa"
+        }
+      ],
+      "waves": [
+        "SWL12"
+      ]
+    },
+    {
+      "id": "somebody-has-to-save-our-skins",
+      "name": "Somebody Has to Save Our Skins",
+      "text": "After Leia Organa's activation, you may choose a friendly unit at range 1-2 with a faceup order token and activate it.",
+      "pips": 3,
+      "activated": "Leia Organa & 2 Troopers",
+      "faction": "rebels",
+      "required": [
+        {
+          "id": "leia-organa"
+        }
+      ],
+      "waves": [
+        "SWL12"
+      ]
+    },
+    {
+      "id": "my-ally-is-the-force",
+      "name": "My Ally is the Force",
+      "text": "When a friendly trooper unit is issued an order, it gains 1 dodge token.",
+      "pips": 2,
+      "activated": "2 Troopers",
+      "faction": "rebels",
+      "required": [
+        {
+          "id": "luke-skywalker"
+        }
+      ],
+      "waves": [
+        "SWL01"
+      ]
+    },
+    {
+      "id": "return-of-the-jedi",
+      "name": "Return of the Jedi",
+      "text": "When Luke Skywalker is issued an order, he gains 1 dodge token. When Luke Skywalker activates, each friendly trooper at range 1-3 of him may remove 1 suppression token.",
+      "pips": 3,
+      "activated": "2 Units & Luke Skywalker",
+      "faction": "rebels",
+      "required": [
+        {
+          "id": "luke-skywalker"
+        }
+      ],
+      "waves": [
+        "SWL01"
+      ]
+    },
+    {
+      "id": "son-of-skywalker",
+      "name": "Son of Skywalker",
+      "text": "After Luke Skywalker performs his first attack he may perform 1 additional attack.",
+      "pips": 1,
+      "activated": "Luke Skywalker",
+      "faction": "rebels",
+      "required": [
+        {
+          "id": "luke-skywalker"
+        }
+      ],
+      "waves": [
+        "SWL01"
+      ]
+    }
+  ],
+  "units": [
+    {
+      "id": "74-z-speeder-bikes",
+      "name": "74-Z Speeder Bikes",
+      "is_unique": false,
+      "faction": "imperials",
+      "type": "ground-vehicle",
+      "points": 90,
+      "rank": "support",
+      "miniatures": 2,
+      "wounds": 3,
+      "defense": "white",
+      "has_defense_surge": true,
+      "speed": 3,
+      "upgrades": {
+        "comms": 1
+      },
+      "weapons": [
+        {
+          "name": "EC-17 Hold-Out Blaster",
+          "dice": {
+            "black": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 2
+        },
+        {
+          "name": "AX-20 Blaster Cannon",
+          "dice": {
+            "white": 1,
+            "black": 1,
+            "red": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {
+            "fixed": "",
+            "impact": 1
+          },
+          "max_range": 3
+        }
+      ],
+      "keywords": {
+        "cover": 1,
+        "speeder": 1
+      },
+      "waves": [
+        "SWL01",
+        "SWL06"
+      ],
+      "attack_surge": "hit"
+    },
+    {
+      "id": "at-st",
+      "name": "AT-ST",
+      "is_unique": false,
+      "faction": "imperials",
+      "type": "ground-vehicle",
+      "points": 195,
+      "rank": "heavy",
+      "miniatures": 1,
+      "wounds": 11,
+      "defense": "white",
+      "has_defense_surge": true,
+      "speed": 2,
+      "upgrades": {
+        "comms": 1,
+        "hard-point": 3,
+        "pilot": 1
+      },
+      "weapons": [
+        {
+          "name": "Fence-Cutting Blades",
+          "dice": {
+            "red": 4
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "MS-4 Twin Blaster Cannon",
+          "dice": {
+            "red": 2,
+            "black": 2,
+            "white": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {
+            "fixed": "",
+            "impact": 3
+          },
+          "max_range": 4
+        }
+      ],
+      "keywords": {
+        "armor": "",
+        "arsenal": 2,
+        "weak-point-rear": ""
+      },
+      "waves": [
+        "SWL08"
+      ],
+      "resilience": 8
+    },
+    {
+      "id": "boba-fett",
+      "name": "Boba Fett",
+      "is_unique": true,
+      "faction": "imperials",
+      "type": "trooper",
+      "points": 140,
+      "rank": "operative",
+      "miniatures": 1,
+      "wounds": 5,
+      "defense": "red",
+      "has_defense_surge": true,
+      "speed": 3,
+      "upgrades": {
+        "training": 2,
+        "gear": 2
+      },
+      "weapons": [
+        {
+          "name": "Boot Spikes",
+          "dice": {
+            "red": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "Fett's EE-3 Carbine",
+          "dice": {
+            "black": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {
+            "pierce": 1
+          },
+          "max_range": 3
+        },
+        {
+          "name": "Wrist Rocket",
+          "dice": {
+            "black": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {
+            "impact": 1
+          },
+          "max_range": 2
+        }
+      ],
+      "keywords": {
+        "jump": 2,
+        "arsenal": 2,
+        "bounty": "",
+        "impervious": "",
+        "sharpshooter": 2
+      },
+      "waves": [
+        "SWL18"
+      ],
+      "sub_title": "Infamous Bounty Hunter",
+      "courage": 3,
+      "attack_surge": "critical"
+    },
+    {
+      "id": "bossk",
+      "name": "Bossk",
+      "is_unique": true,
+      "faction": "imperials",
+      "type": "trooper",
+      "points": 115,
+      "rank": "operative",
+      "miniatures": 1,
+      "wounds": 7,
+      "defense": "white",
+      "has_defense_surge": false,
+      "speed": 2,
+      "upgrades": {
+        "training": 2,
+        "gear": 1
+      },
+      "weapons": [
+        {
+          "name": "Frenzy",
+          "dice": {
+            "red": 1,
+            "black": 2,
+            "white": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {
+            "pierce": 1
+          },
+          "max_range": 0
+        },
+        {
+          "name": "Relby-v10 Mortar Rifle",
+          "dice": {
+            "red": 1,
+            "white": 4
+          },
+          "area_of_effect": 0,
+          "min_range": 2,
+          "keywords": {
+            "pierce": 1,
+            "suppressive": ""
+          },
+          "max_range": 4
+        }
+      ],
+      "keywords": {
+        "bounty": "",
+        "enrange": 3,
+        "expert-climber": "",
+        "regenerate": 3,
+        "unhindered": ""
+      },
+      "waves": [
+        "SWL38"
+      ],
+      "sub_title": "Trandoshan Hunter",
+      "courage": 2,
+      "attack_surge": "critical"
+    },
+    {
+      "id": "darth-vader",
+      "name": "Darth Vader",
+      "is_unique": true,
+      "faction": "imperials",
+      "type": "trooper",
+      "points": 200,
+      "rank": "commander",
+      "miniatures": 1,
+      "wounds": 8,
+      "defense": "red",
+      "has_defense_surge": false,
+      "speed": 1,
+      "upgrades": {
+        "force": 3
+      },
+      "weapons": [
+        {
+          "name": "Vader's Lightsaber",
+          "dice": {
+            "red": 6
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {
+            "impact": 3,
+            "pierce": 3
+          },
+          "max_range": 0
+        }
+      ],
+      "keywords": {
+        "deflect": "",
+        "immune-pierce": "",
+        "master-of-the-force": 1,
+        "relentless": ""
+      },
+      "waves": [
+        "SWL01"
+      ],
+      "sub_title": "Dark Lord of the Sith",
+      "force_alignment": "dark"
+    },
+    {
+      "id": "director-orson-krennic",
+      "name": "Director Orson Krennic",
+      "is_unique": true,
+      "faction": "imperials",
+      "type": "trooper",
+      "points": 90,
+      "rank": "commander",
+      "miniatures": 1,
+      "wounds": 6,
+      "defense": "white",
+      "has_defense_surge": false,
+      "speed": 2,
+      "upgrades": {
+        "command": 2,
+        "gear": 1
+      },
+      "weapons": [
+        {
+          "name": "Unarmed",
+          "dice": {
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "Krennic' DT-29 Blaster Pistol",
+          "dice": {
+            "red": 1,
+            "black": 1,
+            "white": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {
+            "pierce": 1
+          },
+          "max_range": 2
+        }
+      ],
+      "keywords": {
+        "compel": "",
+        "cunning": "",
+        "entourage": "Death Troopers",
+        "sharpshooter": 1
+      },
+      "waves": [
+        "SWL33"
+      ],
+      "sub_title": "Architect of Terror",
+      "courage": 2,
+      "attack_surge": "critical"
+    },
+    {
+      "id": "e-web-heavy-blaster-team",
+      "name": "E-Web Heavy Blaster Team",
+      "is_unique": false,
+      "faction": "imperials",
+      "type": "emplacement-trooper",
+      "points": 55,
+      "rank": "support",
+      "miniatures": 1,
+      "wounds": 4,
+      "defense": "red",
+      "has_defense_surge": false,
+      "speed": 1,
+      "upgrades": {
+        "comms": 1,
+        "generator": 1
+      },
+      "weapons": [
+        {
+          "name": "Unarmed",
+          "dice": {
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "E-11 Blaster Rifle",
+          "dice": {
+            "white": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 3
+        },
+        {
+          "name": "E-Web Heavy Blaster",
+          "dice": {
+            "red": 1,
+            "black": 2,
+            "white": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {
+            "cumbersome": "",
+            "fixed": ""
+          },
+          "max_range": 3
+        }
+      ],
+      "keywords": {
+        "full-pivot": "",
+        "plodding": "",
+        "reposition": "",
+        "sentinel": ""
+      },
+      "waves": [
+        "SWL15"
+      ],
+      "courage": 2,
+      "attack_surge": "critical"
+    },
+    {
+      "id": "emperor-palpatine",
+      "name": "Emperor Palpatine",
+      "is_unique": true,
+      "faction": "imperials",
+      "type": "trooper",
+      "points": 210,
+      "rank": "commander",
+      "miniatures": 1,
+      "wounds": 5,
+      "defense": "red",
+      "has_defense_surge": true,
+      "speed": 1,
+      "upgrades": {
+        "force": 3,
+        "command": 1
+      },
+      "weapons": [
+        {
+          "name": "Force Lightning",
+          "dice": {
+            "red": 2,
+            "black": 2,
+            "white": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {
+            "pierce": 1,
+            "suppressive": ""
+          },
+          "max_range": 2
+        }
+      ],
+      "keywords": {
+        "pulling-the-strings": "",
+        "entourage": "Imperial Royal Guards",
+        "immune-pierce": "",
+        "master-of-the-force": 2
+      },
+      "waves": [
+        "SWL22"
+      ],
+      "sub_title": "Ruler of the Galactic Empire",
+      "force_alignment": "dark",
+      "courage": 4,
+      "attack_surge": "critical"
+    },
+    {
+      "id": "general-veers",
+      "name": "General Veers",
+      "is_unique": true,
+      "faction": "imperials",
+      "type": "trooper",
+      "points": 80,
+      "rank": "commander",
+      "miniatures": 1,
+      "wounds": 5,
+      "defense": "red",
+      "has_defense_surge": false,
+      "speed": 2,
+      "upgrades": {
+        "command": 2,
+        "gear": 1
+      },
+      "weapons": [
+        {
+          "name": "Combat Expertise",
+          "dice": {
+            "black": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "Veers' E-11 Blaster Rifle",
+          "dice": {
+            "white": 3
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {
+            "pierce": 1
+          },
+          "max_range": 3
+        }
+      ],
+      "keywords": {
+        "spotter": 2,
+        "inspire": 1,
+        "precise": 1,
+        "sharpshooter": 1
+      },
+      "waves": [
+        "SWL10"
+      ],
+      "sub_title": "Master Tactician",
+      "courage": 2,
+      "attack_surge": "critical"
+    },
+    {
+      "id": "imperial-death-troopers",
+      "name": "Imperial Death Troopers",
+      "is_unique": false,
+      "faction": "imperials",
+      "type": "trooper",
+      "points": 76,
+      "rank": "special-forces",
+      "miniatures": 4,
+      "wounds": 1,
+      "defense": "red",
+      "has_defense_surge": true,
+      "speed": 2,
+      "upgrades": {
+        "heavy-weapon": 1,
+        "training": 1,
+        "comms": 1,
+        "gear": 1,
+        "armament": 1,
+        "grenades": 1
+      },
+      "weapons": [
+        {
+          "name": "Close Quarters Combat",
+          "dice": {
+            "red": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "SE-14n Light Blaster",
+          "dice": {
+            "white": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 2
+        },
+        {
+          "name": "E-11D Blaster Rifle",
+          "dice": {
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 3
+        }
+      ],
+      "keywords": {
+        "discplined": 1,
+        "precise": 2,
+        "ready": 1
+      },
+      "waves": [
+        "SWL34"
+      ],
+      "courage": 1,
+      "attack_surge": "hit"
+    },
+    {
+      "id": "imperial-officer",
+      "name": "Imperial Officer",
+      "is_unique": false,
+      "faction": "imperials",
+      "type": "trooper",
+      "points": 50,
+      "rank": "commander",
+      "miniatures": 1,
+      "wounds": 4,
+      "defense": "white",
+      "has_defense_surge": true,
+      "speed": 2,
+      "upgrades": {
+        "command": 1,
+        "gear": 1
+      },
+      "weapons": [
+        {
+          "name": "Unarmed",
+          "dice": {
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "Officer's RK-3 Blaster Pistol",
+          "dice": {
+            "black": 1,
+            "white": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 2
+        }
+      ],
+      "keywords": {
+        "spotter": 1,
+        "inspire": 1,
+        "sharpshooter": 1
+      },
+      "waves": [
+        "SWL27"
+      ],
+      "sub_title": "Ruthless Commander",
+      "courage": 2,
+      "attack_surge": "hit"
+    },
+    {
+      "id": "imperial-royal-guards",
+      "name": "Imperial Royal Guards",
+      "is_unique": false,
+      "faction": "imperials",
+      "type": "trooper",
+      "points": 75,
+      "rank": "special-forces",
+      "miniatures": 3,
+      "wounds": 2,
+      "defense": "red",
+      "has_defense_surge": false,
+      "speed": 2,
+      "upgrades": {
+        "training": 2,
+        "gear": 1,
+        "grenades": 1,
+        "heavy-weapon": 1
+      },
+      "weapons": [
+        {
+          "name": "Force Pike",
+          "dice": {
+            "red": 1,
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "EC-17 Hold-Out Blaster",
+          "dice": {
+            "black": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 2
+        }
+      ],
+      "keywords": {
+        "charge": "",
+        "discplined": 2,
+        "guardian": 2
+      },
+      "waves": [
+        "SWL23"
+      ],
+      "courage": 2
+    },
+    {
+      "id": "scout-troopers",
+      "name": "Scout Troopers",
+      "is_unique": false,
+      "faction": "imperials",
+      "type": "trooper",
+      "points": 60,
+      "rank": "special-forces",
+      "miniatures": 4,
+      "wounds": 1,
+      "defense": "white",
+      "has_defense_surge": true,
+      "speed": 2,
+      "upgrades": {
+        "comms": 1,
+        "training": 1,
+        "gear": 1,
+        "grenades": 1,
+        "heavy-weapon": 1
+      },
+      "weapons": [
+        {
+          "name": "Unarmed",
+          "dice": {
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "EC-17 Hold-Out Blaster",
+          "dice": {
+            "black": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 2
+        }
+      ],
+      "keywords": {
+        "low-profile": "",
+        "scout": 1,
+        "sharpshooter": 1
+      },
+      "waves": [
+        "SWL19"
+      ],
+      "courage": 2
+    },
+    {
+      "id": "scout-troopers-strike-team",
+      "name": "Scout Troopers",
+      "is_unique": false,
+      "faction": "imperials",
+      "type": "trooper",
+      "points": 16,
+      "rank": "special-forces",
+      "miniatures": 1,
+      "wounds": 1,
+      "defense": "white",
+      "has_defense_surge": true,
+      "speed": 2,
+      "upgrades": {
+        "comms": 1,
+        "training": 1,
+        "gear": 1,
+        "grenades": 1,
+        "heavy-weapon": 1
+      },
+      "weapons": [
+        {
+          "name": "Unarmed",
+          "dice": {
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "EC-17 Hold-Out Blaster",
+          "dice": {
+            "black": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 2
+        }
+      ],
+      "keywords": {
+        "heavy-weapon-team": "",
+        "low-profile": "",
+        "scout": 1,
+        "sharpshooter": 1
+      },
+      "waves": [
+        "SWL19"
+      ],
+      "sub_title": "Strike Team",
+      "courage": 2
+    },
+    {
+      "id": "snowtroopers",
+      "name": "Snowtroopers",
+      "is_unique": false,
+      "faction": "imperials",
+      "type": "trooper",
+      "points": 48,
+      "rank": "corps",
+      "miniatures": 4,
+      "wounds": 1,
+      "defense": "red",
+      "has_defense_surge": false,
+      "speed": 1,
+      "upgrades": {
+        "personnel": 1,
+        "heavy-weapon": 1,
+        "gear": 1,
+        "grenades": 1
+      },
+      "weapons": [
+        {
+          "name": "Unarmed",
+          "dice": {
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "E-11 Blaster Rifle",
+          "dice": {
+            "white": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 3
+        }
+      ],
+      "keywords": {
+        "steady": ""
+      },
+      "waves": [
+        "SWL11"
+      ],
+      "courage": 1,
+      "attack_surge": "hit"
+    },
+    {
+      "id": "stormtroopers",
+      "name": "Stormtroopers",
+      "is_unique": false,
+      "faction": "imperials",
+      "type": "trooper",
+      "points": 44,
+      "rank": "corps",
+      "miniatures": 4,
+      "wounds": 1,
+      "defense": "red",
+      "has_defense_surge": false,
+      "speed": 2,
+      "upgrades": {
+        "personnel": 1,
+        "heavy-weapon": 1,
+        "gear": 1,
+        "grenades": 1
+      },
+      "weapons": [
+        {
+          "name": "Unarmed",
+          "dice": {
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "E-11 Blaster Rifle",
+          "dice": {
+            "white": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 3
+        }
+      ],
+      "keywords": {
+        "precise": 1
+      },
+      "waves": [
+        "SWL01",
+        "SWL07"
+      ],
+      "courage": 1,
+      "attack_surge": "hit"
+    },
+    {
+      "id": "tx-225-gav-w-occupier-combat-assault-tank",
+      "name": "TX-225 GAVw Occupier Combat Assault Tank",
+      "is_unique": false,
+      "faction": "imperials",
+      "type": "ground-vehicle",
+      "points": 155,
+      "rank": "heavy",
+      "miniatures": 1,
+      "wounds": 8,
+      "defense": "red",
+      "has_defense_surge": false,
+      "speed": 1,
+      "upgrades": {
+        "comms": 1,
+        "hard-point": 3,
+        "pilot": 1
+      },
+      "weapons": [
+        {
+          "name": "Forward Twin MK 2E/W Cannons",
+          "dice": {
+            "red": 1,
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {
+            "fixed": "",
+            "suppressive": ""
+          },
+          "max_range": 2
+        },
+        {
+          "name": "Lateral Quad MK 2E/W Cannons",
+          "dice": {
+            "red": 2,
+            "black": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {
+            "fixed": "",
+            "impact": 2
+          },
+          "max_range": 4
+        }
+      ],
+      "keywords": {
+        "armor": "",
+        "arsenal": 2,
+        "reposition": "",
+        "transport-open": 1,
+        "weak-point-sides": 1
+      },
+      "waves": [
+        "SWL08"
+      ],
+      "resilience": 6
+    },
+    {
+      "id": "1-4-fd-laser-cannon-team",
+      "name": "1.4 FD Laser Cannon Team",
+      "is_unique": false,
+      "faction": "rebels",
+      "type": "emplacement-trooper",
+      "points": 70,
+      "rank": "support",
+      "miniatures": 1,
+      "wounds": 6,
+      "defense": "white",
+      "has_defense_surge": true,
+      "speed": 0,
+      "upgrades": {
+        "comms": 1,
+        "generator": 1
+      },
+      "weapons": [
+        {
+          "name": "Unarmed",
+          "dice": {
+            "black": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "DH-17 Blaster Pistol",
+          "dice": {
+            "white": 4
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 2
+        },
+        {
+          "name": "1.4 FD Laser Canon",
+          "dice": {
+            "black": 5
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {
+            "fixed": "",
+            "impact": 2
+          },
+          "max_range": 4
+        }
+      ],
+      "keywords": {
+        "full-pivot": "",
+        "sentinel": "",
+        "stationary": ""
+      },
+      "waves": [
+        "SWL14"
+      ],
+      "courage": 2,
+      "attack_surge": "hit"
+    },
+    {
+      "id": "at-rt",
+      "name": "AT-RT",
+      "is_unique": false,
+      "faction": "rebels",
+      "type": "ground-vehicle",
+      "points": 55,
+      "rank": "support",
+      "miniatures": 1,
+      "wounds": 6,
+      "defense": "white",
+      "has_defense_surge": false,
+      "speed": 2,
+      "upgrades": {
+        "comms": 1,
+        "hard-point": 1
+      },
+      "weapons": [
+        {
+          "name": "Grapping Claws",
+          "dice": {
+            "red": 3
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {
+            "impact": 1
+          },
+          "max_range": 0
+        },
+        {
+          "name": "A-300 Blaster Rifle",
+          "dice": {
+            "white": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 3
+        }
+      ],
+      "keywords": {
+        "cover": 1,
+        "speeder": 1
+      },
+      "waves": [
+        "SWL01",
+        "SWL04"
+      ],
+      "resilience": 4,
+      "attack_surge": "critical"
+    },
+    {
+      "id": "chewbacca",
+      "name": "Chewbacca",
+      "is_unique": true,
+      "faction": "rebels",
+      "type": "trooper",
+      "points": 110,
+      "rank": "operative",
+      "miniatures": 1,
+      "wounds": 9,
+      "defense": "white",
+      "has_defense_surge": false,
+      "speed": 2,
+      "upgrades": {
+        "training": 2,
+        "gear": 1
+      },
+      "weapons": [
+        {
+          "name": "Overpower",
+          "dice": {
+            "red": 4
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "Chewbacca's Bowcaster",
+          "dice": {
+            "white": 2,
+            "red": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {
+            "impact": 1,
+            "pierce": 1
+          },
+          "max_range": 3
+        }
+      ],
+      "keywords": {
+        "enrange": 4,
+        "expert-climber": "",
+        "guardian": 3,
+        "teamwork": "han-solo"
+      },
+      "waves": [
+        "SWL24"
+      ],
+      "sub_title": "Walking Carpet",
+      "courage": 2,
+      "attack_surge": "critical"
+    },
+    {
+      "id": "fleet-troopers",
+      "name": "Fleet Troopers",
+      "is_unique": false,
+      "faction": "rebels",
+      "type": "trooper",
+      "points": 44,
+      "rank": "corps",
+      "miniatures": 4,
+      "wounds": 1,
+      "defense": "white",
+      "has_defense_surge": true,
+      "speed": 2,
+      "upgrades": {
+        "personnel": 1,
+        "heavy-weapon": 1,
+        "gear": 1,
+        "grenades": 1
+      },
+      "weapons": [
+        {
+          "name": "Unarmed",
+          "dice": {
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "DH-17 Blaster Pistol",
+          "dice": {
+            "white": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 2
+        }
+      ],
+      "keywords": {
+        "ready": 1
+      },
+      "waves": [
+        "SWL13"
+      ],
+      "courage": 1,
+      "attack_surge": "hit"
+    },
+    {
+      "id": "han-solo",
+      "name": "Han Solo",
+      "is_unique": true,
+      "faction": "rebels",
+      "type": "trooper",
+      "points": 120,
+      "rank": "commander",
+      "miniatures": 1,
+      "wounds": 6,
+      "defense": "white",
+      "has_defense_surge": true,
+      "speed": 2,
+      "upgrades": {
+        "command": 1,
+        "training": 1,
+        "gear": 1
+      },
+      "weapons": [
+        {
+          "name": "Brawl",
+          "dice": {
+            "white": 3
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "Han's DL-44 Blaster Pistol",
+          "dice": {
+            "red": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 2
+        }
+      ],
+      "keywords": {
+        "low-profile": "",
+        "gunslinger": "",
+        "sharpshooter": 1,
+        "uncanny-luck": 3
+      },
+      "waves": [
+        "SWL20"
+      ],
+      "sub_title": "Unorthodox General",
+      "courage": 2,
+      "attack_surge": "critical"
+    },
+    {
+      "id": "jyn-erso",
+      "name": "Jyn Erso",
+      "is_unique": true,
+      "faction": "rebels",
+      "type": "trooper",
+      "points": 130,
+      "rank": "commander",
+      "miniatures": 1,
+      "wounds": 6,
+      "defense": "white",
+      "has_defense_surge": true,
+      "speed": 2,
+      "upgrades": {
+        "command": 1,
+        "gear": 1,
+        "training": 1,
+        "armament": 1
+      },
+      "weapons": [
+        {
+          "name": "Collapsible Tonfa",
+          "dice": {
+            "black": 4
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {
+            "suppressive": ""
+          },
+          "max_range": 0
+        }
+      ],
+      "keywords": {
+        "quick-thinking": "",
+        "danger-sense": 4,
+        "infiltrate": "",
+        "nimble": "",
+        "sharpshooter": 1
+      },
+      "waves": [
+        "SWL31"
+      ],
+      "sub_title": "Stardust",
+      "courage": 3,
+      "attack_surge": "critical"
+    },
+    {
+      "id": "leia-organa",
+      "name": "Leia Organa",
+      "is_unique": true,
+      "faction": "rebels",
+      "type": "trooper",
+      "points": 90,
+      "rank": "commander",
+      "miniatures": 1,
+      "wounds": 6,
+      "defense": "white",
+      "has_defense_surge": true,
+      "speed": 2,
+      "upgrades": {
+        "command": 2,
+        "gear": 1
+      },
+      "weapons": [
+        {
+          "name": "Martial Arts",
+          "dice": {
+            "black": 3
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "Leia's Defender Sporting Blaster",
+          "dice": {
+            "black": 3
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {
+            "pierce": 1
+          },
+          "max_range": 2
+        }
+      ],
+      "keywords": {
+        "take-cover": 2,
+        "inspire": 2,
+        "nimble": "",
+        "sharpshooter": 2
+      },
+      "waves": [
+        "SWL12"
+      ],
+      "sub_title": "Fearless and Inventive",
+      "courage": 2,
+      "attack_surge": "critical"
+    },
+    {
+      "id": "luke-skywalker",
+      "name": "Luke Skywalker",
+      "is_unique": true,
+      "faction": "rebels",
+      "type": "trooper",
+      "points": 160,
+      "rank": "commander",
+      "miniatures": 1,
+      "wounds": 6,
+      "defense": "red",
+      "has_defense_surge": false,
+      "speed": 2,
+      "upgrades": {
+        "force": 2,
+        "gear": 1
+      },
+      "weapons": [
+        {
+          "name": "Anakin's Lightsaber",
+          "dice": {
+            "black": 6
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {
+            "impact": 2,
+            "pierce": 2
+          },
+          "max_range": 0
+        }
+      ],
+      "keywords": {
+        "jump": 1,
+        "charge": "",
+        "deflect": "",
+        "immune-pierce": ""
+      },
+      "waves": [
+        "SWL01"
+      ],
+      "sub_title": "Hero of the Rebellion",
+      "force_alignment": "light",
+      "courage": 3,
+      "attack_surge": "critical"
+    },
+    {
+      "id": "rebel-commandos",
+      "name": "Rebel Commandos",
+      "is_unique": false,
+      "faction": "rebels",
+      "type": "trooper",
+      "points": 60,
+      "rank": "special-forces",
+      "miniatures": 4,
+      "wounds": 1,
+      "defense": "white",
+      "has_defense_surge": true,
+      "speed": 2,
+      "upgrades": {
+        "comms": 1,
+        "training": 1,
+        "gear": 1,
+        "grenades": 1,
+        "heavy-weapon": 1
+      },
+      "weapons": [
+        {
+          "name": "Unarmed",
+          "dice": {
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "A-280 Blaster Rifle",
+          "dice": {
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 3
+        }
+      ],
+      "keywords": {
+        "low-profile": "",
+        "scout": 2,
+        "sharpshooter": 1
+      },
+      "waves": [
+        "SWL21"
+      ],
+      "courage": 2,
+      "attack_surge": "hit"
+    },
+    {
+      "id": "rebel-commandos-strike-team",
+      "name": "Rebel Commandos",
+      "is_unique": false,
+      "faction": "rebels",
+      "type": "trooper",
+      "points": 16,
+      "rank": "special-forces",
+      "miniatures": 1,
+      "wounds": 1,
+      "defense": "white",
+      "has_defense_surge": true,
+      "speed": 2,
+      "upgrades": {
+        "comms": 1,
+        "training": 1,
+        "gear": 1,
+        "grenades": 1,
+        "heavy-weapon": 1
+      },
+      "weapons": [
+        {
+          "name": "Unarmed",
+          "dice": {
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "A-280 Blaster Rifle",
+          "dice": {
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 3
+        }
+      ],
+      "keywords": {
+        "heavy-weapon-team": "",
+        "low-profile": "",
+        "scout": 2,
+        "sharpshooter": 1
+      },
+      "waves": [
+        "SWL21"
+      ],
+      "sub_title": "Strike Team",
+      "courage": 2,
+      "attack_surge": "hit"
+    },
+    {
+      "id": "rebel-officer",
+      "name": "Rebel Officer",
+      "is_unique": false,
+      "faction": "rebels",
+      "type": "trooper",
+      "points": 50,
+      "rank": "commander",
+      "miniatures": 1,
+      "wounds": 4,
+      "defense": "white",
+      "has_defense_surge": true,
+      "speed": 2,
+      "upgrades": {
+        "command": 1,
+        "gear": 1
+      },
+      "weapons": [
+        {
+          "name": "Unarmed",
+          "dice": {
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "Officer's A-180 Blaster Pistol",
+          "dice": {
+            "black": 1,
+            "white": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 2
+        }
+      ],
+      "keywords": {
+        "take-cover": 1,
+        "inspire": 1,
+        "sharpshooter": 1
+      },
+      "waves": [
+        "SWL26"
+      ],
+      "sub_title": "Resolute Commander",
+      "courage": 2,
+      "attack_surge": "hit"
+    },
+    {
+      "id": "rebel-pathfinders",
+      "name": "Rebel Pathfinders",
+      "is_unique": false,
+      "faction": "rebels",
+      "type": "trooper",
+      "points": 60,
+      "rank": "special-forces",
+      "miniatures": 4,
+      "wounds": 1,
+      "defense": "white",
+      "has_defense_surge": true,
+      "speed": 2,
+      "upgrades": {
+        "personnel": 1,
+        "training": 1,
+        "comms": 1,
+        "gear": 1,
+        "armament": 1,
+        "grenades": 1
+      },
+      "weapons": [
+        {
+          "name": "Unarmed",
+          "dice": {
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "A-300 Blaster Rifle",
+          "dice": {
+            "white": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 3
+        }
+      ],
+      "keywords": {
+        "danger-sense": 3,
+        "dauntless": "",
+        "infiltrate": ""
+      },
+      "waves": [
+        "SWL32"
+      ],
+      "courage": 2,
+      "attack_surge": "hit"
+    },
+    {
+      "id": "rebel-troopers",
+      "name": "Rebel Troopers",
+      "is_unique": false,
+      "faction": "rebels",
+      "type": "trooper",
+      "points": 40,
+      "rank": "corps",
+      "miniatures": 4,
+      "wounds": 1,
+      "defense": "white",
+      "has_defense_surge": true,
+      "speed": 2,
+      "upgrades": {
+        "personnel": 1,
+        "heavy-weapon": 1,
+        "gear": 1,
+        "grenades": 1
+      },
+      "weapons": [
+        {
+          "name": "Unarmed",
+          "dice": {
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "A-280 Blaster Rifle",
+          "dice": {
+            "black": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 3
+        }
+      ],
+      "keywords": {
+        "nimble": ""
+      },
+      "waves": [
+        "SWL01",
+        "SWL05"
+      ],
+      "courage": 1
+    },
+    {
+      "id": "sabine-wren",
+      "name": "Sabine Wren",
+      "is_unique": true,
+      "faction": "rebels",
+      "type": "trooper",
+      "points": 125,
+      "rank": "operative",
+      "miniatures": 1,
+      "wounds": 5,
+      "defense": "red",
+      "has_defense_surge": true,
+      "speed": 3,
+      "upgrades": {
+        "training": 1,
+        "gear": 2,
+        "armament": 1
+      },
+      "weapons": [
+        {
+          "name": "Combat Expertise",
+          "dice": {
+            "black": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "Dual Westar-35 Blaster Pistols",
+          "dice": {
+            "red": 1,
+            "black": 1,
+            "white": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {
+            "pierce": 1
+          },
+          "max_range": 2
+        }
+      ],
+      "keywords": {
+        "jump": 2,
+        "gunslinger": "",
+        "impervious": "",
+        "nimble": ""
+      },
+      "waves": [
+        "SWL18"
+      ],
+      "sub_title": "Explosive Artist",
+      "courage": 3,
+      "attack_surge": "critical"
+    },
+    {
+      "id": "t-47-airspeeder",
+      "name": "T-47 Airspeeder",
+      "is_unique": false,
+      "faction": "rebels",
+      "type": "repulsor-vehicle",
+      "points": 175,
+      "rank": "heavy",
+      "miniatures": 1,
+      "wounds": 7,
+      "defense": "white",
+      "has_defense_surge": true,
+      "speed": 3,
+      "upgrades": {
+        "comms": 1,
+        "hard-point": 1,
+        "pilot": 1
+      },
+      "weapons": [
+        {
+          "name": "AP/11 Double Laster Cannon",
+          "dice": {
+            "red": 3,
+            "black": 3
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {
+            "fixed": "",
+            "impact": 3
+          },
+          "max_range": 3
+        }
+      ],
+      "keywords": {
+        "armor": "",
+        "arsenal": 2,
+        "cover": 1,
+        "immune-blast": "",
+        "immune-melee": "",
+        "speeder": 2
+      },
+      "waves": [
+        "SWL09"
+      ],
+      "resilience": 5
+    },
+    {
+      "id": "wookiee-warriors",
+      "name": "Wookiee Warriors",
+      "is_unique": false,
+      "faction": "rebels",
+      "type": "trooper",
+      "points": 75,
+      "rank": "special-forces",
+      "miniatures": 3,
+      "wounds": 3,
+      "defense": "white",
+      "has_defense_surge": false,
+      "speed": 2,
+      "upgrades": {
+        "training": 2,
+        "gear": 1,
+        "grenades": 1,
+        "heavy-weapon": 1
+      },
+      "weapons": [
+        {
+          "name": "Ryyk Blade",
+          "dice": {
+            "black": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 0,
+          "keywords": {},
+          "max_range": 0
+        },
+        {
+          "name": "Kashyyyk Pistol",
+          "dice": {
+            "black": 1,
+            "white": 1
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 2
+        }
+      ],
+      "keywords": {
+        "charge": "",
+        "expert-climber": "",
+        "indomitable": "",
+        "unhindered": ""
+      },
+      "waves": [
+        "SWL25"
+      ],
+      "courage": 2,
+      "attack_surge": "hit"
+    },
+    {
+      "id": "x-34-landspeeder",
+      "name": "X-34 Landspeeder",
+      "is_unique": false,
+      "faction": "rebels",
+      "type": "repulsor-vehicle",
+      "points": 75,
+      "rank": "heavy",
+      "miniatures": 1,
+      "wounds": 6,
+      "defense": "white",
+      "has_defense_surge": true,
+      "speed": 3,
+      "upgrades": {
+        "comms": 1,
+        "crew": 2,
+        "hard-point": 1,
+        "pilot": 1
+      },
+      "weapons": [
+        {
+          "name": "DH-17 Blaster Pistol",
+          "dice": {
+            "white": 2
+          },
+          "area_of_effect": 0,
+          "min_range": 1,
+          "keywords": {},
+          "max_range": 2
+        }
+      ],
+      "keywords": {
+        "armor": 2,
+        "arsenal": 3,
+        "cover": 1,
+        "light-transport-1-open": "",
+        "speeder": 1
+      },
+      "waves": [
+        "SWL36"
+      ],
+      "resilience": 4
+    }
+  ],
+  "upgrades": [
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 0,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "jyn-erso"
+        }
+      ],
+      "id": "a-180-pistol-config",
+      "is_unique": false,
+      "name": "A-180 Pistol Config",
+      "text": "",
+      "type": "armament",
+      "waves": [
+        "SWL31"
+      ],
+      "weapon": {
+        "name": "A-180 Blaster Pistol",
+        "dice": {
+          "red": 2,
+          "white": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "pierce": 1
+        },
+        "max_range": 2
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 0,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "jyn-erso"
+        }
+      ],
+      "id": "a-180-rifle-config",
+      "is_unique": false,
+      "name": "A-180 Rifle Config",
+      "text": "",
+      "type": "armament",
+      "waves": [
+        "SWL31"
+      ],
+      "weapon": {
+        "name": "A-180 Blaster Rifle",
+        "dice": {
+          "black": 2,
+          "white": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "pierce": 1
+        },
+        "max_range": 3
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 6,
+      "keywords": {
+        "reconfigure": ""
+      },
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "rebel-pathfinders"
+        }
+      ],
+      "id": "a-300-long-range-config",
+      "is_unique": false,
+      "name": "A-300 long Range Config",
+      "text": "",
+      "type": "armament",
+      "waves": [
+        "SWL32"
+      ],
+      "weapon": {
+        "name": "A-300 Long-Range Blaster Rifle",
+        "dice": {
+          "white": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {},
+        "max_range": 4
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 6,
+      "keywords": {
+        "reconfigure": ""
+      },
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "rebel-pathfinders"
+        }
+      ],
+      "id": "a-300-short-range-config",
+      "is_unique": false,
+      "name": "A-300 Short Range Config",
+      "text": "",
+      "type": "armament",
+      "waves": [
+        "SWL32"
+      ],
+      "weapon": {
+        "name": "A-300 Short-Range Blaster Rifle",
+        "dice": {
+          "red": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {},
+        "max_range": 2
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 8,
+      "keywords": {
+        "reconfigure": ""
+      },
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "imperial-death-troopers"
+        }
+      ],
+      "id": "e-11-d-focused-fire-config",
+      "is_unique": false,
+      "name": "E-11D Focused Fire Config",
+      "text": "",
+      "type": "armament",
+      "waves": [
+        "SWL34"
+      ],
+      "weapon": {
+        "name": "E-11D Focused Fire",
+        "dice": {
+          "black": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "suppressive": ""
+        },
+        "max_range": 4
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 8,
+      "keywords": {
+        "reconfigure": ""
+      },
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "imperial-death-troopers"
+        }
+      ],
+      "id": "e-11-d-grenade-launcher-config",
+      "is_unique": false,
+      "name": "E-11D Grenade Launcher Config",
+      "text": "",
+      "type": "armament",
+      "waves": [
+        "SWL34"
+      ],
+      "weapon": {
+        "name": "E-11D Grenade Launcher",
+        "dice": {
+          "red": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "blast": ""
+        },
+        "max_range": 2
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 25,
+      "keywords": {},
+      "keywords_for_unit": {
+        "dauntless": "",
+        "immune-pierce": "Melee"
+      },
+      "restricted_to_unit": [
+        {
+          "id": "sabine-wren"
+        }
+      ],
+      "id": "the-darksaber",
+      "is_unique": true,
+      "name": "The Darksaber",
+      "text": "",
+      "type": "armament",
+      "waves": [
+        "SWL37"
+      ],
+      "weapon": {
+        "name": "The Darksaber",
+        "dice": {
+          "black": 5
+        },
+        "area_of_effect": 0,
+        "min_range": 0,
+        "keywords": {
+          "impact": 1,
+          "pierce": 1
+        },
+        "max_range": 0
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 10,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "commanding-presence",
+      "is_unique": false,
+      "name": "Commanding Presence",
+      "text": "When issuing orders, you can issue orders at range 4.",
+      "type": "command",
+      "waves": [
+        "SWL10",
+        "SWL27",
+        "SWL12",
+        "SWL26"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 5,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "esteemed-leader",
+      "is_unique": false,
+      "name": "Esteemed Leader",
+      "text": "While you are defending, each friendly corps trooper unit at range 1 gains Guardian 1.",
+      "type": "command",
+      "waves": [
+        "SWL10",
+        "SWL12",
+        "SWL33"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 10,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "improvised-orders",
+      "is_unique": false,
+      "name": "Improvised Orders",
+      "text": "After an order token is drawn from a friendly order pool, draw a second order token from that pool.\n    Choose 1 to use and shuffle the other back into the order pool. If you do, during the End Phase, ready this card.",
+      "type": "command",
+      "waves": [
+        "SWL22",
+        "SWL20"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 15,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "comms-jammer",
+      "is_unique": false,
+      "name": "Comms Jammer",
+      "text": "Enemy units at range 1 cannot be issued orders, unless they are issuing an order to themselves.",
+      "type": "comms",
+      "waves": [
+        "SWL06",
+        "SWL04",
+        "SWL08",
+        "SWL09"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 5,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "comms-relay",
+      "is_unique": false,
+      "name": "Comms Relay",
+      "text": "When you would be issued an order, you may choose a friendly unit at range 1-2.\n    Issue an order to the chosen unit instead.",
+      "type": "comms",
+      "waves": [
+        "SWL26",
+        "SWL27"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 10,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "hq-uplink",
+      "is_unique": false,
+      "name": "HQ Uplink",
+      "text": "During the Issue Orders step of the Command Phase, issue an order to yourself.",
+      "type": "comms",
+      "waves": [
+        "SWL19",
+        "SWL15",
+        "SWL21",
+        "SWL14"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 10,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "long-range-comlink",
+      "is_unique": false,
+      "name": "Long-Range Comlink",
+      "text": "During the command phase, you may be issued orders as though you are in range of the nominated commander.",
+      "type": "comms",
+      "waves": [
+        "SWL01",
+        "SWL06",
+        "SWL04",
+        "SWL08",
+        "SWL09"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 9,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "x-34-landspeeder"
+        }
+      ],
+      "id": "a-300-rifle-gunner",
+      "is_unique": false,
+      "name": "A-300 Rifle Gunner",
+      "text": "",
+      "type": "crew",
+      "waves": [
+        "SWL36"
+      ],
+      "weapon": {
+        "name": "A-300 Blaster Rifle",
+        "dice": {
+          "white": 2
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {},
+        "max_range": 3
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 36,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "x-34-landspeeder"
+        }
+      ],
+      "id": "rps-6-rocket-gunner",
+      "is_unique": false,
+      "name": "RPS-6 Rocket Gunner",
+      "text": "",
+      "type": "crew",
+      "waves": [
+        "SWL36"
+      ],
+      "weapon": {
+        "name": "RPS-6 Rocket Gunner",
+        "dice": {
+          "red": 1,
+          "black": 1,
+          "white": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 2,
+        "keywords": {
+          "impact": 2
+        },
+        "max_range": 4
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 5,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "anger",
+      "is_unique": false,
+      "name": "Anger",
+      "text": "After you suffer 1 or more wounds, gain 1 aim token.",
+      "type": "force",
+      "waves": [
+        "SWL22"
+      ],
+      "restricted_to_force_alignment": "dark"
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 10,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "battle-meditation",
+      "is_unique": false,
+      "name": "Battle Meditation",
+      "text": "When you issue orders, one of those orders can be issued to any friendly unit on the battlefield.",
+      "type": "force",
+      "waves": [
+        "SWL01"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 5,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "force-choke",
+      "is_unique": false,
+      "name": "Force Choke",
+      "text": "Choose an enemy trooper mini at range 1 that is not a commander.\n    It suffers 1 wound.",
+      "type": "force",
+      "waves": [
+        "SWL01",
+        "SWL22"
+      ],
+      "restricted_to_force_alignment": "dark"
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 10,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "force-push",
+      "is_unique": false,
+      "name": "Force Push",
+      "text": "Action: Choose an enemy trooper unit at range 1.\n    Perform a speed-1 move with that unit, even if it is engaged.",
+      "type": "force",
+      "waves": [
+        "SWL01"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 15,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "force-reflexes",
+      "is_unique": false,
+      "name": "Force Reflexes",
+      "text": "Action: Gain 1 dodge token.",
+      "type": "force",
+      "waves": [
+        "SWL01"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 5,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "jedi-mind-trick",
+      "is_unique": false,
+      "name": "Jedi Mind Trick",
+      "text": "Action: Choose an enemy trooper at range 1-2.\n    It gains 2 suppression tokens.",
+      "type": "force",
+      "waves": [
+        "SWL01"
+      ],
+      "restricted_to_force_alignment": "light"
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 10,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "saber-throw",
+      "is_unique": false,
+      "name": "Saber Throw",
+      "text": "Action: Choose 1 of your melee weapons.\n    Perform a ranged attack with that weapon against an enemy at range 1-2, using half of that weapon's dice, rounded up.\n    This is treated as an attack action.",
+      "type": "force",
+      "waves": [
+        "SWL01"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 8,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "emergency-stims",
+      "is_unique": false,
+      "name": "Emergency Stims",
+      "text": "During an attack, when you would suffer wounds, prevent up to 2 wounds and place an equal number of wound tokens on this card instead.\n    If you do, at the end of your next activation, discard each token on this card and suffer wounds equal to the number of tokens discarded.",
+      "type": "gear",
+      "waves": [
+        "SWL18",
+        "SWL19",
+        "SWL20",
+        "SWL24",
+        "SWL26",
+        "SWL21"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 3,
+      "keywords": {},
+      "keywords_for_unit": {
+        "unhindered": ""
+      },
+      "restricted_to_unit": [],
+      "id": "environmental-gear",
+      "is_unique": false,
+      "name": "Environmental Gear",
+      "text": "You gain Unhindered.",
+      "type": "gear",
+      "waves": [
+        "SWL10",
+        "SWL12"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 3,
+      "keywords": {},
+      "keywords_for_unit": {
+        "expert-climber": ""
+      },
+      "restricted_to_unit": [],
+      "id": "grappling-hooks",
+      "is_unique": false,
+      "name": "Grappling Hooks",
+      "text": "You gain Expert Climber.",
+      "type": "gear",
+      "waves": [
+        "SWL13",
+        "SWL05",
+        "SWL07",
+        "SWL11"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 10,
+      "keywords": {},
+      "keywords_for_unit": {
+        "shielded": 1,
+        "recharge": 1
+      },
+      "restricted_to_unit": [],
+      "id": "personal-combat-shield",
+      "is_unique": false,
+      "name": "Personal Combat Shield",
+      "text": "You gain SHIELDED 1 (You have 1 shield token) and RECHARGE 1 (When you\n    recover, flip 1 inactive shield token).",
+      "type": "gear",
+      "waves": [
+        "SWL37"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 2,
+      "keywords": {},
+      "keywords_for_unit": {
+        "scout": 1
+      },
+      "restricted_to_unit": [],
+      "id": "recon-intel",
+      "is_unique": false,
+      "name": "Recon Intel",
+      "text": "You gain Scout 1.",
+      "type": "gear",
+      "waves": [
+        "SWL27",
+        "SWL26",
+        "SWL23",
+        "SWL25"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 6,
+      "keywords": {},
+      "keywords_for_unit": {
+        "precise": 1
+      },
+      "restricted_to_unit": [],
+      "id": "targeting-scopes",
+      "is_unique": false,
+      "name": "Targeting Scopes",
+      "text": "You gain Precise 1.",
+      "type": "gear",
+      "waves": [
+        "SWL01"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 10,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "barrage-generator",
+      "is_unique": false,
+      "name": "Barrage Generator",
+      "text": "While performing a ranged attack with a weapon that has FIXED, add 2 white attack dice and apply SUPPRESSIVE to your attack pool.",
+      "type": "generator",
+      "waves": [
+        "SWL15",
+        "SWL14"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 10,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "overcharged-generator",
+      "is_unique": false,
+      "name": "Overcharged Generator",
+      "text": "While performing a ranged attack with a weapon that has FIXED, add 1 black attack dice and apply IMPACT 1 to your attack pool.",
+      "type": "generator",
+      "waves": [
+        "SWL15",
+        "SWL14"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 5,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "concussion-grenades",
+      "is_unique": false,
+      "name": "Concussion Grenades",
+      "text": "",
+      "type": "grenades",
+      "waves": [
+        "SWL01"
+      ],
+      "weapon": {
+        "name": "Concussion Grenades",
+        "dice": {
+          "black": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "blast": ""
+        },
+        "max_range": 1
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 5,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "fragmentation-grenades",
+      "is_unique": false,
+      "name": "Fragmentation Grenades",
+      "text": "",
+      "type": "grenades",
+      "waves": [
+        "SWL34",
+        "SWL23",
+        "SWL25",
+        "SWL32"
+      ],
+      "weapon": {
+        "name": "Fragmentation Grenades",
+        "dice": {
+          "red": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {},
+        "max_range": 1
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 5,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "impact-grenades",
+      "is_unique": false,
+      "name": "Impact Grenades",
+      "text": "",
+      "type": "grenades",
+      "waves": [
+        "SWL13",
+        "SWL05",
+        "SWL11",
+        "SWL07"
+      ],
+      "weapon": {
+        "name": "Impact Grenades",
+        "dice": {
+          "black": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "impact": 1
+        },
+        "max_range": 1
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 20,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "at-st"
+        }
+      ],
+      "id": "88-twin-light-blaster-cannon",
+      "is_unique": false,
+      "name": "88 Twin Light Blaster Cannon",
+      "text": "",
+      "type": "hard-point",
+      "waves": [
+        "SWL08"
+      ],
+      "weapon": {
+        "name": "88 Twin Light Blaster Cannon",
+        "dice": {
+          "red": 1,
+          "black": 1,
+          "white": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "fixed": "",
+          "impact": 1
+        },
+        "max_range": 3
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 25,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "at-rt"
+        }
+      ],
+      "id": "at-rt-flamethrower",
+      "is_unique": false,
+      "name": "AT-RT Flamethrower",
+      "text": "",
+      "type": "hard-point",
+      "waves": [
+        "SWL01",
+        "SWL04"
+      ],
+      "weapon": {
+        "name": "AT-RT Flamethrower",
+        "dice": {
+          "black": 2
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "blast": "",
+          "fixed": "",
+          "spray": ""
+        },
+        "max_range": 1
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 35,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "at-rt"
+        }
+      ],
+      "id": "at-rt-laser-cannon",
+      "is_unique": false,
+      "name": "AT-RT Laser Cannon",
+      "text": "",
+      "type": "hard-point",
+      "waves": [
+        "SWL01",
+        "SWL04"
+      ],
+      "weapon": {
+        "name": "AT-RT Laser Cannon",
+        "dice": {
+          "red": 1,
+          "black": 2
+        },
+        "area_of_effect": 0,
+        "min_range": 2,
+        "keywords": {
+          "impact": 3,
+          "fixed": ""
+        },
+        "max_range": 4
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 30,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "at-rt"
+        }
+      ],
+      "id": "at-rt-rotary-blaster",
+      "is_unique": false,
+      "name": "AT-RT Rotary Blaster",
+      "text": "",
+      "type": "hard-point",
+      "waves": [
+        "SWL01",
+        "SWL04"
+      ],
+      "weapon": {
+        "name": "AT-RT Rotary Blaster",
+        "dice": {
+          "black": 5
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "fixed": ""
+        },
+        "max_range": 3
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 10,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "at-st"
+        }
+      ],
+      "id": "at-st-mortar-launcher",
+      "is_unique": false,
+      "name": "AT-ST Mortar Launcher",
+      "text": "",
+      "type": "hard-point",
+      "waves": [
+        "SWL08"
+      ],
+      "weapon": {
+        "name": "AT-ST Mortar Launcher",
+        "dice": {
+          "white": 3
+        },
+        "area_of_effect": 0,
+        "min_range": 4,
+        "keywords": {
+          "fixed": "",
+          "suppressive": ""
+        }
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 20,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "t-47-airspeeder"
+        }
+      ],
+      "id": "ax-108-ground-buzzer",
+      "is_unique": false,
+      "name": "AX108 \"Ground Buzzer\"",
+      "text": "",
+      "type": "hard-point",
+      "waves": [
+        "SWL09"
+      ],
+      "weapon": {
+        "name": "AX-108 Ground Buzzer",
+        "dice": {
+          "black": 4
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "rear": ""
+        },
+        "max_range": 2
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 18,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "tx-225-gav-w-occupier-combat-assault-tank"
+        }
+      ],
+      "id": "dlt-19-rifle-pintle",
+      "is_unique": false,
+      "name": "DLT-19 Rifle Pintle",
+      "text": "",
+      "type": "hard-point",
+      "waves": [
+        "SWL35"
+      ],
+      "weapon": {
+        "name": "DLT-19 Heavy Blaster Rifle",
+        "dice": {
+          "red": 2
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "impact": 1
+        },
+        "max_range": 4
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 15,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "at-st"
+        }
+      ],
+      "id": "dw-3-concussion-grenade-launcher",
+      "is_unique": false,
+      "name": "DW-3 Concussion Grenade Launcher",
+      "text": "",
+      "type": "hard-point",
+      "waves": [
+        "SWL08"
+      ],
+      "weapon": {
+        "name": "DW3-Concussion Grenade Launcher",
+        "dice": {
+          "black": 2
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "blast": "",
+          "fixed": ""
+        },
+        "max_range": 2
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 38,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "x-34-landspeeder"
+        }
+      ],
+      "id": "m-45-ion-blaster",
+      "is_unique": false,
+      "name": "M-45 Ion Blaster",
+      "text": "",
+      "type": "hard-point",
+      "waves": [
+        "SWL36"
+      ],
+      "weapon": {
+        "name": "M-45 Ion Blaster",
+        "dice": {
+          "black": 1,
+          "white": 4
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "fixed": "",
+          "impact": 1,
+          "ion": 1
+        },
+        "max_range": 4
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 34,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "x-34-landspeeder"
+        }
+      ],
+      "id": "mark-ii-medium-blaster",
+      "is_unique": false,
+      "name": "Mark II Medium Blaster",
+      "text": "",
+      "type": "hard-point",
+      "waves": [
+        "SWL36"
+      ],
+      "weapon": {
+        "name": "Mark II Medium Blaster",
+        "dice": {
+          "black": 4
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "fixed": ""
+        },
+        "max_range": 3
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 8,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "t-47-airspeeder"
+        }
+      ],
+      "id": "mo-dk-power-harpoon",
+      "is_unique": false,
+      "name": "Mo/DK Power Harpoon",
+      "text": "",
+      "type": "hard-point",
+      "waves": [
+        "SWL09"
+      ],
+      "weapon": {
+        "name": "Mo/Dk Power Harpoon",
+        "dice": {
+          "red": 2
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "impact": 1,
+          "rear": "",
+          "tow-cable": ""
+        },
+        "max_range": 2
+      }
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 14,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "tx-225-gav-w-occupier-combat-assault-tank"
+        }
+      ],
+      "id": "rt-97-c-rifle-pintle",
+      "is_unique": false,
+      "name": "RT-97C Rifle Pintle",
+      "text": "",
+      "type": "hard-point",
+      "waves": [
+        "SWL35"
+      ],
+      "weapon": {
+        "name": "RT-97C Blaster Rifle",
+        "dice": {
+          "red": 1,
+          "white": 3
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {},
+        "max_range": 4
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 35,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "wookiee-warriors"
+        }
+      ],
+      "id": "bowcaster-wookiee",
+      "is_unique": false,
+      "name": "Bowcaster Wookiee",
+      "text": "",
+      "type": "heavy-weapon",
+      "waves": [
+        "SWL25"
+      ],
+      "weapon": {
+        "name": "Bowcaster",
+        "dice": {
+          "white": 1,
+          "red": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "impact": 1,
+          "pierce": 1
+        },
+        "max_range": 3
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 28,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "rebel-commandos"
+        },
+        {
+          "id": "rebel-commandos-strike-team"
+        }
+      ],
+      "id": "dh-447-sniper",
+      "is_unique": false,
+      "name": "DH-447 Sniper",
+      "text": "",
+      "type": "heavy-weapon",
+      "waves": [
+        "SWL21"
+      ],
+      "weapon": {
+        "name": "DH-447 Sniper Rifle",
+        "dice": {
+          "black": 1,
+          "white": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "high-velocity": "",
+          "pierce": 1
+        }
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 34,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "imperial-death-troopers"
+        }
+      ],
+      "id": "dlt-19-d-trooper",
+      "is_unique": false,
+      "name": "DLT-19D Trooper",
+      "text": "",
+      "type": "heavy-weapon",
+      "waves": [
+        "SWL34"
+      ],
+      "weapon": {
+        "name": "DLT-19 Heavy Blaster Rifle",
+        "dice": {
+          "red": 2,
+          "white": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "impact": 1
+        },
+        "max_range": 4
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 24,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "stormtroopers"
+        }
+      ],
+      "id": "dlt-19-stormtrooper",
+      "is_unique": false,
+      "name": "DLT-19 Stormtrooper",
+      "text": "",
+      "type": "heavy-weapon",
+      "waves": [
+        "SWL01",
+        "SWL07"
+      ],
+      "weapon": {
+        "name": "DLT-19 Heavy Blaster Rifle",
+        "dice": {
+          "red": 2
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "impact": 1
+        },
+        "max_range": 4
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 28,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "scout-troopers"
+        },
+        {
+          "id": "scout-troopers-strike-team"
+        }
+      ],
+      "id": "dlt-19-x-sniper",
+      "is_unique": false,
+      "name": "DLT-19x Sniper",
+      "text": "",
+      "type": "heavy-weapon",
+      "waves": [
+        "SWL19"
+      ],
+      "weapon": {
+        "name": "DLT-19x Sniper Rifle",
+        "dice": {
+          "black": 2
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "high-velocity": "",
+          "pierce": 1
+        }
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 22,
+      "keywords": {
+        "leader": ""
+      },
+      "keywords_for_unit": {
+        "compel": ""
+      },
+      "restricted_to_unit": [
+        {
+          "id": "imperial-death-troopers"
+        }
+      ],
+      "id": "dt-f-16",
+      "is_unique": true,
+      "name": "DT-F16",
+      "text": "",
+      "type": "heavy-weapon",
+      "waves": [
+        "SWL34"
+      ],
+      "weapon": {
+        "name": "DT-F16's Blaster Rifle",
+        "dice": {
+          "black": 1,
+          "white": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {},
+        "max_range": 3
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 25,
+      "keywords": {
+        "sidearm-melee": ""
+      },
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "imperial-royal-guards"
+        }
+      ],
+      "id": "electrostaff-guard",
+      "is_unique": false,
+      "name": "Electrostaff Guard",
+      "text": "",
+      "type": "heavy-weapon",
+      "waves": [
+        "SWL23"
+      ],
+      "weapon": {
+        "name": "Electrostaff",
+        "dice": {
+          "black": 2
+        },
+        "area_of_effect": 0,
+        "min_range": 0,
+        "keywords": {},
+        "max_range": 0
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 20,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "snowtroopers"
+        }
+      ],
+      "id": "flametrooper",
+      "is_unique": false,
+      "name": "Flametrooper",
+      "text": "",
+      "type": "heavy-weapon",
+      "waves": [
+        "SWL11"
+      ],
+      "weapon": {
+        "name": "Flamethrower",
+        "dice": {
+          "black": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "blast": "",
+          "spray": ""
+        },
+        "max_range": 1
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 34,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "stormtroopers"
+        }
+      ],
+      "id": "hh-12-stormtrooper",
+      "is_unique": false,
+      "name": "HH-12 Stormtrooper",
+      "text": "",
+      "type": "heavy-weapon",
+      "waves": [
+        "SWL01",
+        "SWL07"
+      ],
+      "weapon": {
+        "name": "HH-12 Rocket Launcher",
+        "dice": {
+          "black": 3
+        },
+        "area_of_effect": 0,
+        "min_range": 2,
+        "keywords": {
+          "cumbersome": "",
+          "impact": 3
+        },
+        "max_range": 4
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 33,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "fleet-troopers"
+        }
+      ],
+      "id": "mpl-57-barrage-trooper",
+      "is_unique": false,
+      "name": "MPL-57 Barrage Trooper",
+      "text": "",
+      "type": "heavy-weapon",
+      "waves": [
+        "SWL13"
+      ],
+      "weapon": {
+        "name": "MPL-57 Barrage Launcher",
+        "dice": {
+          "black": 1,
+          "white": 2
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "blast": "",
+          "impact": 2
+        },
+        "max_range": 3
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 32,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "rebel-troopers"
+        }
+      ],
+      "id": "mpl-57-ion-trooper",
+      "is_unique": false,
+      "name": "MPL-57 Ion Trooper",
+      "text": "",
+      "type": "heavy-weapon",
+      "waves": [
+        "SWL01",
+        "SWL05"
+      ],
+      "weapon": {
+        "name": "MPL-57 Icon Launcher",
+        "dice": {
+          "red": 2
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "ion": 1,
+          "impact": 1
+        },
+        "max_range": 3
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 26,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "rebel-commandos"
+        },
+        {
+          "id": "rebel-commandos-strike-team"
+        }
+      ],
+      "id": "proton-charge-saboteur",
+      "is_unique": false,
+      "name": "Proton Charge Saboteur",
+      "text": "",
+      "type": "heavy-weapon",
+      "waves": [
+        "SWL21"
+      ],
+      "weapon": {
+        "name": "Sonic Charge",
+        "dice": {
+          "red": 1,
+          "white": 2
+        },
+        "area_of_effect": 1,
+        "min_range": 1,
+        "keywords": {
+          "arm": 1,
+          "detonate": 1,
+          "blast": "",
+          "impact": 1
+        },
+        "max_range": 1,
+        "surge_override": "critical"
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 23,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "fleet-troopers"
+        }
+      ],
+      "id": "scatter-gun-trooper",
+      "is_unique": false,
+      "name": "Scatter Gun Trooper",
+      "text": "",
+      "type": "heavy-weapon",
+      "waves": [
+        "SWL13"
+      ],
+      "weapon": {
+        "name": "Scatter Gun",
+        "dice": {
+          "red": 2
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "pierce": 1
+        },
+        "max_range": 2
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 26,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "scout-troopers"
+        },
+        {
+          "id": "scout-troopers-strike-team"
+        }
+      ],
+      "id": "sonic-charge-saboteur",
+      "is_unique": false,
+      "name": "Sonic Charge Saboteur",
+      "text": "",
+      "type": "heavy-weapon",
+      "waves": [
+        "SWL19"
+      ],
+      "weapon": {
+        "name": "Sonic Charge",
+        "dice": {
+          "red": 1,
+          "black": 1
+        },
+        "area_of_effect": 1,
+        "min_range": 1,
+        "keywords": {
+          "arm": 1,
+          "detonate": 1,
+          "blast": "",
+          "suppressive": ""
+        },
+        "max_range": 1,
+        "surge_override": "critical"
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 34,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "snowtroopers"
+        }
+      ],
+      "id": "t-7-ion-snowtrooper",
+      "is_unique": false,
+      "name": "T-7 Ion Snowtrooper",
+      "text": "",
+      "type": "heavy-weapon",
+      "waves": [
+        "SWL11"
+      ],
+      "weapon": {
+        "name": "T-7 Ion Disrupter Rifle",
+        "dice": {
+          "black": 1,
+          "white": 2
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "ion": 1,
+          "impact": 1
+        },
+        "max_range": 2
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 22,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "rebel-troopers"
+        }
+      ],
+      "id": "z-6-trooper",
+      "is_unique": false,
+      "name": "Z-6 Trooper",
+      "text": "",
+      "type": "heavy-weapon",
+      "waves": [
+        "SWL05"
+      ],
+      "weapon": {
+        "name": "Z-6 Rotary Blaster Cannon",
+        "dice": {
+          "white": 6
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {},
+        "max_range": 3
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 18,
+      "keywords": {
+        "noncombatant": "",
+        "treat": "1 (Capacity 2)"
+      },
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "2-1-b-medical-droid",
+      "is_unique": false,
+      "name": "2-1B Medical Droid",
+      "text": "Adds a 1 2-1B medical droid mini.",
+      "type": "personnel",
+      "waves": [
+        "SWL26"
+      ],
+      "restricted_to_faction": "rebels"
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 32,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "rebel-pathfinders"
+        }
+      ],
+      "id": "bistan",
+      "is_unique": true,
+      "name": "Bistan",
+      "text": "",
+      "type": "personnel",
+      "waves": [
+        "SWL32"
+      ],
+      "weapon": {
+        "name": "Bistan",
+        "dice": {
+          "black": 1,
+          "white": 4
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {
+          "impact": 1,
+          "ion": 1
+        },
+        "max_range": 4
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 11,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "fleet-troopers"
+        }
+      ],
+      "id": "fleet-trooper",
+      "is_unique": false,
+      "name": "Fleet Trooper",
+      "text": "",
+      "type": "personnel",
+      "waves": [
+        "SWL13"
+      ]
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 19,
+      "keywords": {
+        "noncombatant": "",
+        "treat": "1 (Capacity 2)"
+      },
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "fx-9-medical-droid",
+      "is_unique": false,
+      "name": "FX-9 Medical Droid",
+      "text": "Adds a 1 FX-9 medical droid mini.",
+      "type": "personnel",
+      "waves": [
+        "SWL27"
+      ],
+      "restricted_to_faction": "imperials"
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {
+        "comms": 1
+      },
+      "is_exhaustible": false,
+      "points": 10,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "imperial-comms-technician",
+      "is_unique": false,
+      "name": "Imperial Comms Technician",
+      "text": "Adds a 1 Imperial comms technician mini.\n    You gain a comms upgrade icon.\n    You must equip a comms upgrade card.",
+      "type": "personnel",
+      "waves": [
+        "SWL27"
+      ],
+      "restricted_to_faction": "imperials"
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 22,
+      "keywords": {},
+      "keywords_for_unit": {
+        "inspire": 1,
+        "leader": ""
+      },
+      "restricted_to_unit": [
+        {
+          "id": "rebel-pathfinders"
+        }
+      ],
+      "id": "pao",
+      "is_unique": true,
+      "name": "Pao",
+      "text": "",
+      "type": "personnel",
+      "waves": [
+        "SWL32"
+      ],
+      "weapon": {
+        "name": "Pao",
+        "dice": {
+          "red": 1,
+          "white": 1
+        },
+        "area_of_effect": 0,
+        "min_range": 1,
+        "keywords": {},
+        "max_range": 4
+      }
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 9,
+      "keywords": {
+        "noncombatant": "",
+        "repair": "1 (Capacity 2)"
+      },
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "r-4-astromech-droid",
+      "is_unique": false,
+      "name": "R4 Astromech Droid",
+      "text": "Adds a 1 R4 atromech droid mini.",
+      "type": "personnel",
+      "waves": [
+        "SWL27"
+      ],
+      "restricted_to_faction": "imperials"
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 8,
+      "keywords": {
+        "noncombatant": "",
+        "repair": "1 (Capacity 2)"
+      },
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "r-5-astromech-droid",
+      "is_unique": false,
+      "name": "R5 Astromech Droid",
+      "text": "Adds a 1 R5 atromech droid mini.",
+      "type": "personnel",
+      "waves": [
+        "SWL26"
+      ],
+      "restricted_to_faction": "rebels"
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {
+        "comms": 1
+      },
+      "is_exhaustible": false,
+      "points": 9,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "rebel-comms-technician",
+      "is_unique": false,
+      "name": "Rebel Comms Technician",
+      "text": "Adds a 1 Rebel comms technician mini.\n    You gain a comms upgrade icon.\n    You must equip a comms upgrade card.",
+      "type": "personnel",
+      "waves": [
+        "SWL26"
+      ],
+      "restricted_to_faction": "rebels"
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 19,
+      "keywords": {},
+      "keywords_for_unit": {
+        "inspire": 1,
+        "leader": ""
+      },
+      "restricted_to_unit": [],
+      "id": "rebel-officer",
+      "is_unique": false,
+      "name": "Rebel Officer",
+      "text": "",
+      "type": "personnel",
+      "waves": [
+        "SWL26"
+      ],
+      "restricted_to_faction": "rebels"
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 10,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "rebel-troopers"
+        }
+      ],
+      "id": "rebel-trooper",
+      "is_unique": false,
+      "name": "Rebel Trooper",
+      "text": "",
+      "type": "personnel",
+      "waves": [
+        "SWL05"
+      ]
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 12,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "snowtroopers"
+        }
+      ],
+      "id": "snowtrooper",
+      "is_unique": false,
+      "name": "Snowtrooper",
+      "text": "",
+      "type": "personnel",
+      "waves": [
+        "SWL11"
+      ]
+    },
+    {
+      "adds_miniature": true,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 11,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [
+        {
+          "id": "stormtroopers"
+        }
+      ],
+      "id": "stormtrooper",
+      "is_unique": false,
+      "name": "Stormtrooper",
+      "text": "",
+      "type": "personnel",
+      "waves": [
+        "SWL01",
+        "SWL07"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 5,
+      "keywords": {},
+      "keywords_for_unit": {
+        "tactical": 1
+      },
+      "restricted_to_unit": [],
+      "id": "first-seargant-arbmab",
+      "is_unique": true,
+      "name": "First Sergeant Arbmab",
+      "text": "You gain TACTICAL 1.",
+      "type": "pilot",
+      "waves": [
+        "SWL35"
+      ],
+      "restricted_to_faction": "imperials",
+      "restricted_to_type": "ground-vehicle"
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 10,
+      "keywords": {},
+      "keywords_for_unit": {
+        "arsenal": 2
+      },
+      "restricted_to_unit": [],
+      "id": "general-weiss",
+      "is_unique": false,
+      "name": "General Weiss",
+      "text": "Exhaust Action: Until the end of your activation, you gain Arsenal 2.",
+      "type": "pilot",
+      "waves": [
+        "SWL08"
+      ],
+      "restricted_to_faction": "imperials",
+      "restricted_to_type": "ground-vehicle"
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 10,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "imperial-hammers-elite-armor-pilot",
+      "is_unique": false,
+      "name": "Imperial Hammers Elite Armor Pilot",
+      "text": "You gain SURGE: HIT.",
+      "type": "pilot",
+      "waves": [
+        "SWL35"
+      ],
+      "restricted_to_faction": "imperials",
+      "restricted_to_type": "ground-vehicle"
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 10,
+      "keywords": {},
+      "keywords_for_unit": {
+        "cover": 1
+      },
+      "restricted_to_unit": [],
+      "id": "outer-rim-speeder-jockey",
+      "is_unique": false,
+      "name": "Outer Rim Speeder Jockey",
+      "text": "",
+      "type": "pilot",
+      "waves": [
+        "SWL36"
+      ],
+      "restricted_to_faction": "rebels",
+      "restricted_to_type": "repulsor-vehicle"
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 5,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "ryder-azadi",
+      "is_unique": true,
+      "name": "Ryder Azadi",
+      "text": "While perorming a movie, increease or decrease your maximum speed by 1.",
+      "type": "pilot",
+      "waves": [
+        "SWL36"
+      ],
+      "restricted_to_faction": "rebels",
+      "restricted_to_type": "repulsor-vehicle"
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": true,
+      "points": 5,
+      "keywords": {},
+      "keywords_for_unit": {
+        "full-pivot": ""
+      },
+      "restricted_to_unit": [],
+      "id": "wedge-antilles",
+      "is_unique": false,
+      "name": "Wedge Antilles",
+      "text": "Exhaust Action: Until the end of your activation, you gain Full Pivot.",
+      "type": "pilot",
+      "waves": [
+        "SWL09"
+      ],
+      "restricted_to_faction": "rebels",
+      "restricted_to_type": "repulsor-vehicle"
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 8,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "duck-and-cover",
+      "is_unique": false,
+      "name": "Duck and Cover",
+      "text": "When defending from a Ranged Attack, during the Apply Cover and Dodge tokens step, you may assign yourself 1 Suppression token.",
+      "type": "training",
+      "waves": [
+        "SWL18",
+        "SWL34",
+        "SWL19",
+        "SWL20",
+        "SWL31",
+        "SWL21",
+        "SWL32"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 6,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "hunter",
+      "is_unique": false,
+      "name": "Hunter",
+      "text": "While attacking a wounded trooper unit, during the Roll Attack Dice step, you may gain 1 aim token.",
+      "type": "training",
+      "waves": [
+        "SWL18",
+        "SWL23",
+        "SWL24",
+        "SWL25"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 4,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "overwatch",
+      "is_unique": false,
+      "name": "Overwatch",
+      "text": "You gain SENTINEL (Your standby range is 1-3.)",
+      "type": "training",
+      "waves": [
+        "SWL34",
+        "SWL32"
+      ]
+    },
+    {
+      "adds_miniature": false,
+      "adds_upgrade_slots": {},
+      "is_exhaustible": false,
+      "points": 4,
+      "keywords": {},
+      "keywords_for_unit": {},
+      "restricted_to_unit": [],
+      "id": "tenacity",
+      "is_unique": false,
+      "name": "Tenacity",
+      "text": "While performing a melee attack, if you are wounded or if one or more of your minis have been defeated, add 1 red attack die to your attack pool.",
+      "type": "training",
+      "waves": [
+        "SWL23",
+        "SWL24",
+        "SWL25"
+      ]
+    }
+  ],
+  "version": 1
+}
