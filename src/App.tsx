@@ -5,6 +5,7 @@ import { UnitBrowser } from "./components/UnitBrowser";
 import { ArmyRoster } from "./components/ArmyRoster";
 import { SavedListsPanel } from "./components/SavedListsPanel";
 import { ReferencePanel } from "./components/ReferencePanel";
+import { RegisterPanel } from "./components/RegisterPanel";
 import { DEFAULT_POINTS_CAP } from "./lib/factions";
 import type { ArmyEntry, FactionId, SavedArmy, Unit } from "./lib/types";
 import {
@@ -28,6 +29,7 @@ export default function App() {
   const [saved, setSaved] = useState<SavedArmy[]>([]);
   const [showSaved, setShowSaved] = useState(false);
   const [showReference, setShowReference] = useState(false);
+  const [showRegisters, setShowRegisters] = useState(false);
   const [savedToast, setSavedToast] = useState<string | null>(null);
 
   useEffect(() => {
@@ -156,6 +158,9 @@ export default function App() {
           <button onClick={() => setShowReference(true)}>
             Reference
           </button>
+          <button onClick={() => setShowRegisters(true)}>
+            Tours of Duty
+          </button>
           <button onClick={() => setShowSaved(true)}>
             Saved lists ({saved.length})
           </button>
@@ -207,6 +212,10 @@ export default function App() {
 
       {showReference && (
         <ReferencePanel onClose={() => setShowReference(false)} />
+      )}
+
+      {showRegisters && (
+        <RegisterPanel onClose={() => setShowRegisters(false)} />
       )}
 
       {savedToast && <div className="toast">{savedToast}</div>}

@@ -115,3 +115,36 @@ export type SavedArmy = {
   entries: ArmyEntry[];
   updatedAt: number;
 };
+
+// Tours of Duty Register — mirrors the AMG paper form so it can be filled
+// in digitally and shared as a JSON document.
+export type AgendaSlot = {
+  name: string;
+  progression: number; // 0..5
+};
+
+export type Dossier = {
+  id: string;
+  dossierName: string;
+  unitName: string;
+  setbacks: string;
+  veteranRank: number; // 0..5
+  experience: string;
+  upgrades: string;
+  commendations: string;
+  pointsSpent: string;
+};
+
+export type TodRegister = {
+  id: string;
+  name: string;
+  reputation: string;
+  storyArc: string;
+  combatPotential: string;
+  combatPotentialSpent: string;
+  supplyPoints: string;
+  strategicAssets: string;
+  agendas: AgendaSlot[];
+  dossiers: Dossier[];
+  updatedAt: number;
+};
