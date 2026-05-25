@@ -33,25 +33,42 @@ export type Weapon = {
   keywords?: Record<string, string | number>;
 };
 
-export type UpgradeSlots = Partial<Record<
+export type UpgradeSlotKey =
+  | "armament"
   | "command"
   | "comms"
+  | "crew"
+  | "elite"
   | "force"
   | "gear"
   | "generator"
   | "grenades"
-  | "hardpoint"
+  | "gunner"
+  | "hard-point"
   | "heavy-weapon"
   | "ordnance"
   | "personnel"
   | "pilot"
-  | "training"
-  | "armament"
-  | "crew"
-  | "gunner"
-  | "elite",
-  number
->>;
+  | "training";
+
+export type UpgradeSlots = Partial<Record<UpgradeSlotKey, number>>;
+
+export type Upgrade = {
+  id: string;
+  name: string;
+  type: UpgradeSlotKey | string;
+  points: number;
+  is_unique: boolean;
+  text?: string;
+  restricted_to_unit?: { id: string }[];
+  adds_miniature?: boolean;
+  adds_upgrade_slots?: UpgradeSlots;
+  is_exhaustible?: boolean;
+  keywords?: Record<string, string | number>;
+  keywords_for_unit?: Record<string, string | number>;
+  weapon?: Weapon;
+  waves?: string[];
+};
 
 export type Unit = {
   id: string;
@@ -80,13 +97,14 @@ export type Unit = {
 export type Catalog = {
   version?: string | number;
   units: Unit[];
-  upgrades?: unknown[];
+  upgrades?: Upgrade[];
   commandCards?: unknown[];
 };
 
 export type ArmyEntry = {
   entryId: string; // unique per slot in the army (uuid-like)
   unitId: string;
+  upgrades?: string[]; // upgrade IDs attached to this entry
 };
 
 export type SavedArmy = {

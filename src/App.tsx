@@ -67,6 +67,33 @@ export default function App() {
     });
   }
 
+  function attachUpgrade(entryId: string, upgradeId: string) {
+    if (!army) return;
+    setArmy({
+      ...army,
+      entries: army.entries.map((e) =>
+        e.entryId === entryId
+          ? { ...e, upgrades: [...(e.upgrades ?? []), upgradeId] }
+          : e,
+      ),
+    });
+  }
+
+  function detachUpgrade(entryId: string, upgradeId: string) {
+    if (!army) return;
+    setArmy({
+      ...army,
+      entries: army.entries.map((e) =>
+        e.entryId === entryId
+          ? {
+              ...e,
+              upgrades: (e.upgrades ?? []).filter((u) => u !== upgradeId),
+            }
+          : e,
+      ),
+    });
+  }
+
   function persist() {
     if (!army) return;
     const toSave: SavedArmy = {
@@ -162,6 +189,8 @@ export default function App() {
             onNameChange={(name) => setArmy({ ...army, name })}
             onCapChange={(cap) => setArmy({ ...army, pointsCap: cap })}
             onRemove={removeEntry}
+            onAttachUpgrade={attachUpgrade}
+            onDetachUpgrade={detachUpgrade}
           />
         </main>
       )}
