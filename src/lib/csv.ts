@@ -2,7 +2,7 @@ import type { SavedArmy, FactionId } from "./types";
 import { newId } from "./storage";
 
 // CSV format (one row per army entry):
-//   listId,listName,faction,pointsCap,updatedAt,entryId,unitId,upgrades
+//   listId,listName,faction,battleForce,pointsCap,updatedAt,entryId,unitId,upgrades
 // First row is a header. Lists with zero entries are still represented
 // with a single row whose entryId/unitId/upgrades columns are empty.
 // `upgrades` is a "|"-separated list of upgrade IDs attached to the entry.
@@ -11,6 +11,7 @@ const HEADER = [
   "listId",
   "listName",
   "faction",
+  "battleForce",
   "pointsCap",
   "updatedAt",
   "entryId",
@@ -27,9 +28,10 @@ function escape(v: string | number): string {
 export function armiesToCsv(armies: SavedArmy[]): string {
   const lines: string[] = [HEADER.join(",")];
   for (const a of armies) {
+    const bf = a.battleForce ?? "";
     if (a.entries.length === 0) {
       lines.push(
-        [a.id, a.name, a.faction, a.pointsCap, a.updatedAt, "", "", ""]
+        [a.id, a.name, a.faction, bf, a.pointsCap, a.updatedAt, "", "", ""]
           .map(escape)
           .join(","),
       );
@@ -41,6 +43,7 @@ export function armiesToCsv(armies: SavedArmy[]): string {
             a.id,
             a.name,
             a.faction,
+            bf,
             a.pointsCap,
             a.updatedAt,
             e.entryId,
@@ -144,12 +147,17 @@ export function csvToArmies(text: string): ImportResult {
       .split("|")
       .map((s) => s.trim())
       .filter(Boolean);
+    const battleForce =
+      idx("battleForce") >= 0
+        ? (cols[idx("battleForce")] || "").trim() || undefined
+        : undefined;
     let army = byList.get(listId);
     if (!army) {
       army = {
         id: listId,
         name: listName,
         faction: factionRaw,
+        ...(battleForce ? { battleForce } : {}),
         pointsCap,
         entries: [],
         updatedAt,

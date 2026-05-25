@@ -1,6 +1,12 @@
 import { useState } from "react";
 import { unitById, upgradeById } from "../data/catalog";
-import { FACTIONS, RANK_LABEL, RANK_LIMITS, RANK_ORDER } from "../lib/factions";
+import {
+  BATTLE_FORCES,
+  FACTIONS,
+  RANK_LABEL,
+  RANK_LIMITS,
+  RANK_ORDER,
+} from "../lib/factions";
 import type { ArmyEntry, FactionId, Rank } from "../lib/types";
 import {
   entryPoints,
@@ -14,7 +20,9 @@ type Props = {
   army: ArmyState;
   faction: FactionId;
   name: string;
+  battleForce: string | undefined;
   onNameChange: (name: string) => void;
+  onBattleForceChange: (bf: string | undefined) => void;
   onCapChange: (cap: number) => void;
   onRemove: (entryId: string) => void;
   onAttachUpgrade: (entryId: string, upgradeId: string) => void;
@@ -25,7 +33,9 @@ export function ArmyRoster({
   army,
   faction,
   name,
+  battleForce,
   onNameChange,
+  onBattleForceChange,
   onCapChange,
   onRemove,
   onAttachUpgrade,
@@ -69,6 +79,23 @@ export function ArmyRoster({
           {f.short}
         </div>
       </header>
+      <div className="battle-force-row">
+        <label className="muted small">Battle Force</label>
+        <select
+          className="battle-force-select"
+          value={battleForce ?? ""}
+          onChange={(e) =>
+            onBattleForceChange(e.target.value === "" ? undefined : e.target.value)
+          }
+        >
+          <option value="">— Standard (no Battle Force) —</option>
+          {(BATTLE_FORCES[faction] ?? []).map((bf) => (
+            <option key={bf} value={bf}>
+              {bf}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <div className="points-bar">
         <div className="points-current">

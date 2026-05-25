@@ -228,6 +228,17 @@ input, select {
   letter-spacing: 0.05em;
   white-space: nowrap;
 }
+.battle-force-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+}
+.battle-force-row label { text-transform: uppercase; letter-spacing: 0.05em; }
+.battle-force-select { flex: 1; }
+
 .points-bar {
   display: flex;
   justify-content: space-between;

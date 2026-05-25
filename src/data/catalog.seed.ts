@@ -29,11 +29,11 @@ export const SEED_UNITS: Unit[] = [
   {
     id: "republic-obi-wan-kenobi",
     name: "Obi-Wan Kenobi",
-    sub_title: "Mentor and Master",
+    sub_title: "Civilized Warrior",
     is_unique: true,
     faction: "republic",
     type: "trooper",
-    points: 175,
+    points: 150,
     rank: "commander",
     miniatures: 1,
     wounds: 6,

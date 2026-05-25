@@ -111,6 +111,7 @@ export type SavedArmy = {
   id: string;
   name: string;
   faction: FactionId;
+  battleForce?: string;
   pointsCap: number;
   entries: ArmyEntry[];
   updatedAt: number;

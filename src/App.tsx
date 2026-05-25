@@ -20,6 +20,7 @@ type WorkingArmy = {
   id: string;
   name: string;
   faction: FactionId;
+  battleForce?: string;
   pointsCap: number;
   entries: ArmyEntry[];
 };
@@ -102,6 +103,7 @@ export default function App() {
       id: army.id,
       name: army.name.trim() || "Untitled",
       faction: army.faction,
+      ...(army.battleForce ? { battleForce: army.battleForce } : {}),
       pointsCap: army.pointsCap,
       entries: army.entries,
       updatedAt: Date.now(),
@@ -119,6 +121,7 @@ export default function App() {
       id: loaded.id,
       name: loaded.name,
       faction: loaded.faction,
+      battleForce: loaded.battleForce,
       pointsCap: loaded.pointsCap,
       entries: loaded.entries,
     });
@@ -191,7 +194,11 @@ export default function App() {
             }}
             faction={army.faction}
             name={army.name}
+            battleForce={army.battleForce}
             onNameChange={(name) => setArmy({ ...army, name })}
+            onBattleForceChange={(battleForce) =>
+              setArmy({ ...army, battleForce })
+            }
             onCapChange={(cap) => setArmy({ ...army, pointsCap: cap })}
             onRemove={removeEntry}
             onAttachUpgrade={attachUpgrade}

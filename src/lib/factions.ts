@@ -34,8 +34,8 @@ export const FACTIONS: Record<
   },
   mercenary: {
     id: "mercenary",
-    name: "Shadow Collective",
-    short: "Mercenary",
+    name: "Mercenaries",
+    short: "Mercenaries",
     color: "#3d2a14",
     accent: "#d7a45e",
   },
@@ -65,6 +65,26 @@ export const RANK_LABEL: Record<Rank, string> = {
   "special-forces": "Special Forces",
   support: "Support",
   heavy: "Heavy",
+};
+
+// Battle Forces (per the official DOC51_BattleForces document). These are
+// themed army variants; the data here drives the picker only — restriction
+// rules are not enforced yet.
+export const BATTLE_FORCES: Record<FactionId, string[]> = {
+  rebels: ["Bright Tree Village", "Echo Base Defenders"],
+  imperials: [
+    "Blizzard Force",
+    "Imperial Remnant",
+    "Stormtrooper Battalion",
+    "Tempest Force",
+  ],
+  republic: ["212th Attack Battalion", "501st Legion", "Wookiee Defenders"],
+  separatists: [
+    "Experimental Droids",
+    "Rapid Interdiction Force",
+    "Separatist Invasion",
+  ],
+  mercenary: ["Shadow Collective", "The Ohnaka Gang"],
 };
 
 // Standard 800-point army composition
