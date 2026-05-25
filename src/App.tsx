@@ -101,6 +101,17 @@ export default function App() {
     setSaved(listArmies());
   }
 
+  function importArmies(toImport: SavedArmy[]) {
+    let imported = 0;
+    for (const a of toImport) {
+      saveArmy(a);
+      imported++;
+    }
+    setSaved(listArmies());
+    setSavedToast(`Imported ${imported} list${imported === 1 ? "" : "s"}.`);
+    setTimeout(() => setSavedToast(null), 2500);
+  }
+
   return (
     <div className="app">
       <header className="app-header">
@@ -138,6 +149,7 @@ export default function App() {
               entries: army.entries,
             }}
             onAdd={addUnit}
+            onOpenReference={() => setShowReference(true)}
           />
           <ArmyRoster
             army={{
@@ -160,6 +172,7 @@ export default function App() {
           onLoad={load}
           onDelete={remove}
           onClose={() => setShowSaved(false)}
+          onImport={importArmies}
         />
       )}
 

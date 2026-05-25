@@ -32,6 +32,13 @@ export const FACTIONS: Record<
     color: "#3a2e4d",
     accent: "#b6a2d6",
   },
+  mercenary: {
+    id: "mercenary",
+    name: "Shadow Collective",
+    short: "Mercenary",
+    color: "#3d2a14",
+    accent: "#d7a45e",
+  },
 };
 
 export const FACTION_ORDER: FactionId[] = [
@@ -39,6 +46,7 @@ export const FACTION_ORDER: FactionId[] = [
   "imperials",
   "republic",
   "separatists",
+  "mercenary",
 ];
 
 export const RANK_ORDER: Rank[] = [

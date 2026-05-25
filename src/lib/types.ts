@@ -2,7 +2,8 @@ export type FactionId =
   | "rebels"
   | "imperials"
   | "republic"
-  | "separatists";
+  | "separatists"
+  | "mercenary";
 
 export type Rank =
   | "commander"
