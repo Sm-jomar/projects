@@ -187,3 +187,8 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+# Helper for future extension: generate a seed for any faction by passing
+# the faction name; e.g. `python3 scripts/gen_mercenary_seed.py rebels` could
+# emit a rebels seed once NAME_FIXES is expanded for that faction. Not used
+# automatically — kept here as a note for the next round.

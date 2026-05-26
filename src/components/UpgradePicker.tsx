@@ -123,10 +123,23 @@ export function UpgradePicker({ army, entry, unit, onAttach, onClose }: Props) {
                     <div className="upgrade-row-main">
                       <div className="upgrade-row-name">
                         {up.name}
-                        {up.is_unique && <span className="badge unique">Unique</span>}
+                        {up.is_unique && (
+                          <span className="badge unique">Unique</span>
+                        )}
                       </div>
                       <div className="muted small">
                         {SLOT_LABEL[up.type] ?? up.type} · {up.points} pts
+                        {up.restricted_to_unit &&
+                          up.restricted_to_unit.length > 0 && (
+                            <>
+                              {" · "}
+                              <em>
+                                {up.restricted_to_unit.length === 1
+                                  ? "Only this unit"
+                                  : `Restricted (${up.restricted_to_unit.length} units)`}
+                              </em>
+                            </>
+                          )}
                       </div>
                     </div>
                     <button
