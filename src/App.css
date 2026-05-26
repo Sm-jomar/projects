@@ -277,6 +277,42 @@ input, select {
 }
 .battle-force-select { flex: 1; min-width: 0; }
 
+.points-mode-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 10px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.points-mode-row label {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 11px;
+  font-weight: 600;
+}
+.points-mode-pill {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.points-mode-pill.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #1a1a1a;
+}
+.adj-hint {
+  color: var(--accent);
+  font-style: italic;
+  margin-left: 4px;
+}
+
 .points-bar {
   display: flex;
   justify-content: space-between;

@@ -7,6 +7,12 @@ import {
   RANK_LIMITS,
   RANK_ORDER,
 } from "../lib/factions";
+import {
+  POINTS_MODE_LABEL,
+  effectiveUnitPoints,
+  effectiveUpgradePoints,
+  type PointsMode,
+} from "../lib/points";
 import type { ArmyEntry, FactionId, Rank } from "../lib/types";
 import {
   entryPoints,
@@ -21,9 +27,11 @@ type Props = {
   faction: FactionId;
   name: string;
   battleForce: string | undefined;
+  pointsMode: PointsMode;
   onNameChange: (name: string) => void;
   onBattleForceChange: (bf: string | undefined) => void;
   onCapChange: (cap: number) => void;
+  onPointsModeChange: (mode: PointsMode) => void;
   onRemove: (entryId: string) => void;
   onAttachUpgrade: (entryId: string, upgradeId: string) => void;
   onDetachUpgrade: (entryId: string, upgradeId: string) => void;
@@ -34,9 +42,11 @@ export function ArmyRoster({
   faction,
   name,
   battleForce,
+  pointsMode,
   onNameChange,
   onBattleForceChange,
   onCapChange,
+  onPointsModeChange,
   onRemove,
   onAttachUpgrade,
   onDetachUpgrade,
@@ -96,6 +106,22 @@ export function ArmyRoster({
           ))}
         </select>
       </div>
+      <div className="points-mode-row">
+        <label className="muted small">Points</label>
+        <button
+          type="button"
+          className={
+            "points-mode-pill" +
+            (pointsMode === "v2_6" ? " active" : "")
+          }
+          onClick={() =>
+            onPointsModeChange(pointsMode === "v2_6" ? "printed" : "v2_6")
+          }
+          title="Toggle 2.6 tournament point adjustments"
+        >
+          {POINTS_MODE_LABEL[pointsMode]}
+        </button>
+      </div>
 
       <div className="points-bar">
         <div className="points-current">
@@ -150,7 +176,8 @@ export function ArmyRoster({
                     const u = unitById(entry.unitId)!;
                     const usage = slotUsage(entry);
                     const hasSlots = Object.keys(usage.available).length > 0;
-                    const total = entryPoints(entry);
+                    const total = entryPoints(entry, pointsMode);
+                    const unitCost = effectiveUnitPoints(u, pointsMode);
                     const upgrades = entry.upgrades ?? [];
                     return (
                       <li key={entry.entryId} className="entry-row-wrap">
@@ -161,8 +188,14 @@ export function ArmyRoster({
                               {" "}
                               · {total} pts
                               {upgrades.length > 0 ? (
-                                <span> ({u.points} base)</span>
+                                <span> ({unitCost} base)</span>
                               ) : null}
+                              {pointsMode === "v2_6" && unitCost !== u.points && (
+                                <span className="adj-hint" title="2.6 adjusted">
+                                  {" "}
+                                  (printed {u.points})
+                                </span>
+                              )}
                             </span>
                           </div>
                           <div className="entry-actions">
@@ -205,12 +238,22 @@ export function ArmyRoster({
                                   </li>
                                 );
                               }
+                              const upCost = effectiveUpgradePoints(
+                                { ...up, faction: u.faction },
+                                pointsMode,
+                              );
                               return (
                                 <li key={upId} className="attached-upgrade">
                                   <span className="up-name">↳ {up.name}</span>
                                   <span className="muted small">
                                     {" "}
-                                    · {up.points} pts
+                                    · {upCost} pts
+                                    {pointsMode === "v2_6" && upCost !== up.points && (
+                                      <span className="adj-hint">
+                                        {" "}
+                                        (printed {up.points})
+                                      </span>
+                                    )}
                                   </span>
                                   <button
                                     className="remove-btn small-x"

@@ -16,12 +16,15 @@ import {
   saveArmy,
 } from "./lib/storage";
 
+import type { PointsMode } from "./lib/points";
+
 type WorkingArmy = {
   id: string;
   name: string;
   faction: FactionId;
   battleForce?: string;
   pointsCap: number;
+  pointsMode: PointsMode;
   entries: ArmyEntry[];
 };
 
@@ -44,6 +47,7 @@ export default function App() {
       faction,
       ...(battleForce ? { battleForce } : {}),
       pointsCap: DEFAULT_POINTS_CAP,
+      pointsMode: "printed",
       entries: [],
     });
   }
@@ -106,6 +110,7 @@ export default function App() {
       faction: army.faction,
       ...(army.battleForce ? { battleForce: army.battleForce } : {}),
       pointsCap: army.pointsCap,
+      pointsMode: army.pointsMode,
       entries: army.entries,
       updatedAt: Date.now(),
     };
@@ -124,6 +129,7 @@ export default function App() {
       faction: loaded.faction,
       battleForce: loaded.battleForce,
       pointsCap: loaded.pointsCap,
+      pointsMode: loaded.pointsMode ?? "printed",
       entries: loaded.entries,
     });
     setShowSaved(false);
@@ -183,6 +189,7 @@ export default function App() {
             army={{
               faction: army.faction,
               pointsCap: army.pointsCap,
+              pointsMode: army.pointsMode,
               entries: army.entries,
             }}
             onAdd={addUnit}
@@ -192,16 +199,21 @@ export default function App() {
             army={{
               faction: army.faction,
               pointsCap: army.pointsCap,
+              pointsMode: army.pointsMode,
               entries: army.entries,
             }}
             faction={army.faction}
             name={army.name}
             battleForce={army.battleForce}
+            pointsMode={army.pointsMode}
             onNameChange={(name) => setArmy({ ...army, name })}
             onBattleForceChange={(battleForce) =>
               setArmy({ ...army, battleForce })
             }
             onCapChange={(cap) => setArmy({ ...army, pointsCap: cap })}
+            onPointsModeChange={(pointsMode) =>
+              setArmy({ ...army, pointsMode })
+            }
             onRemove={removeEntry}
             onAttachUpgrade={attachUpgrade}
             onDetachUpgrade={detachUpgrade}

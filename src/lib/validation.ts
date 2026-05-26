@@ -1,10 +1,16 @@
 import type { ArmyEntry, FactionId, Rank, Unit, Upgrade } from "./types";
 import { unitById, upgradeById } from "../data/catalog";
 import { RANK_LIMITS, RANK_LABEL, RANK_ORDER } from "./factions";
+import {
+  effectiveUnitPoints,
+  effectiveUpgradePoints,
+  type PointsMode,
+} from "./points";
 
 export type ArmyState = {
   faction: FactionId;
   pointsCap: number;
+  pointsMode: PointsMode;
   entries: ArmyEntry[];
 };
 
@@ -28,19 +34,22 @@ function getUnits(entries: ArmyEntry[]): Unit[] {
     .filter((u): u is Unit => Boolean(u));
 }
 
-export function entryPoints(entry: ArmyEntry): number {
+export function entryPoints(entry: ArmyEntry, mode: PointsMode = "printed"): number {
   const unit = unitById(entry.unitId);
   if (!unit) return 0;
-  let total = unit.points;
+  let total = effectiveUnitPoints(unit, mode);
   for (const upId of entry.upgrades ?? []) {
     const up = upgradeById(upId);
-    if (up) total += up.points;
+    if (up) total += effectiveUpgradePoints({ ...up, faction: unit.faction }, mode);
   }
   return total;
 }
 
-export function totalPoints(entries: ArmyEntry[]): number {
-  return entries.reduce((sum, e) => sum + entryPoints(e), 0);
+export function totalPoints(
+  entries: ArmyEntry[],
+  mode: PointsMode = "printed",
+): number {
+  return entries.reduce((sum, e) => sum + entryPoints(e, mode), 0);
 }
 
 export function countByRank(entries: ArmyEntry[]): Record<Rank, number> {
@@ -89,13 +98,16 @@ export function slotUsage(entry: ArmyEntry): SlotUsage {
 
 export function validateArmy(state: ArmyState): ValidationReport {
   const units = getUnits(state.entries);
-  const totalPts = totalPoints(state.entries);
+  const totalPts = totalPoints(state.entries, state.pointsMode);
   const rankCounts = countByRank(state.entries);
   const issues: ValidationIssue[] = [];
 
   // Faction lock — defensive; UI should prevent this
   for (const u of units) {
-    if (u.faction !== state.faction) {
+    const inFaction =
+      u.faction === state.faction ||
+      (u.also_factions ?? []).includes(state.faction);
+    if (!inFaction) {
       issues.push({
         severity: "error",
         message: `${u.name} (${u.faction}) does not belong to this army's faction.`,
@@ -193,7 +205,10 @@ export type AddCheck =
   | { ok: false; reason: string };
 
 export function canAdd(state: ArmyState, candidate: Unit): AddCheck {
-  if (candidate.faction !== state.faction) {
+  const inFaction =
+    candidate.faction === state.faction ||
+    (candidate.also_factions ?? []).includes(state.faction);
+  if (!inFaction) {
     return { ok: false, reason: "Wrong faction." };
   }
   if (
@@ -210,7 +225,8 @@ export function canAdd(state: ArmyState, candidate: Unit): AddCheck {
       reason: `Max ${limit.max} ${RANK_LABEL[candidate.rank]} already.`,
     };
   }
-  if (totalPoints(state.entries) + candidate.points > state.pointsCap) {
+  const candidateCost = effectiveUnitPoints(candidate, state.pointsMode);
+  if (totalPoints(state.entries, state.pointsMode) + candidateCost > state.pointsCap) {
     return { ok: false, reason: "Would exceed points cap." };
   }
   return { ok: true };
@@ -250,7 +266,13 @@ export function canAddUpgrade(
     }
   }
   // Points cap
-  if (totalPoints(state.entries) + upgrade.points > state.pointsCap) {
+  const unit = unitById(entry.unitId);
+  const upgradeFaction = unit?.faction;
+  const upgradeCost = effectiveUpgradePoints(
+    { ...upgrade, faction: upgradeFaction },
+    state.pointsMode,
+  );
+  if (totalPoints(state.entries, state.pointsMode) + upgradeCost > state.pointsCap) {
     return { ok: false, reason: "Would exceed points cap." };
   }
   return { ok: true };

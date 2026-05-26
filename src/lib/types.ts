@@ -76,6 +76,11 @@ export type Unit = {
   sub_title?: string;
   is_unique: boolean;
   faction: FactionId;
+  /** Secondary factions this unit is also legal in (e.g. Mercenary units
+   * that can be fielded by other factions as allies). Always treat the
+   * primary `faction` field as the canonical home faction; this list adds
+   * extra eligibility for army-building. */
+  also_factions?: FactionId[];
   type: UnitType | string;
   points: number;
   rank: Rank;
@@ -113,6 +118,7 @@ export type SavedArmy = {
   faction: FactionId;
   battleForce?: string;
   pointsCap: number;
+  pointsMode?: "printed" | "v2_6";
   entries: ArmyEntry[];
   updatedAt: number;
 };

@@ -1,12 +1,15 @@
 import type { Catalog, Unit, Upgrade } from "../lib/types";
 import baseRaw from "./catalog.base.json";
-import { MERCENARY_SEED, SEED_UNITS } from "./catalog.seed";
+import { SEED_UNITS } from "./catalog.seed";
 
 const base = baseRaw as unknown as Catalog;
 
 export const CATALOG: Catalog = {
   version: base.version,
-  units: [...(base.units as Unit[]), ...SEED_UNITS, ...MERCENARY_SEED],
+  // SEED_UNITS is the single source of truth for units (regenerated from
+  // the fandom Unit_List wiki page); base.json keeps upgrades and command
+  // cards.
+  units: SEED_UNITS,
   upgrades: (base.upgrades ?? []) as Upgrade[],
   commandCards: base.commandCards,
 };
