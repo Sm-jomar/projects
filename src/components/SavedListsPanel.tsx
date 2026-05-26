@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { FACTIONS } from "../lib/factions";
 import type { SavedArmy } from "../lib/types";
 import { armiesToCsv, csvToArmies, downloadCsv } from "../lib/csv";
+import { downloadFlags, listFlags } from "../lib/flags";
 
 type Props = {
   armies: SavedArmy[];
@@ -69,6 +70,21 @@ export function SavedListsPanel({
           <div className="saved-row-actions">
             <button onClick={exportAll}>Export CSV</button>
             <button onClick={pickFile}>Import CSV</button>
+            <button
+              onClick={() => {
+                const n = listFlags().length;
+                if (n === 0) {
+                  alert("No flagged units yet.");
+                  return;
+                }
+                downloadFlags(
+                  `legion-flagged-${new Date().toISOString().slice(0, 10)}.json`,
+                );
+              }}
+              title="Download a JSON file of every unit you've flagged as wrong"
+            >
+              Export flags ({listFlags().length})
+            </button>
             <input
               ref={fileRef}
               type="file"

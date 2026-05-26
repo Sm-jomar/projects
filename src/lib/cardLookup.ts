@@ -38,13 +38,19 @@ function score(target: string, candidate: string): number {
   // Strip trailing -N (front/back variants) from candidate before scoring
   const cand = candidate.replace(/-\d+$/, "");
   if (cand === target) return 950;
-  if (cand.startsWith(target) || target.startsWith(cand)) return 800 - Math.abs(cand.length - target.length);
-  // Compare on token sets
-  const a = new Set(target.split("-"));
-  const b = new Set(cand.split("-"));
+  if (cand.startsWith(target) || target.startsWith(cand))
+    return 800 - Math.abs(cand.length - target.length);
+  // Compare on token sets — require at least 2 distinct shared tokens
+  // (longer than 2 chars each) before considering it a real match, so a
+  // single common word like "the" or "tank" doesn't pull in unrelated
+  // cards (e.g. Hondo Ohnaka onto The Ohnaka Gang command card).
+  const tokens = (s: string) =>
+    new Set(s.split("-").filter((t) => t.length >= 3));
+  const a = tokens(target);
+  const b = tokens(cand);
   let overlap = 0;
   for (const t of a) if (b.has(t)) overlap++;
-  if (overlap === 0) return 0;
+  if (overlap < 2) return 0;
   return 500 + overlap * 50 - Math.abs(a.size - b.size) * 10;
 }
 
@@ -64,14 +70,36 @@ function findBest(
       best = c;
     }
   }
-  return bestScore >= 500 ? best : null;
+  // Bumped from 500 -> 700: a single weak token overlap was matching
+  // unrelated cards. 700 requires a substring containment or at least
+  // 2-token overlap with similar set sizes.
+  return bestScore >= 700 ? best : null;
 }
 
-export function cardForUnit(unit: Pick<Unit, "id" | "name" | "faction">): string | null {
+export function cardForUnit(unit: Pick<Unit, "id" | "name" | "faction"> & { also_factions?: string[] }): string | null {
   const target = slugify(unit.name);
   const idSlug = slugify(unit.id);
-  const hit = findBest(unit.faction, "unit", target, idSlug);
-  return hit ? BASE + hit.file : null;
+  const tried = new Set<string>();
+  const factions = [unit.faction, ...(unit.also_factions ?? [])];
+  // First try the unit's own factions, then fall back to every other
+  // faction in case the source PDF filed the card elsewhere (mercenary
+  // cards for units we've re-homed to a primary faction, etc.).
+  const allFactions = [
+    "rebels",
+    "imperials",
+    "republic",
+    "separatists",
+    "mercenary",
+    "generic",
+  ];
+  const order = [...factions, ...allFactions.filter((f) => !factions.includes(f))];
+  for (const f of order) {
+    if (tried.has(f)) continue;
+    tried.add(f);
+    const hit = findBest(f, "unit", target, idSlug);
+    if (hit) return BASE + hit.file;
+  }
+  return null;
 }
 
 export function cardForUpgrade(args: {

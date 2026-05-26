@@ -30,6 +30,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
     id: "rebels-han-solo",
@@ -60,6 +61,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
     id: "rebels-leia-organa",
@@ -84,7 +86,6 @@ export const SEED_UNITS: Unit[] = [
     sub_title: "Superstitious Shaman",
     is_unique: true,
     faction: "rebels",
-    also_factions: ["mercenary"],
     type: "trooper",
     points: 50,
     rank: "commander",
@@ -92,6 +93,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
     id: "rebels-luke-skywalker-hero-of-the-rebellion",
@@ -135,7 +137,6 @@ export const SEED_UNITS: Unit[] = [
     sub_title: "Hero of Bright Tree",
     is_unique: true,
     faction: "rebels",
-    also_factions: ["mercenary"],
     type: "trooper",
     points: 70,
     rank: "commander",
@@ -143,6 +144,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
     id: "rebels-cassian-andor",
@@ -156,6 +158,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { training: 1, gear: 1, comms: 1 },
   },
   {
     id: "rebels-jyn-erso",
@@ -186,6 +189,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { training: 1, gear: 1, comms: 1 },
   },
   {
     id: "rebels-luke-skywalker-jedi-knight",
@@ -218,6 +222,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { training: 1, gear: 1, comms: 1 },
   },
   {
     id: "rebels-sabine-wren",
@@ -281,6 +286,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "rebels-mark-ii-medium-blaster-trooper",
@@ -294,13 +300,13 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "rebels-ewok-skirmishers",
     name: "Ewok Skirmishers",
     is_unique: false,
     faction: "rebels",
-    also_factions: ["mercenary"],
     type: "trooper",
     points: 40,
     rank: "corps",
@@ -308,13 +314,13 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "rebels-ewok-slingers",
     name: "Ewok Slingers",
     is_unique: false,
     faction: "rebels",
-    also_factions: ["mercenary"],
     type: "trooper",
     points: 40,
     rank: "special-forces",
@@ -322,6 +328,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "rebels-mandalorian-resistance",
@@ -335,6 +342,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "rebels-mandalorian-resistance-clan-wren",
@@ -349,6 +357,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "rebels-rebel-commandos",
@@ -397,6 +406,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "rebels-wookiee-warriors-freedom-fighters",
@@ -480,6 +490,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "rebels-chewbacca-let-the-wookiee-win",
@@ -594,6 +605,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
     id: "imperials-imperial-officer",
@@ -624,6 +636,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
     id: "imperials-agent-kallus",
@@ -637,6 +650,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { training: 1, gear: 1, comms: 1 },
   },
   {
     id: "imperials-darth-vader-the-emperor-s-apprentice",
@@ -667,6 +681,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    force_alignment: "dark",
+    upgrades: { training: 1, gear: 1, comms: 1, force: 2 },
   },
   {
     id: "imperials-imperial-agent",
@@ -680,6 +696,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { training: 1, gear: 1, comms: 1 },
   },
   {
     id: "imperials-seventh-sister",
@@ -693,6 +710,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    force_alignment: "dark",
+    upgrades: { training: 1, gear: 1, comms: 1, force: 2 },
   },
   {
     id: "imperials-shoretroopers",
@@ -723,6 +742,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "imperials-snowtroopers",
@@ -788,6 +808,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "imperials-imperial-death-troopers",
@@ -818,6 +839,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "imperials-imperial-special-forces-inferno-squad",
@@ -832,6 +854,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "imperials-scout-troopers",
@@ -894,6 +917,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "imperials-e-web-heavy-blaster-team",
@@ -924,6 +948,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "imperials-at-st",
@@ -970,6 +995,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "imperials-major-marquand",
@@ -983,6 +1009,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "imperials-tx-225-gavw-occupier-tank",
@@ -996,6 +1023,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "republic-ahsoka-tano-padawan-commander",
@@ -1010,6 +1038,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    force_alignment: "light",
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1, force: 2 },
   },
   {
     id: "republic-anakin-skywalker-hero-without-fear",
@@ -1024,6 +1054,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    force_alignment: "light",
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1, force: 3 },
   },
   {
     id: "republic-chewbacca-republic",
@@ -1055,6 +1087,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
     id: "republic-clone-commander",
@@ -1068,6 +1101,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
     id: "republic-clone-commander-cody",
@@ -1081,6 +1115,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
     id: "republic-jedi-knight-general",
@@ -1094,6 +1129,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    force_alignment: "light",
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1, force: 3 },
   },
   {
     id: "republic-obi-wan-kenobi-civilized-warrior",
@@ -1108,6 +1145,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    force_alignment: "light",
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1, force: 3 },
   },
   {
     id: "republic-wookiee-chieftain",
@@ -1121,6 +1160,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
     id: "republic-yoda-grand-master-of-the-jedi-order",
@@ -1135,6 +1175,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    force_alignment: "light",
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1, force: 3 },
   },
   {
     id: "republic-jedi-knight",
@@ -1148,6 +1190,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    force_alignment: "light",
+    upgrades: { training: 1, gear: 1, comms: 1, force: 2 },
   },
   {
     id: "republic-padm-amidala-spirited-senator",
@@ -1162,6 +1206,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { training: 1, gear: 1, comms: 1 },
   },
   {
     id: "republic-clone-trooper-infantry",
@@ -1175,6 +1220,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "republic-clone-trooper-marksmen",
@@ -1188,6 +1234,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "republic-arc-troopers",
@@ -1201,6 +1248,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "republic-arc-troopers-strike-team",
@@ -1215,6 +1263,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "republic-arf-troopers",
@@ -1228,6 +1277,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "republic-wookiee-warriors-kashyyyk-defenders",
@@ -1295,6 +1345,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "republic-clone-commandos",
@@ -1308,6 +1359,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "republic-clone-commandos-delta-squad",
@@ -1322,6 +1374,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "republic-raddaugh-gnasp-fluttercraft",
@@ -1335,6 +1388,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "republic-raddaugh-gnasp-fluttercraft-attack-craft",
@@ -1349,6 +1403,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "republic-infantry-support-platform",
@@ -1362,6 +1417,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "republic-laat-le-patrol-transport-republic",
@@ -1376,6 +1432,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "republic-tx-130-saber-class-fighter-tank",
@@ -1389,6 +1446,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "separatists-count-dooku-darth-tyranus",
@@ -1403,6 +1461,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    force_alignment: "dark",
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1, force: 3 },
   },
   {
     id: "separatists-general-grievous-sinister-cyborg",
@@ -1417,6 +1477,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    force_alignment: "dark",
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1, force: 2 },
   },
   {
     id: "separatists-kalani",
@@ -1430,6 +1492,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
     id: "separatists-kraken",
@@ -1443,6 +1506,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
     id: "separatists-poggle-the-lesser",
@@ -1456,6 +1520,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
     id: "separatists-super-tactical-command-droid",
@@ -1469,6 +1534,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
     id: "separatists-t-series-tactical-droid",
@@ -1482,6 +1548,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
     id: "separatists-asajj-ventress-sith-assassin",
@@ -1496,6 +1563,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    force_alignment: "dark",
+    upgrades: { training: 1, gear: 1, comms: 1, force: 2 },
   },
   {
     id: "separatists-sun-fac",
@@ -1509,6 +1578,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { training: 1, gear: 1, comms: 1 },
   },
   {
     id: "separatists-super-tactical-command-droid-operative",
@@ -1523,6 +1593,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { training: 1, gear: 1, comms: 1 },
   },
   {
     id: "separatists-b1-battle-droids",
@@ -1536,6 +1607,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "separatists-b2-super-battle-droids",
@@ -1549,6 +1621,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "separatists-geonosian-warriors",
@@ -1562,6 +1635,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "separatists-bx-series-droid-commandos",
@@ -1575,6 +1649,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "separatists-bx-series-droid-commandos-strike-team",
@@ -1589,6 +1664,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "separatists-drk-1-sith-probe-droids",
@@ -1602,6 +1678,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "separatists-ig-100-magnaguards",
@@ -1615,6 +1692,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "separatists-ig-100-magnaguards-prototype-assassin-droids",
@@ -1629,6 +1707,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "separatists-droidekas",
@@ -1642,6 +1721,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "separatists-dsd1-dwarf-spider-droid",
@@ -1655,6 +1735,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "separatists-lm-432-crab-droid",
@@ -1668,6 +1749,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "separatists-stap-riders",
@@ -1681,6 +1763,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "separatists-aat-battle-tank",
@@ -1694,6 +1777,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "separatists-nr-n99-persuader-class-tank-droid",
@@ -1707,6 +1791,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "separatists-nr-n99-persuader-class-tank-droid-prototype-tank-droid",
@@ -1721,6 +1806,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "separatists-aqua-droids",
@@ -1734,33 +1820,38 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, comms: 1 },
   },
   {
-    id: "mercenary-gar-saxon",
+    id: "mercenary-gar-saxon-militant-commando",
     name: "Gar Saxon",
+    sub_title: "Militant Commando",
     is_unique: true,
     faction: "mercenary",
     type: "trooper",
-    points: 110,
+    points: 90,
     rank: "commander",
     miniatures: 1,
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
-    id: "mercenary-maul-shadow-collective",
+    id: "mercenary-maul-a-rival",
     name: "Maul",
-    sub_title: "Shadow Collective",
+    sub_title: "A Rival",
     is_unique: true,
     faction: "mercenary",
     type: "trooper",
-    points: 150,
+    points: 130,
     rank: "operative",
     miniatures: 1,
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    force_alignment: "dark",
+    upgrades: { training: 1, gear: 1, comms: 1, force: 2 },
   },
   {
     id: "mercenary-mandalorian-super-commandos",
@@ -1768,12 +1859,13 @@ export const SEED_UNITS: Unit[] = [
     is_unique: false,
     faction: "mercenary",
     type: "trooper",
-    points: 70,
+    points: 66,
     rank: "special-forces",
     miniatures: 1,
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "mercenary-pyke-syndicate-capo",
@@ -1782,12 +1874,13 @@ export const SEED_UNITS: Unit[] = [
     faction: "mercenary",
     also_factions: ["rebels", "imperials", "republic", "separatists"],
     type: "trooper",
-    points: 60,
+    points: 42,
     rank: "commander",
     miniatures: 1,
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
     id: "mercenary-pyke-syndicate-foot-soldiers",
@@ -1796,12 +1889,13 @@ export const SEED_UNITS: Unit[] = [
     faction: "mercenary",
     also_factions: ["rebels", "imperials", "republic", "separatists"],
     type: "trooper",
-    points: 45,
+    points: 42,
     rank: "corps",
     miniatures: 1,
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
     id: "mercenary-black-sun-vigo",
@@ -1810,12 +1904,13 @@ export const SEED_UNITS: Unit[] = [
     faction: "mercenary",
     also_factions: ["imperials", "separatists"],
     type: "trooper",
-    points: 80,
+    points: 50,
     rank: "commander",
     miniatures: 1,
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
   },
   {
     id: "mercenary-black-sun-enforcers",
@@ -1830,14 +1925,15 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, grenades: 1, comms: 1 },
   },
   {
-    id: "mercenary-bossk-trandoshan-terror",
+    id: "imperials-bossk-trandoshan-terror",
     name: "Bossk",
     sub_title: "Trandoshan Terror",
     is_unique: true,
-    faction: "mercenary",
-    also_factions: ["imperials", "separatists"],
+    faction: "imperials",
+    also_factions: ["separatists"],
     type: "trooper",
     points: 105,
     rank: "operative",
@@ -1845,11 +1941,12 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { training: 1, gear: 1, comms: 1 },
   },
   {
-    id: "mercenary-cad-bane-galaxy-s-most-wanted",
+    id: "mercenary-cad-bane-needs-no-introduction",
     name: "Cad Bane",
-    sub_title: "Galaxy's Most Wanted",
+    sub_title: "Needs No Introduction",
     is_unique: true,
     faction: "mercenary",
     also_factions: ["imperials", "separatists"],
@@ -1860,6 +1957,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { training: 1, gear: 1, comms: 1 },
   },
   {
     id: "mercenary-hondo-ohnaka",
@@ -1874,14 +1972,14 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { training: 1, gear: 1, comms: 1 },
   },
   {
-    id: "mercenary-boba-fett-daimyo-of-mos-espa",
+    id: "rebels-boba-fett-daimyo-of-mos-espa",
     name: "Boba Fett",
     sub_title: "Daimyo of Mos Espa",
     is_unique: true,
-    faction: "mercenary",
-    also_factions: ["rebels"],
+    faction: "rebels",
     type: "trooper",
     points: 120,
     rank: "operative",
@@ -1889,14 +1987,14 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { training: 1, gear: 1, comms: 1 },
   },
   {
-    id: "mercenary-boba-fett-infamous-bounty-hunter",
+    id: "imperials-boba-fett-infamous-bounty-hunter",
     name: "Boba Fett",
     sub_title: "Infamous Bounty Hunter",
     is_unique: true,
-    faction: "mercenary",
-    also_factions: ["imperials"],
+    faction: "imperials",
     type: "trooper",
     points: 130,
     rank: "operative",
@@ -1910,12 +2008,12 @@ export const SEED_UNITS: Unit[] = [
     upgrades: { training: 2, gear: 2 },
   },
   {
-    id: "mercenary-ig-11-nurse-droid",
+    id: "imperials-ig-11-nurse-droid",
     name: "IG-11",
     sub_title: "Nurse Droid",
     is_unique: true,
-    faction: "mercenary",
-    also_factions: ["rebels", "imperials"],
+    faction: "imperials",
+    also_factions: ["rebels"],
     type: "trooper",
     points: 105,
     rank: "operative",
@@ -1923,14 +2021,14 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { training: 1, gear: 1, comms: 1 },
   },
   {
-    id: "mercenary-ig-88-assassin-droid",
+    id: "imperials-ig-88-assassin-droid",
     name: "IG-88",
     sub_title: "Assassin Droid",
     is_unique: true,
-    faction: "mercenary",
-    also_factions: ["imperials"],
+    faction: "imperials",
     type: "trooper",
     points: 110,
     rank: "operative",
@@ -1938,14 +2036,15 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { training: 1, gear: 1, comms: 1 },
   },
   {
-    id: "mercenary-din-djarin-the-mandalorian",
+    id: "rebels-din-djarin-the-mandalorian",
     name: "Din Djarin",
     sub_title: "The Mandalorian",
     is_unique: true,
-    faction: "mercenary",
-    also_factions: ["rebels", "imperials"],
+    faction: "rebels",
+    also_factions: ["imperials"],
     type: "trooper",
     points: 95,
     rank: "operative",
@@ -1953,13 +2052,14 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { training: 1, gear: 1, comms: 1 },
   },
   {
-    id: "mercenary-the-bad-batch",
+    id: "rebels-the-bad-batch",
     name: "The Bad Batch",
     is_unique: true,
-    faction: "mercenary",
-    also_factions: ["rebels", "republic"],
+    faction: "rebels",
+    also_factions: ["republic"],
     type: "trooper",
     points: 90,
     rank: "operative",
@@ -1967,6 +2067,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { training: 1, gear: 1, comms: 1 },
   },
   {
     id: "rebels-r2-d2",
@@ -1981,6 +2082,7 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { training: 1, gear: 1, comms: 1 },
   },
   {
     id: "rebels-ahsoka-tano-fulcrum",
@@ -1995,6 +2097,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    force_alignment: "light",
+    upgrades: { training: 1, gear: 1, comms: 1, force: 2 },
   },
   {
     id: "rebels-chewbacca",
@@ -2020,12 +2124,13 @@ export const SEED_UNITS: Unit[] = [
     faction: "mercenary",
     also_factions: ["rebels", "republic"],
     type: "trooper",
-    points: 80,
+    points: 70,
     rank: "support",
     miniatures: 1,
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, comms: 1 },
   },
   {
     id: "mercenary-a-a5-speeder-truck",
@@ -2034,11 +2139,40 @@ export const SEED_UNITS: Unit[] = [
     faction: "mercenary",
     also_factions: ["rebels"],
     type: "trooper",
-    points: 95,
+    points: 75,
     rank: "heavy",
     miniatures: 1,
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, training: 1, gear: 1, comms: 1 },
+  },
+  {
+    id: "mercenary-weequay-pirates",
+    name: "Weequay Pirates",
+    is_unique: false,
+    faction: "mercenary",
+    type: "trooper",
+    points: 40,
+    rank: "corps",
+    miniatures: 1,
+    wounds: 1,
+    defense: "white",
+    has_defense_surge: false,
+    upgrades: { "heavy-weapon": 1, personnel: 1, training: 1, gear: 1, grenades: 1, comms: 1 },
+  },
+  {
+    id: "mercenary-wlo-5-speeder-tank",
+    name: "WLO-5 Speeder Tank",
+    is_unique: false,
+    faction: "mercenary",
+    type: "repulsor-vehicle",
+    points: 100,
+    rank: "heavy",
+    miniatures: 1,
+    wounds: 1,
+    defense: "white",
+    has_defense_surge: false,
+    upgrades: { comms: 1, pilot: 1, "hard-point": 2, crew: 1, armament: 1 },
   },
 ];

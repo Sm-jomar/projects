@@ -312,6 +312,11 @@ input, select {
   font-style: italic;
   margin-left: 4px;
 }
+.flag-indicator {
+  margin-left: 6px;
+  font-size: 12px;
+  cursor: help;
+}
 
 .points-bar {
   display: flex;

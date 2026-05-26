@@ -732,7 +732,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "jyn-erso"
+          "id": "rebels-jyn-erso"
         }
       ],
       "id": "a-180-pistol-config",
@@ -766,7 +766,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "jyn-erso"
+          "id": "rebels-jyn-erso"
         }
       ],
       "id": "a-180-rifle-config",
@@ -800,11 +800,7 @@
         "reconfigure": ""
       },
       "keywords_for_unit": {},
-      "restricted_to_unit": [
-        {
-          "id": "rebel-pathfinders"
-        }
-      ],
+      "restricted_to_unit": [],
       "id": "a-300-long-range-config",
       "is_unique": false,
       "name": "A-300 long Range Config",
@@ -833,11 +829,7 @@
         "reconfigure": ""
       },
       "keywords_for_unit": {},
-      "restricted_to_unit": [
-        {
-          "id": "rebel-pathfinders"
-        }
-      ],
+      "restricted_to_unit": [],
       "id": "a-300-short-range-config",
       "is_unique": false,
       "name": "A-300 Short Range Config",
@@ -868,7 +860,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "imperial-death-troopers"
+          "id": "imperials-imperial-death-troopers"
         }
       ],
       "id": "e-11-d-focused-fire-config",
@@ -903,7 +895,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "imperial-death-troopers"
+          "id": "imperials-imperial-death-troopers"
         }
       ],
       "id": "e-11-d-grenade-launcher-config",
@@ -939,7 +931,7 @@
       },
       "restricted_to_unit": [
         {
-          "id": "sabine-wren"
+          "id": "rebels-sabine-wren"
         }
       ],
       "id": "the-darksaber",
@@ -1109,7 +1101,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "x-34-landspeeder"
+          "id": "rebels-x-34-landspeeder"
         }
       ],
       "id": "a-300-rifle-gunner",
@@ -1140,7 +1132,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "x-34-landspeeder"
+          "id": "rebels-x-34-landspeeder"
         }
       ],
       "id": "rps-6-rocket-gunner",
@@ -1550,7 +1542,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "at-st"
+          "id": "imperials-at-st"
         }
       ],
       "id": "88-twin-light-blaster-cannon",
@@ -1586,7 +1578,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "at-rt"
+          "id": "rebels-at-rt"
         }
       ],
       "id": "at-rt-flamethrower",
@@ -1622,7 +1614,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "at-rt"
+          "id": "rebels-at-rt"
         }
       ],
       "id": "at-rt-laser-cannon",
@@ -1658,7 +1650,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "at-rt"
+          "id": "rebels-at-rt"
         }
       ],
       "id": "at-rt-rotary-blaster",
@@ -1692,7 +1684,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "at-st"
+          "id": "imperials-at-st"
         }
       ],
       "id": "at-st-mortar-launcher",
@@ -1725,7 +1717,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "t-47-airspeeder"
+          "id": "rebels-t-47-airspeeder"
         }
       ],
       "id": "ax-108-ground-buzzer",
@@ -1758,7 +1750,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "tx-225-gav-w-occupier-combat-assault-tank"
+          "id": "imperials-tx-225-gavw-occupier-tank"
         }
       ],
       "id": "dlt-19-rifle-pintle",
@@ -1791,7 +1783,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "at-st"
+          "id": "imperials-at-st"
         }
       ],
       "id": "dw-3-concussion-grenade-launcher",
@@ -1825,7 +1817,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "x-34-landspeeder"
+          "id": "rebels-x-34-landspeeder"
         }
       ],
       "id": "m-45-ion-blaster",
@@ -1861,7 +1853,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "x-34-landspeeder"
+          "id": "rebels-x-34-landspeeder"
         }
       ],
       "id": "mark-ii-medium-blaster",
@@ -1894,7 +1886,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "t-47-airspeeder"
+          "id": "rebels-t-47-airspeeder"
         }
       ],
       "id": "mo-dk-power-harpoon",
@@ -1929,7 +1921,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "tx-225-gav-w-occupier-combat-assault-tank"
+          "id": "imperials-tx-225-gavw-occupier-tank"
         }
       ],
       "id": "rt-97-c-rifle-pintle",
@@ -1961,7 +1953,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "wookiee-warriors"
+          "id": "rebels-wookiee-warriors-freedom-fighters"
         }
       ],
       "id": "bowcaster-wookiee",
@@ -1996,10 +1988,10 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "rebel-commandos"
+          "id": "rebels-rebel-commandos"
         },
         {
-          "id": "rebel-commandos-strike-team"
+          "id": "rebels-rebel-commandos-strike-team"
         }
       ],
       "id": "dh-447-sniper",
@@ -2033,7 +2025,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "imperial-death-troopers"
+          "id": "imperials-imperial-death-troopers"
         }
       ],
       "id": "dlt-19-d-trooper",
@@ -2067,7 +2059,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "stormtroopers"
+          "id": "imperials-stormtroopers"
         }
       ],
       "id": "dlt-19-stormtrooper",
@@ -2101,10 +2093,10 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "scout-troopers"
+          "id": "imperials-scout-troopers"
         },
         {
-          "id": "scout-troopers-strike-team"
+          "id": "imperials-scout-troopers-strike-team"
         }
       ],
       "id": "dlt-19-x-sniper",
@@ -2141,7 +2133,7 @@
       },
       "restricted_to_unit": [
         {
-          "id": "imperial-death-troopers"
+          "id": "imperials-imperial-death-troopers"
         }
       ],
       "id": "dt-f-16",
@@ -2173,11 +2165,7 @@
         "sidearm-melee": ""
       },
       "keywords_for_unit": {},
-      "restricted_to_unit": [
-        {
-          "id": "imperial-royal-guards"
-        }
-      ],
+      "restricted_to_unit": [],
       "id": "electrostaff-guard",
       "is_unique": false,
       "name": "Electrostaff Guard",
@@ -2206,7 +2194,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "snowtroopers"
+          "id": "imperials-snowtroopers"
         }
       ],
       "id": "flametrooper",
@@ -2240,7 +2228,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "stormtroopers"
+          "id": "imperials-stormtroopers"
         }
       ],
       "id": "hh-12-stormtrooper",
@@ -2275,7 +2263,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "fleet-troopers"
+          "id": "rebels-fleet-troopers"
         }
       ],
       "id": "mpl-57-barrage-trooper",
@@ -2310,7 +2298,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "rebel-troopers"
+          "id": "rebels-rebel-troopers"
         }
       ],
       "id": "mpl-57-ion-trooper",
@@ -2345,10 +2333,10 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "rebel-commandos"
+          "id": "rebels-rebel-commandos"
         },
         {
-          "id": "rebel-commandos-strike-team"
+          "id": "rebels-rebel-commandos-strike-team"
         }
       ],
       "id": "proton-charge-saboteur",
@@ -2386,7 +2374,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "fleet-troopers"
+          "id": "rebels-fleet-troopers"
         }
       ],
       "id": "scatter-gun-trooper",
@@ -2419,10 +2407,10 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "scout-troopers"
+          "id": "imperials-scout-troopers"
         },
         {
-          "id": "scout-troopers-strike-team"
+          "id": "imperials-scout-troopers-strike-team"
         }
       ],
       "id": "sonic-charge-saboteur",
@@ -2460,7 +2448,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "snowtroopers"
+          "id": "imperials-snowtroopers"
         }
       ],
       "id": "t-7-ion-snowtrooper",
@@ -2495,7 +2483,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "rebel-troopers"
+          "id": "rebels-rebel-troopers"
         }
       ],
       "id": "z-6-trooper",
@@ -2545,11 +2533,7 @@
       "points": 32,
       "keywords": {},
       "keywords_for_unit": {},
-      "restricted_to_unit": [
-        {
-          "id": "rebel-pathfinders"
-        }
-      ],
+      "restricted_to_unit": [],
       "id": "bistan",
       "is_unique": true,
       "name": "Bistan",
@@ -2582,7 +2566,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "fleet-troopers"
+          "id": "rebels-fleet-troopers"
         }
       ],
       "id": "fleet-trooper",
@@ -2645,11 +2629,7 @@
         "inspire": 1,
         "leader": ""
       },
-      "restricted_to_unit": [
-        {
-          "id": "rebel-pathfinders"
-        }
-      ],
+      "restricted_to_unit": [],
       "id": "pao",
       "is_unique": true,
       "name": "Pao",
@@ -2762,7 +2742,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "rebel-troopers"
+          "id": "rebels-rebel-troopers"
         }
       ],
       "id": "rebel-trooper",
@@ -2783,7 +2763,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "snowtroopers"
+          "id": "imperials-snowtroopers"
         }
       ],
       "id": "snowtrooper",
@@ -2804,7 +2784,7 @@
       "keywords_for_unit": {},
       "restricted_to_unit": [
         {
-          "id": "stormtroopers"
+          "id": "imperials-stormtroopers"
         }
       ],
       "id": "stormtrooper",
