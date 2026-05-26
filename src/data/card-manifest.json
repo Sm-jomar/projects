@@ -2,27 +2,18 @@
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "Mar K Il Medium BLASTER TROOPER",
-    "slug": "mar-k-il-medium-blaster-trooper",
-    "file": "cards/rebels/unit/mar-k-il-medium-blaster-trooper.jpg",
-    "source": "DOC51_RebelAlliance_Units.pdf",
-    "points": 7
-  },
-  {
-    "faction": "rebels",
-    "kind": "unit",
-    "title": "MarkK II Medium BLASTER",
-    "slug": "markk-ii-medium-blaster",
-    "file": "cards/rebels/unit/markk-ii-medium-blaster.jpg",
+    "title": "Mark lil Medium BLASTER ROOPER",
+    "slug": "mark-lil-medium-blaster-rooper",
+    "file": "cards/rebels/unit/mark-lil-medium-blaster-rooper.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": 38
   },
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "REBEL TROOPERS",
-    "slug": "rebel-troopers",
-    "file": "cards/rebels/unit/rebel-troopers.jpg",
+    "title": "ReeEL TROOPERS",
+    "slug": "reeel-troopers",
+    "file": "cards/rebels/unit/reeel-troopers.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": null
   },
@@ -38,47 +29,65 @@
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "REBEL VETERANS",
-    "slug": "rebel-veterans",
-    "file": "cards/rebels/unit/rebel-veterans.jpg",
-    "source": "DOC51_RebelAlliance_Units.pdf",
-    "points": 4
-  },
-  {
-    "faction": "rebels",
-    "kind": "unit",
-    "title": "REBEL COMMANDOS",
-    "slug": "rebel-commandos",
-    "file": "cards/rebels/unit/rebel-commandos.jpg",
-    "source": "DOC51_RebelAlliance_Units.pdf",
-    "points": 48
-  },
-  {
-    "faction": "rebels",
-    "kind": "unit",
-    "title": "WOookKIEE Warriors",
-    "slug": "woookkiee-warriors",
-    "file": "cards/rebels/unit/woookkiee-warriors.jpg",
-    "source": "DOC51_RebelAlliance_Units.pdf",
-    "points": 89
-  },
-  {
-    "faction": "rebels",
-    "kind": "unit",
-    "title": "ore",
-    "slug": "ore",
-    "file": "cards/rebels/unit/ore.jpg",
+    "title": "FLEET TROOPERS",
+    "slug": "fleet-troopers-2",
+    "file": "cards/rebels/unit/fleet-troopers-2.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": null
   },
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "Sen",
-    "slug": "sen",
-    "file": "cards/rebels/unit/sen.jpg",
+    "title": "RPerepeL TROOPERS",
+    "slug": "rperepel-troopers",
+    "file": "cards/rebels/unit/rperepel-troopers.jpg",
+    "source": "DOC51_RebelAlliance_Units.pdf",
+    "points": null
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "RPeee. VETERANS",
+    "slug": "rpeee-veterans",
+    "file": "cards/rebels/unit/rpeee-veterans.jpg",
+    "source": "DOC51_RebelAlliance_Units.pdf",
+    "points": 4
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "RPeee. ComMANDOS",
+    "slug": "rpeee-commandos",
+    "file": "cards/rebels/unit/rpeee-commandos.jpg",
+    "source": "DOC51_RebelAlliance_Units.pdf",
+    "points": 48
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "WookKIEE WARRIORS",
+    "slug": "wookkiee-warriors",
+    "file": "cards/rebels/unit/wookkiee-warriors.jpg",
+    "source": "DOC51_RebelAlliance_Units.pdf",
+    "points": 89
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "WookKIEE WARRIORS",
+    "slug": "wookkiee-warriors-2",
+    "file": "cards/rebels/unit/wookkiee-warriors-2.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": 2
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "WookKIEE WARRIORS",
+    "slug": "wookkiee-warriors-3",
+    "file": "cards/rebels/unit/wookkiee-warriors-3.jpg",
+    "source": "DOC51_RebelAlliance_Units.pdf",
+    "points": 72
   },
   {
     "faction": "rebels",
@@ -87,48 +96,75 @@
     "slug": "mandalorian-resistance",
     "file": "cards/rebels/unit/mandalorian-resistance.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
-    "points": 68
-  },
-  {
-    "faction": "rebels",
-    "kind": "unit",
-    "title": "CLAN WREN",
-    "slug": "clan-wren",
-    "file": "cards/rebels/unit/clan-wren.jpg",
-    "source": "DOC51_RebelAlliance_Units.pdf",
     "points": 3
   },
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "REBEL SLEEPER CELL",
-    "slug": "rebel-sleeper-cell",
-    "file": "cards/rebels/unit/rebel-sleeper-cell.jpg",
+    "title": "MANDALORIAN RESISTANCE",
+    "slug": "mandalorian-resistance-2",
+    "file": "cards/rebels/unit/mandalorian-resistance-2.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
-    "points": 5
+    "points": 68
   },
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "AT-RT",
-    "slug": "at-rt",
-    "file": "cards/rebels/unit/at-rt.jpg",
+    "title": "MANDALORIAN RESISTANCE",
+    "slug": "mandalorian-resistance-3",
+    "file": "cards/rebels/unit/mandalorian-resistance-3.jpg",
+    "source": "DOC51_RebelAlliance_Units.pdf",
+    "points": 7
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "MANDALORIAN RESISTANCE",
+    "slug": "mandalorian-resistance-4",
+    "file": "cards/rebels/unit/mandalorian-resistance-4.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": 4
   },
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "1.4 FD Laser CANNON TEAM",
-    "slug": "1-4-fd-laser-cannon-team",
-    "file": "cards/rebels/unit/1-4-fd-laser-cannon-team.jpg",
+    "title": "Reee. SLEEPER CELL",
+    "slug": "reee-sleeper-cell",
+    "file": "cards/rebels/unit/reee-sleeper-cell.jpg",
+    "source": "DOC51_RebelAlliance_Units.pdf",
+    "points": 5
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "AT.R'T",
+    "slug": "at-r-t",
+    "file": "cards/rebels/unit/at-r-t.jpg",
+    "source": "DOC51_RebelAlliance_Units.pdf",
+    "points": 4
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "1 4ED Laser Cannon TEAM",
+    "slug": "1-4ed-laser-cannon-team",
+    "file": "cards/rebels/unit/1-4ed-laser-cannon-team.jpg",
+    "source": "DOC51_RebelAlliance_Units.pdf",
+    "points": null
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "1 4ED Laser Cannon TEAM",
+    "slug": "1-4ed-laser-cannon-team-2",
+    "file": "cards/rebels/unit/1-4ed-laser-cannon-team-2.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": 65
   },
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": ". TAUNTAUN RIDERS",
+    "title": "TAUNTAUN RIDERS",
     "slug": "tauntaun-riders",
     "file": "cards/rebels/unit/tauntaun-riders.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
@@ -137,45 +173,54 @@
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "T-47 AIRSPEEDER",
-    "slug": "t-47-airspeeder",
-    "file": "cards/rebels/unit/t-47-airspeeder.jpg",
+    "title": "Ts4i7 AirsPpeEEDER",
+    "slug": "ts4i7-airsppeeeder",
+    "file": "cards/rebels/unit/ts4i7-airsppeeeder.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": null
   },
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "A-A5 SPEEDER TRUCK",
-    "slug": "a-a5-speeder-truck",
-    "file": "cards/rebels/unit/a-a5-speeder-truck.jpg",
+    "title": "A-A5 Speenper TRUCK",
+    "slug": "a-a5-speenper-truck",
+    "file": "cards/rebels/unit/a-a5-speenper-truck.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": null
   },
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "X-34 LANDSPEEDER",
-    "slug": "x-34-landspeeder",
-    "file": "cards/rebels/unit/x-34-landspeeder.jpg",
+    "title": "X .34 LannsSPEEDER",
+    "slug": "x-34-lannsspeeder",
+    "file": "cards/rebels/unit/x-34-lannsspeeder.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": 22
   },
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "C-3PO",
-    "slug": "c-3po",
-    "file": "cards/rebels/unit/c-3po.jpg",
+    "title": "X .34 LannsSPEEDER",
+    "slug": "x-34-lannsspeeder-2",
+    "file": "cards/rebels/unit/x-34-lannsspeeder-2.jpg",
+    "source": "DOC51_RebelAlliance_Units.pdf",
+    "points": null
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "C-3POQ",
+    "slug": "c-3poq",
+    "file": "cards/rebels/unit/c-3poq.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": 15
   },
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "LeEIA ORGANA",
-    "slug": "leeia-organa",
-    "file": "cards/rebels/unit/leeia-organa.jpg",
+    "title": "LEIA ORGANA",
+    "slug": "leia-organa",
+    "file": "cards/rebels/unit/leia-organa.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": 75
   },
@@ -186,7 +231,7 @@
     "slug": "luke-skywalker",
     "file": "cards/rebels/unit/luke-skywalker.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
-    "points": 2
+    "points": 5
   },
   {
     "faction": "rebels",
@@ -209,74 +254,101 @@
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "eJyn Erso",
-    "slug": "ejyn-erso",
-    "file": "cards/rebels/unit/ejyn-erso.jpg",
+    "title": "LUKE SKYWALKER",
+    "slug": "luke-skywalker-2",
+    "file": "cards/rebels/unit/luke-skywalker-2.jpg",
+    "source": "DOC51_RebelAlliance_Units.pdf",
+    "points": 2
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "Jyn ERSO",
+    "slug": "jyn-erso",
+    "file": "cards/rebels/unit/jyn-erso.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": 3
   },
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "eLanbDo CALRISSIAN",
-    "slug": "elanbdo-calrissian",
-    "file": "cards/rebels/unit/elanbdo-calrissian.jpg",
+    "title": "Lanbo CALRISSIAN",
+    "slug": "lanbo-calrissian",
+    "file": "cards/rebels/unit/lanbo-calrissian.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": 105
   },
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "eSABINE WREN",
-    "slug": "esabine-wren",
-    "file": "cards/rebels/unit/esabine-wren.jpg",
+    "title": "SABINE WREN",
+    "slug": "sabine-wren",
+    "file": "cards/rebels/unit/sabine-wren.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": 125
   },
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "CH EWBACCA",
-    "slug": "ch-ewbacca",
-    "file": "cards/rebels/unit/ch-ewbacca.jpg",
+    "title": "CHEWBACCA",
+    "slug": "chewbacca",
+    "file": "cards/rebels/unit/chewbacca.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": 5
   },
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "R2- D2",
-    "slug": "r2-d2",
-    "file": "cards/rebels/unit/r2-d2.jpg",
+    "title": ".eR2-D2",
+    "slug": "er2-d2",
+    "file": "cards/rebels/unit/er2-d2.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": 55
   },
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "AHSOKA TANO",
-    "slug": "ahsoka-tano",
-    "file": "cards/rebels/unit/ahsoka-tano.jpg",
+    "title": "LUKE SKYWALKER",
+    "slug": "luke-skywalker-3",
+    "file": "cards/rebels/unit/luke-skywalker-3.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": null
   },
   {
     "faction": "rebels",
     "kind": "unit",
-    "title": "SARDONIC SECURITY DROID",
-    "slug": "sardonic-security-droid",
-    "file": "cards/rebels/unit/sardonic-security-droid.jpg",
+    "title": "fAHSOKA TANO",
+    "slug": "fahsoka-tano",
+    "file": "cards/rebels/unit/fahsoka-tano.jpg",
+    "source": "DOC51_RebelAlliance_Units.pdf",
+    "points": null
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "KK-2S50",
+    "slug": "kk-2s50",
+    "file": "cards/rebels/unit/kk-2s50.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": 70
   },
   {
     "faction": "rebels",
-    "kind": "unit",
-    "title": "K-250",
-    "slug": "k-250",
-    "file": "cards/rebels/unit/k-250.jpg",
+    "kind": "upgrade",
+    "title": "ore",
+    "slug": "ore",
+    "file": "cards/rebels/upgrade/ore.jpg",
     "source": "DOC51_RebelAlliance_Units.pdf",
     "points": null
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Sen",
+    "slug": "sen",
+    "file": "cards/rebels/upgrade/sen.jpg",
+    "source": "DOC51_RebelAlliance_Units.pdf",
+    "points": 2
   },
   {
     "faction": "rebels",
@@ -286,6 +358,33 @@
     "file": "cards/rebels/upgrade/mpl-57-lon-trooper.jpg",
     "source": "DOC51_RebelAlliance_Upgrades.pdf",
     "points": 27
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "FLEET TROOPER",
+    "slug": "fleet-trooper",
+    "file": "cards/rebels/upgrade/fleet-trooper.jpg",
+    "source": "DOC51_RebelAlliance_Upgrades.pdf",
+    "points": 7
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "SX-21 TROOPER",
+    "slug": "sx-21-trooper",
+    "file": "cards/rebels/upgrade/sx-21-trooper.jpg",
+    "source": "DOC51_RebelAlliance_Upgrades.pdf",
+    "points": 13
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "2-6 TROOPER",
+    "slug": "2-6-trooper",
+    "file": "cards/rebels/upgrade/2-6-trooper.jpg",
+    "source": "DOC51_RebelAlliance_Upgrades.pdf",
+    "points": 20
   },
   {
     "faction": "rebels",
@@ -303,16 +402,7 @@
     "slug": "rebel-marksman",
     "file": "cards/rebels/upgrade/rebel-marksman.jpg",
     "source": "DOC51_RebelAlliance_Upgrades.pdf",
-    "points": 28
-  },
-  {
-    "faction": "rebels",
-    "kind": "upgrade",
-    "title": "SX-21 TROOPER",
-    "slug": "sx-21-trooper",
-    "file": "cards/rebels/upgrade/sx-21-trooper.jpg",
-    "source": "DOC51_RebelAlliance_Upgrades.pdf",
-    "points": 13
+    "points": 9
   },
   {
     "faction": "rebels",
@@ -322,15 +412,6 @@
     "file": "cards/rebels/upgrade/avai.jpg",
     "source": "DOC51_RebelAlliance_Upgrades.pdf",
     "points": 22
-  },
-  {
-    "faction": "rebels",
-    "kind": "upgrade",
-    "title": "2-6 TROOPER",
-    "slug": "2-6-trooper",
-    "file": "cards/rebels/upgrade/2-6-trooper.jpg",
-    "source": "DOC51_RebelAlliance_Upgrades.pdf",
-    "points": 20
   },
   {
     "faction": "rebels",
@@ -389,11 +470,47 @@
   {
     "faction": "rebels",
     "kind": "upgrade",
+    "title": "REBEL TROOPER",
+    "slug": "rebel-trooper",
+    "file": "cards/rebels/upgrade/rebel-trooper.jpg",
+    "source": "DOC51_RebelAlliance_Upgrades.pdf",
+    "points": 7
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "REBEL TROOPER CAPTAIN",
+    "slug": "rebel-trooper-captain",
+    "file": "cards/rebels/upgrade/rebel-trooper-captain.jpg",
+    "source": "DOC51_RebelAlliance_Upgrades.pdf",
+    "points": 9
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
     "title": "REBEL TROOPER SQUAD",
     "slug": "rebel-trooper-squad",
     "file": "cards/rebels/upgrade/rebel-trooper-squad.jpg",
     "source": "DOC51_RebelAlliance_Upgrades.pdf",
     "points": 45
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "FLEET TROOPER SQUAD",
+    "slug": "fleet-trooper-squad",
+    "file": "cards/rebels/upgrade/fleet-trooper-squad.jpg",
+    "source": "DOC51_RebelAlliance_Upgrades.pdf",
+    "points": 45
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "REBEL VETERAN SQUAD",
+    "slug": "rebel-veteran-squad",
+    "file": "cards/rebels/upgrade/rebel-veteran-squad.jpg",
+    "source": "DOC51_RebelAlliance_Upgrades.pdf",
+    "points": 63
   },
   {
     "faction": "rebels",
@@ -425,15 +542,6 @@
   {
     "faction": "rebels",
     "kind": "upgrade",
-    "title": "UrsA WREN",
-    "slug": "ursa-wren",
-    "file": "cards/rebels/upgrade/ursa-wren.jpg",
-    "source": "DOC51_RebelAlliance_Upgrades.pdf",
-    "points": 34
-  },
-  {
-    "faction": "rebels",
-    "kind": "upgrade",
     "title": "REBEL OFFICER",
     "slug": "rebel-officer",
     "file": "cards/rebels/upgrade/rebel-officer.jpg",
@@ -443,11 +551,11 @@
   {
     "faction": "rebels",
     "kind": "upgrade",
-    "title": "REBEL TROOPER",
-    "slug": "rebel-trooper",
-    "file": "cards/rebels/upgrade/rebel-trooper.jpg",
+    "title": "UNSTABLE ASTROMECH",
+    "slug": "unstable-astromech",
+    "file": "cards/rebels/upgrade/unstable-astromech.jpg",
     "source": "DOC51_RebelAlliance_Upgrades.pdf",
-    "points": 7
+    "points": 5
   },
   {
     "faction": "rebels",
@@ -457,15 +565,6 @@
     "file": "cards/rebels/upgrade/astromech.jpg",
     "source": "DOC51_RebelAlliance_Upgrades.pdf",
     "points": null
-  },
-  {
-    "faction": "rebels",
-    "kind": "upgrade",
-    "title": "REBEL TROOPER CAPTAIN",
-    "slug": "rebel-trooper-captain",
-    "file": "cards/rebels/upgrade/rebel-trooper-captain.jpg",
-    "source": "DOC51_RebelAlliance_Upgrades.pdf",
-    "points": 9
   },
   {
     "faction": "rebels",
@@ -493,42 +592,6 @@
     "file": "cards/rebels/upgrade/2-1b-medical-droid.jpg",
     "source": "DOC51_RebelAlliance_Upgrades.pdf",
     "points": 20
-  },
-  {
-    "faction": "rebels",
-    "kind": "upgrade",
-    "title": "ASTROMECH DROID",
-    "slug": "astromech-droid",
-    "file": "cards/rebels/upgrade/astromech-droid.jpg",
-    "source": "DOC51_RebelAlliance_Upgrades.pdf",
-    "points": null
-  },
-  {
-    "faction": "rebels",
-    "kind": "upgrade",
-    "title": "FLEET TROOPER",
-    "slug": "fleet-trooper",
-    "file": "cards/rebels/upgrade/fleet-trooper.jpg",
-    "source": "DOC51_RebelAlliance_Upgrades.pdf",
-    "points": 7
-  },
-  {
-    "faction": "rebels",
-    "kind": "upgrade",
-    "title": "REBEL VETERAN SQUAD",
-    "slug": "rebel-veteran-squad",
-    "file": "cards/rebels/upgrade/rebel-veteran-squad.jpg",
-    "source": "DOC51_RebelAlliance_Upgrades.pdf",
-    "points": 63
-  },
-  {
-    "faction": "rebels",
-    "kind": "upgrade",
-    "title": "REBEL VETERAN",
-    "slug": "rebel-veteran",
-    "file": "cards/rebels/upgrade/rebel-veteran.jpg",
-    "source": "DOC51_RebelAlliance_Upgrades.pdf",
-    "points": 9
   },
   {
     "faction": "rebels",
@@ -592,15 +655,6 @@
     "file": "cards/rebels/upgrade/a300-rifle-gunner.jpg",
     "source": "DOC51_RebelAlliance_Upgrades.pdf",
     "points": 1
-  },
-  {
-    "faction": "rebels",
-    "kind": "upgrade",
-    "title": "UNSTABLE ASTROMECH",
-    "slug": "unstable-astromech",
-    "file": "cards/rebels/upgrade/unstable-astromech.jpg",
-    "source": "DOC51_RebelAlliance_Upgrades.pdf",
-    "points": 5
   },
   {
     "faction": "rebels",
@@ -758,142 +812,178 @@
   {
     "faction": "rebels",
     "kind": "upgrade",
-    "title": "eJyn S SE-14 BLASTER",
-    "slug": "ejyn-s-se-14-blaster",
-    "file": "cards/rebels/upgrade/ejyn-s-se-14-blaster.jpg",
+    "title": "Jyn S SE-14 BLASTER",
+    "slug": "jyn-s-se-14-blaster",
+    "file": "cards/rebels/upgrade/jyn-s-se-14-blaster.jpg",
     "source": "DOC51_RebelAlliance_Upgrades.pdf",
     "points": 10
   },
   {
-    "faction": "rebels",
-    "kind": "upgrade",
-    "title": "AZ&0 RIFLE CONFIG",
-    "slug": "az-0-rifle-config",
-    "file": "cards/rebels/upgrade/az-0-rifle-config.jpg",
-    "source": "DOC51_RebelAlliance_Upgrades.pdf",
-    "points": 25
-  },
-  {
     "faction": "imperials",
     "kind": "unit",
-    "title": "y STORMTROOPERS",
-    "slug": "y-stormtroopers",
-    "file": "cards/imperials/unit/y-stormtroopers.jpg",
+    "title": "STORMTROOPERS",
+    "slug": "stormtroopers",
+    "file": "cards/imperials/unit/stormtroopers.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": 42
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "y STORMTROOPER RIoT SQUAD",
-    "slug": "y-stormtrooper-riot-squad",
-    "file": "cards/imperials/unit/y-stormtrooper-riot-squad.jpg",
+    "title": ". STORMTROOPERS",
+    "slug": "stormtroopers-2",
+    "file": "cards/imperials/unit/stormtroopers-2.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
-    "points": 150
+    "points": 42
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "DF-90 MorTAR TROOPER",
-    "slug": "df-90-mortar-trooper",
-    "file": "cards/imperials/unit/df-90-mortar-trooper.jpg",
-    "source": "DOC51_GalacticEmpire_Units.pdf",
-    "points": 40
-  },
-  {
-    "faction": "imperials",
-    "kind": "unit",
-    "title": "S ScouT TROOPERS",
-    "slug": "s-scout-troopers",
-    "file": "cards/imperials/unit/s-scout-troopers.jpg",
+    "title": ". Scout TROOPERS",
+    "slug": "scout-troopers",
+    "file": "cards/imperials/unit/scout-troopers.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": 48
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "y IMPERIAL DEATH TROOPERS",
-    "slug": "y-imperial-death-troopers",
-    "file": "cards/imperials/unit/y-imperial-death-troopers.jpg",
+    "title": ". STORMTROOPERS",
+    "slug": "stormtroopers-3",
+    "file": "cards/imperials/unit/stormtroopers-3.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": 36
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": ". StrormTROOoPER Riot SouapD",
+    "slug": "strormtroooper-riot-souapd",
+    "file": "cards/imperials/unit/strormtroooper-riot-souapd.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": 150
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": ". SHORETROOPERS",
+    "slug": "shoretroopers",
+    "file": "cards/imperials/unit/shoretroopers.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": 52
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "StrormMTROOPER Riot SouaD",
+    "slug": "strormmtrooper-riot-souad",
+    "file": "cards/imperials/unit/strormmtrooper-riot-souad.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": 4
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "- RANGE TROOPERS",
+    "slug": "range-troopers",
+    "file": "cards/imperials/unit/range-troopers.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": 4
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "SHORETROOPERS",
+    "slug": "shoretroopers-2",
+    "file": "cards/imperials/unit/shoretroopers-2.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": 4
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "s DE-9GO Mortar TROOPER",
+    "slug": "s-de-9go-mortar-trooper",
+    "file": "cards/imperials/unit/s-de-9go-mortar-trooper.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": 40
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "IMPERIAL DeatH TROOPERS",
+    "slug": "imperial-death-troopers",
+    "file": "cards/imperials/unit/imperial-death-troopers.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": 72
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "Now",
-    "slug": "now",
-    "file": "cards/imperials/unit/now.jpg",
-    "source": "DOC51_GalacticEmpire_Units.pdf",
-    "points": 5
-  },
-  {
-    "faction": "imperials",
-    "kind": "unit",
-    "title": "Lay",
-    "slug": "lay",
-    "file": "cards/imperials/unit/lay.jpg",
+    "title": ". IMPERIAL Dark TROOPERS",
+    "slug": "imperial-dark-troopers",
+    "file": "cards/imperials/unit/imperial-dark-troopers.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": null
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "y IMPERIAL SPECIAL FORCES",
-    "slug": "y-imperial-special-forces",
-    "file": "cards/imperials/unit/y-imperial-special-forces.jpg",
+    "title": "IMPERIAL SPECIAL ForCcES",
+    "slug": "imperial-special-forcces",
+    "file": "cards/imperials/unit/imperial-special-forcces.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": 3
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "INFERNO SQUA",
-    "slug": "inferno-squa",
-    "file": "cards/imperials/unit/inferno-squa.jpg",
+    "title": ". IMPERIAL SPECIAL FORCES",
+    "slug": "imperial-special-forces",
+    "file": "cards/imperials/unit/imperial-special-forces.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": 34
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "y 74-Z SPEEDER BIKES",
-    "slug": "y-74-z-speeder-bikes",
-    "file": "cards/imperials/unit/y-74-z-speeder-bikes.jpg",
+    "title": ". J4a 7 Speenper Bikes",
+    "slug": "j4a-7-speenper-bikes",
+    "file": "cards/imperials/unit/j4a-7-speenper-bikes.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": 80
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "y E-Wes Heavy BLASTER TEAM",
-    "slug": "y-e-wes-heavy-blaster-team",
-    "file": "cards/imperials/unit/y-e-wes-heavy-blaster-team.jpg",
+    "title": "IMPERIAL SPECIAL FORCES",
+    "slug": "imperial-special-forces-2",
+    "file": "cards/imperials/unit/imperial-special-forces-2.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": null
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "E-WJee Heavy BLASTER TEAM",
+    "slug": "e-wjee-heavy-blaster-team",
+    "file": "cards/imperials/unit/e-wjee-heavy-blaster-team.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": 60
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "DEWBACK RIDER",
-    "slug": "dewback-rider",
-    "file": "cards/imperials/unit/dewback-rider.jpg",
+    "title": "DewereacKk RinER",
+    "slug": "dewereackk-riner",
+    "file": "cards/imperials/unit/dewereackk-riner.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": 70
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "RANGE TROOPERS",
-    "slug": "range-troopers",
-    "file": "cards/imperials/unit/range-troopers.jpg",
-    "source": "DOC51_GalacticEmpire_Units.pdf",
-    "points": 70
-  },
-  {
-    "faction": "imperials",
-    "kind": "unit",
-    "title": ". AT-ST",
+    "title": "AT-ST",
     "slug": "at-st",
     "file": "cards/imperials/unit/at-st.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
@@ -902,117 +992,207 @@
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "y TX-225 GAVw OccuPiIER TANK",
-    "slug": "y-tx-225-gavw-occupiier-tank",
-    "file": "cards/imperials/unit/y-tx-225-gavw-occupiier-tank.jpg",
+    "title": "RaNnGE TROOPERS",
+    "slug": "rannge-troopers",
+    "file": "cards/imperials/unit/rannge-troopers.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": 70
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "TX -2725 GAVw Occupier TANK",
+    "slug": "tx-2725-gavw-occupier-tank",
+    "file": "cards/imperials/unit/tx-2725-gavw-occupier-tank.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": 125
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "LAAT/LE PATROL TRANSPORT",
-    "slug": "laat-le-patrol-transport",
-    "file": "cards/imperials/unit/laat-le-patrol-transport.jpg",
+    "title": "LAAT sLeE Patrro. TRANSPORT",
+    "slug": "laat-slee-patrro-transport",
+    "file": "cards/imperials/unit/laat-slee-patrro-transport.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": 100
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "eDIRECTOR OrSON KRENNIC",
-    "slug": "edirector-orson-krennic",
-    "file": "cards/imperials/unit/edirector-orson-krennic.jpg",
-    "source": "DOC51_GalacticEmpire_Units.pdf",
-    "points": 65
-  },
-  {
-    "faction": "imperials",
-    "kind": "unit",
-    "title": "eGENERAL VEERS",
-    "slug": "egeneral-veers",
-    "file": "cards/imperials/unit/egeneral-veers.jpg",
+    "title": "DIRECTOR ORSON KRENNIC",
+    "slug": "director-orson-krennic",
+    "file": "cards/imperials/unit/director-orson-krennic.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": null
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "eDARTH VADER",
-    "slug": "edarth-vader",
-    "file": "cards/imperials/unit/edarth-vader.jpg",
+    "title": "GENERAL VEERS",
+    "slug": "general-veers",
+    "file": "cards/imperials/unit/general-veers.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": null
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": ". DIRECTOR ORSON KRENNIC",
+    "slug": "director-orson-krennic-2",
+    "file": "cards/imperials/unit/director-orson-krennic-2.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": 65
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": ". IMPERIAL Dark TROOPERS",
+    "slug": "imperial-dark-troopers-2",
+    "file": "cards/imperials/unit/imperial-dark-troopers-2.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": null
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": ". DARTH VADER",
+    "slug": "darth-vader",
+    "file": "cards/imperials/unit/darth-vader.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": 170
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "eIpEN's ID10 SEEKER Droip",
-    "slug": "eipen-s-id10-seeker-droip",
-    "file": "cards/imperials/unit/eipen-s-id10-seeker-droip.jpg",
+    "title": ". DARTH VADER",
+    "slug": "darth-vader-2",
+    "file": "cards/imperials/unit/darth-vader-2.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
-    "points": 15
+    "points": 155
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "eMorFr GIDEON",
-    "slug": "emorfr-gideon",
-    "file": "cards/imperials/unit/emorfr-gideon.jpg",
+    "title": "DARTH VADER",
+    "slug": "darth-vader-3",
+    "file": "cards/imperials/unit/darth-vader-3.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": 1
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "elpEN's 1ID10 SEEKER DRoID",
+    "slug": "elpen-s-1id10-seeker-droid",
+    "file": "cards/imperials/unit/elpen-s-1id10-seeker-droid.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": null
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "MoFrF GIDEON",
+    "slug": "mofrf-gideon",
+    "file": "cards/imperials/unit/mofrf-gideon.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": 100
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "eiDEN VERSIO",
-    "slug": "eiden-versio",
-    "file": "cards/imperials/unit/eiden-versio.jpg",
+    "title": "IDEN VERSIO",
+    "slug": "iden-versio",
+    "file": "cards/imperials/unit/iden-versio.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": 2
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": ". ipeEn's 1D10 SEEKER DrRoipD",
+    "slug": "ipeen-s-1d10-seeker-drroipd",
+    "file": "cards/imperials/unit/ipeen-s-1d10-seeker-drroipd.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": 15
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": ". IDEN VERSIO",
+    "slug": "iden-versio-2",
+    "file": "cards/imperials/unit/iden-versio-2.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": 115
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "eFIFTH BROTHER",
-    "slug": "efifth-brother",
-    "file": "cards/imperials/unit/efifth-brother.jpg",
+    "title": "FIFTH BROTHER",
+    "slug": "fifth-brother",
+    "file": "cards/imperials/unit/fifth-brother.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": 105
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "eSEVENTH SISTER",
-    "slug": "eseventh-sister",
-    "file": "cards/imperials/unit/eseventh-sister.jpg",
+    "title": ". SEVENTH SISTER",
+    "slug": "seventh-sister",
+    "file": "cards/imperials/unit/seventh-sister.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": 110
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "eMAJOR MARQUAND",
-    "slug": "emajor-marquand",
-    "file": "cards/imperials/unit/emajor-marquand.jpg",
+    "title": "Masor MARQUAND",
+    "slug": "masor-marquand",
+    "file": "cards/imperials/unit/masor-marquand.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
-    "points": 180
+    "points": null
   },
   {
     "faction": "imperials",
     "kind": "unit",
-    "title": "eAGENT KALLUS",
-    "slug": "eagent-kallus",
-    "file": "cards/imperials/unit/eagent-kallus.jpg",
+    "title": "AGENT KALLUS",
+    "slug": "agent-kallus",
+    "file": "cards/imperials/unit/agent-kallus.jpg",
     "source": "DOC51_GalacticEmpire_Units.pdf",
     "points": 70
   },
   {
     "faction": "imperials",
+    "kind": "unit",
+    "title": "Masor MARQUAND",
+    "slug": "masor-marquand-2",
+    "file": "cards/imperials/unit/masor-marquand-2.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": 180
+  },
+  {
+    "faction": "imperials",
     "kind": "upgrade",
-    "title": "DLT-19 STORMTROOPER",
-    "slug": "dlt-19-stormtrooper",
-    "file": "cards/imperials/upgrade/dlt-19-stormtrooper.jpg",
+    "title": "Now",
+    "slug": "now",
+    "file": "cards/imperials/upgrade/now.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": 5
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Lay",
+    "slug": "lay",
+    "file": "cards/imperials/upgrade/lay.jpg",
+    "source": "DOC51_GalacticEmpire_Units.pdf",
+    "points": null
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "RT-97C STORMTROOPER",
+    "slug": "rt-97c-stormtrooper",
+    "file": "cards/imperials/upgrade/rt-97c-stormtrooper.jpg",
     "source": "DOC51_GalacticEmpire_Upgrades.pdf",
     "points": 22
   },
@@ -1024,6 +1204,60 @@
     "file": "cards/imperials/upgrade/hh-12-stormtrooper.jpg",
     "source": "DOC51_GalacticEmpire_Upgrades.pdf",
     "points": 22
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "T-21B SHORETROOPER",
+    "slug": "t-21b-shoretrooper",
+    "file": "cards/imperials/upgrade/t-21b-shoretrooper.jpg",
+    "source": "DOC51_GalacticEmpire_Upgrades.pdf",
+    "points": 32
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "T-21 STORMTROOPER",
+    "slug": "t-21-stormtrooper",
+    "file": "cards/imperials/upgrade/t-21-stormtrooper.jpg",
+    "source": "DOC51_GalacticEmpire_Upgrades.pdf",
+    "points": 20
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "DLT-19 STORMTROOPER",
+    "slug": "dlt-19-stormtrooper",
+    "file": "cards/imperials/upgrade/dlt-19-stormtrooper.jpg",
+    "source": "DOC51_GalacticEmpire_Upgrades.pdf",
+    "points": 20
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "DLT-19D TROOPER",
+    "slug": "dlt-19d-trooper",
+    "file": "cards/imperials/upgrade/dlt-19d-trooper.jpg",
+    "source": "DOC51_GalacticEmpire_Upgrades.pdf",
+    "points": 30
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "RANGE TROOPER",
+    "slug": "range-trooper",
+    "file": "cards/imperials/upgrade/range-trooper.jpg",
+    "source": "DOC51_GalacticEmpire_Upgrades.pdf",
+    "points": 15
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "SHORETROOPER",
+    "slug": "shoretrooper",
+    "file": "cards/imperials/upgrade/shoretrooper.jpg",
+    "source": "DOC51_GalacticEmpire_Upgrades.pdf",
+    "points": 10
   },
   {
     "faction": "imperials",
@@ -1059,16 +1293,7 @@
     "slug": "bqbvs-eaww-we-be",
     "file": "cards/imperials/upgrade/bqbvs-eaww-we-be.jpg",
     "source": "DOC51_GalacticEmpire_Upgrades.pdf",
-    "points": null
-  },
-  {
-    "faction": "imperials",
-    "kind": "upgrade",
-    "title": "T-21B SHORETROOPER",
-    "slug": "t-21b-shoretrooper",
-    "file": "cards/imperials/upgrade/t-21b-shoretrooper.jpg",
-    "source": "DOC51_GalacticEmpire_Upgrades.pdf",
-    "points": 32
+    "points": 9
   },
   {
     "faction": "imperials",
@@ -1154,38 +1379,11 @@
   {
     "faction": "imperials",
     "kind": "upgrade",
-    "title": "STORMTROOPER",
-    "slug": "stormtrooper",
-    "file": "cards/imperials/upgrade/stormtrooper.jpg",
-    "source": "DOC51_GalacticEmpire_Upgrades.pdf",
-    "points": 10
-  },
-  {
-    "faction": "imperials",
-    "kind": "upgrade",
     "title": "men GP OS Gs 2 oe",
     "slug": "men-gp-os-gs-2-oe",
     "file": "cards/imperials/upgrade/men-gp-os-gs-2-oe.jpg",
     "source": "DOC51_GalacticEmpire_Upgrades.pdf",
     "points": 45
-  },
-  {
-    "faction": "imperials",
-    "kind": "upgrade",
-    "title": "STORMTROOPER SQUAD",
-    "slug": "stormtrooper-squad",
-    "file": "cards/imperials/upgrade/stormtrooper-squad.jpg",
-    "source": "DOC51_GalacticEmpire_Upgrades.pdf",
-    "points": 46
-  },
-  {
-    "faction": "imperials",
-    "kind": "upgrade",
-    "title": "Cee e fF iw wit OS ao",
-    "slug": "cee-e-ff-iw-wit-os-ao",
-    "file": "cards/imperials/upgrade/cee-e-ff-iw-wit-os-ao.jpg",
-    "source": "DOC51_GalacticEmpire_Upgrades.pdf",
-    "points": null
   },
   {
     "faction": "imperials",
@@ -1199,11 +1397,29 @@
   {
     "faction": "imperials",
     "kind": "upgrade",
-    "title": "BQGVl FEA WE bea",
-    "slug": "bqgvl-fea-we-bea",
-    "file": "cards/imperials/upgrade/bqgvl-fea-we-bea.jpg",
+    "title": "STORMTROOPER SQUAD",
+    "slug": "stormtrooper-squad",
+    "file": "cards/imperials/upgrade/stormtrooper-squad.jpg",
     "source": "DOC51_GalacticEmpire_Upgrades.pdf",
-    "points": 9
+    "points": 46
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "SNOWTROOPER SQUAD",
+    "slug": "snowtrooper-squad",
+    "file": "cards/imperials/upgrade/snowtrooper-squad.jpg",
+    "source": "DOC51_GalacticEmpire_Upgrades.pdf",
+    "points": 46
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Cee e fF iw wit OS ao",
+    "slug": "cee-e-ff-iw-wit-os-ao",
+    "file": "cards/imperials/upgrade/cee-e-ff-iw-wit-os-ao.jpg",
+    "source": "DOC51_GalacticEmpire_Upgrades.pdf",
+    "points": null
   },
   {
     "faction": "imperials",
@@ -1244,29 +1460,11 @@
   {
     "faction": "imperials",
     "kind": "upgrade",
-    "title": "SEVER fe EC",
-    "slug": "sever-fe-ec",
-    "file": "cards/imperials/upgrade/sever-fe-ec.jpg",
-    "source": "DOC51_GalacticEmpire_Upgrades.pdf",
-    "points": 32
-  },
-  {
-    "faction": "imperials",
-    "kind": "upgrade",
     "title": "GENERAL WEISS",
     "slug": "general-weiss",
     "file": "cards/imperials/upgrade/general-weiss.jpg",
     "source": "DOC51_GalacticEmpire_Upgrades.pdf",
     "points": null
-  },
-  {
-    "faction": "imperials",
-    "kind": "upgrade",
-    "title": "RANGE TROOPER",
-    "slug": "range-trooper",
-    "file": "cards/imperials/upgrade/range-trooper.jpg",
-    "source": "DOC51_GalacticEmpire_Upgrades.pdf",
-    "points": 15
   },
   {
     "faction": "imperials",
@@ -1347,7 +1545,7 @@
     "slug": "bs-s80-8-bebe-evp-ewe-fe-ee-ow",
     "file": "cards/imperials/upgrade/bs-s80-8-bebe-evp-ewe-fe-ee-ow.jpg",
     "source": "DOC51_GalacticEmpire_Upgrades.pdf",
-    "points": 18
+    "points": 14
   },
   {
     "faction": "imperials",
@@ -1370,15 +1568,6 @@
   {
     "faction": "imperials",
     "kind": "upgrade",
-    "title": "BS S860 8 eee EVE OED EF fe Ew",
-    "slug": "bs-s860-8-eee-eve-oed-ef-fe-ew",
-    "file": "cards/imperials/upgrade/bs-s860-8-eee-eve-oed-ef-fe-ew.jpg",
-    "source": "DOC51_GalacticEmpire_Upgrades.pdf",
-    "points": 14
-  },
-  {
-    "faction": "imperials",
-    "kind": "upgrade",
     "title": "ff fF bs SS NE IV e Be Ws IV GEE Ee",
     "slug": "ff-ff-bs-ss-ne-iv-e-be-ws-iv-gee-ee",
     "file": "cards/imperials/upgrade/ff-ff-bs-ss-ne-iv-e-be-ws-iv-gee-ee.jpg",
@@ -1388,9 +1577,9 @@
   {
     "faction": "imperials",
     "kind": "upgrade",
-    "title": "CR-24 FLAME RIFLE",
-    "slug": "cr-24-flame-rifle",
-    "file": "cards/imperials/upgrade/cr-24-flame-rifle.jpg",
+    "title": "T-21 BLASTER RIFLE",
+    "slug": "t-21-blaster-rifle",
+    "file": "cards/imperials/upgrade/t-21-blaster-rifle.jpg",
     "source": "DOC51_GalacticEmpire_Upgrades.pdf",
     "points": 10
   },
@@ -1442,7 +1631,7 @@
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "ARC TROOPERS",
+    "title": "ARC Troopers",
     "slug": "arc-troopers",
     "file": "cards/republic/unit/arc-troopers.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
@@ -1451,61 +1640,43 @@
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "",
-    "slug": "republic-unit-38fc835b",
-    "file": "cards/republic/unit/republic-unit-38fc835b.jpg",
+    "title": "WookKIEE WARRIORS",
+    "slug": "wookkiee-warriors",
+    "file": "cards/republic/unit/wookkiee-warriors.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 2
   },
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "",
-    "slug": "republic-unit-8f4d8b2d",
-    "file": "cards/republic/unit/republic-unit-8f4d8b2d.jpg",
+    "title": "WOooKIEE WARRIORS",
+    "slug": "woookiee-warriors",
+    "file": "cards/republic/unit/woookiee-warriors.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 3
   },
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "rol",
-    "slug": "rol",
-    "file": "cards/republic/unit/rol.jpg",
-    "source": "DOC51_GalacticRepublic_Units.pdf",
-    "points": 1
-  },
-  {
-    "faction": "republic",
-    "kind": "unit",
-    "title": "KSI",
-    "slug": "ksi",
-    "file": "cards/republic/unit/ksi.jpg",
-    "source": "DOC51_GalacticRepublic_Units.pdf",
-    "points": 4
-  },
-  {
-    "faction": "republic",
-    "kind": "unit",
-    "title": "WOoOKIEE WARRIORS",
-    "slug": "woookiee-warriors",
-    "file": "cards/republic/unit/woookiee-warriors.jpg",
+    "title": "WOooKIEE WARRIORS",
+    "slug": "woookiee-warriors-2",
+    "file": "cards/republic/unit/woookiee-warriors-2.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 9
   },
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "BARC SPEEDER",
-    "slug": "barc-speeder",
-    "file": "cards/republic/unit/barc-speeder.jpg",
+    "title": "BARC SpPEEDER",
+    "slug": "barc-sppeeder",
+    "file": "cards/republic/unit/barc-sppeeder.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 68
   },
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "AT-RT",
+    "title": "AT.RT",
     "slug": "at-rt",
     "file": "cards/republic/unit/at-rt.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
@@ -1514,92 +1685,137 @@
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "RADDAUGH GNASP FLUTTERCRAFT",
-    "slug": "raddaugh-gnasp-fluttercraft",
-    "file": "cards/republic/unit/raddaugh-gnasp-fluttercraft.jpg",
+    "title": "RanpaucH Gnase FLUTTERCRAFT.",
+    "slug": "ranpauch-gnase-fluttercraft",
+    "file": "cards/republic/unit/ranpauch-gnase-fluttercraft.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 55
   },
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "",
-    "slug": "republic-unit-1638b10c",
-    "file": "cards/republic/unit/republic-unit-1638b10c.jpg",
+    "title": "RanppaucH Gnasep FLUTTERCRAET",
+    "slug": "ranppauch-gnasep-fluttercraet",
+    "file": "cards/republic/unit/ranppauch-gnasep-fluttercraet.jpg",
+    "source": "DOC51_GalacticRepublic_Units.pdf",
+    "points": 7
+  },
+  {
+    "faction": "republic",
+    "kind": "unit",
+    "title": "RADDAUGH GNASP FLUTTERCRAFT",
+    "slug": "raddaugh-gnasp-fluttercraft",
+    "file": "cards/republic/unit/raddaugh-gnasp-fluttercraft.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 9
   },
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "",
-    "slug": "republic-unit-60d39193",
-    "file": "cards/republic/unit/republic-unit-60d39193.jpg",
+    "title": "RADDAUGH GNASP FLUTTERCRAFT",
+    "slug": "raddaugh-gnasp-fluttercraft-2",
+    "file": "cards/republic/unit/raddaugh-gnasp-fluttercraft-2.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 57
   },
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "Crone C CoMMANDOS",
-    "slug": "crone-c-commandos",
-    "file": "cards/republic/unit/crone-c-commandos.jpg",
+    "title": "Clone ComMMANDOS",
+    "slug": "clone-commmandos",
+    "file": "cards/republic/unit/clone-commmandos.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 90
   },
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "SABER-CLASS TANK",
-    "slug": "saber-class-tank",
-    "file": "cards/republic/unit/saber-class-tank.jpg",
+    "title": "CLONE COMMANDER Copy",
+    "slug": "clone-commander-copy",
+    "file": "cards/republic/unit/clone-commander-copy.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 1
   },
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "INFANTRY SUPPORT PLATFORM",
-    "slug": "infantry-support-platform",
-    "file": "cards/republic/unit/infantry-support-platform.jpg",
+    "title": "CLONE COMMANDER Copy",
+    "slug": "clone-commander-copy-2",
+    "file": "cards/republic/unit/clone-commander-copy-2.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 4
   },
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "C-3PO",
-    "slug": "c-3po",
-    "file": "cards/republic/unit/c-3po.jpg",
+    "title": "CLONE COMMANDOS",
+    "slug": "clone-commandos",
+    "file": "cards/republic/unit/clone-commandos.jpg",
+    "source": "DOC51_GalacticRepublic_Units.pdf",
+    "points": null
+  },
+  {
+    "faction": "republic",
+    "kind": "unit",
+    "title": "Clone ComMANDOS",
+    "slug": "clone-commandos-2",
+    "file": "cards/republic/unit/clone-commandos-2.jpg",
+    "source": "DOC51_GalacticRepublic_Units.pdf",
+    "points": 4
+  },
+  {
+    "faction": "republic",
+    "kind": "unit",
+    "title": "GSAPER-CLASS TANK",
+    "slug": "gsaper-class-tank",
+    "file": "cards/republic/unit/gsaper-class-tank.jpg",
+    "source": "DOC51_GalacticRepublic_Units.pdf",
+    "points": 1
+  },
+  {
+    "faction": "republic",
+    "kind": "unit",
+    "title": "INFANTRY SuPppPOoRT PLATFORM",
+    "slug": "infantry-suppppoort-platform",
+    "file": "cards/republic/unit/infantry-suppppoort-platform.jpg",
+    "source": "DOC51_GalacticRepublic_Units.pdf",
+    "points": 4
+  },
+  {
+    "faction": "republic",
+    "kind": "unit",
+    "title": "C-3POQ",
+    "slug": "c-3poq",
+    "file": "cards/republic/unit/c-3poq.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 15
   },
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "LAAT/LE PATROL TRANSPORT",
-    "slug": "laat-le-patrol-transport",
-    "file": "cards/republic/unit/laat-le-patrol-transport.jpg",
+    "title": "LAAT /L eE PaTtrRoL TRANSPORT",
+    "slug": "laat-l-ee-pattrrol-transport",
+    "file": "cards/republic/unit/laat-l-ee-pattrrol-transport.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 100
   },
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "-OBi-WaAN KENOBI",
-    "slug": "obi-waan-kenobi",
-    "file": "cards/republic/unit/obi-waan-kenobi.jpg",
+    "title": "OpBi-WanN KENOBI",
+    "slug": "opbi-wann-kenobi",
+    "file": "cards/republic/unit/opbi-wann-kenobi.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 10
   },
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "",
-    "slug": "republic-unit-3c32b5e5",
-    "file": "cards/republic/unit/republic-unit-3c32b5e5.jpg",
+    "title": "CLONE CAPTAIN REx",
+    "slug": "clone-captain-rex",
+    "file": "cards/republic/unit/clone-captain-rex.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
-    "points": 1
+    "points": 54
   },
   {
     "faction": "republic",
@@ -1613,63 +1829,36 @@
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "YODA nn ucscvomcce",
-    "slug": "yoda-nn-ucscvomcce",
-    "file": "cards/republic/unit/yoda-nn-ucscvomcce.jpg",
-    "source": "DOC51_GalacticRepublic_Units.pdf",
-    "points": null
-  },
-  {
-    "faction": "republic",
-    "kind": "unit",
-    "title": "",
-    "slug": "republic-unit-7594b23e",
-    "file": "cards/republic/unit/republic-unit-7594b23e.jpg",
-    "source": "DOC51_GalacticRepublic_Units.pdf",
-    "points": 54
-  },
-  {
-    "faction": "republic",
-    "kind": "unit",
-    "title": "",
-    "slug": "republic-unit-56a782ac",
-    "file": "cards/republic/unit/republic-unit-56a782ac.jpg",
-    "source": "DOC51_GalacticRepublic_Units.pdf",
-    "points": 1
-  },
-  {
-    "faction": "republic",
-    "kind": "unit",
-    "title": "YODA camer",
-    "slug": "yoda-camer",
-    "file": "cards/republic/unit/yoda-camer.jpg",
+    "title": "YODA",
+    "slug": "yoda",
+    "file": "cards/republic/unit/yoda.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 9
   },
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "WOooKIEE CHIEFTAIN",
-    "slug": "woookiee-chieftain",
-    "file": "cards/republic/unit/woookiee-chieftain.jpg",
+    "title": "CLONE COMMANDER",
+    "slug": "clone-commander",
+    "file": "cards/republic/unit/clone-commander.jpg",
+    "source": "DOC51_GalacticRepublic_Units.pdf",
+    "points": 60
+  },
+  {
+    "faction": "republic",
+    "kind": "unit",
+    "title": "WookKIEE CHIEFTAIN",
+    "slug": "wookkiee-chieftain",
+    "file": "cards/republic/unit/wookkiee-chieftain.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 4
   },
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "CLONE ComMMANDER Copy",
-    "slug": "clone-commmander-copy",
-    "file": "cards/republic/unit/clone-commmander-copy.jpg",
-    "source": "DOC51_GalacticRepublic_Units.pdf",
-    "points": 1
-  },
-  {
-    "faction": "republic",
-    "kind": "unit",
-    "title": "",
-    "slug": "republic-unit-279bd4e4",
-    "file": "cards/republic/unit/republic-unit-279bd4e4.jpg",
+    "title": "R2-D2",
+    "slug": "r2-d2",
+    "file": "cards/republic/unit/r2-d2.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 55
   },
@@ -1680,43 +1869,61 @@
     "slug": "chewbacca",
     "file": "cards/republic/unit/chewbacca.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
-    "points": 1
+    "points": 90
   },
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "PADME AMIDALA",
-    "slug": "padme-amidala",
-    "file": "cards/republic/unit/padme-amidala.jpg",
+    "title": "PapDME AMIDALA",
+    "slug": "papdme-amidala",
+    "file": "cards/republic/unit/papdme-amidala.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 6
   },
   {
     "faction": "republic",
     "kind": "unit",
-    "title": "",
-    "slug": "republic-unit-94fe4f8c",
-    "file": "cards/republic/unit/republic-unit-94fe4f8c.jpg",
+    "title": "THE Bap BATCH",
+    "slug": "the-bap-batch",
+    "file": "cards/republic/unit/the-bap-batch.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
-    "points": 90
+    "points": 2
   },
   {
     "faction": "republic",
-    "kind": "unit",
-    "title": "R2-D2 cece",
-    "slug": "r2-d2-cece",
-    "file": "cards/republic/unit/r2-d2-cece.jpg",
+    "kind": "upgrade",
+    "title": "rol",
+    "slug": "rol",
+    "file": "cards/republic/upgrade/rol.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
     "points": 1
   },
   {
     "faction": "republic",
-    "kind": "unit",
-    "title": "THE Bap Batcu",
-    "slug": "the-bap-batcu",
-    "file": "cards/republic/unit/the-bap-batcu.jpg",
+    "kind": "upgrade",
+    "title": "KSI",
+    "slug": "ksi",
+    "file": "cards/republic/upgrade/ksi.jpg",
     "source": "DOC51_GalacticRepublic_Units.pdf",
-    "points": 2
+    "points": 4
+  },
+  {
+    "faction": "republic",
+    "kind": "upgrade",
+    "title": "2-6 CLONE TROOPER",
+    "slug": "2-6-clone-trooper",
+    "file": "cards/republic/upgrade/2-6-clone-trooper.jpg",
+    "source": "DOC51_GalacticRepublic_Upgrades.pdf",
+    "points": 22
+  },
+  {
+    "faction": "republic",
+    "kind": "upgrade",
+    "title": "DP-25 CLONE TROOPER",
+    "slug": "dp-25-clone-trooper",
+    "file": "cards/republic/upgrade/dp-25-clone-trooper.jpg",
+    "source": "DOC51_GalacticRepublic_Upgrades.pdf",
+    "points": 22
   },
   {
     "faction": "republic",
@@ -1725,16 +1932,7 @@
     "slug": "rps-6-clone-trooper",
     "file": "cards/republic/upgrade/rps-6-clone-trooper.jpg",
     "source": "DOC51_GalacticRepublic_Upgrades.pdf",
-    "points": 22
-  },
-  {
-    "faction": "republic",
-    "kind": "upgrade",
-    "title": "ARC MARKSMAN",
-    "slug": "arc-marksman",
-    "file": "cards/republic/upgrade/arc-marksman.jpg",
-    "source": "DOC51_GalacticRepublic_Upgrades.pdf",
-    "points": 52
+    "points": 23
   },
   {
     "faction": "republic",
@@ -1744,6 +1942,15 @@
     "file": "cards/republic/upgrade/mortar-clone-trooper.jpg",
     "source": "DOC51_GalacticRepublic_Upgrades.pdf",
     "points": 20
+  },
+  {
+    "faction": "republic",
+    "kind": "upgrade",
+    "title": "ARC MARKSMAN",
+    "slug": "arc-marksman",
+    "file": "cards/republic/upgrade/arc-marksman.jpg",
+    "source": "DOC51_GalacticRepublic_Upgrades.pdf",
+    "points": 52
   },
   {
     "faction": "republic",
@@ -1973,9 +2180,9 @@
   {
     "faction": "republic",
     "kind": "upgrade",
-    "title": "AT-RT LASER CANNON",
-    "slug": "at-rt-laser-cannon",
-    "file": "cards/republic/upgrade/at-rt-laser-cannon.jpg",
+    "title": "Twin BLASTER CANNONS",
+    "slug": "twin-blaster-cannons",
+    "file": "cards/republic/upgrade/twin-blaster-cannons.jpg",
     "source": "DOC51_GalacticRepublic_Upgrades.pdf",
     "points": 10
   },
@@ -2000,15 +2207,6 @@
   {
     "faction": "republic",
     "kind": "upgrade",
-    "title": "RC lon GUNNER",
-    "slug": "rc-lon-gunner",
-    "file": "cards/republic/upgrade/rc-lon-gunner.jpg",
-    "source": "DOC51_GalacticRepublic_Upgrades.pdf",
-    "points": 25
-  },
-  {
-    "faction": "republic",
-    "kind": "upgrade",
     "title": "Aare tv",
     "slug": "aare-tv",
     "file": "cards/republic/upgrade/aare-tv.jpg",
@@ -2021,15 +2219,6 @@
     "title": "Twin MIsSsILE Pops",
     "slug": "twin-misssile-pops",
     "file": "cards/republic/upgrade/twin-misssile-pops.jpg",
-    "source": "DOC51_GalacticRepublic_Upgrades.pdf",
-    "points": 25
-  },
-  {
-    "faction": "republic",
-    "kind": "upgrade",
-    "title": "Twin BLASTER CANNONS",
-    "slug": "twin-blaster-cannons",
-    "file": "cards/republic/upgrade/twin-blaster-cannons.jpg",
     "source": "DOC51_GalacticRepublic_Upgrades.pdf",
     "points": 25
   },
@@ -2135,18 +2324,27 @@
   {
     "faction": "separatists",
     "kind": "unit",
-    "title": "B1 BatTLe Droips",
-    "slug": "b1-battle-droips",
-    "file": "cards/separatists/unit/b1-battle-droips.jpg",
+    "title": "B11 BatrLe Droinps",
+    "slug": "b11-batrle-droinps",
+    "file": "cards/separatists/unit/b11-batrle-droinps.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": 2
+  },
+  {
+    "faction": "separatists",
+    "kind": "unit",
+    "title": "B1 BatTT Le Droins",
+    "slug": "b1-battt-le-droins",
+    "file": "cards/separatists/unit/b1-battt-le-droins.jpg",
     "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
     "points": 38
   },
   {
     "faction": "separatists",
     "kind": "unit",
-    "title": "B2 SuPER BaTTLE Droips",
-    "slug": "b2-super-battle-droips",
-    "file": "cards/separatists/unit/b2-super-battle-droips.jpg",
+    "title": "B82 Super BatTrtr Le Droins",
+    "slug": "b82-super-battrtr-le-droins",
+    "file": "cards/separatists/unit/b82-super-battrtr-le-droins.jpg",
     "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
     "points": 64
   },
@@ -2162,115 +2360,115 @@
   {
     "faction": "separatists",
     "kind": "unit",
-    "title": "BX-SERIES Droip COMMANDOS",
-    "slug": "bx-series-droip-commandos",
-    "file": "cards/separatists/unit/bx-series-droip-commandos.jpg",
+    "title": "GEONOSIAN WARRIORS",
+    "slug": "geonosian-warriors-2",
+    "file": "cards/separatists/unit/geonosian-warriors-2.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": null
+  },
+  {
+    "faction": "separatists",
+    "kind": "unit",
+    "title": "BY-Serices Droip Commanpos",
+    "slug": "by-serices-droip-commanpos",
+    "file": "cards/separatists/unit/by-serices-droip-commanpos.jpg",
     "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
     "points": 64
   },
   {
     "faction": "separatists",
     "kind": "unit",
-    "title": "1G-1 00 MacnaGuarp",
-    "slug": "1g-1-00-macnaguarp",
-    "file": "cards/separatists/unit/1g-1-00-macnaguarp.jpg",
-    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
-    "points": null
-  },
-  {
-    "faction": "separatists",
-    "kind": "unit",
-    "title": "REMAN SA",
-    "slug": "reman-sa",
-    "file": "cards/separatists/unit/reman-sa.jpg",
-    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
-    "points": 4
-  },
-  {
-    "faction": "separatists",
-    "kind": "unit",
-    "title": "pe Baa PA",
-    "slug": "pe-baa-pa",
-    "file": "cards/separatists/unit/pe-baa-pa.jpg",
-    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
-    "points": null
-  },
-  {
-    "faction": "separatists",
-    "kind": "unit",
-    "title": "IG-100 MaGNAGUARD",
-    "slug": "ig-100-magnaguard",
-    "file": "cards/separatists/unit/ig-100-magnaguard.jpg",
+    "title": "1G-100 MaGNnaAGUARD",
+    "slug": "1g-100-magnnaaguard",
+    "file": "cards/separatists/unit/1g-100-magnnaaguard.jpg",
     "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
     "points": 56
   },
   {
     "faction": "separatists",
     "kind": "unit",
-    "title": "STAP RIDERS",
-    "slug": "stap-riders",
-    "file": "cards/separatists/unit/stap-riders.jpg",
+    "title": "1G-100 MagnaGuard",
+    "slug": "1g-100-magnaguard",
+    "file": "cards/separatists/unit/1g-100-magnaguard.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": null
+  },
+  {
+    "faction": "separatists",
+    "kind": "unit",
+    "title": "1G-100 MacnaGuarnp",
+    "slug": "1g-100-macnaguarnp",
+    "file": "cards/separatists/unit/1g-100-macnaguarnp.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": null
+  },
+  {
+    "faction": "separatists",
+    "kind": "unit",
+    "title": "STAP Rinpers",
+    "slug": "stap-rinpers",
+    "file": "cards/separatists/unit/stap-rinpers.jpg",
     "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
     "points": 4
   },
   {
     "faction": "separatists",
     "kind": "unit",
-    "title": "DSD1 Dwarr SPIDER Droip",
-    "slug": "dsd1-dwarr-spider-droip",
-    "file": "cards/separatists/unit/dsd1-dwarr-spider-droip.jpg",
+    "title": "D0SD1 Dware e Spiper Droip",
+    "slug": "d0sd1-dware-e-spiper-droip",
+    "file": "cards/separatists/unit/d0sd1-dware-e-spiper-droip.jpg",
     "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
     "points": null
   },
   {
     "faction": "separatists",
     "kind": "unit",
-    "title": "reo",
-    "slug": "reo",
-    "file": "cards/separatists/unit/reo.jpg",
-    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
-    "points": null
-  },
-  {
-    "faction": "separatists",
-    "kind": "unit",
-    "title": "Sy",
-    "slug": "sy",
-    "file": "cards/separatists/unit/sy.jpg",
-    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
-    "points": null
-  },
-  {
-    "faction": "separatists",
-    "kind": "unit",
-    "title": "AAT BATTLE TANK",
+    "title": "AAT BaTTLe Tank",
     "slug": "aat-battle-tank",
     "file": "cards/separatists/unit/aat-battle-tank.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": 2
+  },
+  {
+    "faction": "separatists",
+    "kind": "unit",
+    "title": "PERSUADER-cLaSs Tank Droip",
+    "slug": "persuader-class-tank-droip",
+    "file": "cards/separatists/unit/persuader-class-tank-droip.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": 130
+  },
+  {
+    "faction": "separatists",
+    "kind": "unit",
+    "title": "AAT BaTTLe TANK",
+    "slug": "aat-battle-tank-2",
+    "file": "cards/separatists/unit/aat-battle-tank-2.jpg",
     "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
     "points": 165
   },
   {
     "faction": "separatists",
     "kind": "unit",
-    "title": "PERSUADER-CLASS TANK DrRoip",
-    "slug": "persuader-class-tank-drroip",
-    "file": "cards/separatists/unit/persuader-class-tank-drroip.jpg",
+    "title": "PERSUADER-CLASS TANK DROID",
+    "slug": "persuader-class-tank-droid",
+    "file": "cards/separatists/unit/persuader-class-tank-droid.jpg",
     "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
     "points": 130
   },
   {
     "faction": "separatists",
     "kind": "unit",
-    "title": "PROTOTYPE TANK DROID",
-    "slug": "prototype-tank-droid",
-    "file": "cards/separatists/unit/prototype-tank-droid.jpg",
+    "title": "PersuapDEeR-cLass Tank Droip",
+    "slug": "persuapdeer-class-tank-droip",
+    "file": "cards/separatists/unit/persuapdeer-class-tank-droip.jpg",
     "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
-    "points": 130
+    "points": 4
   },
   {
     "faction": "separatists",
     "kind": "unit",
-    "title": "GENERAL GRIEvous",
+    "title": "GENERAL GRIEVOUS",
     "slug": "general-grievous",
     "file": "cards/separatists/unit/general-grievous.jpg",
     "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
@@ -2279,83 +2477,182 @@
   {
     "faction": "separatists",
     "kind": "unit",
-    "title": "eCountT Dooku",
-    "slug": "ecountt-dooku",
-    "file": "cards/separatists/unit/ecountt-dooku.jpg",
+    "title": "Count Dooku",
+    "slug": "count-dooku",
+    "file": "cards/separatists/unit/count-dooku.jpg",
     "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
     "points": 165
   },
   {
     "faction": "separatists",
     "kind": "unit",
-    "title": "ceiCRAKEN",
-    "slug": "ceicraken",
-    "file": "cards/separatists/unit/ceicraken.jpg",
+    "title": "ICRAKEN",
+    "slug": "icraken",
+    "file": "cards/separatists/unit/icraken.jpg",
     "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
     "points": 1
   },
   {
     "faction": "separatists",
     "kind": "unit",
-    "title": ". T -SERIES TACTICAL DROID",
+    "title": "T-SERIES TACTICAL DROID",
     "slug": "t-series-tactical-droid",
     "file": "cards/separatists/unit/t-series-tactical-droid.jpg",
     "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
-    "points": 60
+    "points": 1
   },
   {
     "faction": "separatists",
     "kind": "unit",
-    "title": "KALANI",
-    "slug": "kalani",
-    "file": "cards/separatists/unit/kalani.jpg",
-    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
-    "points": 85
-  },
-  {
-    "faction": "separatists",
-    "kind": "unit",
-    "title": "eMAUL",
-    "slug": "emaul",
-    "file": "cards/separatists/unit/emaul.jpg",
-    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
-    "points": 130
-  },
-  {
-    "faction": "separatists",
-    "kind": "unit",
-    "title": "DRK-1 SitH Prose Droips",
-    "slug": "drk-1-sith-prose-droips",
-    "file": "cards/separatists/unit/drk-1-sith-prose-droips.jpg",
+    "title": "ciCRAKEN",
+    "slug": "cicraken",
+    "file": "cards/separatists/unit/cicraken.jpg",
     "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
     "points": null
   },
   {
     "faction": "separatists",
     "kind": "unit",
-    "title": "ePOGGLE THE LESSER",
-    "slug": "epoggle-the-lesser",
-    "file": "cards/separatists/unit/epoggle-the-lesser.jpg",
+    "title": "Count Dooku",
+    "slug": "count-dooku-2",
+    "file": "cards/separatists/unit/count-dooku-2.jpg",
     "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
-    "points": 80
+    "points": null
   },
   {
     "faction": "separatists",
     "kind": "unit",
-    "title": "AsAJJ VENTRESS",
-    "slug": "asajj-ventress",
-    "file": "cards/separatists/unit/asajj-ventress.jpg",
+    "title": "T-SERIES TACTICAL DROID",
+    "slug": "t-series-tactical-droid-2",
+    "file": "cards/separatists/unit/t-series-tactical-droid-2.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": 60
+  },
+  {
+    "faction": "separatists",
+    "kind": "unit",
+    "title": "ciKALANI",
+    "slug": "cikalani",
+    "file": "cards/separatists/unit/cikalani.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": null
+  },
+  {
+    "faction": "separatists",
+    "kind": "unit",
+    "title": "ce KALANI",
+    "slug": "ce-kalani",
+    "file": "cards/separatists/unit/ce-kalani.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": 85
+  },
+  {
+    "faction": "separatists",
+    "kind": "unit",
+    "title": "MAUL",
+    "slug": "maul",
+    "file": "cards/separatists/unit/maul.jpg",
     "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
     "points": 130
   },
   {
     "faction": "separatists",
     "kind": "unit",
-    "title": "eSuN Fac",
-    "slug": "esun-fac",
-    "file": "cards/separatists/unit/esun-fac.jpg",
+    "title": "DRK-1 Siry Proee Droins",
+    "slug": "drk-1-siry-proee-droins",
+    "file": "cards/separatists/unit/drk-1-siry-proee-droins.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": null
+  },
+  {
+    "faction": "separatists",
+    "kind": "unit",
+    "title": "POGGLE THE LESSER",
+    "slug": "poggle-the-lesser",
+    "file": "cards/separatists/unit/poggle-the-lesser.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": 1
+  },
+  {
+    "faction": "separatists",
+    "kind": "unit",
+    "title": "efAAsaJJ VENTRESS",
+    "slug": "efaasajj-ventress",
+    "file": "cards/separatists/unit/efaasajj-ventress.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": 130
+  },
+  {
+    "faction": "separatists",
+    "kind": "unit",
+    "title": "POGGLE THE LESSER",
+    "slug": "poggle-the-lesser-2",
+    "file": "cards/separatists/unit/poggle-the-lesser-2.jpg",
     "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
     "points": 80
+  },
+  {
+    "faction": "separatists",
+    "kind": "unit",
+    "title": "SuN FAC",
+    "slug": "sun-fac",
+    "file": "cards/separatists/unit/sun-fac.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": 80
+  },
+  {
+    "faction": "separatists",
+    "kind": "unit",
+    "title": "GEONOSIAN WARRIORS",
+    "slug": "geonosian-warriors-3",
+    "file": "cards/separatists/unit/geonosian-warriors-3.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": 44
+  },
+  {
+    "faction": "separatists",
+    "kind": "upgrade",
+    "title": "REMAN SA",
+    "slug": "reman-sa",
+    "file": "cards/separatists/upgrade/reman-sa.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": 4
+  },
+  {
+    "faction": "separatists",
+    "kind": "upgrade",
+    "title": "pe Baa PA",
+    "slug": "pe-baa-pa",
+    "file": "cards/separatists/upgrade/pe-baa-pa.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": null
+  },
+  {
+    "faction": "separatists",
+    "kind": "upgrade",
+    "title": "reo",
+    "slug": "reo",
+    "file": "cards/separatists/upgrade/reo.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": null
+  },
+  {
+    "faction": "separatists",
+    "kind": "upgrade",
+    "title": "",
+    "slug": "separatists-upgrade-d5d62230",
+    "file": "cards/separatists/upgrade/separatists-upgrade-d5d62230.jpg",
+    "source": "DOC51_SeparatistAlliance_Units_05-01_Update.pdf",
+    "points": null
+  },
+  {
+    "faction": "separatists",
+    "kind": "upgrade",
+    "title": "B2-HA BATTLE DROID",
+    "slug": "b2-ha-battle-droid",
+    "file": "cards/separatists/upgrade/b2-ha-battle-droid.jpg",
+    "source": "DOC51_SeparatistAlliance_Upgrades.pdf",
+    "points": 2
   },
   {
     "faction": "separatists",
@@ -2378,6 +2675,33 @@
   {
     "faction": "separatists",
     "kind": "upgrade",
+    "title": "E-5s B71 BATTLE DROID",
+    "slug": "e-5s-b71-battle-droid",
+    "file": "cards/separatists/upgrade/e-5s-b71-battle-droid.jpg",
+    "source": "DOC51_SeparatistAlliance_Upgrades.pdf",
+    "points": 18
+  },
+  {
+    "faction": "separatists",
+    "kind": "upgrade",
+    "title": "B2Z-ACM BarTTLe DROID",
+    "slug": "b2z-acm-barttle-droid",
+    "file": "cards/separatists/upgrade/b2z-acm-barttle-droid.jpg",
+    "source": "DOC51_SeparatistAlliance_Upgrades.pdf",
+    "points": 24
+  },
+  {
+    "faction": "separatists",
+    "kind": "upgrade",
+    "title": "B71 BaTTLe DRoip SQUAD",
+    "slug": "b71-battle-droip-squad",
+    "file": "cards/separatists/upgrade/b71-battle-droip-squad.jpg",
+    "source": "DOC51_SeparatistAlliance_Upgrades.pdf",
+    "points": 38
+  },
+  {
+    "faction": "separatists",
+    "kind": "upgrade",
     "title": "a Qf s Be 6.",
     "slug": "a-qf-s-be-6",
     "file": "cards/separatists/upgrade/a-qf-s-be-6.jpg",
@@ -2387,20 +2711,11 @@
   {
     "faction": "separatists",
     "kind": "upgrade",
-    "title": "B2Z-ACM BarTTLe DROID",
-    "slug": "b2z-acm-barttle-droid",
-    "file": "cards/separatists/upgrade/b2z-acm-barttle-droid.jpg",
-    "source": "DOC51_SeparatistAlliance_Upgrades.pdf",
-    "points": 2
-  },
-  {
-    "faction": "separatists",
-    "kind": "upgrade",
     "title": "ONIC CANNON WARRIOR",
     "slug": "onic-cannon-warrior",
     "file": "cards/separatists/upgrade/onic-cannon-warrior.jpg",
     "source": "DOC51_SeparatistAlliance_Upgrades.pdf",
-    "points": 25
+    "points": 11
   },
   {
     "faction": "separatists",
@@ -2450,29 +2765,11 @@
   {
     "faction": "separatists",
     "kind": "upgrade",
-    "title": "MAGNAGUARD",
-    "slug": "magnaguard",
-    "file": "cards/separatists/upgrade/magnaguard.jpg",
-    "source": "DOC51_SeparatistAlliance_Upgrades.pdf",
-    "points": 40
-  },
-  {
-    "faction": "separatists",
-    "kind": "upgrade",
     "title": "QwWE TE aw be EE Bow",
     "slug": "qwwe-te-aw-be-ee-bow",
     "file": "cards/separatists/upgrade/qwwe-te-aw-be-ee-bow.jpg",
     "source": "DOC51_SeparatistAlliance_Upgrades.pdf",
-    "points": 8
-  },
-  {
-    "faction": "separatists",
-    "kind": "upgrade",
-    "title": "B71 BaTTLe DRoip SQUAD",
-    "slug": "b71-battle-droip-squad",
-    "file": "cards/separatists/upgrade/b71-battle-droip-squad.jpg",
-    "source": "DOC51_SeparatistAlliance_Upgrades.pdf",
-    "points": 38
+    "points": 7
   },
   {
     "faction": "separatists",
@@ -2504,9 +2801,9 @@
   {
     "faction": "separatists",
     "kind": "upgrade",
-    "title": "EQS bow",
-    "slug": "eqs-bow",
-    "file": "cards/separatists/upgrade/eqs-bow.jpg",
+    "title": "QS bow",
+    "slug": "qs-bow",
+    "file": "cards/separatists/upgrade/qs-bow.jpg",
     "source": "DOC51_SeparatistAlliance_Upgrades.pdf",
     "points": 14
   },
@@ -2540,29 +2837,11 @@
   {
     "faction": "separatists",
     "kind": "upgrade",
-    "title": "QZ EVE ae be EXE Eo",
-    "slug": "qz-eve-ae-be-exe-eo",
-    "file": "cards/separatists/upgrade/qz-eve-ae-be-exe-eo.jpg",
-    "source": "DOC51_SeparatistAlliance_Upgrades.pdf",
-    "points": 7
-  },
-  {
-    "faction": "separatists",
-    "kind": "upgrade",
     "title": "ee ek i Th",
     "slug": "ee-ek-i-th",
     "file": "cards/separatists/upgrade/ee-ek-i-th.jpg",
     "source": "DOC51_SeparatistAlliance_Upgrades.pdf",
     "points": 51
-  },
-  {
-    "faction": "separatists",
-    "kind": "upgrade",
-    "title": "GEONOSIAN WARRIOR",
-    "slug": "geonosian-warrior",
-    "file": "cards/separatists/upgrade/geonosian-warrior.jpg",
-    "source": "DOC51_SeparatistAlliance_Upgrades.pdf",
-    "points": 11
   },
   {
     "faction": "separatists",
@@ -2630,34 +2909,43 @@
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "Pyke SYNDICATE Foot SOLDIERS",
-    "slug": "pyke-syndicate-foot-soldiers",
-    "file": "cards/mercenary/unit/pyke-syndicate-foot-soldiers.jpg",
+    "title": "DBvyie SvynpicaTe Foot So LpIERS i",
+    "slug": "dbvyie-svynpicate-foot-so-lpiers-i",
+    "file": "cards/mercenary/unit/dbvyie-svynpicate-foot-so-lpiers-i.jpg",
     "source": "DOC13_Mercenary_Units.pdf",
     "points": null
   },
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "iy Swoop Bike RIDERS",
-    "slug": "iy-swoop-bike-riders",
-    "file": "cards/mercenary/unit/iy-swoop-bike-riders.jpg",
+    "title": "4 Swoop Bike Ringers",
+    "slug": "4-swoop-bike-ringers",
+    "file": "cards/mercenary/unit/4-swoop-bike-ringers.jpg",
     "source": "DOC13_Mercenary_Units.pdf",
     "points": 2
   },
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "Pyke SYNDICATE CaPo",
-    "slug": "pyke-syndicate-capo",
-    "file": "cards/mercenary/unit/pyke-syndicate-capo.jpg",
+    "title": "4 Gwoop Bice Ringer",
+    "slug": "4-gwoop-bice-ringer",
+    "file": "cards/mercenary/unit/4-gwoop-bice-ringer.jpg",
+    "source": "DOC13_Mercenary_Units.pdf",
+    "points": 4
+  },
+  {
+    "faction": "mercenary",
+    "kind": "unit",
+    "title": "Bvice SvyYnpicaTe Capo",
+    "slug": "bvice-svyynpicate-capo",
+    "file": "cards/mercenary/unit/bvice-svyynpicate-capo.jpg",
     "source": "DOC13_Mercenary_Units.pdf",
     "points": 1
   },
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "BLacK SUN VIGO",
+    "title": "Black Sun Vigo",
     "slug": "black-sun-vigo",
     "file": "cards/mercenary/unit/black-sun-vigo.jpg",
     "source": "DOC13_Mercenary_Units.pdf",
@@ -2666,47 +2954,56 @@
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "BLAcK SUN ENFORCERS",
-    "slug": "black-sun-enforcers",
-    "file": "cards/mercenary/unit/black-sun-enforcers.jpg",
-    "source": "DOC13_Mercenary_Units.pdf",
-    "points": 50
-  },
-  {
-    "faction": "mercenary",
-    "kind": "unit",
-    "title": "GAR SAXON",
-    "slug": "gar-saxon",
-    "file": "cards/mercenary/unit/gar-saxon.jpg",
-    "source": "DOC13_Mercenary_Units.pdf",
-    "points": 5
-  },
-  {
-    "faction": "mercenary",
-    "kind": "unit",
-    "title": "eMAUL",
-    "slug": "emaul",
-    "file": "cards/mercenary/unit/emaul.jpg",
-    "source": "DOC13_Mercenary_Units.pdf",
-    "points": 150
-  },
-  {
-    "faction": "mercenary",
-    "kind": "unit",
-    "title": "- -Bosa FeEetr",
-    "slug": "bosa-feeetr",
-    "file": "cards/mercenary/unit/bosa-feeetr.jpg",
+    "title": "Black Sun Vigo",
+    "slug": "black-sun-vigo-2",
+    "file": "cards/mercenary/unit/black-sun-vigo-2.jpg",
     "source": "DOC13_Mercenary_Units.pdf",
     "points": null
   },
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "eBosa Fett",
-    "slug": "ebosa-fett",
-    "file": "cards/mercenary/unit/ebosa-fett.jpg",
+    "title": "Black Sun ENFOoRCERS",
+    "slug": "black-sun-enfoorcers",
+    "file": "cards/mercenary/unit/black-sun-enfoorcers.jpg",
+    "source": "DOC13_Mercenary_Units.pdf",
+    "points": 50
+  },
+  {
+    "faction": "mercenary",
+    "kind": "unit",
+    "title": "GarR SAXON",
+    "slug": "garr-saxon",
+    "file": "cards/mercenary/unit/garr-saxon.jpg",
+    "source": "DOC13_Mercenary_Units.pdf",
+    "points": 5
+  },
+  {
+    "faction": "mercenary",
+    "kind": "unit",
+    "title": "MAUL",
+    "slug": "maul",
+    "file": "cards/mercenary/unit/maul.jpg",
+    "source": "DOC13_Mercenary_Units.pdf",
+    "points": 150
+  },
+  {
+    "faction": "mercenary",
+    "kind": "unit",
+    "title": "- Boba Fett",
+    "slug": "boba-fett",
+    "file": "cards/mercenary/unit/boba-fett.jpg",
     "source": "DOC13_Mercenary_Units.pdf",
     "points": 120
+  },
+  {
+    "faction": "mercenary",
+    "kind": "unit",
+    "title": "e-Boba Fett",
+    "slug": "e-boba-fett",
+    "file": "cards/mercenary/unit/e-boba-fett.jpg",
+    "source": "DOC13_Mercenary_Units.pdf",
+    "points": null
   },
   {
     "faction": "mercenary",
@@ -2715,70 +3012,34 @@
     "slug": "bossk",
     "file": "cards/mercenary/unit/bossk.jpg",
     "source": "DOC13_Mercenary_Units.pdf",
-    "points": null
+    "points": 105
   },
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "- eCap BANE",
-    "slug": "ecap-bane",
-    "file": "cards/mercenary/unit/ecap-bane.jpg",
+    "title": "- -Cap BANE",
+    "slug": "cap-bane",
+    "file": "cards/mercenary/unit/cap-bane.jpg",
     "source": "DOC13_Mercenary_Units.pdf",
     "points": 105
   },
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "iar",
-    "slug": "iar",
-    "file": "cards/mercenary/unit/iar.jpg",
-    "source": "DOC13_Mercenary_Units.pdf",
-    "points": 105
-  },
-  {
-    "faction": "mercenary",
-    "kind": "unit",
-    "title": "- IG-83",
-    "slug": "ig-83",
-    "file": "cards/mercenary/unit/ig-83.jpg",
+    "title": "- e-Bosa FETT",
+    "slug": "e-bosa-fett",
+    "file": "cards/mercenary/unit/e-bosa-fett.jpg",
     "source": "DOC13_Mercenary_Units.pdf",
     "points": null
   },
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "IG-17",
-    "slug": "ig-17",
-    "file": "cards/mercenary/unit/ig-17.jpg",
+    "title": "",
+    "slug": "mercenary-unit-25d14a6c",
+    "file": "cards/mercenary/unit/mercenary-unit-25d14a6c.jpg",
     "source": "DOC13_Mercenary_Units.pdf",
-    "points": 105
-  },
-  {
-    "faction": "mercenary",
-    "kind": "unit",
-    "title": "MANDALORIAN SUPER ComManNpos",
-    "slug": "mandalorian-super-commannpos",
-    "file": "cards/mercenary/unit/mandalorian-super-commannpos.jpg",
-    "source": "DOC13_Mercenary_Units.pdf",
-    "points": 70
-  },
-  {
-    "faction": "mercenary",
-    "kind": "unit",
-    "title": "aft",
-    "slug": "aft",
-    "file": "cards/mercenary/unit/aft.jpg",
-    "source": "DOC13_Mercenary_Units.pdf",
-    "points": 110
-  },
-  {
-    "faction": "mercenary",
-    "kind": "unit",
-    "title": "eDin DJARIN",
-    "slug": "edin-djarin",
-    "file": "cards/mercenary/unit/edin-djarin.jpg",
-    "source": "DOC13_Mercenary_Units.pdf",
-    "points": 95
+    "points": null
   },
   {
     "faction": "mercenary",
@@ -2787,50 +3048,95 @@
     "slug": "ig-11",
     "file": "cards/mercenary/unit/ig-11.jpg",
     "source": "DOC13_Mercenary_Units.pdf",
-    "points": null
+    "points": 105
   },
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "eGROGU",
-    "slug": "egrogu",
-    "file": "cards/mercenary/unit/egrogu.jpg",
+    "title": "MANDALORIAN SuPER COMMANDOS",
+    "slug": "mandalorian-super-commandos",
+    "file": "cards/mercenary/unit/mandalorian-super-commandos.jpg",
+    "source": "DOC13_Mercenary_Units.pdf",
+    "points": 70
+  },
+  {
+    "faction": "mercenary",
+    "kind": "unit",
+    "title": "1G-88",
+    "slug": "1g-88",
+    "file": "cards/mercenary/unit/1g-88.jpg",
+    "source": "DOC13_Mercenary_Units.pdf",
+    "points": 110
+  },
+  {
+    "faction": "mercenary",
+    "kind": "unit",
+    "title": "- -Din DJARIN",
+    "slug": "din-djarin",
+    "file": "cards/mercenary/unit/din-djarin.jpg",
     "source": "DOC13_Mercenary_Units.pdf",
     "points": null
   },
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "A-AS5 SPEEDER TRUCK",
-    "slug": "a-as5-speeder-truck",
-    "file": "cards/mercenary/unit/a-as5-speeder-truck.jpg",
+    "title": "-Din DJARIN",
+    "slug": "din-djarin-2",
+    "file": "cards/mercenary/unit/din-djarin-2.jpg",
+    "source": "DOC13_Mercenary_Units.pdf",
+    "points": 95
+  },
+  {
+    "faction": "mercenary",
+    "kind": "unit",
+    "title": "",
+    "slug": "mercenary-unit-5f7cd414",
+    "file": "cards/mercenary/unit/mercenary-unit-5f7cd414.jpg",
     "source": "DOC13_Mercenary_Units.pdf",
     "points": null
   },
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "eTHE Bap BATCH",
-    "slug": "ethe-bap-batch",
-    "file": "cards/mercenary/unit/ethe-bap-batch.jpg",
+    "title": "YA L -fS5 SpeeEepEeER TRUCK",
+    "slug": "ya-l-fs5-speeeepeeer-truck",
+    "file": "cards/mercenary/unit/ya-l-fs5-speeeepeeer-truck.jpg",
     "source": "DOC13_Mercenary_Units.pdf",
     "points": null
   },
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "eOMEGA",
-    "slug": "eomega",
-    "file": "cards/mercenary/unit/eomega.jpg",
+    "title": "GrRoGu",
+    "slug": "grrogu",
+    "file": "cards/mercenary/unit/grrogu.jpg",
+    "source": "DOC13_Mercenary_Units.pdf",
+    "points": null
+  },
+  {
+    "faction": "mercenary",
+    "kind": "unit",
+    "title": "- THE Bap BaTCH",
+    "slug": "the-bap-batch",
+    "file": "cards/mercenary/unit/the-bap-batch.jpg",
+    "source": "DOC13_Mercenary_Units.pdf",
+    "points": null
+  },
+  {
+    "faction": "mercenary",
+    "kind": "unit",
+    "title": "OMEGA",
+    "slug": "omega",
+    "file": "cards/mercenary/unit/omega.jpg",
     "source": "DOC13_Mercenary_Units.pdf",
     "points": 10
   },
   {
     "faction": "mercenary",
     "kind": "upgrade",
-    "title": "ELECTRO-WHIP SOLDIER",
-    "slug": "electro-whip-soldier",
-    "file": "cards/mercenary/upgrade/electro-whip-soldier.jpg",
+    "title": "LECTRO-WHIP SOLDIER",
+    "slug": "lectro-whip-soldier",
+    "file": "cards/mercenary/upgrade/lectro-whip-soldier.jpg",
     "source": "DOC13_Mercenary_Upgrades.pdf",
     "points": 10
   },
@@ -2855,11 +3161,11 @@
   {
     "faction": "mercenary",
     "kind": "upgrade",
-    "title": "Mac-DetT ENFORCER",
-    "slug": "mac-dett-enforcer",
-    "file": "cards/mercenary/upgrade/mac-dett-enforcer.jpg",
+    "title": "BLACK SUN ENFORCER",
+    "slug": "black-sun-enforcer",
+    "file": "cards/mercenary/upgrade/black-sun-enforcer.jpg",
     "source": "DOC13_Mercenary_Upgrades.pdf",
-    "points": 16
+    "points": 11
   },
   {
     "faction": "mercenary",
@@ -2891,6 +3197,33 @@
   {
     "faction": "mercenary",
     "kind": "upgrade",
+    "title": "wi iu",
+    "slug": "wi-iu",
+    "file": "cards/mercenary/upgrade/wi-iu.jpg",
+    "source": "DOC13_Mercenary_Upgrades.pdf",
+    "points": 10
+  },
+  {
+    "faction": "mercenary",
+    "kind": "upgrade",
+    "title": "wai iu",
+    "slug": "wai-iu-2",
+    "file": "cards/mercenary/upgrade/wai-iu-2.jpg",
+    "source": "DOC13_Mercenary_Upgrades.pdf",
+    "points": 28
+  },
+  {
+    "faction": "mercenary",
+    "kind": "upgrade",
+    "title": "wQi i",
+    "slug": "wqi-i",
+    "file": "cards/mercenary/upgrade/wqi-i.jpg",
+    "source": "DOC13_Mercenary_Upgrades.pdf",
+    "points": 28
+  },
+  {
+    "faction": "mercenary",
+    "kind": "upgrade",
     "title": "a Te Th",
     "slug": "a-te-th",
     "file": "cards/mercenary/upgrade/a-te-th.jpg",
@@ -2905,15 +3238,6 @@
     "file": "cards/mercenary/upgrade/black-sun-vigo.jpg",
     "source": "DOC13_Mercenary_Upgrades.pdf",
     "points": 20
-  },
-  {
-    "faction": "mercenary",
-    "kind": "upgrade",
-    "title": "wQi i",
-    "slug": "wqi-i",
-    "file": "cards/mercenary/upgrade/wqi-i.jpg",
-    "source": "DOC13_Mercenary_Upgrades.pdf",
-    "points": 28
   },
   {
     "faction": "mercenary",
@@ -3062,27 +3386,9 @@
   {
     "faction": "mercenary",
     "kind": "upgrade",
-    "title": "NANNY PROGRAMMING",
-    "slug": "nanny-programming",
-    "file": "cards/mercenary/upgrade/nanny-programming.jpg",
-    "source": "DOC13_Mercenary_Upgrades.pdf",
-    "points": 3
-  },
-  {
-    "faction": "mercenary",
-    "kind": "upgrade",
-    "title": "BLACK SUN ENFORCER",
-    "slug": "black-sun-enforcer",
-    "file": "cards/mercenary/upgrade/black-sun-enforcer.jpg",
-    "source": "DOC13_Mercenary_Upgrades.pdf",
-    "points": 11
-  },
-  {
-    "faction": "mercenary",
-    "kind": "upgrade",
-    "title": "eDIn'S AMBAN RIFLE",
-    "slug": "edin-s-amban-rifle",
-    "file": "cards/mercenary/upgrade/edin-s-amban-rifle.jpg",
+    "title": "DIn'S AMBAN RIFLE",
+    "slug": "din-s-amban-rifle",
+    "file": "cards/mercenary/upgrade/din-s-amban-rifle.jpg",
     "source": "DOC13_Mercenary_Upgrades.pdf",
     "points": 10
   },
@@ -3152,38 +3458,38 @@
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "Ewok SLINGERS",
-    "slug": "ewok-slingers",
-    "file": "cards/mercenary/unit/ewok-slingers.jpg",
+    "title": "Ework SLINGERS",
+    "slug": "ework-slingers",
+    "file": "cards/mercenary/unit/ework-slingers.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": null
   },
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "a Ewok SKIRMISHERS",
-    "slug": "a-ewok-skirmishers",
-    "file": "cards/mercenary/unit/a-ewok-skirmishers.jpg",
+    "title": "Ewok SkKIRMISHERS",
+    "slug": "ewok-skkirmishers",
+    "file": "cards/mercenary/unit/ewok-skkirmishers.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": 4
   },
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "-C-3PO",
-    "slug": "c-3po",
-    "file": "cards/mercenary/unit/c-3po.jpg",
+    "title": "Ewok SkIRMISHERS",
+    "slug": "ewok-skirmishers",
+    "file": "cards/mercenary/unit/ewok-skirmishers.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
-    "points": 7
+    "points": null
   },
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "s CH EWB",
-    "slug": "s-ch-ewb",
-    "file": "cards/mercenary/unit/s-ch-ewb.jpg",
+    "title": "e C-3PO",
+    "slug": "e-c-3po",
+    "file": "cards/mercenary/unit/e-c-3po.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
-    "points": 1
+    "points": 7
   },
   {
     "faction": "mercenary",
@@ -3192,167 +3498,176 @@
     "slug": "chewbacca",
     "file": "cards/mercenary/unit/chewbacca.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
-    "points": null
+    "points": 1
   },
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "eLOGRAY",
-    "slug": "elogray",
-    "file": "cards/mercenary/unit/elogray.jpg",
+    "title": "e-LOGRAY",
+    "slug": "e-logray",
+    "file": "cards/mercenary/unit/e-logray.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": 5
   },
   {
     "faction": "mercenary",
     "kind": "unit",
-    "title": "eWICKET",
-    "slug": "ewicket",
-    "file": "cards/mercenary/unit/ewicket.jpg",
+    "title": "WICKET",
+    "slug": "wicket",
+    "file": "cards/mercenary/unit/wicket.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": 4
   },
   {
     "faction": "mercenary",
     "kind": "unit",
+    "title": "-LOGRAY",
+    "slug": "logray",
+    "file": "cards/mercenary/unit/logray.jpg",
+    "source": "DOC13_Mercenary_Ewoks.pdf",
+    "points": null
+  },
+  {
+    "faction": "mercenary",
+    "kind": "upgrade",
     "title": "SECRET INGREDIENTS",
     "slug": "secret-ingredients",
-    "file": "cards/mercenary/unit/secret-ingredients.jpg",
+    "file": "cards/mercenary/upgrade/secret-ingredients.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": null
   },
   {
     "faction": "mercenary",
-    "kind": "unit",
+    "kind": "upgrade",
     "title": "ONWARD TO VICTORY",
     "slug": "onward-to-victory",
-    "file": "cards/mercenary/unit/onward-to-victory.jpg",
+    "file": "cards/mercenary/upgrade/onward-to-victory.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": 10
   },
   {
     "faction": "mercenary",
-    "kind": "unit",
+    "kind": "upgrade",
     "title": "HERBAL MEDICINE",
     "slug": "herbal-medicine",
-    "file": "cards/mercenary/unit/herbal-medicine.jpg",
+    "file": "cards/mercenary/upgrade/herbal-medicine.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": 10
   },
   {
     "faction": "mercenary",
-    "kind": "unit",
+    "kind": "upgrade",
     "title": "CALL TO ARMS",
     "slug": "call-to-arms",
-    "file": "cards/mercenary/unit/call-to-arms.jpg",
+    "file": "cards/mercenary/upgrade/call-to-arms.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": null
   },
   {
     "faction": "mercenary",
-    "kind": "unit",
+    "kind": "upgrade",
     "title": "ForREST DWELLERS",
     "slug": "forrest-dwellers",
-    "file": "cards/mercenary/unit/forrest-dwellers.jpg",
+    "file": "cards/mercenary/upgrade/forrest-dwellers.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": null
   },
   {
     "faction": "mercenary",
-    "kind": "unit",
+    "kind": "upgrade",
     "title": "INSATIABLE CURIOSITY",
     "slug": "insatiable-curiosity",
-    "file": "cards/mercenary/unit/insatiable-curiosity.jpg",
+    "file": "cards/mercenary/upgrade/insatiable-curiosity.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": null
   },
   {
     "faction": "mercenary",
-    "kind": "unit",
+    "kind": "upgrade",
     "title": "Ewok TRAPPER",
     "slug": "ewok-trapper",
-    "file": "cards/mercenary/unit/ewok-trapper.jpg",
+    "file": "cards/mercenary/upgrade/ewok-trapper.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": 10
   },
   {
     "faction": "mercenary",
-    "kind": "unit",
+    "kind": "upgrade",
     "title": "Axe Ewok",
     "slug": "axe-ewok",
-    "file": "cards/mercenary/unit/axe-ewok.jpg",
+    "file": "cards/mercenary/upgrade/axe-ewok.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": 15
   },
   {
     "faction": "mercenary",
-    "kind": "unit",
+    "kind": "upgrade",
     "title": "Re Pe QE aV EQS QE E 6a EE oe EO",
     "slug": "re-pe-qe-av-eqs-qe-e-6a-ee-oe-eo",
-    "file": "cards/mercenary/unit/re-pe-qe-av-eqs-qe-e-6a-ee-oe-eo.jpg",
+    "file": "cards/mercenary/upgrade/re-pe-qe-av-eqs-qe-e-6a-ee-oe-eo.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": 28
   },
   {
     "faction": "mercenary",
-    "kind": "unit",
+    "kind": "upgrade",
     "title": "Ewok SLINGER SQUAD",
     "slug": "ewok-slinger-squad",
-    "file": "cards/mercenary/unit/ewok-slinger-squad.jpg",
+    "file": "cards/mercenary/upgrade/ewok-slinger-squad.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": 23
   },
   {
     "faction": "mercenary",
-    "kind": "unit",
+    "kind": "upgrade",
     "title": "MO eee",
     "slug": "mo-eee",
-    "file": "cards/mercenary/unit/mo-eee.jpg",
+    "file": "cards/mercenary/upgrade/mo-eee.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
-    "points": null
+    "points": 7
   },
   {
     "faction": "mercenary",
-    "kind": "unit",
+    "kind": "upgrade",
     "title": "NEE",
     "slug": "nee",
-    "file": "cards/mercenary/unit/nee.jpg",
+    "file": "cards/mercenary/upgrade/nee.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": null
   },
   {
     "faction": "mercenary",
-    "kind": "unit",
+    "kind": "upgrade",
     "title": "BRIGHT TREE VILLAGE",
     "slug": "bright-tree-village",
-    "file": "cards/mercenary/unit/bright-tree-village.jpg",
+    "file": "cards/mercenary/upgrade/bright-tree-village.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": 7
   },
   {
     "faction": "mercenary",
-    "kind": "unit",
-    "title": "EEE EEE",
-    "slug": "eee-eee",
-    "file": "cards/mercenary/unit/eee-eee.jpg",
+    "kind": "upgrade",
+    "title": "E EE",
+    "slug": "e-ee",
+    "file": "cards/mercenary/upgrade/e-ee.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
-    "points": 7
+    "points": 4
   },
   {
     "faction": "mercenary",
-    "kind": "unit",
+    "kind": "upgrade",
     "title": "r i CouraGceous CouNTERATTACK",
     "slug": "r-i-couragceous-counterattack",
-    "file": "cards/mercenary/unit/r-i-couragceous-counterattack.jpg",
+    "file": "cards/mercenary/upgrade/r-i-couragceous-counterattack.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": 7
   },
   {
     "faction": "mercenary",
-    "kind": "unit",
+    "kind": "upgrade",
     "title": "' e SNEAKY SCOUTING",
     "slug": "e-sneaky-scouting",
-    "file": "cards/mercenary/unit/e-sneaky-scouting.jpg",
+    "file": "cards/mercenary/upgrade/e-sneaky-scouting.jpg",
     "source": "DOC13_Mercenary_Ewoks.pdf",
     "points": null
   },
@@ -3413,9 +3728,9 @@
   {
     "faction": "generic",
     "kind": "upgrade",
-    "title": "ELECTROBINOCULARS",
-    "slug": "electrobinoculars",
-    "file": "cards/generic/upgrade/electrobinoculars.jpg",
+    "title": "LECTROBINOCULARS",
+    "slug": "lectrobinoculars",
+    "file": "cards/generic/upgrade/lectrobinoculars.jpg",
     "source": "DOC51_Generic_Upgrades.pdf",
     "points": null
   },
@@ -3431,9 +3746,9 @@
   {
     "faction": "generic",
     "kind": "upgrade",
-    "title": "ENVIRONMENTAL GEAR",
-    "slug": "environmental-gear",
-    "file": "cards/generic/upgrade/environmental-gear.jpg",
+    "title": "NVIRONMENTAL GEAR",
+    "slug": "nvironmental-gear",
+    "file": "cards/generic/upgrade/nvironmental-gear.jpg",
     "source": "DOC51_Generic_Upgrades.pdf",
     "points": 2
   },
@@ -3494,18 +3809,18 @@
   {
     "faction": "generic",
     "kind": "upgrade",
-    "title": "EMERGENCY STIMS",
-    "slug": "emergency-stims",
-    "file": "cards/generic/upgrade/emergency-stims.jpg",
+    "title": "MERGENCY STIMS",
+    "slug": "mergency-stims",
+    "file": "cards/generic/upgrade/mergency-stims.jpg",
     "source": "DOC51_Generic_Upgrades.pdf",
     "points": null
   },
   {
     "faction": "generic",
     "kind": "upgrade",
-    "title": "ENDURANCE",
-    "slug": "endurance",
-    "file": "cards/generic/upgrade/endurance.jpg",
+    "title": "NDURANCE",
+    "slug": "ndurance",
+    "file": "cards/generic/upgrade/ndurance.jpg",
     "source": "DOC51_Generic_Upgrades.pdf",
     "points": 5
   },
@@ -3521,9 +3836,9 @@
   {
     "faction": "generic",
     "kind": "upgrade",
-    "title": "OFFENSIVE PuSH",
-    "slug": "offensive-push",
-    "file": "cards/generic/upgrade/offensive-push.jpg",
+    "title": "OFFENSIVE STANCE",
+    "slug": "offensive-stance",
+    "file": "cards/generic/upgrade/offensive-stance.jpg",
     "source": "DOC51_Generic_Upgrades.pdf",
     "points": 5
   },
@@ -3593,9 +3908,9 @@
   {
     "faction": "generic",
     "kind": "upgrade",
-    "title": "OFFENSIVE STANCE",
-    "slug": "offensive-stance",
-    "file": "cards/generic/upgrade/offensive-stance.jpg",
+    "title": "DEFENSIVE STANCE",
+    "slug": "defensive-stance",
+    "file": "cards/generic/upgrade/defensive-stance.jpg",
     "source": "DOC51_Generic_Upgrades.pdf",
     "points": null
   },
@@ -3665,11 +3980,11 @@
   {
     "faction": "generic",
     "kind": "upgrade",
-    "title": "ATTACK PROTOCOLS",
-    "slug": "attack-protocols",
-    "file": "cards/generic/upgrade/attack-protocols.jpg",
+    "title": "NGAGEMENT PROTOCOLS",
+    "slug": "ngagement-protocols",
+    "file": "cards/generic/upgrade/ngagement-protocols.jpg",
     "source": "DOC51_Generic_Upgrades.pdf",
-    "points": null
+    "points": 3
   },
   {
     "faction": "generic",
@@ -3692,9 +4007,9 @@
   {
     "faction": "generic",
     "kind": "upgrade",
-    "title": "EMP Droip POPPERS\u2019",
-    "slug": "emp-droip-poppers",
-    "file": "cards/generic/upgrade/emp-droip-poppers.jpg",
+    "title": "MP Droip POPPERS\u2019",
+    "slug": "mp-droip-poppers",
+    "file": "cards/generic/upgrade/mp-droip-poppers.jpg",
     "source": "DOC51_Generic_Upgrades.pdf",
     "points": 7
   },
@@ -3719,15 +4034,6 @@
   {
     "faction": "generic",
     "kind": "upgrade",
-    "title": "SMOKE GRENADES",
-    "slug": "smoke-grenades",
-    "file": "cards/generic/upgrade/smoke-grenades.jpg",
-    "source": "DOC51_Generic_Upgrades.pdf",
-    "points": 7
-  },
-  {
-    "faction": "generic",
-    "kind": "upgrade",
     "title": "as fe ED",
     "slug": "as-fe-ed",
     "file": "cards/generic/upgrade/as-fe-ed.jpg",
@@ -3740,15 +4046,6 @@
     "title": "BARRAGE GENERATOR",
     "slug": "barrage-generator",
     "file": "cards/generic/upgrade/barrage-generator.jpg",
-    "source": "DOC51_Generic_Upgrades.pdf",
-    "points": 3
-  },
-  {
-    "faction": "generic",
-    "kind": "upgrade",
-    "title": "ENGAGEMENT PROTOCOLS",
-    "slug": "engagement-protocols",
-    "file": "cards/generic/upgrade/engagement-protocols.jpg",
     "source": "DOC51_Generic_Upgrades.pdf",
     "points": 3
   },
@@ -3863,15 +4160,6 @@
   {
     "faction": "generic",
     "kind": "upgrade",
-    "title": "ForcE PusH",
-    "slug": "force-push",
-    "file": "cards/generic/upgrade/force-push.jpg",
-    "source": "DOC51_Generic_Upgrades.pdf",
-    "points": 40
-  },
-  {
-    "faction": "generic",
-    "kind": "upgrade",
     "title": "ForRcE GUIDANCE",
     "slug": "forrce-guidance",
     "file": "cards/generic/upgrade/forrce-guidance.jpg",
@@ -3890,9 +4178,9 @@
   {
     "faction": "generic",
     "kind": "upgrade",
-    "title": "eTRUSTED AGENT",
-    "slug": "etrusted-agent",
-    "file": "cards/generic/upgrade/etrusted-agent.jpg",
+    "title": "TRUSTED AGENT",
+    "slug": "trusted-agent",
+    "file": "cards/generic/upgrade/trusted-agent.jpg",
     "source": "DOC51_UpgradeCards.pdf",
     "points": null
   },
@@ -3920,15 +4208,6 @@
     "title": "Mission OBJECTIVE",
     "slug": "mission-objective",
     "file": "cards/generic/upgrade/mission-objective.jpg",
-    "source": "DOC51_UpgradeCards.pdf",
-    "points": 7
-  },
-  {
-    "faction": "generic",
-    "kind": "upgrade",
-    "title": "STRIKE AND FADE",
-    "slug": "strike-and-fade",
-    "file": "cards/generic/upgrade/strike-and-fade.jpg",
     "source": "DOC51_UpgradeCards.pdf",
     "points": 7
   },
@@ -4133,11 +4412,65 @@
   {
     "faction": "generic",
     "kind": "upgrade",
-    "title": "eJyn ERSO",
-    "slug": "ejyn-erso",
-    "file": "cards/generic/upgrade/ejyn-erso.jpg",
+    "title": "Jyn ERSO",
+    "slug": "jyn-erso",
+    "file": "cards/generic/upgrade/jyn-erso.jpg",
     "source": "DOC51_UpgradeCards.pdf",
     "points": 22
+  },
+  {
+    "faction": "imperials",
+    "kind": "command",
+    "title": "SE ee eee",
+    "slug": "se-ee-eee",
+    "file": "cards/imperials/command/se-ee-eee.jpg",
+    "source": "DOC13_GalacticEmpire_Commands.pdf",
+    "points": 6
+  },
+  {
+    "faction": "imperials",
+    "kind": "command",
+    "title": "MO eee",
+    "slug": "mo-eee",
+    "file": "cards/imperials/command/mo-eee.jpg",
+    "source": "DOC13_GalacticEmpire_Commands.pdf",
+    "points": 5
+  },
+  {
+    "faction": "imperials",
+    "kind": "command",
+    "title": "eee",
+    "slug": "eee",
+    "file": "cards/imperials/command/eee.jpg",
+    "source": "DOC13_GalacticEmpire_Commands.pdf",
+    "points": null
+  },
+  {
+    "faction": "imperials",
+    "kind": "command",
+    "title": "Ms eee",
+    "slug": "ms-eee",
+    "file": "cards/imperials/command/ms-eee.jpg",
+    "source": "DOC13_GalacticEmpire_Commands.pdf",
+    "points": null
+  },
+  {
+    "faction": "imperials",
+    "kind": "command",
+    "title": "Me eee",
+    "slug": "me-eee",
+    "file": "cards/imperials/command/me-eee.jpg",
+    "source": "DOC13_GalacticEmpire_Commands.pdf",
+    "points": null
+  },
+  {
+    "faction": "imperials",
+    "kind": "command",
+    "title": "mE Eee",
+    "slug": "me-eee-2",
+    "file": "cards/imperials/command/me-eee-2.jpg",
+    "source": "DOC13_GalacticEmpire_Commands.pdf",
+    "points": null
   },
   {
     "faction": "imperials",
@@ -4146,14 +4479,14 @@
     "slug": "ee-eee",
     "file": "cards/imperials/command/ee-eee.jpg",
     "source": "DOC13_GalacticEmpire_Commands.pdf",
-    "points": 5
+    "points": null
   },
   {
     "faction": "imperials",
     "kind": "command",
-    "title": "EL ree",
-    "slug": "el-ree",
-    "file": "cards/imperials/command/el-ree.jpg",
+    "title": "L ree",
+    "slug": "l-ree",
+    "file": "cards/imperials/command/l-ree.jpg",
     "source": "DOC13_GalacticEmpire_Commands.pdf",
     "points": 2
   },
@@ -4165,15 +4498,6 @@
     "file": "cards/imperials/command/you-woultpb-question-me.jpg",
     "source": "DOC13_GalacticEmpire_Commands.pdf",
     "points": 2
-  },
-  {
-    "faction": "imperials",
-    "kind": "command",
-    "title": "0 ee",
-    "slug": "0-ee",
-    "file": "cards/imperials/command/0-ee.jpg",
-    "source": "DOC13_GalacticEmpire_Commands.pdf",
-    "points": null
   },
   {
     "faction": "imperials",
@@ -4196,18 +4520,9 @@
   {
     "faction": "imperials",
     "kind": "command",
-    "title": "Ms eee",
-    "slug": "ms-eee",
-    "file": "cards/imperials/command/ms-eee.jpg",
-    "source": "DOC13_GalacticEmpire_Commands.pdf",
-    "points": null
-  },
-  {
-    "faction": "imperials",
-    "kind": "command",
-    "title": "EEE",
-    "slug": "eee",
-    "file": "cards/imperials/command/eee.jpg",
+    "title": "EE",
+    "slug": "ee",
+    "file": "cards/imperials/command/ee.jpg",
     "source": "DOC13_GalacticEmpire_Commands.pdf",
     "points": 2
   },
@@ -4250,9 +4565,9 @@
   {
     "faction": "imperials",
     "kind": "command",
-    "title": "EVASIVE MANEUVERS",
-    "slug": "evasive-maneuvers",
-    "file": "cards/imperials/command/evasive-maneuvers.jpg",
+    "title": "VASIVE MANEUVERS",
+    "slug": "vasive-maneuvers",
+    "file": "cards/imperials/command/vasive-maneuvers.jpg",
     "source": "DOC13_GalacticEmpire_Commands.pdf",
     "points": 52
   },
@@ -4304,11 +4619,11 @@
   {
     "faction": "imperials",
     "kind": "command",
-    "title": "SE ee eee",
-    "slug": "se-ee-eee",
-    "file": "cards/imperials/command/se-ee-eee.jpg",
+    "title": "DARTH VADER",
+    "slug": "darth-vader-2",
+    "file": "cards/imperials/command/darth-vader-2.jpg",
     "source": "DOC13_GalacticEmpire_Commands.pdf",
-    "points": 6
+    "points": null
   },
   {
     "faction": "imperials",
@@ -4403,11 +4718,56 @@
   {
     "faction": "rebels",
     "kind": "command",
-    "title": "EEE EEE",
-    "slug": "eee-eee",
-    "file": "cards/rebels/command/eee-eee.jpg",
+    "title": "es eee",
+    "slug": "es-eee",
+    "file": "cards/rebels/command/es-eee.jpg",
     "source": "DOC13_RebelAlliance_Commands.pdf",
     "points": 7
+  },
+  {
+    "faction": "rebels",
+    "kind": "command",
+    "title": "EE EEE",
+    "slug": "ee-eee",
+    "file": "cards/rebels/command/ee-eee.jpg",
+    "source": "DOC13_RebelAlliance_Commands.pdf",
+    "points": 7
+  },
+  {
+    "faction": "rebels",
+    "kind": "command",
+    "title": "SSE EEE",
+    "slug": "sse-eee",
+    "file": "cards/rebels/command/sse-eee.jpg",
+    "source": "DOC13_RebelAlliance_Commands.pdf",
+    "points": 4
+  },
+  {
+    "faction": "rebels",
+    "kind": "command",
+    "title": "TE EEE",
+    "slug": "te-eee",
+    "file": "cards/rebels/command/te-eee.jpg",
+    "source": "DOC13_RebelAlliance_Commands.pdf",
+    "points": 153
+  },
+  {
+    "faction": "rebels",
+    "kind": "command",
+    "title": "eee",
+    "slug": "eee",
+    "file": "cards/rebels/command/eee.jpg",
+    "source": "DOC13_RebelAlliance_Commands.pdf",
+    "points": null
+  },
+  {
+    "faction": "rebels",
+    "kind": "command",
+    "title": "eee",
+    "slug": "eee-2",
+    "file": "cards/rebels/command/eee-2.jpg",
+    "source": "DOC13_RebelAlliance_Commands.pdf",
+    "points": null
   },
   {
     "faction": "rebels",
@@ -4415,6 +4775,24 @@
     "title": "SEE",
     "slug": "see",
     "file": "cards/rebels/command/see.jpg",
+    "source": "DOC13_RebelAlliance_Commands.pdf",
+    "points": 6
+  },
+  {
+    "faction": "rebels",
+    "kind": "command",
+    "title": "EE",
+    "slug": "ee",
+    "file": "cards/rebels/command/ee.jpg",
+    "source": "DOC13_RebelAlliance_Commands.pdf",
+    "points": null
+  },
+  {
+    "faction": "rebels",
+    "kind": "command",
+    "title": "EE",
+    "slug": "ee-2",
+    "file": "cards/rebels/command/ee-2.jpg",
     "source": "DOC13_RebelAlliance_Commands.pdf",
     "points": null
   },
@@ -4439,20 +4817,29 @@
   {
     "faction": "rebels",
     "kind": "command",
+    "title": "AHSOKA TANO FULCRUM",
+    "slug": "ahsoka-tano-fulcrum-2",
+    "file": "cards/rebels/command/ahsoka-tano-fulcrum-2.jpg",
+    "source": "DOC13_RebelAlliance_Commands.pdf",
+    "points": null
+  },
+  {
+    "faction": "rebels",
+    "kind": "command",
+    "title": "AHSOKA TANO FULCRUM",
+    "slug": "ahsoka-tano-fulcrum-3",
+    "file": "cards/rebels/command/ahsoka-tano-fulcrum-3.jpg",
+    "source": "DOC13_RebelAlliance_Commands.pdf",
+    "points": null
+  },
+  {
+    "faction": "rebels",
+    "kind": "command",
     "title": "SS a",
     "slug": "ss-a",
     "file": "cards/rebels/command/ss-a.jpg",
     "source": "DOC13_RebelAlliance_Commands.pdf",
     "points": 74
-  },
-  {
-    "faction": "rebels",
-    "kind": "command",
-    "title": "EEE",
-    "slug": "eee",
-    "file": "cards/rebels/command/eee.jpg",
-    "source": "DOC13_RebelAlliance_Commands.pdf",
-    "points": 6
   },
   {
     "faction": "rebels",
@@ -4469,15 +4856,6 @@
     "title": "Ca LEGACY OF MANDALORE",
     "slug": "ca-legacy-of-mandalore",
     "file": "cards/rebels/command/ca-legacy-of-mandalore.jpg",
-    "source": "DOC13_RebelAlliance_Commands.pdf",
-    "points": null
-  },
-  {
-    "faction": "rebels",
-    "kind": "command",
-    "title": "\u2019 & SYMBOL OF REBELLION",
-    "slug": "symbol-of-rebellion",
-    "file": "cards/rebels/command/symbol-of-rebellion.jpg",
     "source": "DOC13_RebelAlliance_Commands.pdf",
     "points": null
   },
@@ -4601,15 +4979,6 @@
   {
     "faction": "rebels",
     "kind": "command",
-    "title": "SSE EEE",
-    "slug": "sse-eee",
-    "file": "cards/rebels/command/sse-eee.jpg",
-    "source": "DOC13_RebelAlliance_Commands.pdf",
-    "points": 4
-  },
-  {
-    "faction": "rebels",
-    "kind": "command",
     "title": "FULL OF SURPRISES",
     "slug": "full-of-surprises",
     "file": "cards/rebels/command/full-of-surprises.jpg",
@@ -4637,24 +5006,6 @@
   {
     "faction": "rebels",
     "kind": "command",
-    "title": "LUKE SKYWALKER",
-    "slug": "luke-skywalker",
-    "file": "cards/rebels/command/luke-skywalker.jpg",
-    "source": "DOC13_RebelAlliance_Commands.pdf",
-    "points": 7
-  },
-  {
-    "faction": "rebels",
-    "kind": "command",
-    "title": "es eee",
-    "slug": "es-eee",
-    "file": "cards/rebels/command/es-eee.jpg",
-    "source": "DOC13_RebelAlliance_Commands.pdf",
-    "points": 7
-  },
-  {
-    "faction": "rebels",
-    "kind": "command",
     "title": "REBELLIONS ARE BuiLT ON Hop",
     "slug": "rebellions-are-built-on-hop",
     "file": "cards/rebels/command/rebellions-are-built-on-hop.jpg",
@@ -4673,9 +5024,36 @@
   {
     "faction": "separatists",
     "kind": "command",
+    "title": "E EEE",
+    "slug": "e-eee",
+    "file": "cards/separatists/command/e-eee.jpg",
+    "source": "DOC13_SeparatistAlliance_Commands.pdf",
+    "points": null
+  },
+  {
+    "faction": "separatists",
+    "kind": "command",
+    "title": "OS ea",
+    "slug": "os-ea",
+    "file": "cards/separatists/command/os-ea.jpg",
+    "source": "DOC13_SeparatistAlliance_Commands.pdf",
+    "points": null
+  },
+  {
+    "faction": "separatists",
+    "kind": "command",
     "title": "OS EEE",
     "slug": "os-eee",
     "file": "cards/separatists/command/os-eee.jpg",
+    "source": "DOC13_SeparatistAlliance_Commands.pdf",
+    "points": null
+  },
+  {
+    "faction": "separatists",
+    "kind": "command",
+    "title": "CO EE",
+    "slug": "co-ee",
+    "file": "cards/separatists/command/co-ee.jpg",
     "source": "DOC13_SeparatistAlliance_Commands.pdf",
     "points": null
   },
@@ -4691,18 +5069,36 @@
   {
     "faction": "separatists",
     "kind": "command",
-    "title": "a EL eee",
-    "slug": "a-el-eee",
-    "file": "cards/separatists/command/a-el-eee.jpg",
+    "title": "CC EE",
+    "slug": "cc-ee-2",
+    "file": "cards/separatists/command/cc-ee-2.jpg",
     "source": "DOC13_SeparatistAlliance_Commands.pdf",
     "points": null
   },
   {
     "faction": "separatists",
     "kind": "command",
-    "title": "OS ea",
-    "slug": "os-ea",
-    "file": "cards/separatists/command/os-ea.jpg",
+    "title": "CC EE",
+    "slug": "cc-ee-3",
+    "file": "cards/separatists/command/cc-ee-3.jpg",
+    "source": "DOC13_SeparatistAlliance_Commands.pdf",
+    "points": null
+  },
+  {
+    "faction": "separatists",
+    "kind": "command",
+    "title": "CC EE",
+    "slug": "cc-ee-4",
+    "file": "cards/separatists/command/cc-ee-4.jpg",
+    "source": "DOC13_SeparatistAlliance_Commands.pdf",
+    "points": null
+  },
+  {
+    "faction": "separatists",
+    "kind": "command",
+    "title": "a EL eee",
+    "slug": "a-el-eee",
+    "file": "cards/separatists/command/a-el-eee.jpg",
     "source": "DOC13_SeparatistAlliance_Commands.pdf",
     "points": null
   },
@@ -4763,11 +5159,29 @@
   {
     "faction": "separatists",
     "kind": "command",
-    "title": "EEE",
-    "slug": "eee",
-    "file": "cards/separatists/command/eee.jpg",
+    "title": "EE",
+    "slug": "ee",
+    "file": "cards/separatists/command/ee.jpg",
     "source": "DOC13_SeparatistAlliance_Commands.pdf",
     "points": 7
+  },
+  {
+    "faction": "separatists",
+    "kind": "command",
+    "title": "EE",
+    "slug": "ee-2",
+    "file": "cards/separatists/command/ee-2.jpg",
+    "source": "DOC13_SeparatistAlliance_Commands.pdf",
+    "points": null
+  },
+  {
+    "faction": "separatists",
+    "kind": "command",
+    "title": "EE",
+    "slug": "ee-3",
+    "file": "cards/separatists/command/ee-3.jpg",
+    "source": "DOC13_SeparatistAlliance_Commands.pdf",
+    "points": null
   },
   {
     "faction": "separatists",
@@ -4811,24 +5225,6 @@
     "title": "PRESERVATION PROTOCOLS",
     "slug": "preservation-protocols",
     "file": "cards/separatists/command/preservation-protocols.jpg",
-    "source": "DOC13_SeparatistAlliance_Commands.pdf",
-    "points": null
-  },
-  {
-    "faction": "separatists",
-    "kind": "command",
-    "title": "CO EE",
-    "slug": "co-ee",
-    "file": "cards/separatists/command/co-ee.jpg",
-    "source": "DOC13_SeparatistAlliance_Commands.pdf",
-    "points": null
-  },
-  {
-    "faction": "separatists",
-    "kind": "command",
-    "title": "EE EEE",
-    "slug": "ee-eee",
-    "file": "cards/separatists/command/ee-eee.jpg",
     "source": "DOC13_SeparatistAlliance_Commands.pdf",
     "points": null
   },
@@ -4911,14 +5307,14 @@
     "slug": "ss-ee",
     "file": "cards/mercenary/command/ss-ee.jpg",
     "source": "DOC51_Mercenary_Commands_05-01_Update.pdf",
-    "points": null
+    "points": 2
   },
   {
     "faction": "mercenary",
     "kind": "command",
-    "title": "i eee",
-    "slug": "i-eee",
-    "file": "cards/mercenary/command/i-eee.jpg",
+    "title": "MO eee",
+    "slug": "mo-eee",
+    "file": "cards/mercenary/command/mo-eee.jpg",
     "source": "DOC51_Mercenary_Commands_05-01_Update.pdf",
     "points": 4
   },
@@ -4948,15 +5344,6 @@
     "file": "cards/mercenary/command/merciless-munitions.jpg",
     "source": "DOC51_Mercenary_Commands_05-01_Update.pdf",
     "points": null
-  },
-  {
-    "faction": "mercenary",
-    "kind": "command",
-    "title": "SE EE",
-    "slug": "se-ee",
-    "file": "cards/mercenary/command/se-ee.jpg",
-    "source": "DOC51_Mercenary_Commands_05-01_Update.pdf",
-    "points": 2
   },
   {
     "faction": "mercenary",
@@ -5015,15 +5402,6 @@
   {
     "faction": "mercenary",
     "kind": "command",
-    "title": "MO eee",
-    "slug": "mo-eee",
-    "file": "cards/mercenary/command/mo-eee.jpg",
-    "source": "DOC51_Mercenary_Commands_05-01_Update.pdf",
-    "points": null
-  },
-  {
-    "faction": "mercenary",
-    "kind": "command",
     "title": "FOCUSED ON THE KILL",
     "slug": "focused-on-the-kill",
     "file": "cards/mercenary/command/focused-on-the-kill.jpg",
@@ -5060,9 +5438,9 @@
   {
     "faction": "mercenary",
     "kind": "command",
-    "title": "EEE",
-    "slug": "eee",
-    "file": "cards/mercenary/command/eee.jpg",
+    "title": "EE",
+    "slug": "ee",
+    "file": "cards/mercenary/command/ee.jpg",
     "source": "DOC51_Mercenary_Commands_05-01_Update.pdf",
     "points": null
   },
@@ -5123,9 +5501,9 @@
   {
     "faction": "mercenary",
     "kind": "command",
-    "title": "EE EE dl",
-    "slug": "ee-ee-dl",
-    "file": "cards/mercenary/command/ee-ee-dl.jpg",
+    "title": "E EE dl",
+    "slug": "e-ee-dl",
+    "file": "cards/mercenary/command/e-ee-dl.jpg",
     "source": "DOC51_Mercenary_Commands_05-01_Update.pdf",
     "points": null
   },
@@ -5168,20 +5546,20 @@
   {
     "faction": "republic",
     "kind": "command",
+    "title": "BSE EEE SLU",
+    "slug": "bse-eee-slu",
+    "file": "cards/republic/command/bse-eee-slu.jpg",
+    "source": "SWQ_GalacticRepublic_Commands.pdf",
+    "points": 5
+  },
+  {
+    "faction": "republic",
+    "kind": "command",
     "title": "CSE EES",
     "slug": "cse-ees",
     "file": "cards/republic/command/cse-ees.jpg",
     "source": "SWQ_GalacticRepublic_Commands.pdf",
     "points": 2
-  },
-  {
-    "faction": "republic",
-    "kind": "command",
-    "title": "CC EE",
-    "slug": "cc-ee",
-    "file": "cards/republic/command/cc-ee.jpg",
-    "source": "SWQ_GalacticRepublic_Commands.pdf",
-    "points": null
   },
   {
     "faction": "republic",
@@ -5204,20 +5582,11 @@
   {
     "faction": "republic",
     "kind": "command",
-    "title": "EEE EEE",
-    "slug": "eee-eee",
-    "file": "cards/republic/command/eee-eee.jpg",
+    "title": "EE EEE",
+    "slug": "ee-eee",
+    "file": "cards/republic/command/ee-eee.jpg",
     "source": "SWQ_GalacticRepublic_Commands.pdf",
     "points": 7
-  },
-  {
-    "faction": "republic",
-    "kind": "command",
-    "title": "SS ee",
-    "slug": "ss-ee",
-    "file": "cards/republic/command/ss-ee.jpg",
-    "source": "SWQ_GalacticRepublic_Commands.pdf",
-    "points": null
   },
   {
     "faction": "republic",
@@ -5249,29 +5618,11 @@
   {
     "faction": "republic",
     "kind": "command",
-    "title": "TEE ce",
-    "slug": "tee-ce",
-    "file": "cards/republic/command/tee-ce.jpg",
-    "source": "SWQ_GalacticRepublic_Commands.pdf",
-    "points": null
-  },
-  {
-    "faction": "republic",
-    "kind": "command",
     "title": "AGGRESSIVE NEGOTIATIONS",
     "slug": "aggressive-negotiations",
     "file": "cards/republic/command/aggressive-negotiations.jpg",
     "source": "SWQ_GalacticRepublic_Commands.pdf",
     "points": 7
-  },
-  {
-    "faction": "republic",
-    "kind": "command",
-    "title": "BSE EEE SLU",
-    "slug": "bse-eee-slu",
-    "file": "cards/republic/command/bse-eee-slu.jpg",
-    "source": "SWQ_GalacticRepublic_Commands.pdf",
-    "points": 5
   },
   {
     "faction": "republic",
@@ -5294,11 +5645,11 @@
   {
     "faction": "republic",
     "kind": "command",
-    "title": "& Size Matrers Nort",
-    "slug": "size-matrers-nort",
-    "file": "cards/republic/command/size-matrers-nort.jpg",
+    "title": "& S1zE MATTERS SOMETIMES",
+    "slug": "s1ze-matters-sometimes",
+    "file": "cards/republic/command/s1ze-matters-sometimes.jpg",
     "source": "SWQ_GalacticRepublic_Commands.pdf",
-    "points": null
+    "points": 4
   },
   {
     "faction": "republic",
@@ -5393,11 +5744,20 @@
   {
     "faction": "republic",
     "kind": "command",
-    "title": "31 2TH ATTACK BATTALION",
-    "slug": "31-2th-attack-battalion",
-    "file": "cards/republic/command/31-2th-attack-battalion.jpg",
+    "title": "212TH ATTACK BATTALION",
+    "slug": "212th-attack-battalion",
+    "file": "cards/republic/command/212th-attack-battalion.jpg",
     "source": "SWQ_GalacticRepublic_Commands.pdf",
     "points": 7
+  },
+  {
+    "faction": "republic",
+    "kind": "command",
+    "title": "212TH ATTACK BATTALION",
+    "slug": "212th-attack-battalion-2",
+    "file": "cards/republic/command/212th-attack-battalion-2.jpg",
+    "source": "SWQ_GalacticRepublic_Commands.pdf",
+    "points": null
   },
   {
     "faction": "republic",
@@ -5434,15 +5794,6 @@
     "file": "cards/republic/command/the-bap-batcch.jpg",
     "source": "SWQ_GalacticRepublic_Commands.pdf",
     "points": null
-  },
-  {
-    "faction": "republic",
-    "kind": "command",
-    "title": "& S1zE MATTERS SOMETIMES",
-    "slug": "s1ze-matters-sometimes",
-    "file": "cards/republic/command/s1ze-matters-sometimes.jpg",
-    "source": "SWQ_GalacticRepublic_Commands.pdf",
-    "points": 4
   },
   {
     "faction": "generic",
@@ -5528,9 +5879,27 @@
   {
     "faction": "generic",
     "kind": "battle",
+    "title": "e ASSAULT",
+    "slug": "e-assault",
+    "file": "cards/generic/battle/e-assault.jpg",
+    "source": "DOC41_BattleCards_11.26.2025.pdf",
+    "points": null
+  },
+  {
+    "faction": "generic",
+    "kind": "battle",
     "title": "SUNKER ASSAULT",
     "slug": "sunker-assault",
     "file": "cards/generic/battle/sunker-assault.jpg",
+    "source": "DOC41_BattleCards_11.26.2025.pdf",
+    "points": null
+  },
+  {
+    "faction": "generic",
+    "kind": "battle",
+    "title": "ASSAULT",
+    "slug": "assault",
+    "file": "cards/generic/battle/assault.jpg",
     "source": "DOC41_BattleCards_11.26.2025.pdf",
     "points": null
   },
@@ -5546,9 +5915,9 @@
   {
     "faction": "generic",
     "kind": "battle",
-    "title": "an",
-    "slug": "an",
-    "file": "cards/generic/battle/an.jpg",
+    "title": "",
+    "slug": "generic-battle-7f90cac0",
+    "file": "cards/generic/battle/generic-battle-7f90cac0.jpg",
     "source": "DOC41_BattleCards_11.26.2025.pdf",
     "points": 7
   },
@@ -5564,9 +5933,9 @@
   {
     "faction": "generic",
     "kind": "battle",
-    "title": "oe",
-    "slug": "oe",
-    "file": "cards/generic/battle/oe.jpg",
+    "title": "",
+    "slug": "generic-battle-90f0b91d",
+    "file": "cards/generic/battle/generic-battle-90f0b91d.jpg",
     "source": "DOC41_BattleCards_11.26.2025.pdf",
     "points": null
   },
@@ -5695,15 +6064,6 @@
     "file": "cards/generic/battle/zal-uie-clig-ol-uic-wommang-filase-tcvuri-ullls.jpg",
     "source": "DOC41_BattleCards_11.26.2025.pdf",
     "points": 4
-  },
-  {
-    "faction": "generic",
-    "kind": "battle",
-    "title": "e ASSAULT",
-    "slug": "e-assault",
-    "file": "cards/generic/battle/e-assault.jpg",
-    "source": "DOC41_BattleCards_11.26.2025.pdf",
-    "points": null
   },
   {
     "faction": "generic",

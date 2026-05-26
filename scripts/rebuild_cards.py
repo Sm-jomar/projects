@@ -26,26 +26,29 @@ LEGION = ROOT / "Legion"
 OUT_CARDS = ROOT / "public" / "cards"
 MANIFEST = ROOT / "src" / "data" / "card-manifest.json"
 
-SOURCES: list[tuple[str, str, str]] = [
-    ("DOC51_RebelAlliance_Units.pdf", "rebels", "unit"),
-    ("DOC51_RebelAlliance_Upgrades.pdf", "rebels", "upgrade"),
-    ("DOC51_GalacticEmpire_Units.pdf", "imperials", "unit"),
-    ("DOC51_GalacticEmpire_Upgrades.pdf", "imperials", "upgrade"),
-    ("DOC51_GalacticRepublic_Units.pdf", "republic", "unit"),
-    ("DOC51_GalacticRepublic_Upgrades.pdf", "republic", "upgrade"),
-    ("DOC51_SeparatistAlliance_Units_05-01_Update.pdf", "separatists", "unit"),
-    ("DOC51_SeparatistAlliance_Upgrades.pdf", "separatists", "upgrade"),
-    ("DOC13_Mercenary_Units.pdf", "mercenary", "unit"),
-    ("DOC13_Mercenary_Upgrades.pdf", "mercenary", "upgrade"),
-    ("DOC13_Mercenary_Ewoks.pdf", "mercenary", "unit"),
-    ("DOC51_Generic_Upgrades.pdf", "generic", "upgrade"),
-    ("DOC51_UpgradeCards.pdf", "generic", "upgrade"),
-    ("DOC13_GalacticEmpire_Commands.pdf", "imperials", "command"),
-    ("DOC13_RebelAlliance_Commands.pdf", "rebels", "command"),
-    ("DOC13_SeparatistAlliance_Commands.pdf", "separatists", "command"),
-    ("DOC51_Mercenary_Commands_05-01_Update.pdf", "mercenary", "command"),
-    ("SWQ_GalacticRepublic_Commands.pdf", "republic", "command"),
-    ("DOC41_BattleCards_11.26.2025.pdf", "generic", "battle"),
+# (pdf_name, faction, default_kind). When auto_kind=True, classify each
+# image individually as unit (landscape) or upgrade (portrait), overriding
+# the default kind. Files like the Ewoks pack mix both formats.
+SOURCES: list[tuple[str, str, str, bool]] = [
+    ("DOC51_RebelAlliance_Units.pdf", "rebels", "unit", True),
+    ("DOC51_RebelAlliance_Upgrades.pdf", "rebels", "upgrade", False),
+    ("DOC51_GalacticEmpire_Units.pdf", "imperials", "unit", True),
+    ("DOC51_GalacticEmpire_Upgrades.pdf", "imperials", "upgrade", False),
+    ("DOC51_GalacticRepublic_Units.pdf", "republic", "unit", True),
+    ("DOC51_GalacticRepublic_Upgrades.pdf", "republic", "upgrade", False),
+    ("DOC51_SeparatistAlliance_Units_05-01_Update.pdf", "separatists", "unit", True),
+    ("DOC51_SeparatistAlliance_Upgrades.pdf", "separatists", "upgrade", False),
+    ("DOC13_Mercenary_Units.pdf", "mercenary", "unit", True),
+    ("DOC13_Mercenary_Upgrades.pdf", "mercenary", "upgrade", False),
+    ("DOC13_Mercenary_Ewoks.pdf", "mercenary", "unit", True),
+    ("DOC51_Generic_Upgrades.pdf", "generic", "upgrade", False),
+    ("DOC51_UpgradeCards.pdf", "generic", "upgrade", False),
+    ("DOC13_GalacticEmpire_Commands.pdf", "imperials", "command", False),
+    ("DOC13_RebelAlliance_Commands.pdf", "rebels", "command", False),
+    ("DOC13_SeparatistAlliance_Commands.pdf", "separatists", "command", False),
+    ("DOC51_Mercenary_Commands_05-01_Update.pdf", "mercenary", "command", False),
+    ("SWQ_GalacticRepublic_Commands.pdf", "republic", "command", False),
+    ("DOC41_BattleCards_11.26.2025.pdf", "generic", "battle", False),
 ]
 
 # --- OCR helpers ---
@@ -96,36 +99,105 @@ def _ocr_digits(img: Image.Image, *, invert: bool = True) -> str:
         return ""
 
 
-def ocr_title(img: Image.Image) -> str:
+def _clean(text: str) -> str:
+    text = re.sub(r"[\r\n]+", " ", text)
+    text = re.sub(r"[^A-Za-z0-9 ’'\-/.&]+", " ", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    # The "•" unique marker often OCRs as a stray "e" prefix when followed
+    # by an uppercase letter ("eDARTH VADER"). Strip it.
+    text = re.sub(r"^[eE](?=[A-Z])", "", text)
+    text = re.sub(r"^•\s*", "", text)
+    fixes = {
+        "Mepium": "Medium",
+        "MEPIUM": "MEDIUM",
+        "RIFLEMEN": "Riflemen",
+        "Mar K Il": "Mark II",
+        "MarkK II": "Mark II",
+        "MarkK Il": "Mark II",
+        "WOookKIEE": "Wookiee",
+        "WOoOKIEE": "Wookiee",
+        "WOoOoKIEE": "Wookiee",
+        "WoOoKIEE": "Wookiee",
+        "BatTLe Droips": "Battle Droids",
+        "BaTTLe Droips": "Battle Droids",
+        "BaTTLE Droips": "Battle Droids",
+        "Battle Droips": "Battle Droids",
+        "MacnaGuarp": "MagnaGuard",
+        "MaGNAGUARD": "MagnaGuard",
+        "Crone": "Clone",
+        "CRONE": "CLONE",
+        "ComMMANDER": "Commander",
+        "Cap Bane": "Cad Bane",
+        "Bosa Fett": "Boba Fett",
+        "Bosa FeEetr": "Boba Fett",
+        "Bosa Fetr": "Boba Fett",
+        "Daerth Vader": "Darth Vader",
+        "Daimyo": "Daimyo",  # placeholder, no-op
+        "Mor Fr Gideon": "Moff Gideon",
+        "MorFr Gideon": "Moff Gideon",
+        "MorFr GIDEON": "Moff Gideon",
+        "Morfr Gideon": "Moff Gideon",
+        "Dwarr SPIDER Droip": "Dwarf Spider Droid",
+        "SitH Prose Droips": "Sith Probe Droids",
+        "Prose Droips": "Probe Droids",
+        "PROsE Droips": "Probe Droids",
+        "MacnaGUARD": "MagnaGuard",
+        "OccuPiIER": "Occupier",
+        "ID10 SEEKER Droip": "ID10 Seeker Droid",
+        "Seeker Droip": "Seeker Droid",
+        "MaGNAGuARD": "MagnaGuard",
+    }
+    for k, v in fixes.items():
+        text = text.replace(k, v)
+    return text
+
+
+def _first_meaningful_line(text: str) -> str:
+    for line in text.splitlines():
+        line = line.strip()
+        if len(re.sub(r"[^A-Za-z0-9]", "", line)) >= 3:
+            return line
+    return ""
+
+
+def ocr_title_and_sub(img: Image.Image) -> tuple[str, str]:
+    """OCR the unit name (title bar) and the variant sub-title (line below)."""
     w, h = img.size
     if w >= h:
-        crop = img.crop((int(w * 0.10), int(h * 0.005), int(w * 0.86), int(h * 0.10)))
-        text = _ocr_text(crop, invert=True)
+        title_crop = img.crop(
+            (int(w * 0.10), int(h * 0.005), int(w * 0.86), int(h * 0.07)),
+        )
+        title_raw = _ocr_text(title_crop, invert=True)
+        sub_crop = img.crop(
+            (int(w * 0.10), int(h * 0.06), int(w * 0.86), int(h * 0.12)),
+        )
+        sub_raw = _ocr_text(sub_crop, invert=True)
     else:
-        top = img.crop((int(w * 0.05), int(h * 0.005), int(w * 0.95), int(h * 0.08)))
-        bot = img.crop((int(w * 0.05), int(h * 0.92), int(w * 0.95), int(h * 0.995)))
+        # Portrait (upgrade-style). Title at top, no real sub-title to worry
+        # about for grouping, but we still emit one for the API symmetry.
+        top = img.crop(
+            (int(w * 0.05), int(h * 0.005), int(w * 0.95), int(h * 0.08)),
+        )
+        bot = img.crop(
+            (int(w * 0.05), int(h * 0.92), int(w * 0.95), int(h * 0.995)),
+        )
         top_t = _ocr_text(top, invert=True)
         bot_t = _ocr_text(bot, invert=False)
         def score(s: str) -> int:
             letters = sum(c.isalpha() for c in s)
             return letters - (len(s) - letters) // 2
-        text = top_t if score(top_t) >= score(bot_t) else bot_t
-    for line in text.splitlines():
-        line = line.strip()
-        if len(re.sub(r"[^A-Za-z0-9]", "", line)) >= 3:
-            text = line
-            break
-    text = re.sub(r"[\r\n]+", " ", text)
-    text = re.sub(r"[^A-Za-z0-9 ’'\-/.&]+", " ", text)
-    text = re.sub(r"\s+", " ", text).strip()
-    fixes = {
-        "Mepium": "Medium",
-        "MEPIUM": "MEDIUM",
-        "RIFLEMEN": "Riflemen",
-    }
-    for k, v in fixes.items():
-        text = text.replace(k, v)
-    return text
+        title_raw = top_t if score(top_t) >= score(bot_t) else bot_t
+        sub_raw = ""
+    title = _clean(_first_meaningful_line(title_raw))
+    sub = _clean(_first_meaningful_line(sub_raw))
+    # Strip the unit-type label (TROOPER, etc.) when it sneaks into sub-title.
+    if sub.upper() in {"TROOPER", "REPULSOR VEHICLE", "GROUND VEHICLE", "EMPLACEMENT TROOPER", "CREATURE TROOPER", "CLONE TROOPER", "WOOKIEE TROOPER"}:
+        sub = ""
+    return title, sub
+
+
+def ocr_title(img: Image.Image) -> str:
+    return ocr_title_and_sub(img)[0]
 
 
 def detect_cost(img: Image.Image) -> tuple[int | None, float]:
@@ -176,8 +248,10 @@ class RawCard:
     bbox: tuple[float, float, float, float]
     sha1: str
     title: str
+    sub_title: str
     points: int | None
     sat: float
+    orientation: str  # "landscape" or "portrait"
     pil: Image.Image = field(repr=False)
 
 
@@ -204,8 +278,9 @@ def extract_pdf(pdf: Path) -> list[RawCard]:
             except Exception:
                 continue
             bbox = tuple(infos[ii].get("bbox")) if ii < len(infos) else (0.0, 0.0, 0.0, 0.0)
-            title = ocr_title(pil)
+            title, sub = ocr_title_and_sub(pil)
             points, sat = detect_cost(pil)
+            orientation = "landscape" if w_px >= h_px else "portrait"
             cards.append(
                 RawCard(
                     page=pi + 1,
@@ -213,8 +288,10 @@ def extract_pdf(pdf: Path) -> list[RawCard]:
                     bbox=bbox,
                     sha1=h,
                     title=title,
+                    sub_title=sub,
                     points=points,
                     sat=sat,
+                    orientation=orientation,
                     pil=pil,
                 )
             )
@@ -236,23 +313,64 @@ def _sim(a: str, b: str) -> float:
     return SequenceMatcher(None, a, b).ratio()
 
 
-def group_cards(cards: list[RawCard], threshold: float = 0.82) -> list[list[RawCard]]:
+def group_cards(cards: list[RawCard], threshold: float = 0.65) -> list[list[RawCard]]:
+    """Pair card sides into groups. Title match is intentionally permissive
+    (OCR noise on "Obi-Wan" can read as "opbi" or "osbi") and sub-title
+    differentiates variants: same title + different sub-title = different
+    cards (e.g. Darth Vader · Dark Lord vs · Emperor's Apprentice).
+    """
     groups: list[list[RawCard]] = []
     used = [False] * len(cards)
-    norms = [_norm(c.title) for c in cards]
+    title_norms = [_norm(c.title) for c in cards]
+    sub_norms = [_norm(c.sub_title) for c in cards]
     for i, c in enumerate(cards):
         if used[i]:
             continue
         group = [c]
         used[i] = True
-        if norms[i]:
-            for j in range(i + 1, len(cards)):
-                if used[j] or not norms[j]:
+        if not title_norms[i]:
+            groups.append(group)
+            continue
+        for j in range(i + 1, len(cards)):
+            if used[j] or not title_norms[j]:
+                continue
+            if _sim(title_norms[i], title_norms[j]) < threshold:
+                continue
+            # If both have a meaningful sub-title (long enough to not be
+            # OCR garbage), they must be similar. This is the gate that
+            # keeps Vader Dark Lord and Vader Apprentice apart while still
+            # merging Obi-Wan front and back (where OCR sometimes reads
+            # the stylized sub-title text as nonsense).
+            if len(sub_norms[i].replace(" ", "")) >= 6 and len(sub_norms[j].replace(" ", "")) >= 6:
+                if _sim(sub_norms[i], sub_norms[j]) < 0.5:
                     continue
-                if _sim(norms[i], norms[j]) >= threshold:
-                    group.append(cards[j])
-                    used[j] = True
-        groups.append(group)
+            group.append(cards[j])
+            used[j] = True
+        # If more than 2 sides ended up in a group (rare, usually 3 or 4
+        # sides because of partial sub-title OCR), split into front/back
+        # pairs: front = saturated cost badge, back = no cost.
+        if len(group) > 2:
+            with_cost = sorted(
+                [c for c in group if c.points is not None],
+                key=lambda c: c.sat,
+                reverse=True,
+            )
+            no_cost = sorted(
+                [c for c in group if c.points is None],
+                key=lambda c: c.sat,
+            )
+            pairs: list[list[RawCard]] = []
+            backs_left = list(no_cost)
+            for front in with_cost:
+                if backs_left:
+                    pairs.append([front, backs_left.pop(0)])
+                else:
+                    pairs.append([front])
+            for back in backs_left:
+                pairs.append([back])
+            groups.extend(pairs)
+        else:
+            groups.append(group)
     return groups
 
 
@@ -332,43 +450,55 @@ def main() -> int:
         shutil.rmtree(OUT_CARDS)
     OUT_CARDS.mkdir(parents=True, exist_ok=True)
     manifest: list[ManifestEntry] = []
-    for pdf_name, faction, kind in SOURCES:
+    slug_counts: dict[tuple[str, str], dict[str, int]] = {}
+    for pdf_name, faction, default_kind, auto_kind in SOURCES:
         pdf = LEGION / pdf_name
         if not pdf.exists():
             print(f"  skip (missing): {pdf_name}")
             continue
-        print(f"+ {pdf_name} -> {faction}/{kind}")
+        print(f"+ {pdf_name} -> {faction}/{default_kind}{' (auto-classify)' if auto_kind else ''}")
         cards = extract_pdf(pdf)
-        groups = group_cards(cards)
-        out_dir = OUT_CARDS / faction / kind
-        out_dir.mkdir(parents=True, exist_ok=True)
-        slug_counts: dict[str, int] = {}
-        for group in groups:
-            composite, cost, title = composite_group(group)
-            # Cap long side to 1600 px so the repo stays small.
-            if max(composite.size) > 1600:
-                scale = 1600 / max(composite.size)
-                composite = composite.resize(
-                    (int(composite.size[0] * scale), int(composite.size[1] * scale)),
-                    Image.LANCZOS,
+        # Partition by kind (landscape -> default unit kind, portrait -> upgrade)
+        # when auto-classify is enabled.
+        if auto_kind:
+            buckets: dict[str, list[RawCard]] = {default_kind: [], "upgrade": []}
+            for c in cards:
+                kind = default_kind if c.orientation == "landscape" else "upgrade"
+                buckets[kind].append(c)
+        else:
+            buckets = {default_kind: cards}
+        for kind, kind_cards in buckets.items():
+            if not kind_cards:
+                continue
+            groups = group_cards(kind_cards)
+            out_dir = OUT_CARDS / faction / kind
+            out_dir.mkdir(parents=True, exist_ok=True)
+            counts = slug_counts.setdefault((faction, kind), {})
+            for group in groups:
+                composite, cost, title = composite_group(group)
+                if max(composite.size) > 1600:
+                    scale = 1600 / max(composite.size)
+                    composite = composite.resize(
+                        (int(composite.size[0] * scale), int(composite.size[1] * scale)),
+                        Image.LANCZOS,
+                    )
+                slug = slugify(title) if title else f"{faction}-{kind}-{group[0].sha1[:8]}"
+                counts[slug] = counts.get(slug, 0) + 1
+                if counts[slug] > 1:
+                    slug = f"{slug}-{counts[slug]}"
+                fname = f"{slug}.jpg"
+                composite.save(out_dir / fname, "JPEG", quality=82, optimize=True)
+                manifest.append(
+                    ManifestEntry(
+                        faction=faction,
+                        kind=kind,
+                        title=title,
+                        slug=slug,
+                        file=f"cards/{faction}/{kind}/{fname}",
+                        source=pdf_name,
+                        points=cost,
+                    )
                 )
-            slug = slugify(title) if title else f"{faction}-{kind}-{group[0].sha1[:8]}"
-            slug_counts[slug] = slug_counts.get(slug, 0) + 1
-            if slug_counts[slug] > 1:
-                slug = f"{slug}-{slug_counts[slug]}"
-            fname = f"{slug}.jpg"
-            composite.save(out_dir / fname, "JPEG", quality=82, optimize=True)
-            manifest.append(
-                ManifestEntry(
-                    faction=faction,
-                    kind=kind,
-                    title=title,
-                    slug=slug,
-                    file=f"cards/{faction}/{kind}/{fname}",
-                    source=pdf_name,
-                    points=cost,
-                )
-            )
     MANIFEST.write_text(json.dumps([asdict(e) for e in manifest], indent=2))
     print(f"\nWrote {len(manifest)} cards.")
     by_kind: dict[tuple[str, str], int] = {}

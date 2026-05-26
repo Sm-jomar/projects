@@ -1,18 +1,25 @@
 import { useMemo, useState } from "react";
 import { CATALOG } from "../data/catalog";
-import { RANK_LABEL, RANK_ORDER } from "../lib/factions";
+import { isUnitInBattleForce, RANK_LABEL, RANK_ORDER } from "../lib/factions";
 import type { FactionId, Rank, Unit } from "../lib/types";
 import { canAdd, type ArmyState } from "../lib/validation";
 import { cardForUnit } from "../lib/cardLookup";
 
 type Props = {
   faction: FactionId;
+  battleForce?: string;
   army: ArmyState;
   onAdd: (unit: Unit) => void;
   onOpenReference?: () => void;
 };
 
-export function UnitBrowser({ faction, army, onAdd, onOpenReference }: Props) {
+export function UnitBrowser({
+  faction,
+  battleForce,
+  army,
+  onAdd,
+  onOpenReference,
+}: Props) {
   const [rankFilter, setRankFilter] = useState<Rank | "all">("all");
   const [search, setSearch] = useState("");
   const [preview, setPreview] = useState<Unit | null>(null);
@@ -20,6 +27,9 @@ export function UnitBrowser({ faction, army, onAdd, onOpenReference }: Props) {
   const units = useMemo(() => {
     return CATALOG.units
       .filter((u) => u.faction === faction)
+      .filter((u) =>
+        battleForce ? isUnitInBattleForce(u.name, battleForce) : true,
+      )
       .filter((u) => (rankFilter === "all" ? true : u.rank === rankFilter))
       .filter((u) =>
         search.trim() === ""
@@ -33,7 +43,7 @@ export function UnitBrowser({ faction, army, onAdd, onOpenReference }: Props) {
         if (ra !== rb) return ra - rb;
         return a.name.localeCompare(b.name);
       });
-  }, [faction, rankFilter, search]);
+  }, [faction, battleForce, rankFilter, search]);
 
   const factionHasAnyUnits = useMemo(
     () => CATALOG.units.some((u) => u.faction === faction),

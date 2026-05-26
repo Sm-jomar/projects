@@ -179,6 +179,7 @@ export default function App() {
         <main className="main builder">
           <UnitBrowser
             faction={army.faction}
+            battleForce={army.battleForce}
             army={{
               faction: army.faction,
               pointsCap: army.pointsCap,
