@@ -70,8 +70,23 @@ function findBest(
 export function cardForUnit(unit: Pick<Unit, "id" | "name" | "faction"> & { also_factions?: string[] }): string | null {
   const target = slugify(unit.name);
   const idSlug = slugify(unit.id);
+  const tried = new Set<string>();
   const factions = [unit.faction, ...(unit.also_factions ?? [])];
-  for (const f of factions) {
+  // First try the unit's own factions, then fall back to every other
+  // faction in case the source PDF filed the card elsewhere (mercenary
+  // cards for units we've re-homed to a primary faction, etc.).
+  const allFactions = [
+    "rebels",
+    "imperials",
+    "republic",
+    "separatists",
+    "mercenary",
+    "generic",
+  ];
+  const order = [...factions, ...allFactions.filter((f) => !factions.includes(f))];
+  for (const f of order) {
+    if (tried.has(f)) continue;
+    tried.add(f);
     const hit = findBest(f, "unit", target, idSlug);
     if (hit) return BASE + hit.file;
   }

@@ -27,10 +27,10 @@ WIKI_UNITS: list[tuple[str, str, str, list[str], bool]] = [
     ("Han Solo", "", "commander", ["rebels"], False),
     ("Lando Calrissian", "", "commander", ["rebels"], False),
     ("Leia Organa", "", "commander", ["rebels"], False),
-    ("Logray", "Superstitious Shaman", "commander", ["rebels", "mercenary"], False),
+    ("Logray", "Superstitious Shaman", "commander", ["rebels"], False),
     ("Luke Skywalker", "Hero of the Rebellion", "commander", ["rebels"], False),
     ("Rebel Officer", "", "commander", ["rebels"], False),
-    ("Wicket", "Hero of Bright Tree", "commander", ["rebels", "mercenary"], False),
+    ("Wicket", "Hero of Bright Tree", "commander", ["rebels"], False),
     ("Cassian Andor", "", "operative", ["rebels"], False),
     ("Jyn Erso", "", "operative", ["rebels"], False),
     ("K-2SO", "", "operative", ["rebels"], False),
@@ -41,8 +41,8 @@ WIKI_UNITS: list[tuple[str, str, str, list[str], bool]] = [
     ("Rebel Troopers", "", "corps", ["rebels"], False),
     ("Rebel Veterans", "", "corps", ["rebels"], False),
     ("Mark II Medium Blaster Trooper", "", "corps", ["rebels"], False),
-    ("Ewok Skirmishers", "", "corps", ["rebels", "mercenary"], False),
-    ("Ewok Slingers", "", "special-forces", ["rebels", "mercenary"], False),
+    ("Ewok Skirmishers", "", "corps", ["rebels"], False),
+    ("Ewok Slingers", "", "special-forces", ["rebels"], False),
     ("Mandalorian Resistance", "", "special-forces", ["rebels"], False),
     ("Mandalorian Resistance", "Clan Wren", "special-forces", ["rebels"], False),
     ("Rebel Commandos", "", "special-forces", ["rebels"], False),
@@ -170,24 +170,23 @@ WIKI_UNITS: list[tuple[str, str, str, list[str], bool]] = [
     # Black Sun Enforcers: Mercenary, Empire, Separatists
     ("Black Sun Enforcers", "", "corps", ["mercenary", "imperials", "separatists"], False),
     # Bossk: Mercenary, Empire, Separatists
-    ("Bossk", "Trandoshan Terror", "operative", ["mercenary", "imperials", "separatists"], False),
+    ("Bossk", "Trandoshan Terror", "operative", ["imperials", "separatists"], False),
     # Cad Bane: Mercenary, Empire, Separatists
     ("Cad Bane", "Needs No Introduction", "operative", ["mercenary", "imperials", "separatists"], False),
     # Hondo Ohnaka: Empire, Separatists, Rebels, Republic, Mercenary (Ohnaka Gang)
-    ("Hondo Ohnaka", "", "operative", ["mercenary", "rebels", "imperials", "republic", "separatists"], False),
+    ("Hondo Ohnaka", "", "operative", ["rebels", "imperials", "republic", "separatists"], False),
     # Boba Fett: Empire (Operative variant) + Rebels (Daimyo variant). The
     # Daimyo cost (120) and Bounty Hunter cost (130) differ — treated as
     # two units with their own ids.
-    ("Boba Fett", "Daimyo of Mos Espa", "operative", ["mercenary", "rebels"], False),
-    ("Boba Fett", "Infamous Bounty Hunter", "operative", ["mercenary", "imperials"], False),
+    ("Boba Fett", "Daimyo of Mos Espa", "operative", ["rebels"], False),
+    ("Boba Fett", "Infamous Bounty Hunter", "operative", ["imperials"], False),
     # IG-11: Empire + Rebels
-    ("IG-11", "Nurse Droid", "operative", ["mercenary", "rebels", "imperials"], False),
-    # IG-88: Empire only (per wiki — but treat as mercenary primary for symmetry)
-    ("IG-88", "Assassin Droid", "operative", ["mercenary", "imperials"], False),
+    ("IG-11", "Nurse Droid", "operative", ["imperials", "rebels"], False),
+    ("IG-88", "Assassin Droid", "operative", ["imperials"], False),
     # Din Djarin: Empire + Rebels
-    ("Din Djarin", "The Mandalorian", "operative", ["mercenary", "rebels", "imperials"], False),
+    ("Din Djarin", "The Mandalorian", "operative", ["rebels", "imperials"], False),
     # The Bad Batch: Rebels + Republic
-    ("The Bad Batch", "", "operative", ["mercenary", "rebels", "republic"], False),
+    ("The Bad Batch", "", "operative", ["rebels", "republic"], False),
     # R2-D2: Rebels (Operative) + Republic (Operative)
     ("R2-D2", "", "operative", ["rebels", "republic"], False),
     # Ahsoka Tano: Rebels Operative + Republic Commander. Different ranks =

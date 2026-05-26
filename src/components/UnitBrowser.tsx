@@ -5,6 +5,12 @@ import {
   RANK_LABEL,
   RANK_ORDER,
 } from "../lib/factions";
+import {
+  addOrUpdateFlag,
+  flagFor,
+  isFlagged,
+  removeFlag,
+} from "../lib/flags";
 import { effectiveUnitPoints } from "../lib/points";
 import type { FactionId, Rank, Unit } from "../lib/types";
 import { canAdd, type ArmyState } from "../lib/validation";
@@ -101,6 +107,11 @@ export function UnitBrowser({
                 <div className="unit-row-name">
                   {u.name}
                   {u.is_unique && <span className="badge unique">Unique</span>}
+                  {isFlagged(u.id) && (
+                    <span className="flag-indicator" title="Flagged as wrong">
+                      🚩
+                    </span>
+                  )}
                 </div>
                 {u.sub_title && (
                   <div className="unit-row-sub muted">{u.sub_title}</div>
@@ -166,6 +177,41 @@ export function UnitBrowser({
                 </span>
               </div>
               <div className="saved-row-actions">
+                <button
+                  className={isFlagged(preview.id) ? "danger" : ""}
+                  title={
+                    isFlagged(preview.id)
+                      ? `Flagged: ${flagFor(preview.id)?.reason ?? "(no reason)"}`
+                      : "Flag as wrong (points / faction / card / etc.)"
+                  }
+                  onClick={() => {
+                    if (isFlagged(preview.id)) {
+                      if (
+                        confirm(`Remove flag on "${preview.name}"?`)
+                      ) {
+                        removeFlag(preview.id);
+                        setPreview({ ...preview });
+                      }
+                      return;
+                    }
+                    const reason = prompt(
+                      `What's wrong with "${preview.name}"?\n` +
+                        "(e.g. \"wrong points\", \"wrong faction\", \"missing card image\")",
+                      "",
+                    );
+                    if (reason === null) return;
+                    addOrUpdateFlag({
+                      id: preview.id,
+                      kind: "unit",
+                      name: preview.name,
+                      faction: preview.faction,
+                      reason: reason.trim() || undefined,
+                    });
+                    setPreview({ ...preview });
+                  }}
+                >
+                  {isFlagged(preview.id) ? "🚩 Flagged" : "🚩 Flag"}
+                </button>
                 <button
                   disabled={!canAdd(army, preview).ok}
                   onClick={() => {
