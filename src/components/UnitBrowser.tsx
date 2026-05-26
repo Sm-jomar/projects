@@ -106,6 +106,9 @@ export function UnitBrowser({
               <div className="unit-row-main">
                 <div className="unit-row-name">
                   {u.name}
+                  {u.sub_title && (
+                    <span className="unit-variant"> ({u.sub_title})</span>
+                  )}
                   {u.is_unique && <span className="badge unique">Unique</span>}
                   {isFlagged(u.id) && (
                     <span className="flag-indicator" title="Flagged as wrong">
@@ -113,9 +116,6 @@ export function UnitBrowser({
                     </span>
                   )}
                 </div>
-                {u.sub_title && (
-                  <div className="unit-row-sub muted">{u.sub_title}</div>
-                )}
                 <div className="unit-row-meta muted">
                   {RANK_LABEL[u.rank]} · {cost} pts
                   {adjusted && <span className="adj-hint"> (was {u.points})</span>}
