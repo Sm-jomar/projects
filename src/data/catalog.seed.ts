@@ -681,7 +681,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
-    upgrades: { training: 1, gear: 1, comms: 1 },
+    force_alignment: "dark",
+    upgrades: { training: 1, gear: 1, comms: 1, force: 2 },
   },
   {
     id: "imperials-imperial-agent",
@@ -709,7 +710,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
-    upgrades: { training: 1, gear: 1, comms: 1 },
+    force_alignment: "dark",
+    upgrades: { training: 1, gear: 1, comms: 1, force: 2 },
   },
   {
     id: "imperials-shoretroopers",
@@ -1036,7 +1038,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
-    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
+    force_alignment: "light",
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1, force: 2 },
   },
   {
     id: "republic-anakin-skywalker-hero-without-fear",
@@ -1051,7 +1054,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
-    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
+    force_alignment: "light",
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1, force: 3 },
   },
   {
     id: "republic-chewbacca-republic",
@@ -1125,7 +1129,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
-    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
+    force_alignment: "light",
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1, force: 3 },
   },
   {
     id: "republic-obi-wan-kenobi-civilized-warrior",
@@ -1140,7 +1145,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
-    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
+    force_alignment: "light",
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1, force: 3 },
   },
   {
     id: "republic-wookiee-chieftain",
@@ -1169,7 +1175,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
-    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
+    force_alignment: "light",
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1, force: 3 },
   },
   {
     id: "republic-jedi-knight",
@@ -1183,7 +1190,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
-    upgrades: { training: 1, gear: 1, comms: 1 },
+    force_alignment: "light",
+    upgrades: { training: 1, gear: 1, comms: 1, force: 2 },
   },
   {
     id: "republic-padm-amidala-spirited-senator",
@@ -1453,7 +1461,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
-    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
+    force_alignment: "dark",
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1, force: 3 },
   },
   {
     id: "separatists-general-grievous-sinister-cyborg",
@@ -1468,7 +1477,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
-    upgrades: { command: 1, training: 2, gear: 1, comms: 1 },
+    force_alignment: "dark",
+    upgrades: { command: 1, training: 2, gear: 1, comms: 1, force: 2 },
   },
   {
     id: "separatists-kalani",
@@ -1553,7 +1563,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
-    upgrades: { training: 1, gear: 1, comms: 1 },
+    force_alignment: "dark",
+    upgrades: { training: 1, gear: 1, comms: 1, force: 2 },
   },
   {
     id: "separatists-sun-fac",
@@ -1839,7 +1850,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
-    upgrades: { training: 1, gear: 1, comms: 1 },
+    force_alignment: "dark",
+    upgrades: { training: 1, gear: 1, comms: 1, force: 2 },
   },
   {
     id: "mercenary-mandalorian-super-commandos",
@@ -2085,7 +2097,8 @@ export const SEED_UNITS: Unit[] = [
     wounds: 1,
     defense: "white",
     has_defense_surge: false,
-    upgrades: { training: 1, gear: 1, comms: 1 },
+    force_alignment: "light",
+    upgrades: { training: 1, gear: 1, comms: 1, force: 2 },
   },
   {
     id: "rebels-chewbacca",

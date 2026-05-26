@@ -38,13 +38,19 @@ function score(target: string, candidate: string): number {
   // Strip trailing -N (front/back variants) from candidate before scoring
   const cand = candidate.replace(/-\d+$/, "");
   if (cand === target) return 950;
-  if (cand.startsWith(target) || target.startsWith(cand)) return 800 - Math.abs(cand.length - target.length);
-  // Compare on token sets
-  const a = new Set(target.split("-"));
-  const b = new Set(cand.split("-"));
+  if (cand.startsWith(target) || target.startsWith(cand))
+    return 800 - Math.abs(cand.length - target.length);
+  // Compare on token sets — require at least 2 distinct shared tokens
+  // (longer than 2 chars each) before considering it a real match, so a
+  // single common word like "the" or "tank" doesn't pull in unrelated
+  // cards (e.g. Hondo Ohnaka onto The Ohnaka Gang command card).
+  const tokens = (s: string) =>
+    new Set(s.split("-").filter((t) => t.length >= 3));
+  const a = tokens(target);
+  const b = tokens(cand);
   let overlap = 0;
   for (const t of a) if (b.has(t)) overlap++;
-  if (overlap === 0) return 0;
+  if (overlap < 2) return 0;
   return 500 + overlap * 50 - Math.abs(a.size - b.size) * 10;
 }
 
@@ -64,7 +70,10 @@ function findBest(
       best = c;
     }
   }
-  return bestScore >= 500 ? best : null;
+  // Bumped from 500 -> 700: a single weak token overlap was matching
+  // unrelated cards. 700 requires a substring containment or at least
+  // 2-token overlap with similar set sizes.
+  return bestScore >= 700 ? best : null;
 }
 
 export function cardForUnit(unit: Pick<Unit, "id" | "name" | "faction"> & { also_factions?: string[] }): string | null {

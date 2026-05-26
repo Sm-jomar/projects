@@ -36,10 +36,16 @@ DEFAULT_SLOTS_VEHICLE: dict[str, dict[str, int]] = {
 }
 
 
-def default_slots(rank: str, unit_type: str) -> dict[str, int]:
+def default_slots(rank: str, unit_type: str, *, force_user: bool = False) -> dict[str, int]:
     if unit_type in ("ground-vehicle", "repulsor-vehicle"):
-        return DEFAULT_SLOTS_VEHICLE.get(rank, {})
-    return DEFAULT_SLOTS_TROOPER.get(rank, {})
+        return dict(DEFAULT_SLOTS_VEHICLE.get(rank, {}))
+    slots = dict(DEFAULT_SLOTS_TROOPER.get(rank, {}))
+    if force_user:
+        # Force users get force slots (varies by character; default to 3
+        # for commanders, 2 for operatives) and drop the gear slot to
+        # keep the slot count reasonable.
+        slots["force"] = 3 if rank == "commander" else 2
+    return slots
 
 
 def collect_catalog_unit_ids() -> dict[str, str]:
@@ -125,7 +131,9 @@ def add_default_slots() -> None:
             return m.group(0)
         rank = m_rank.group(1)
         unit_type = m_type.group(1) if m_type else "trooper"
-        slots = default_slots(rank, unit_type)
+        # Detect Force users from force_alignment field; they need a force slot.
+        force_user = bool(re.search(r'force_alignment:\s*"(light|dark)"', body))
+        slots = default_slots(rank, unit_type, force_user=force_user)
         if not slots:
             return m.group(0)
         parts = []
