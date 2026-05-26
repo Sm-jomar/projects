@@ -1,6 +1,10 @@
 import { useMemo, useState } from "react";
 import { CATALOG } from "../data/catalog";
-import { isUnitInBattleForce, RANK_LABEL, RANK_ORDER } from "../lib/factions";
+import {
+  isUnitVisibleInBattleForce,
+  RANK_LABEL,
+  RANK_ORDER,
+} from "../lib/factions";
 import type { FactionId, Rank, Unit } from "../lib/types";
 import { canAdd, type ArmyState } from "../lib/validation";
 import { cardForUnit } from "../lib/cardLookup";
@@ -26,9 +30,13 @@ export function UnitBrowser({
 
   const units = useMemo(() => {
     return CATALOG.units
-      .filter((u) => u.faction === faction)
+      .filter(
+        (u) =>
+          u.faction === faction ||
+          (u.also_factions && u.also_factions.includes(faction)),
+      )
       .filter((u) =>
-        battleForce ? isUnitInBattleForce(u.name, battleForce) : true,
+        battleForce ? isUnitVisibleInBattleForce(u.name, battleForce) : true,
       )
       .filter((u) => (rankFilter === "all" ? true : u.rank === rankFilter))
       .filter((u) =>

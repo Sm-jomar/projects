@@ -95,7 +95,10 @@ export function validateArmy(state: ArmyState): ValidationReport {
 
   // Faction lock — defensive; UI should prevent this
   for (const u of units) {
-    if (u.faction !== state.faction) {
+    const inFaction =
+      u.faction === state.faction ||
+      (u.also_factions ?? []).includes(state.faction);
+    if (!inFaction) {
       issues.push({
         severity: "error",
         message: `${u.name} (${u.faction}) does not belong to this army's faction.`,
@@ -193,7 +196,10 @@ export type AddCheck =
   | { ok: false; reason: string };
 
 export function canAdd(state: ArmyState, candidate: Unit): AddCheck {
-  if (candidate.faction !== state.faction) {
+  const inFaction =
+    candidate.faction === state.faction ||
+    (candidate.also_factions ?? []).includes(state.faction);
+  if (!inFaction) {
     return { ok: false, reason: "Wrong faction." };
   }
   if (

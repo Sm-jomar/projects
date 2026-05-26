@@ -271,6 +271,29 @@ function _norm(s: string): string {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "");
 }
 
+// Pre-computed set of every unit name that appears in any Battle Force.
+// A unit is "Battle Force locked" iff its name normalises into this set:
+// when the player picks a Battle Force, only those locked units plus
+// units NOT in any Battle Force (the "general" pool) should appear.
+const ALL_BF_UNIT_NAMES: Set<string> = (() => {
+  const s = new Set<string>();
+  for (const list of Object.values(BATTLE_FORCE_UNITS)) {
+    for (const name of list) s.add(_norm(name));
+  }
+  return s;
+})();
+
+/** Returns true if a unit with this name belongs to *any* Battle Force. */
+export function isUnitBattleForceLocked(unitName: string): boolean {
+  const target = _norm(unitName);
+  for (const locked of ALL_BF_UNIT_NAMES) {
+    if (target === locked || target.includes(locked) || locked.includes(target)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /** Returns true if `unitName` is allowed in the given battle force by fuzzy
  * (normalised, substring-tolerant) name match against BATTLE_FORCE_UNITS. */
 export function isUnitInBattleForce(
@@ -284,6 +307,19 @@ export function isUnitInBattleForce(
     const n = _norm(name);
     return target === n || target.includes(n) || n.includes(target);
   });
+}
+
+/** Returns true if a unit should appear in the browser when the given
+ * Battle Force is selected. Includes the BF's explicit allowed-units list
+ * plus any unit not locked to any Battle Force (general faction units). */
+export function isUnitVisibleInBattleForce(
+  unitName: string,
+  battleForce: string,
+): boolean {
+  return (
+    isUnitInBattleForce(unitName, battleForce) ||
+    !isUnitBattleForceLocked(unitName)
+  );
 }
 
 // Standard 800-point army composition
