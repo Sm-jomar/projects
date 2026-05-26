@@ -154,9 +154,11 @@ WIKI_UNITS: list[tuple[str, str, str, list[str], bool]] = [
     ("Aqua Droids", "", "heavy", ["separatists"], False),
 
     # ===== MERCENARY primary (Shadow Collective / Ohnaka only) =====
-    ("Gar Saxon", "", "commander", ["mercenary"], False),
-    ("Maul", "Shadow Collective", "operative", ["mercenary"], False),
+    ("Gar Saxon", "Militant Commando", "commander", ["mercenary"], False),
+    ("Maul", "A Rival", "operative", ["mercenary"], False),
     ("Mandalorian Super Commandos", "", "special-forces", ["mercenary"], False),
+    ("Weequay Pirates", "", "corps", ["mercenary"], False),
+    ("WLO-5 Speeder Tank", "", "heavy", ["mercenary"], False),
 
     # ===== Cross-faction units (primary = mercenary, also_factions = others) =====
     # Pyke Capo: all 5 factions
@@ -170,7 +172,7 @@ WIKI_UNITS: list[tuple[str, str, str, list[str], bool]] = [
     # Bossk: Mercenary, Empire, Separatists
     ("Bossk", "Trandoshan Terror", "operative", ["mercenary", "imperials", "separatists"], False),
     # Cad Bane: Mercenary, Empire, Separatists
-    ("Cad Bane", "Galaxy's Most Wanted", "operative", ["mercenary", "imperials", "separatists"], False),
+    ("Cad Bane", "Needs No Introduction", "operative", ["mercenary", "imperials", "separatists"], False),
     # Hondo Ohnaka: Empire, Separatists, Rebels, Republic, Mercenary (Ohnaka Gang)
     ("Hondo Ohnaka", "", "operative", ["mercenary", "rebels", "imperials", "republic", "separatists"], False),
     # Boba Fett: Empire (Operative variant) + Rebels (Daimyo variant). The
@@ -353,7 +355,7 @@ KNOWN_POINTS: dict[tuple[str, str], int] = {
     ("Count Dooku", "Darth Tyranus"): 165,
     ("General Grievous", "Sinister Cyborg"): 130,
     ("Asajj Ventress", "Sith Assassin"): 130,
-    ("Maul", "Shadow Collective"): 150,
+    ("Maul", "A Rival"): 130,
     ("Boba Fett", "Daimyo of Mos Espa"): 120,
     ("Boba Fett", "Infamous Bounty Hunter"): 130,
     ("Darth Vader", "Dark Lord of the Sith"): 170,
@@ -362,16 +364,20 @@ KNOWN_POINTS: dict[tuple[str, str], int] = {
     ("Logray", "Superstitious Shaman"): 50,
     ("Ewok Skirmishers", ""): 40,
     ("Ewok Slingers", ""): 40,
-    ("Black Sun Vigo", ""): 80,
-    ("Gar Saxon", ""): 110,
-    ("Pyke Syndicate Capo", ""): 60,
+    # Shadow Collective (Mercenary) — printed costs per the user-supplied
+    # current Shadow Collective unit list:
+    ("Black Sun Vigo", ""): 50,
+    ("Gar Saxon", "Militant Commando"): 90,
+    ("Pyke Syndicate Capo", ""): 42,
     ("Black Sun Enforcers", ""): 50,
-    ("Pyke Syndicate Foot Soldiers", ""): 45,
-    ("Mandalorian Super Commandos", ""): 70,
-    ("A-A5 Speeder Truck", ""): 95,
-    ("Swoop Bike Riders", ""): 80,
+    ("Pyke Syndicate Foot Soldiers", ""): 42,
+    ("Weequay Pirates", ""): 40,
+    ("Mandalorian Super Commandos", ""): 66,
+    ("Swoop Bike Riders", ""): 70,
+    ("A-A5 Speeder Truck", ""): 75,
+    ("WLO-5 Speeder Tank", ""): 100,
     ("Bossk", "Trandoshan Terror"): 105,
-    ("Cad Bane", "Galaxy's Most Wanted"): 105,
+    ("Cad Bane", "Needs No Introduction"): 105,
     ("IG-11", "Nurse Droid"): 105,
     ("IG-88", "Assassin Droid"): 110,
     ("Din Djarin", "The Mandalorian"): 95,
