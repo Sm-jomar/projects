@@ -1,0 +1,255 @@
+﻿Points Adjustments,,,,,,,
+"For competitive tournament play, players should use the adjusted points values listed below instead of the values printed on the cards. The printed points values on cards can be used for non-tournament play.",,,,,,,
+Neutral Upgrades,,,,,,,
+,,,,,,,
+Category,Card,Printed Point Cost,1.5.1,2,2.0.2,2.5,2.6
+Command,Aggressive Tactics,10,15,15,15,15,15
+Command,Commanding Presence,10,5,5,5,5,5
+Command,Improvised Orders,10,-,5,5,5,5
+Command,Vigilance,5,-,-,-,12,12
+Comms,Comms Jammer,15,5,5,5,5,5
+Comms,Long-Range Comlink,10,5,5,5,5,5
+Crew,"Refurbished ""Gonk"" Droid",10,-,-,14,14,14
+Crew,Unorthodox Tactician,10,-,-,16,16,16
+Force,Anger,5,-,-,3,3,3
+Force,Battle Meditation,10,5,5,5,5,5
+Force,Burst of Speed,3,-,-,-,10,10
+Force,Force Guidance,10,-,5,5,5,5
+Force,Force Reflexes,15,10,5,5,5,5
+Force,Saber Throw,10,5,5,5,5,5
+Gear,Emergency Stims,8,12,10,8,8,8
+Gear,Environmental Gear,3,-,2,2,2,2
+Gear,Grappling Hooks,3,-,1,1,2,2
+Gear,Targeting Scopes,6,4,4,4,4,4
+Generator,Barrage Generator,10,7,3,3,3,3
+Generator,Overcharged Generator,10,7,3,3,3,3
+Grenades,Concussion Grenades,5,-,3,3,3,3
+Grenades,Impact Grenades,5,-,3,3,3,3
+Grenades,Smoke Grenades,6,-,2,3,3,3
+Hardpoint,AG-2G Quad Laser,36,-,-,28,28,25
+Pilot,Reckless Driver,6,-,-,12,12,12
+Training,Duck and Cover,8,4,4,2,2,2
+Training,Offensive Push,4,-,-,-,6,6
+Training,Situational Awareness,2,-,-,-,4,4
+Training,Tenacity,4,-,-,-,6,6
+Training,Up Close and Personal,5,-,-,-,8,8
+,,,,,,,
+Imperial Units,,,,,,,
+,,,,,,,
+Card,Printed Point Cost,1.5.1,2,2.0.2,2.5,2.6,
+74-Z Speeder Bikes,90,75,75,70,70,70,
+Agent Kallus,90,-,-,-,-,85,
+AT-ST,190,170,160,155,155,155,
+Darth Vader,200,190,175,190,190,190,
+Darth Vader (Operative),170,-,155,175,175,175,
+Dewback Rider,90,-,75,70,70,70,
+DF-90 Mortar Trooper,36,-,38,38,40,40,
+E-Web Heavy Blaster Team,55,-,-,-,-,50,
+General Veers,80,-,-,-,-,70,
+Imperial Death Troopers,76,-,-,72,72,72,
+Emperor Palpatine,210,-,200,190,190,190,
+Imperial Officer,50,-,45,45,45,50,
+Imperial Royal Guards,75,-,-,69,69,69,
+LAAT/le Patrol Transport (Empire),120,-,-,105,105,105,
+Scout Troopers,60,-,48,48,48,48,
+Scout Troopers Strike Team,16,20,20,20,20,20,
+Snowtroopers,48,-,44,44,44,44,
+Stormtroopers (Heavy Response Unit),30,-,-,-,-,40,
+TX-225 GAVw Occupier Combat Assault Tank,155,-,145,140,140,140,
+,,,,,,,
+Imperial Upgrades,,,,,,,
+,,,,,,,
+Category,Card,Printed Point Cost,1.5.1,2,2.0.2,2.5,2.6
+Armament,J-19 Bo-Rifle Blaster/Staff,25,-,-,15,15,5
+Armament,CR-24 Flame Rifle,20,-,15,15,15,10
+Armament,RT-97C Blaster Rifle,15,-,10,10,10,5
+Armament,T-21 Blaster Rifle,10,-,5,5,5,5
+Armament,E-11D Grenade Launcher/Focused Fire Config,8,-,-,0,0,0
+Heavy Weapon,SM-9 Frag Launcher,40,-,-,-,-,45
+Heavy Weapon,XS-IV Assault Cannon,48,-,-,-,-,55
+Heavy Weapon,DLT-19D Trooper,34,-,-,-,30,30
+Heavy Weapon,DT-F16,22,-,-,-,15,15
+Heavy Weapon,Electrostaff Guard,25,-,-,21,21,21
+Heavy Weapon,T-21 Special Forces Trooper,29,-,-,27,27,27
+Heavy Weapon,T-21B Trooper,32,-,35,32,32,32
+Heavy Weapon,T-7 Ion Snowtrooper,34,26,20,18,18,18
+Heavy Weapon,DLT-19 Stormtrooper,24,-,22,20,20,20
+Heavy Weapon,HH-12 Stormtrooper,34,26,20,16,16,16
+Heavy Weapon,RT-97C Stormtrooper,26,-,-,24,24,24
+Heavy Weapon,T-21 Stormtrooper,27,-,24,22,22,22
+Heavy Weapon,Del Meeko,38,-,-,25,25,25
+Heavy Weapon,Gideon Hask,38,-,-,29,29,29
+Hardpoint,88 Twin Light Blaster Cannon,20,-,10,10,10,10
+Hardpoint,AT-ST Mortar Launcher,10,-,5,5,5,5
+Hardpoint,DW-3 Concussion Grenade Launcher,15,-,8,8,8,8
+Pilot,Baron Rudor,12,-,-,8,8,8
+Pilot,General Weiss,10,-,1,5,5,5
+Pilot,Governor Pryce,10,-,-,5,5,5
+Personnel,Imperial Officer (Personnel),20,-,17,17,17,17
+Personnel,Shoretrooper (Personnel),13,-,10,10,10,10
+Personnel,Snowtrooper (Personnel),12,-,8,8,8,8
+Personnel,Stormtrooper (Personnel),11,-,8,8,8,8
+Personnel,Stormtrooper Captain,15,-,12,10,10,10
+Personnel,Stormtrooper Specialist,15,-,12,9,9,9
+,,,,,,,
+Rebel Units,,,,,,,
+,,,,,,,
+Card,Printed Point Cost,1.5.1,2,2.0.2,2.5,2.6,
+1.4 FD Laser Cannon Team,70,-,-,65,65,65,
+Chewbacca,110,95,90,90,90,90,
+Fleet Troopers,44,-,40,40,40,40,
+Han Solo,120,-,100,100,100,100,
+Jyn Erso,130,110,100,90,90,90,
+Lando Calrissian,105,-,-,-,-,95,
+Leia Organa,90,-,-,80,80,75,
+Luke Skywalker,160,-,-,-,-,150,
+Luke Skywalker (Operative),200,-,195,195,195,195,
+Mandalorian Resistance,72,-,-,-,-,68,
+Mandalorian Resistance Clan Wren,34,-,-,-,-,30,
+Rebel Pathfinders,60,-,58,56,56,56,
+R2-D2,35,-,45,55,55,55,
+Rebel Commandos,60,-,50,48,48,48,
+Rebel Commandos Strike Team,16,20,20,20,20,20,
+Rebel Officer,50,-,45,45,45,45,
+T-47 Airspeeder,175,140,130,130,130,130,
+Tauntaun Riders,90,-,95,95,95,90,
+Wookiee Warriors,75,-,69,69,69,69,
+X-34 Landspeeder,75,-,60,60,60,60,
+,,,,,,,
+Rebel Upgrades,,,,,,,
+,,,,,,,
+Category,Card,Printed Point Cost,1.5.1,2,2.0.2,2.5,2.6
+Armament,A280-CFE Pistol/Sniper Config,10,-,-,-,-,0
+Armament,A-300 Short Range/Long Range Config,6,0,0,0,0,0
+Armament,Jetpack Rockets,8,-,-,-,-,5
+Gear,Personal Combat Shield,10,-,5,5,5,5
+Armament,The Darksaber,25,-,15,15,15,15
+Crew,A-300 Rifle Gunner,9,-,-,1,1,1
+Crew,RPS-6 Rocket Gunner,36,-,31,31,30,21
+Hardpoint,AT-RT Flamethrower,25,20,20,15,15,15
+Hardpoint,AT-RT Rotary Blaster,30,20,20,20,20,20
+Hardpoint,AT-RT Laser Cannon,35,20,10,10,10,10
+Hardpoint,Ax-108 “Ground Buzzer”,20,10,10,10,10,10
+Hardpoint,Mo/DK Power Harpoon,8,3,0,0,0,0
+Hardpoint,Mark II Medium Blaster,34,-,26,26,26,21
+Hardpoint,M-45 Ion Blaster,38,-,31,31,31,25
+Heavy Weapon,MPL-57 Barrage Trooper,33,25,22,19,19,19
+Heavy Weapon,Beskad Duelist,28,-,-,-,-,24
+Heavy Weapon,Tristan Wren,38,-,-,-,-,34
+Heavy Weapon,Ursa Wren,38,-,-,-,-,34
+Heavy Weapon,Bistan,32,-,28,28,28,28
+Heavy Weapon,Pao,22,-,28,20,20,20
+Heavy Weapon,Proton Charge Saboteur,26,-,23,20,23,23
+Heavy Weapon,MPL-57 Ion Trooper,32,26,18,17,17,17
+Heavy Weapon,SX-21 Trooper,20,-,17,15,15,13
+Heavy Weapon,Z-6 Trooper,22,-,20,20,20,20
+Heavy Weapon,CM-O/93 Trooper,31,26,26,26,26,26
+Heavy Weapon,Bowcaster Wookiee,35,-,31,31,31,31
+Personnel,Fleet Trooper (Personnel),11,-,7,7,7,7
+Personnel,Rebel Officer (Personnel),19,-,16,16,16,16
+Personnel,Rebel Trooper (Personnel),10,-,7,7,7,7
+Personnel,Rebel Trooper Captain,14,-,11,9,9,9
+Personnel,Rebel Trooper Specialist,14,-,12,8,8,8
+Personnel,Rebel Veteran (Personnel),12,-,9,9,9,9
+Pilot,Wedge Antilles,5,-,1,5,5,5
+,,,,,,,
+Galactic Republic Units,,,,,,,
+,,,,,,,
+Card,Printed Point Cost,2,2.0.2,2.5,2.6,,
+Anakin Skywalker,160,-,155,155,155,,
+ARC Troopers,72,78,78,72,66,,
+ARC Troopers Strike Team,21,27,27,24,24,,
+Republic AT-RT,65,-,60,60,60,,
+BARC Speeder,75,60,55,55,55,,
+Clone Captain Rex,90,-,100,100,95,,
+Clone Commander,55,-,60,60,60,,
+LAAT/le Patrol Transport (Galactic Republic),120,-,105,105,100,,
+Padmé Amidala,90,-,-,-,85,,
+Phase II Clone Troopers,60,62,62,60,60,,
+Obi-Wan Kenobi,175,170,170,170,170,,
+R2-D2,35,45,55,55,55,,
+TX-130 Saber-class Fighter Tank,170,-,-,-,160,,
+,,,,,,,
+Galactic Republic Upgrades,,,,,,,
+,,,,,,,
+Category,Card,Printed Point Cost,2,2.0.2,2.5,2.6,
+Crew,BARC Ion Gunner,28,22,24,24,24,
+Crew,BARC Twin Laser Gunner,18,15,18,18,18,
+Crew,BARC RPS-6 Gunner,24,21,21,21,21,
+Crew,Gnasp Gunner,25,-,-,-,15,
+Hardpoint,AT-RT Flamethrower,25,20,15,15,15,
+Hardpoint,AT-RT Rotary Blaster,30,20,20,20,20,
+Hardpoint,AT-RT Laser Cannon,35,10,10,10,10,
+Hardpoint,Twin Beam Cannons,40,-,-,-,25,
+Hardpoint,Twin Blaster Cannons,40,-,-,-,25,
+Hardpoint,Twin Missile Pods,40,-,-,-,25,
+Hardpoint,TX-130 Beam Cannon Turret,30,-,-,-,15,
+Heavy Weapon,DC-15 Phase I Trooper,30,27,26,24,24,
+Heavy Weapon,DP-23 Phase I Trooper,27,23,22,20,20,
+Heavy Weapon,RPS-6 Phase I Trooper,26,21,21,21,21,
+Heavy Weapon,Z-6 Phase I Trooper,25,23,23,22,22,
+Heavy Weapon,Phase II Mortar Trooper,25,20,18,18,18,
+Heavy Weapon,Echo,40,-,42,42,42,
+Heavy Weapon,Fives,36,-,40,40,40,
+Personnel,Clone Commander (Personnel),20,-,-,18,18,
+Personnel,Clone Comms Technician,12,-,-,11,11,
+Personnel,Clone Engineer,18,-,-,14,14,
+Personnel,Clone Medic,20,-,-,15,15,
+Personnel,Phase I Clone Trooper (Personnel),13,10,10,10,10,
+Personnel,Phase I Clone Captain,17,14,12,12,12,
+Personnel,Phase I Clone Specialist,17,14,11,11,11,
+Personnel,Phase II Clone Trooper (Personnel),15,13,13,13,13,
+,,,,,,,
+Separatist Alliance Units,,,,,,,
+,,,,,,,
+Card,Printed Point Cost,2,2.0.2,2.5,2.6,,
+AAT Trade Federation Battle Tank,170,-,175,175,175,,
+B1 Battle Droids,36,-,38,38,38,,
+B2 Super Battle Droids,48,45,45,45,45,,
+BX-series Droid Commandos,68,-,-,-,64,,
+Count Dooku,205,200,195,195,185,,
+Droidekas,100,80,75,75,70,,
+General Grievous,175,170,155,155,150,,
+STAP Riders,73,-,75,75,75,,
+Super Tactical Droid,95,-,-,-,90,,
+,,,,,,,
+Separatist Alliance Upgrades,,,,,,,
+,,,,,,,
+Category,Card,Printed Point Cost,2,2.0.2,2.5,2.6,
+Armament,Deflector Shields,18,-,-,-,10,
+Armament,"DT-57 ""Annihilator""",12,-,8,8,0,
+Hardpoint,Nose-Mounted Ion Cannon,10,-,-,25,25,
+Heavy Weapon,E-5C B1 Trooper,18,-,16,16,16,
+Heavy Weapon,E-5s B1 Trooper,20,-,18,18,18,
+Heavy Weapon,E-60R B1 Trooper,20,-,18,18,18,
+Heavy Weapon,Radiation Cannon B1 Trooper,22,-,16,16,16,
+Heavy Weapon,B2-ACM Trooper,26,24,24,24,24,
+Heavy Weapon,B2-HA Trooper,32,30,32,32,32,
+Heavy Weapon,RPS-6 MagnaGuard,28,-,-,34,34,
+Personnel,B1 Battle Droid (Personnel),6,5,4,4,4,
+Personnel,B1 Security Droid,9,7,6,6,6,
+Personnel,OOM-Series Battle Droid,12,9,8,8,8,
+Personnel,B2 Super Battle Droid (Personnel),16,13,13,13,13,
+Personnel,Viper Recon Droid,8,-,6,6,6,
+,,,,,,,
+Mercenaries Units,,,,,,,
+,,,,,,,
+Card,Printed Point Cost,1.5.1,2,2.0.2,2.5,2.6,
+Black Sun Enforcers,48,-,-,-,-,50,
+Boba Fett,140,-,125,120,120,130,
+Bossk,115,-,-,-,105,105,
+Cad Bane,125,-,-,120,105,105,
+Gar Saxon,105,-,-,-,-,100,
+Mandalorian Super Commandos,75,-,-,-,-,70,
+Pyke Syndicate Capo,45,-,-,-,48,48,
+Pyke Syndicate Foot Soldiers,40,-,-,-,44,44,
+Swoop Bike Riders,70,-,-,-,-,65,
+,,,,,,,
+Mercenaries Upgrades,,,,,,,
+,,,,,,,
+Category,Card,Printed Point Cost,2,2.0.2,2.5,2.6,
+Heavy,Mag-Det Enforcer,14,-,-,-,16,
+Heavy,Super Commando Gunslinger,30,-,-,-,28,
+Heavy,Super Commando Marksman,30,-,-,-,28,
+Personnel,Black Sun Vigo,18,-,-,20,20,
+Personnel,Pyke Syndicate Capo,16,-,-,18,18,
