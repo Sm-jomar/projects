@@ -13,6 +13,7 @@ const HEADER = [
   "faction",
   "battleForce",
   "pointsCap",
+  "pointsMode",
   "updatedAt",
   "entryId",
   "unitId",
@@ -29,9 +30,10 @@ export function armiesToCsv(armies: SavedArmy[]): string {
   const lines: string[] = [HEADER.join(",")];
   for (const a of armies) {
     const bf = a.battleForce ?? "";
+    const mode = a.pointsMode ?? "printed";
     if (a.entries.length === 0) {
       lines.push(
-        [a.id, a.name, a.faction, bf, a.pointsCap, a.updatedAt, "", "", ""]
+        [a.id, a.name, a.faction, bf, a.pointsCap, mode, a.updatedAt, "", "", ""]
           .map(escape)
           .join(","),
       );
@@ -45,6 +47,7 @@ export function armiesToCsv(armies: SavedArmy[]): string {
             a.faction,
             bf,
             a.pointsCap,
+            mode,
             a.updatedAt,
             e.entryId,
             e.unitId,
@@ -151,6 +154,10 @@ export function csvToArmies(text: string): ImportResult {
       idx("battleForce") >= 0
         ? (cols[idx("battleForce")] || "").trim() || undefined
         : undefined;
+    const modeRaw =
+      idx("pointsMode") >= 0 ? (cols[idx("pointsMode")] || "").trim() : "";
+    const pointsMode: "printed" | "v2_6" =
+      modeRaw === "v2_6" ? "v2_6" : "printed";
     let army = byList.get(listId);
     if (!army) {
       army = {
@@ -159,6 +166,7 @@ export function csvToArmies(text: string): ImportResult {
         faction: factionRaw,
         ...(battleForce ? { battleForce } : {}),
         pointsCap,
+        pointsMode,
         entries: [],
         updatedAt,
       };

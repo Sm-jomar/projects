@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { CATALOG } from "../data/catalog";
 import { cardForUpgrade } from "../lib/cardLookup";
+import { effectiveUpgradePoints } from "../lib/points";
 import type { ArmyEntry, Unit, Upgrade } from "../lib/types";
 import { canAddUpgrade, slotUsage, type ArmyState } from "../lib/validation";
 
@@ -128,7 +129,19 @@ export function UpgradePicker({ army, entry, unit, onAttach, onClose }: Props) {
                         )}
                       </div>
                       <div className="muted small">
-                        {SLOT_LABEL[up.type] ?? up.type} · {up.points} pts
+                        {SLOT_LABEL[up.type] ?? up.type} ·{" "}
+                        {effectiveUpgradePoints(
+                          { ...up, faction: unit.faction },
+                          army.pointsMode,
+                        )}{" "}
+                        pts
+                        {army.pointsMode === "v2_6" &&
+                          effectiveUpgradePoints(
+                            { ...up, faction: unit.faction },
+                            "v2_6",
+                          ) !== up.points && (
+                            <span className="adj-hint"> (was {up.points})</span>
+                          )}
                         {up.restricted_to_unit &&
                           up.restricted_to_unit.length > 0 && (
                             <>

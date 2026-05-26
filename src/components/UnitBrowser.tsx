@@ -5,6 +5,7 @@ import {
   RANK_LABEL,
   RANK_ORDER,
 } from "../lib/factions";
+import { effectiveUnitPoints } from "../lib/points";
 import type { FactionId, Rank, Unit } from "../lib/types";
 import { canAdd, type ArmyState } from "../lib/validation";
 import { cardForUnit } from "../lib/cardLookup";
@@ -87,6 +88,8 @@ export function UnitBrowser({
       <ul className="unit-list">
         {units.map((u) => {
           const check = canAdd(army, u);
+          const cost = effectiveUnitPoints(u, army.pointsMode);
+          const adjusted = army.pointsMode === "v2_6" && cost !== u.points;
           return (
             <li
               key={u.id}
@@ -103,8 +106,10 @@ export function UnitBrowser({
                   <div className="unit-row-sub muted">{u.sub_title}</div>
                 )}
                 <div className="unit-row-meta muted">
-                  {RANK_LABEL[u.rank]} · {u.points} pts · {u.miniatures} mini
-                  {u.miniatures > 1 ? "s" : ""}
+                  {RANK_LABEL[u.rank]} · {cost} pts
+                  {adjusted && <span className="adj-hint"> (was {u.points})</span>}
+                  {" · "}
+                  {u.miniatures} mini{u.miniatures > 1 ? "s" : ""}
                 </div>
               </div>
               <button

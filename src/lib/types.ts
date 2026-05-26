@@ -118,6 +118,7 @@ export type SavedArmy = {
   faction: FactionId;
   battleForce?: string;
   pointsCap: number;
+  pointsMode?: "printed" | "v2_6";
   entries: ArmyEntry[];
   updatedAt: number;
 };
