@@ -67,11 +67,15 @@ function findBest(
   return bestScore >= 500 ? best : null;
 }
 
-export function cardForUnit(unit: Pick<Unit, "id" | "name" | "faction">): string | null {
+export function cardForUnit(unit: Pick<Unit, "id" | "name" | "faction"> & { also_factions?: string[] }): string | null {
   const target = slugify(unit.name);
   const idSlug = slugify(unit.id);
-  const hit = findBest(unit.faction, "unit", target, idSlug);
-  return hit ? BASE + hit.file : null;
+  const factions = [unit.faction, ...(unit.also_factions ?? [])];
+  for (const f of factions) {
+    const hit = findBest(f, "unit", target, idSlug);
+    if (hit) return BASE + hit.file;
+  }
+  return null;
 }
 
 export function cardForUpgrade(args: {
