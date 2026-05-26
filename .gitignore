@@ -25,3 +25,5 @@ dist-ssr
 
 # Raw source PDFs (copyrighted). Extracted images live in public/cards and public/rulebooks.
 Legion/*.pdf
+
+scripts/__pycache__/
