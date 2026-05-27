@@ -79,9 +79,10 @@ function findBest(
 // Hand-curated map of catalog unit id -> card file path (relative to public/).
 // Used when fuzzy matching against OCR-mangled card slugs would fail or pull
 // the wrong card. Each entry was verified from the user's flagged-unit
-// JSON export.
+// JSON exports. `null` means "no source card available, show the empty
+// state instead of a fuzzy-matched wrong card."
 const UNIT_CARD_OVERRIDES: Record<string, string | null> = {
-  // Imperials — files exist under mangled slugs, force-map them.
+  // ============= IMPERIALS =============
   "imperials-74-z-speeder-bikes": "cards/imperials/unit/j4a-7-speenper-bikes.jpg",
   "imperials-dewback-rider": "cards/imperials/unit/dewereackk-riner.jpg",
   "imperials-e-web-heavy-blaster-team": "cards/imperials/unit/e-wjee-heavy-blaster-team.jpg",
@@ -94,26 +95,13 @@ const UNIT_CARD_OVERRIDES: Record<string, string | null> = {
   "imperials-imperial-special-forces": "cards/imperials/unit/imperial-special-forces.jpg",
   "imperials-imperial-special-forces-inferno-squad": "cards/imperials/unit/imperial-special-forces-2.jpg",
   "imperials-scout-troopers": "cards/imperials/unit/scout-troopers.jpg",
-  // Vader variants — best-guess pairing of the three darth-vader-*.jpg files.
   "imperials-darth-vader-dark-lord-of-the-sith": "cards/imperials/unit/darth-vader.jpg",
   "imperials-darth-vader-the-emperor-s-apprentice": "cards/imperials/unit/darth-vader-2.jpg",
-  // IG-88 → mercenary/unit/1g-88.jpg (OCR-mangled). IG-11 stays at ig-11.jpg.
   "imperials-ig-88-assassin-droid": "cards/mercenary/unit/1g-88.jpg",
   "imperials-ig-11-nurse-droid": "cards/mercenary/unit/ig-11.jpg",
-  // Boba Fett (Infamous Bounty Hunter) — currently no clean single-side card.
-  // Use the mercenary/unit/boba-fett.jpg (the Daimyo + Infamous BH composite,
-  // not ideal, but better than nothing).
   "imperials-boba-fett-infamous-bounty-hunter": "cards/mercenary/unit/e-boba-fett.jpg",
-  // Mercenary — files exist under mangled slugs.
-  "mercenary-pyke-syndicate-foot-soldiers": "cards/mercenary/unit/dbvyie-svynpicate-foot-so-lpiers-i.jpg",
-  "mercenary-black-sun-enforcers": "cards/mercenary/unit/black-sun-enfoorcers.jpg",
-  "mercenary-black-sun-vigo": "cards/mercenary/unit/black-sun-vigo.jpg",
-  "mercenary-cad-bane-needs-no-introduction": "cards/mercenary/unit/cap-bane.jpg",
-  "mercenary-a-a5-speeder-truck": "cards/mercenary/unit/ya-l-fs5-speeeepeeer-truck.jpg",
-  // Cross-faction units: Din Djarin under rebels primary, image in mercenary/.
-  "rebels-din-djarin-the-mandalorian": "cards/mercenary/unit/din-djarin.jpg",
-  // Units with no card image in the source PDFs — explicitly null so the
-  // "No card image found" message shows instead of a wrong fuzzy match.
+  "imperials-bossk-trandoshan-terror": "cards/mercenary/unit/bossk.jpg",
+  // Imperials with no source card extracted yet:
   "imperials-snowtroopers": null,
   "imperials-shoretroopers": null,
   "imperials-stormtroopers": null,
@@ -122,6 +110,105 @@ const UNIT_CARD_OVERRIDES: Record<string, string | null> = {
   "imperials-range-troopers": null,
   "imperials-director-orson-krennic": null,
   "imperials-iden-versio": null,
+  "imperials-scout-troopers-strike-team": null,
+
+  // ============= REBELS =============
+  "rebels-x-34-landspeeder": "cards/rebels/unit/x-34-lannsspeeder.jpg",
+  "rebels-t-47-airspeeder": "cards/rebels/unit/ts4i7-airsppeeeder.jpg",
+  "rebels-1-4-fd-laser-cannon-team": "cards/rebels/unit/1-4ed-laser-cannon-team.jpg",
+  "rebels-wookiee-warriors-freedom-fighters": "cards/rebels/unit/wookkiee-warriors.jpg",
+  "rebels-wookiee-warriors-kashyyyk-resistance": "cards/rebels/unit/wookkiee-warriors-2.jpg",
+  "rebels-rebel-sleeper-cell": "cards/rebels/unit/reee-sleeper-cell.jpg",
+  "rebels-rebel-commandos": "cards/rebels/unit/rpeee-commandos.jpg",
+  "rebels-rebel-veterans": "cards/rebels/unit/rpeee-veterans.jpg",
+  "rebels-rebel-troopers": "cards/rebels/unit/reeel-troopers.jpg",
+  "rebels-mark-ii-medium-blaster-trooper": "cards/rebels/unit/mark-lil-medium-blaster-rooper.jpg",
+  "rebels-fleet-troopers": "cards/rebels/unit/fleet-troopers.jpg",
+  "rebels-k-2so": "cards/rebels/unit/kk-2s50.jpg",
+  "rebels-ahsoka-tano-fulcrum": "cards/rebels/unit/fahsoka-tano.jpg",
+  "rebels-lando-calrissian": "cards/rebels/unit/lanbo-calrissian.jpg",
+  "rebels-luke-skywalker-hero-of-the-rebellion": "cards/rebels/unit/luke-skywalker.jpg",
+  "rebels-luke-skywalker-jedi-knight": "cards/rebels/unit/luke-skywalker-2.jpg",
+  "rebels-mandalorian-resistance": "cards/rebels/unit/mandalorian-resistance.jpg",
+  "rebels-mandalorian-resistance-clan-wren": "cards/rebels/unit/mandalorian-resistance-2.jpg",
+  "rebels-at-rt": "cards/rebels/unit/at-r-t.jpg",
+  "rebels-logray-superstitious-shaman": "cards/mercenary/unit/logray.jpg",
+  "rebels-the-bad-batch": "cards/mercenary/unit/the-bap-batch.jpg",
+  "rebels-din-djarin-the-mandalorian": "cards/mercenary/unit/din-djarin.jpg",
+  "rebels-ewok-skirmishers": "cards/mercenary/unit/ewok-skirmishers.jpg",
+  "rebels-ewok-slingers": "cards/mercenary/unit/ework-slingers.jpg",
+  "rebels-wicket-hero-of-bright-tree": "cards/mercenary/unit/wicket.jpg",
+  "rebels-boba-fett-daimyo-of-mos-espa": "cards/mercenary/unit/boba-fett.jpg",
+  "rebels-ig-11-nurse-droid": "cards/mercenary/unit/ig-11.jpg",
+  // Rebels with no source card:
+  "rebels-chewbacca-let-the-wookiee-win": null,
+  "rebels-rebel-commandos-strike-team": null,
+  "rebels-rebel-agent": null,
+  "rebels-rebel-officer": null,
+
+  // ============= SEPARATISTS =============
+  "separatists-nr-n99-persuader-class-tank-droid": "cards/separatists/unit/persuader-class-tank-droid.jpg",
+  "separatists-nr-n99-persuader-class-tank-droid-prototype-tank-droid": "cards/separatists/unit/persuader-class-tank-droip.jpg",
+  "separatists-aat-battle-tank": "cards/separatists/unit/aat-battle-tank.jpg",
+  "separatists-stap-riders": "cards/separatists/unit/stap-rinpers.jpg",
+  "separatists-dsd1-dwarf-spider-droid": "cards/separatists/unit/d0sd1-dware-e-spiper-droip.jpg",
+  "separatists-ig-100-magnaguards": "cards/separatists/unit/1g-100-magnaguard.jpg",
+  "separatists-ig-100-magnaguards-prototype-assassin-droids": "cards/separatists/unit/1g-100-magnnaaguard.jpg",
+  "separatists-drk-1-sith-probe-droids": "cards/separatists/unit/drk-1-siry-proee-droins.jpg",
+  "separatists-bx-series-droid-commandos": "cards/separatists/unit/by-serices-droip-commanpos.jpg",
+  "separatists-b2-super-battle-droids": "cards/separatists/unit/b82-super-battrtr-le-droins.jpg",
+  "separatists-b1-battle-droids": "cards/separatists/unit/b1-battt-le-droins.jpg",
+  "separatists-t-series-tactical-droid": "cards/separatists/unit/t-series-tactical-droid.jpg",
+  "separatists-poggle-the-lesser": "cards/separatists/unit/poggle-the-lesser.jpg",
+  "separatists-kraken": "cards/separatists/unit/icraken.jpg",
+  "separatists-kalani": "cards/separatists/unit/cikalani.jpg",
+  "separatists-count-dooku-darth-tyranus": "cards/separatists/unit/count-dooku.jpg",
+  "separatists-asajj-ventress-sith-assassin": "cards/separatists/unit/efaasajj-ventress.jpg",
+  "separatists-bossk-trandoshan-terror": "cards/mercenary/unit/bossk.jpg",
+  // Separatists with no source card:
+  "separatists-aqua-droids": null,
+  "separatists-lm-432-crab-droid": null,
+  "separatists-droidekas": null,
+  "separatists-bx-series-droid-commandos-strike-team": null,
+  "separatists-super-tactical-command-droid": null,
+  "separatists-super-tactical-command-droid-operative": null,
+
+  // ============= REPUBLIC =============
+  "republic-tx-130-saber-class-fighter-tank": "cards/republic/unit/gsaper-class-tank.jpg",
+  "republic-laat-le-patrol-transport-republic": "cards/republic/unit/laat-l-ee-pattrrol-transport.jpg",
+  "republic-infantry-support-platform": "cards/republic/unit/infantry-suppppoort-platform.jpg",
+  "republic-raddaugh-gnasp-fluttercraft": "cards/republic/unit/raddaugh-gnasp-fluttercraft.jpg",
+  "republic-raddaugh-gnasp-fluttercraft-attack-craft": "cards/republic/unit/raddaugh-gnasp-fluttercraft-2.jpg",
+  "republic-clone-commandos": "cards/republic/unit/clone-commandos.jpg",
+  "republic-clone-commandos-delta-squad": "cards/republic/unit/clone-commandos-2.jpg",
+  "republic-barc-speeder": "cards/republic/unit/barc-sppeeder.jpg",
+  "republic-wookiee-warriors-noble-fighters": "cards/republic/unit/woookiee-warriors.jpg",
+  "republic-wookiee-warriors-kashyyyk-defenders": "cards/republic/unit/woookiee-warriors-2.jpg",
+  "republic-padme-amidala-spirited-senator": "cards/republic/unit/papdme-amidala.jpg",
+  "republic-wookiee-chieftain": "cards/republic/unit/wookkiee-chieftain.jpg",
+  "republic-obi-wan-kenobi-civilized-warrior": "cards/republic/unit/opbi-wann-kenobi.jpg",
+  "republic-clone-commander-cody": "cards/republic/unit/clone-commander-copy.jpg",
+  // Republic with no source card:
+  "republic-arf-troopers": null,
+  "republic-arc-troopers-strike-team": null,
+  "republic-clone-trooper-marksmen": null,
+  "republic-jedi-knight": null,
+  "republic-jedi-knight-general": null,
+  "republic-ahsoka-tano-padawan-commander": null,
+
+  // ============= MERCENARY =============
+  "mercenary-pyke-syndicate-foot-soldiers": "cards/mercenary/unit/dbvyie-svynpicate-foot-so-lpiers-i.jpg",
+  "mercenary-black-sun-enforcers": "cards/mercenary/unit/black-sun-enfoorcers.jpg",
+  "mercenary-black-sun-vigo": "cards/mercenary/unit/black-sun-vigo.jpg",
+  "mercenary-cad-bane-needs-no-introduction": "cards/mercenary/unit/cap-bane.jpg",
+  "mercenary-a-a5-speeder-truck": "cards/mercenary/unit/ya-l-fs5-speeeepeeer-truck.jpg",
+  "mercenary-gar-saxon-militant-commando": "cards/mercenary/unit/garr-saxon.jpg",
+  "mercenary-pyke-syndicate-capo": "cards/mercenary/unit/bvice-svyynpicate-capo.jpg",
+  "mercenary-swoop-bike-riders": "cards/mercenary/unit/4-swoop-bike-ringers.jpg",
+  // Mercenary with no source card:
+  "mercenary-hondo-ohnaka": null,
+  "mercenary-weequay-pirates": null,
+  "mercenary-wlo-5-speeder-tank": null,
 };
 
 export function cardForUnit(unit: Pick<Unit, "id" | "name" | "faction"> & { also_factions?: string[] }): string | null {
