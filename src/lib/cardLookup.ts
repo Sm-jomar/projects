@@ -99,7 +99,7 @@ const UNIT_CARD_OVERRIDES: Record<string, string | null> = {
   "imperials-darth-vader-the-emperor-s-apprentice": "cards/imperials/unit/darth-vader-2.jpg",
   "imperials-ig-88-assassin-droid": "cards/mercenary/unit/1g-88.jpg",
   "imperials-ig-11-nurse-droid": "cards/mercenary/unit/ig-11.jpg",
-  "imperials-boba-fett-infamous-bounty-hunter": "cards/mercenary/unit/e-boba-fett.jpg",
+  "imperials-boba-fett-infamous-bounty-hunter": "cards/mercenary/unit/boba-fett-bounty-hunter.jpg",
   "imperials-bossk-trandoshan-terror": "cards/mercenary/unit/bossk.jpg",
   // Imperials with no source card extracted yet:
   "imperials-snowtroopers": null,
