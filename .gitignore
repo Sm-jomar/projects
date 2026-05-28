@@ -34,5 +34,3 @@ scripts/__pycache__/
 !.dev.vars.example
 .env*
 !.env.example
-# Public (non-secret) production build config — see file header.
-!.env.production
