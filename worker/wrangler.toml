@@ -1,0 +1,15 @@
+name = "legion-flag-worker"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+
+# Public, non-secret config. Edit ALLOWED_ORIGIN to your Pages site origin.
+[vars]
+REPO_OWNER = "sm-jomar"
+REPO_NAME = "projects"
+ALLOWED_ORIGIN = "https://legion.eslegion.com"
+
+# Secrets are NOT stored here. Set them with:
+#   wrangler secret put GH_APP_ID
+#   wrangler secret put GH_APP_PRIVATE_KEY
+#   wrangler secret put GH_INSTALLATION_ID
+#   wrangler secret put FLAG_SHARED_SECRET   # optional

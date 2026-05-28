@@ -114,13 +114,41 @@ export function downloadFlags(filename: string, clearAfter = true): number {
   return flags.length;
 }
 
+/** POST the current flags to the backend Worker, if configured via
+ * VITE_FLAG_ENDPOINT. Resolves to true on a successful commit. Never
+ * throws — network/backend errors are swallowed (the browser download is
+ * the reliable fallback). */
+export async function postFlagsToBackend(): Promise<boolean> {
+  const endpoint = import.meta.env.VITE_FLAG_ENDPOINT as string | undefined;
+  if (!endpoint) return false;
+  if (flagCount() === 0) return false;
+  const secret = import.meta.env.VITE_FLAG_SECRET as string | undefined;
+  try {
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(secret ? { "X-Flag-Secret": secret } : {}),
+      },
+      body: exportFlagsJson(),
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
+}
+
 /** Auto-export hook for the 30-minute timer. Only fires when there are
- * flags. Downloads them, records the timestamp, and clears the store.
- * Returns the count exported (0 if nothing to do). */
-export function autoExportFlags(): number {
-  if (flagCount() === 0) return 0;
+ * flags. Posts to the backend Worker (if configured), downloads a JSON
+ * copy, records the timestamp, and clears the store. Returns the count
+ * exported (0 if nothing to do). */
+export async function autoExportFlags(): Promise<number> {
+  const count = flagCount();
+  if (count === 0) return 0;
+  // Try the backend first; the browser download always runs as a backup.
+  await postFlagsToBackend();
   const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-");
-  const n = downloadFlags(`legion-flagged-auto-${stamp}.json`, true);
+  downloadFlags(`legion-flagged-auto-${stamp}.json`, true);
   setLastAutoExport(Date.now());
-  return n;
+  return count;
 }
