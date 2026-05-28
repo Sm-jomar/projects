@@ -63,13 +63,13 @@ export default function App() {
   // GitHub to apply corrections.
   useEffect(() => {
     const tick = setInterval(() => {
-      const n = autoExportFlags();
-      if (n > 0) {
-        const ts = getLastAutoExport();
-        setLastAutoExportState(ts);
-        setSavedToast(`Auto-saved ${n} flag${n === 1 ? "" : "s"}.`);
-        setTimeout(() => setSavedToast(null), 2500);
-      }
+      void autoExportFlags().then((n) => {
+        if (n > 0) {
+          setLastAutoExportState(getLastAutoExport());
+          setSavedToast(`Auto-saved ${n} flag${n === 1 ? "" : "s"}.`);
+          setTimeout(() => setSavedToast(null), 2500);
+        }
+      });
     }, AUTO_EXPORT_INTERVAL_MS);
     const label = setInterval(() => setNowTick((t) => t + 1), 30000);
     return () => {
