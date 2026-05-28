@@ -17,6 +17,7 @@ export type Flag = {
 };
 
 const KEY = "legion-builder.flagged.v1";
+const LAST_AUTO_KEY = "legion-builder.flagged.lastAutoExport.v1";
 
 function readAll(): Flag[] {
   try {
@@ -60,6 +61,26 @@ export function removeFlag(id: string): void {
   writeAll(readAll().filter((f) => f.id !== id));
 }
 
+export function clearFlags(): void {
+  writeAll([]);
+}
+
+export function flagCount(): number {
+  return readAll().length;
+}
+
+/** Timestamp (ms) of the last auto-export, or null if never. */
+export function getLastAutoExport(): number | null {
+  const raw = localStorage.getItem(LAST_AUTO_KEY);
+  if (!raw) return null;
+  const n = Number(raw);
+  return Number.isFinite(n) ? n : null;
+}
+
+export function setLastAutoExport(ts: number): void {
+  localStorage.setItem(LAST_AUTO_KEY, String(ts));
+}
+
 export function exportFlagsJson(): string {
   return JSON.stringify(
     {
@@ -73,7 +94,11 @@ export function exportFlagsJson(): string {
   );
 }
 
-export function downloadFlags(filename: string): void {
+/** Download the current flags as JSON. By default clears the flag store
+ * afterwards (an export is treated as "handed off"). Returns the number
+ * of flags that were exported. */
+export function downloadFlags(filename: string, clearAfter = true): number {
+  const flags = listFlags();
   const blob = new Blob([exportFlagsJson()], {
     type: "application/json;charset=utf-8",
   });
@@ -85,4 +110,17 @@ export function downloadFlags(filename: string): void {
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
+  if (clearAfter) clearFlags();
+  return flags.length;
+}
+
+/** Auto-export hook for the 30-minute timer. Only fires when there are
+ * flags. Downloads them, records the timestamp, and clears the store.
+ * Returns the count exported (0 if nothing to do). */
+export function autoExportFlags(): number {
+  if (flagCount() === 0) return 0;
+  const stamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, "-");
+  const n = downloadFlags(`legion-flagged-auto-${stamp}.json`, true);
+  setLastAutoExport(Date.now());
+  return n;
 }

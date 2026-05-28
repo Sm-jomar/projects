@@ -317,6 +317,11 @@ input, select {
   font-size: 12px;
   cursor: help;
 }
+.flag-clock {
+  align-self: center;
+  white-space: nowrap;
+  cursor: help;
+}
 .unit-variant {
   color: var(--muted);
   font-weight: 400;
