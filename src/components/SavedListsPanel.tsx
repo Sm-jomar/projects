@@ -1,8 +1,8 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { FACTIONS } from "../lib/factions";
 import type { SavedArmy } from "../lib/types";
 import { armiesToCsv, csvToArmies, downloadCsv } from "../lib/csv";
-import { downloadFlags, listFlags } from "../lib/flags";
+import { clearFlags, downloadFlags, flagCount } from "../lib/flags";
 
 type Props = {
   armies: SavedArmy[];
@@ -20,6 +20,7 @@ export function SavedListsPanel({
   onImport,
 }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
+  const [flags, setFlags] = useState(() => flagCount());
 
   function exportAll() {
     if (armies.length === 0) {
@@ -72,18 +73,37 @@ export function SavedListsPanel({
             <button onClick={pickFile}>Import CSV</button>
             <button
               onClick={() => {
-                const n = listFlags().length;
-                if (n === 0) {
+                if (flagCount() === 0) {
                   alert("No flagged units yet.");
                   return;
                 }
-                downloadFlags(
+                const n = downloadFlags(
                   `legion-flagged-${new Date().toISOString().slice(0, 10)}.json`,
                 );
+                setFlags(0);
+                alert(`Exported ${n} flag${n === 1 ? "" : "s"} and cleared them.`);
               }}
-              title="Download a JSON file of every unit you've flagged as wrong"
+              title="Download a JSON file of every flagged unit, then clear the flags"
             >
-              Export flags ({listFlags().length})
+              Export flags ({flags})
+            </button>
+            <button
+              className="danger"
+              disabled={flags === 0}
+              onClick={() => {
+                if (flagCount() === 0) return;
+                if (
+                  confirm(
+                    `Clear all ${flagCount()} flags without exporting? This cannot be undone.`,
+                  )
+                ) {
+                  clearFlags();
+                  setFlags(0);
+                }
+              }}
+              title="Discard all flags without exporting"
+            >
+              Clear flags
             </button>
             <input
               ref={fileRef}

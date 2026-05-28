@@ -15,6 +15,18 @@ import {
   newId,
   saveArmy,
 } from "./lib/storage";
+import { autoExportFlags, getLastAutoExport } from "./lib/flags";
+
+const AUTO_EXPORT_INTERVAL_MS = 30 * 60 * 1000; // 30 minutes
+
+function formatElapsed(ms: number): string {
+  const mins = Math.floor(ms / 60000);
+  if (mins < 1) return "just now";
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  const rem = mins % 60;
+  return rem ? `${hrs}h ${rem}m ago` : `${hrs}h ago`;
+}
 
 import type { PointsMode } from "./lib/points";
 
@@ -35,9 +47,35 @@ export default function App() {
   const [showReference, setShowReference] = useState(false);
   const [showRegisters, setShowRegisters] = useState(false);
   const [savedToast, setSavedToast] = useState<string | null>(null);
+  const [lastAutoExport, setLastAutoExportState] = useState<number | null>(() =>
+    getLastAutoExport(),
+  );
+  // Re-render every 30s so the "auto-saved Xm ago" label stays current.
+  const [, setNowTick] = useState(0);
 
   useEffect(() => {
     setSaved(listArmies());
+  }, []);
+
+  // Every 30 minutes, if there are new flags, download them as JSON and
+  // clear the store. NOTE: a static GitHub Pages site can't push to the
+  // repo directly, so this downloads to the browser; commit the file to
+  // GitHub to apply corrections.
+  useEffect(() => {
+    const tick = setInterval(() => {
+      const n = autoExportFlags();
+      if (n > 0) {
+        const ts = getLastAutoExport();
+        setLastAutoExportState(ts);
+        setSavedToast(`Auto-saved ${n} flag${n === 1 ? "" : "s"}.`);
+        setTimeout(() => setSavedToast(null), 2500);
+      }
+    }, AUTO_EXPORT_INTERVAL_MS);
+    const label = setInterval(() => setNowTick((t) => t + 1), 30000);
+    return () => {
+      clearInterval(tick);
+      clearInterval(label);
+    };
   }, []);
 
   function startNewArmy(faction: FactionId, battleForce?: string) {
@@ -174,6 +212,12 @@ export default function App() {
           <button onClick={() => setShowSaved(true)}>
             Saved lists ({saved.length})
           </button>
+          <span className="muted small flag-clock" title="Flags auto-export to a JSON download every 30 minutes">
+            🚩{" "}
+            {lastAutoExport
+              ? `auto-saved ${formatElapsed(Date.now() - lastAutoExport)}`
+              : "auto-save on (30m)"}
+          </span>
         </div>
       </header>
 
