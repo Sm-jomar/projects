@@ -6145,5 +6145,781 @@
     "file": "cards/generic/battle/slack-ops.jpg",
     "source": "DOC41_BattleCards_11.26.2025.pdf",
     "points": null
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Bring Peace to the Galaxy",
+    "slug": "bring-peace-to-the-galaxy",
+    "file": "cards/generic/campaign/bring-peace-to-the-galaxy.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Wipe Them Out",
+    "slug": "wipe-them-out",
+    "file": "cards/generic/campaign/wipe-them-out.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Small Victories",
+    "slug": "small-victories",
+    "file": "cards/generic/campaign/small-victories.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Reward: Midnight Strikes",
+    "slug": "reward-midnight-strikes",
+    "file": "cards/generic/campaign/reward-midnight-strikes.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Reward: Against All Odds",
+    "slug": "reward-against-all-odds",
+    "file": "cards/generic/campaign/reward-against-all-odds.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Reward: The Long Game",
+    "slug": "reward-the-long-game",
+    "file": "cards/generic/campaign/reward-the-long-game.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Glorious Charge",
+    "slug": "glorious-charge",
+    "file": "cards/generic/campaign/glorious-charge.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Standing Orders",
+    "slug": "standing-orders",
+    "file": "cards/generic/campaign/standing-orders.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Take the Outpost",
+    "slug": "take-the-outpost",
+    "file": "cards/generic/campaign/take-the-outpost.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Recover the Supplies",
+    "slug": "recover-the-supplies",
+    "file": "cards/generic/campaign/recover-the-supplies.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Intercept the Transmission",
+    "slug": "intercept-the-transmission",
+    "file": "cards/generic/campaign/intercept-the-transmission.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Clear the Region",
+    "slug": "clear-the-region",
+    "file": "cards/generic/campaign/clear-the-region.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Sabotage the Base",
+    "slug": "sabotage-the-base",
+    "file": "cards/generic/campaign/sabotage-the-base.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Defend the Position",
+    "slug": "defend-the-position",
+    "file": "cards/generic/campaign/defend-the-position.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Ambush",
+    "slug": "ambush",
+    "file": "cards/generic/campaign/ambush.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Pinned Down",
+    "slug": "pinned-down",
+    "file": "cards/generic/campaign/pinned-down.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Push",
+    "slug": "push",
+    "file": "cards/generic/campaign/push.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Assault",
+    "slug": "assault",
+    "file": "cards/generic/campaign/assault.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Maximum Firepower",
+    "slug": "maximum-firepower",
+    "file": "cards/generic/campaign/maximum-firepower.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Reward: Steady Progress",
+    "slug": "reward-steady-progress",
+    "file": "cards/generic/campaign/reward-steady-progress.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Setback: Slow Going",
+    "slug": "setback-slow-going",
+    "file": "cards/generic/campaign/setback-slow-going.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Setback: Growing Threat",
+    "slug": "setback-growing-threat",
+    "file": "cards/generic/campaign/setback-growing-threat.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Hold the Line",
+    "slug": "objective-hold-the-line",
+    "file": "cards/generic/campaign/objective-hold-the-line.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Push Forward",
+    "slug": "objective-push-forward",
+    "file": "cards/generic/campaign/objective-push-forward.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Setback: Outmaneuvered",
+    "slug": "setback-outmaneuvered",
+    "file": "cards/generic/campaign/setback-outmaneuvered.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Reward: Decisive Action",
+    "slug": "reward-decisive-action",
+    "file": "cards/generic/campaign/reward-decisive-action.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Seize Ground",
+    "slug": "objective-seize-ground",
+    "file": "cards/generic/campaign/objective-seize-ground.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Eliminate",
+    "slug": "objective-eliminate",
+    "file": "cards/generic/campaign/objective-eliminate.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Defining Trait: Relentless",
+    "slug": "defining-trait-relentless",
+    "file": "cards/generic/campaign/defining-trait-relentless.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Setback: Losing Ground",
+    "slug": "setback-losing-ground",
+    "file": "cards/generic/campaign/setback-losing-ground.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Entrenched",
+    "slug": "objective-entrenched",
+    "file": "cards/generic/campaign/objective-entrenched.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Breakthrough",
+    "slug": "objective-breakthrough",
+    "file": "cards/generic/campaign/objective-breakthrough.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Defining Trait: Veteran",
+    "slug": "defining-trait-veteran",
+    "file": "cards/generic/campaign/defining-trait-veteran.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Setback: Overextended",
+    "slug": "setback-overextended",
+    "file": "cards/generic/campaign/setback-overextended.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Reward: Rising Star",
+    "slug": "reward-rising-star",
+    "file": "cards/generic/campaign/reward-rising-star.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Lead the Charge",
+    "slug": "objective-lead-the-charge",
+    "file": "cards/generic/campaign/objective-lead-the-charge.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: No Surrender",
+    "slug": "objective-no-surrender",
+    "file": "cards/generic/campaign/objective-no-surrender.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Defining Trait: Fearless",
+    "slug": "defining-trait-fearless",
+    "file": "cards/generic/campaign/defining-trait-fearless.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Setback: Pushed Back",
+    "slug": "setback-pushed-back",
+    "file": "cards/generic/campaign/setback-pushed-back.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Reward: Last Stand",
+    "slug": "reward-last-stand",
+    "file": "cards/generic/campaign/reward-last-stand.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Dig In",
+    "slug": "objective-dig-in",
+    "file": "cards/generic/campaign/objective-dig-in.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Stall",
+    "slug": "objective-stall",
+    "file": "cards/generic/campaign/objective-stall.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Defining Trait: Stubborn",
+    "slug": "defining-trait-stubborn",
+    "file": "cards/generic/campaign/defining-trait-stubborn.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "Rebel Commando, Captain",
+    "slug": "rebel-commando-captain",
+    "file": "cards/rebels/unit/rebel-commando-captain.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "Rebel Commando, Specialist",
+    "slug": "rebel-commando-specialist",
+    "file": "cards/rebels/unit/rebel-commando-specialist.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "Rebel Commando, Demolitions",
+    "slug": "rebel-commando-demolitions",
+    "file": "cards/rebels/unit/rebel-commando-demolitions.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "Rebel Commando Strike Team, Sharpshooter",
+    "slug": "rebel-commando-strike-team-sharpshooter",
+    "file": "cards/rebels/unit/rebel-commando-strike-team-sharpshooter.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "Rebel Commando Strike Team, Heavy",
+    "slug": "rebel-commando-strike-team-heavy",
+    "file": "cards/rebels/unit/rebel-commando-strike-team-heavy.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Flexible Training",
+    "slug": "flexible-training",
+    "file": "cards/rebels/upgrade/flexible-training.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Proven Grit",
+    "slug": "proven-grit",
+    "file": "cards/rebels/upgrade/proven-grit.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Duck and Cover",
+    "slug": "duck-and-cover",
+    "file": "cards/rebels/upgrade/duck-and-cover.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Take Cover",
+    "slug": "take-cover",
+    "file": "cards/rebels/upgrade/take-cover.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Steady",
+    "slug": "steady",
+    "file": "cards/rebels/upgrade/steady.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Fragmentation Grenades",
+    "slug": "fragmentation-grenades",
+    "file": "cards/rebels/upgrade/fragmentation-grenades.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Emergency Stims",
+    "slug": "emergency-stims",
+    "file": "cards/rebels/upgrade/emergency-stims.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Recon Intel",
+    "slug": "recon-intel",
+    "file": "cards/rebels/upgrade/recon-intel.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Environmental Gear",
+    "slug": "environmental-gear",
+    "file": "cards/rebels/upgrade/environmental-gear.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "unit",
+    "title": "ARC Trooper, Captain",
+    "slug": "arc-trooper-captain",
+    "file": "cards/republic/unit/arc-trooper-captain.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "unit",
+    "title": "ARC Trooper",
+    "slug": "arc-trooper",
+    "file": "cards/republic/unit/arc-trooper.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "unit",
+    "title": "ARC Trooper, Jet Pack",
+    "slug": "arc-trooper-jet-pack",
+    "file": "cards/republic/unit/arc-trooper-jet-pack.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "unit",
+    "title": "ARC Trooper, Sharpshooter",
+    "slug": "arc-trooper-sharpshooter",
+    "file": "cards/republic/unit/arc-trooper-sharpshooter.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "unit",
+    "title": "ARC Trooper Strike Team, Marksman",
+    "slug": "arc-trooper-strike-team-marksman",
+    "file": "cards/republic/unit/arc-trooper-strike-team-marksman.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "upgrade",
+    "title": "Defensive Stance",
+    "slug": "defensive-stance",
+    "file": "cards/republic/upgrade/defensive-stance.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "upgrade",
+    "title": "Coordinated Fire",
+    "slug": "coordinated-fire",
+    "file": "cards/republic/upgrade/coordinated-fire.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "upgrade",
+    "title": "Overwatch",
+    "slug": "overwatch",
+    "file": "cards/republic/upgrade/overwatch.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "upgrade",
+    "title": "Aggressive Negotiations",
+    "slug": "aggressive-negotiations",
+    "file": "cards/republic/upgrade/aggressive-negotiations.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "upgrade",
+    "title": "Elite Training",
+    "slug": "elite-training",
+    "file": "cards/republic/upgrade/elite-training.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "upgrade",
+    "title": "Jetpack Assault",
+    "slug": "jetpack-assault",
+    "file": "cards/republic/upgrade/jetpack-assault.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "upgrade",
+    "title": "Recon Patrol",
+    "slug": "recon-patrol",
+    "file": "cards/republic/upgrade/recon-patrol.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "unit",
+    "title": "Mandalorian Super Commando, Captain",
+    "slug": "mandalorian-super-commando-captain",
+    "file": "cards/mercenary/unit/mandalorian-super-commando-captain.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "unit",
+    "title": "Mandalorian Super Commando, Gunslinger",
+    "slug": "mandalorian-super-commando-gunslinger",
+    "file": "cards/mercenary/unit/mandalorian-super-commando-gunslinger.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "unit",
+    "title": "Mandalorian Super Commando, Heavy Infantry",
+    "slug": "mandalorian-super-commando-heavy-infantry",
+    "file": "cards/mercenary/unit/mandalorian-super-commando-heavy-infantry.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "upgrade",
+    "title": "Whistling Birds",
+    "slug": "whistling-birds",
+    "file": "cards/mercenary/upgrade/whistling-birds.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "upgrade",
+    "title": "Beskar Armor",
+    "slug": "beskar-armor",
+    "file": "cards/mercenary/upgrade/beskar-armor.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "upgrade",
+    "title": "Jetpack Overdrive",
+    "slug": "jetpack-overdrive",
+    "file": "cards/mercenary/upgrade/jetpack-overdrive.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "upgrade",
+    "title": "Durasteel Blades",
+    "slug": "durasteel-blades",
+    "file": "cards/mercenary/upgrade/durasteel-blades.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "upgrade",
+    "title": "Grappling Hooks",
+    "slug": "grappling-hooks",
+    "file": "cards/mercenary/upgrade/grappling-hooks.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "upgrade",
+    "title": "Reinforced Helmet",
+    "slug": "reinforced-helmet",
+    "file": "cards/mercenary/upgrade/reinforced-helmet.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Death Trooper, Captain",
+    "slug": "imperial-death-trooper-captain",
+    "file": "cards/imperials/unit/imperial-death-trooper-captain.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Death Trooper",
+    "slug": "imperial-death-trooper",
+    "file": "cards/imperials/unit/imperial-death-trooper.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Death Trooper, Heavy",
+    "slug": "imperial-death-trooper-heavy",
+    "file": "cards/imperials/unit/imperial-death-trooper-heavy.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Death Trooper Strike Team, Sniper",
+    "slug": "imperial-death-trooper-strike-team-sniper",
+    "file": "cards/imperials/unit/imperial-death-trooper-strike-team-sniper.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Death Trooper, Comms Technician",
+    "slug": "imperial-death-trooper-comms-technician",
+    "file": "cards/imperials/unit/imperial-death-trooper-comms-technician.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Tactical Strike",
+    "slug": "tactical-strike",
+    "file": "cards/imperials/upgrade/tactical-strike.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Dead to Rights",
+    "slug": "dead-to-rights",
+    "file": "cards/imperials/upgrade/dead-to-rights.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Precision Targeting",
+    "slug": "precision-targeting",
+    "file": "cards/imperials/upgrade/precision-targeting.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Experimental Ordnance",
+    "slug": "experimental-ordnance",
+    "file": "cards/imperials/upgrade/experimental-ordnance.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Grenade Barrage",
+    "slug": "grenade-barrage",
+    "file": "cards/imperials/upgrade/grenade-barrage.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Comms Jammer",
+    "slug": "comms-jammer",
+    "file": "cards/imperials/upgrade/comms-jammer.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Officer, Captain",
+    "slug": "imperial-officer-captain",
+    "file": "cards/imperials/unit/imperial-officer-captain.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Stormtrooper",
+    "slug": "stormtrooper-spec-ops",
+    "file": "cards/imperials/unit/stormtrooper-spec-ops.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Stormtrooper, DLT-19 Heavy Blaster Rifle",
+    "slug": "stormtrooper-dlt-19",
+    "file": "cards/imperials/unit/stormtrooper-dlt-19.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Death Trooper",
+    "slug": "death-trooper-spec-ops",
+    "file": "cards/imperials/unit/death-trooper-spec-ops.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Special Forces, Captain",
+    "slug": "imperial-special-forces-captain",
+    "file": "cards/imperials/unit/imperial-special-forces-captain.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Special Forces, Trooper",
+    "slug": "imperial-special-forces-trooper",
+    "file": "cards/imperials/unit/imperial-special-forces-trooper.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Push them Back!",
+    "slug": "push-them-back",
+    "file": "cards/imperials/upgrade/push-them-back.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Priority Target",
+    "slug": "priority-target",
+    "file": "cards/imperials/upgrade/priority-target.jpg",
+    "source": "Spec-Ops_Small.pdf"
   }
 ]
