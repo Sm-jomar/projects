@@ -16,6 +16,9 @@ body, html, #root {
   margin: 0;
   padding: 0;
   height: 100%;
+  width: 100%;
+  /* Never let a stray wide child cause horizontal scroll / edge clipping. */
+  overflow-x: hidden;
 }
 
 body {
@@ -126,34 +129,63 @@ input, select {
    stacked at natural height, instead of two independently-scrolling
    columns crammed into the viewport. */
 @media (max-width: 640px) {
+  /* Let the app grow with content and use the browser's own scroll, so iOS
+     Safari's collapsing toolbar doesn't clip a fixed-height 100vh column. */
+  .app { height: auto; min-height: 100vh; }
+
   .app-header {
     flex-direction: column;
     align-items: stretch;
     gap: 8px;
     padding: 10px 12px;
+    position: sticky;
+    top: 0;
+    z-index: 20;
   }
-  .app-actions { justify-content: flex-start; }
-  .app-actions button { padding: 8px 10px; }
+  .app-actions {
+    justify-content: flex-start;
+    gap: 6px;
+  }
+  .app-actions button {
+    padding: 8px 12px;
+    font-size: 13px;
+    flex: 1 1 auto;
+    min-height: 40px;
+  }
+  /* The auto-save clock is informational; let it sit full-width and quiet. */
+  .app-actions .flag-clock { flex-basis: 100%; padding-top: 2px; }
   .app-title h1 { font-size: 16px; }
 
+  .main { overflow: visible; }
   .main.builder {
     display: block;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
     padding: 10px;
   }
   .main.builder .panel { margin-bottom: 12px; }
   /* Panels grow to content; the page scrolls, not each panel. */
   .unit-list,
   .rank-groups { overflow-y: visible; }
-  .unit-browser { max-height: 70vh; }
+  .unit-browser { max-height: none; }
   .unit-browser .unit-list { max-height: 60vh; overflow-y: auto; }
   .army-roster { max-height: none; }
 
   .main.center { padding: 20px 12px; }
-  .faction-grid { grid-template-columns: 1fr; gap: 12px; }
-  .faction-grid .faction-card:nth-child(5) { width: 100%; }
+  .faction-picker h2 { font-size: 18px; }
+  .faction-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  /* Override the desktop 5th-card half-width centering on phones. */
+  .faction-grid .faction-card:nth-child(5) {
+    grid-column: auto;
+    justify-self: stretch;
+    width: 100%;
+  }
   .faction-card { padding: 20px 16px; }
+  .faction-card-name { font-size: 19px; }
+  .faction-card-start { min-height: 44px; }
+  .faction-card-bf { min-height: 40px; }
 
   /* Modals fill the small screen. */
   .modal,
@@ -161,9 +193,15 @@ input, select {
   .upgrade-picker-modal,
   .register-modal { width: 96vw; max-height: 92vh; }
   .reference-modal { height: 92vh; }
-  .card-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  .card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 8px;
+    padding: 8px;
+  }
   .controls input[type="search"] { width: 100%; }
   .panel-head { flex-wrap: wrap; }
+  /* Card-browser controls stack cleanly; search goes full width below tabs. */
+  .cb-search { margin-left: 0; min-width: 0; width: 100%; }
 }
 
 .panel {
@@ -196,7 +234,7 @@ input, select {
 .controls input[type="search"] { width: 180px; }
 
 /* Faction picker */
-.faction-picker { max-width: 720px; }
+.faction-picker { max-width: 720px; width: 100%; }
 .faction-picker h2 { font-size: 20px; margin: 0 0 4px; }
 .faction-grid {
   display: grid;
