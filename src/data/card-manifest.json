@@ -6857,5 +6857,69 @@
     "slug": "comms-jammer",
     "file": "cards/imperials/upgrade/comms-jammer.jpg",
     "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Officer, Captain",
+    "slug": "imperial-officer-captain",
+    "file": "cards/imperials/unit/imperial-officer-captain.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Stormtrooper",
+    "slug": "stormtrooper-spec-ops",
+    "file": "cards/imperials/unit/stormtrooper-spec-ops.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Stormtrooper, DLT-19 Heavy Blaster Rifle",
+    "slug": "stormtrooper-dlt-19",
+    "file": "cards/imperials/unit/stormtrooper-dlt-19.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Death Trooper",
+    "slug": "death-trooper-spec-ops",
+    "file": "cards/imperials/unit/death-trooper-spec-ops.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Special Forces, Captain",
+    "slug": "imperial-special-forces-captain",
+    "file": "cards/imperials/unit/imperial-special-forces-captain.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Special Forces, Trooper",
+    "slug": "imperial-special-forces-trooper",
+    "file": "cards/imperials/unit/imperial-special-forces-trooper.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Push them Back!",
+    "slug": "push-them-back",
+    "file": "cards/imperials/upgrade/push-them-back.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Priority Target",
+    "slug": "priority-target",
+    "file": "cards/imperials/upgrade/priority-target.jpg",
+    "source": "Spec-Ops_Small.pdf"
   }
 ]
