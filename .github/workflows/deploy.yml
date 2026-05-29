@@ -28,7 +28,9 @@ jobs:
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          # @cloudflare/vite-plugin emits the static site to dist/client
+          # (dist/wrangler is the Worker bundle, not for Pages).
+          path: dist/client
 
   deploy:
     needs: build
