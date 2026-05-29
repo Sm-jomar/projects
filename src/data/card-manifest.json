@@ -6489,5 +6489,213 @@
     "slug": "defining-trait-stubborn",
     "file": "cards/generic/campaign/defining-trait-stubborn.jpg",
     "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "Rebel Commando, Captain",
+    "slug": "rebel-commando-captain",
+    "file": "cards/rebels/unit/rebel-commando-captain.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "Rebel Commando, Specialist",
+    "slug": "rebel-commando-specialist",
+    "file": "cards/rebels/unit/rebel-commando-specialist.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "Rebel Commando, Demolitions",
+    "slug": "rebel-commando-demolitions",
+    "file": "cards/rebels/unit/rebel-commando-demolitions.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "Rebel Commando Strike Team, Sharpshooter",
+    "slug": "rebel-commando-strike-team-sharpshooter",
+    "file": "cards/rebels/unit/rebel-commando-strike-team-sharpshooter.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "Rebel Commando Strike Team, Heavy",
+    "slug": "rebel-commando-strike-team-heavy",
+    "file": "cards/rebels/unit/rebel-commando-strike-team-heavy.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Flexible Training",
+    "slug": "flexible-training",
+    "file": "cards/rebels/upgrade/flexible-training.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Proven Grit",
+    "slug": "proven-grit",
+    "file": "cards/rebels/upgrade/proven-grit.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Duck and Cover",
+    "slug": "duck-and-cover",
+    "file": "cards/rebels/upgrade/duck-and-cover.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Take Cover",
+    "slug": "take-cover",
+    "file": "cards/rebels/upgrade/take-cover.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Steady",
+    "slug": "steady",
+    "file": "cards/rebels/upgrade/steady.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Fragmentation Grenades",
+    "slug": "fragmentation-grenades",
+    "file": "cards/rebels/upgrade/fragmentation-grenades.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Emergency Stims",
+    "slug": "emergency-stims",
+    "file": "cards/rebels/upgrade/emergency-stims.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Recon Intel",
+    "slug": "recon-intel",
+    "file": "cards/rebels/upgrade/recon-intel.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "rebels",
+    "kind": "upgrade",
+    "title": "Environmental Gear",
+    "slug": "environmental-gear",
+    "file": "cards/rebels/upgrade/environmental-gear.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "unit",
+    "title": "ARC Trooper, Captain",
+    "slug": "arc-trooper-captain",
+    "file": "cards/republic/unit/arc-trooper-captain.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "unit",
+    "title": "ARC Trooper",
+    "slug": "arc-trooper",
+    "file": "cards/republic/unit/arc-trooper.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "unit",
+    "title": "ARC Trooper, Jet Pack",
+    "slug": "arc-trooper-jet-pack",
+    "file": "cards/republic/unit/arc-trooper-jet-pack.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "unit",
+    "title": "ARC Trooper, Sharpshooter",
+    "slug": "arc-trooper-sharpshooter",
+    "file": "cards/republic/unit/arc-trooper-sharpshooter.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "unit",
+    "title": "ARC Trooper Strike Team, Marksman",
+    "slug": "arc-trooper-strike-team-marksman",
+    "file": "cards/republic/unit/arc-trooper-strike-team-marksman.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "upgrade",
+    "title": "Defensive Stance",
+    "slug": "defensive-stance",
+    "file": "cards/republic/upgrade/defensive-stance.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "upgrade",
+    "title": "Coordinated Fire",
+    "slug": "coordinated-fire",
+    "file": "cards/republic/upgrade/coordinated-fire.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "upgrade",
+    "title": "Overwatch",
+    "slug": "overwatch",
+    "file": "cards/republic/upgrade/overwatch.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "upgrade",
+    "title": "Aggressive Negotiations",
+    "slug": "aggressive-negotiations",
+    "file": "cards/republic/upgrade/aggressive-negotiations.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "upgrade",
+    "title": "Elite Training",
+    "slug": "elite-training",
+    "file": "cards/republic/upgrade/elite-training.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "upgrade",
+    "title": "Jetpack Assault",
+    "slug": "jetpack-assault",
+    "file": "cards/republic/upgrade/jetpack-assault.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "republic",
+    "kind": "upgrade",
+    "title": "Recon Patrol",
+    "slug": "recon-patrol",
+    "file": "cards/republic/upgrade/recon-patrol.jpg",
+    "source": "Spec-Ops_Small.pdf"
   }
 ]
