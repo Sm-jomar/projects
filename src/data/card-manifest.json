@@ -6145,5 +6145,69 @@
     "file": "cards/generic/battle/slack-ops.jpg",
     "source": "DOC41_BattleCards_11.26.2025.pdf",
     "points": null
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Bring Peace to the Galaxy",
+    "slug": "bring-peace-to-the-galaxy",
+    "file": "cards/generic/campaign/bring-peace-to-the-galaxy.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Wipe Them Out",
+    "slug": "wipe-them-out",
+    "file": "cards/generic/campaign/wipe-them-out.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Small Victories",
+    "slug": "small-victories",
+    "file": "cards/generic/campaign/small-victories.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Reward: Midnight Strikes",
+    "slug": "reward-midnight-strikes",
+    "file": "cards/generic/campaign/reward-midnight-strikes.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Reward: Against All Odds",
+    "slug": "reward-against-all-odds",
+    "file": "cards/generic/campaign/reward-against-all-odds.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Reward: The Long Game",
+    "slug": "reward-the-long-game",
+    "file": "cards/generic/campaign/reward-the-long-game.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Glorious Charge",
+    "slug": "glorious-charge",
+    "file": "cards/generic/campaign/glorious-charge.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Standing Orders",
+    "slug": "standing-orders",
+    "file": "cards/generic/campaign/standing-orders.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
   }
 ]
