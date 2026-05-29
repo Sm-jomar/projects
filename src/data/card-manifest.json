@@ -6209,5 +6209,285 @@
     "slug": "standing-orders",
     "file": "cards/generic/campaign/standing-orders.jpg",
     "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Take the Outpost",
+    "slug": "take-the-outpost",
+    "file": "cards/generic/campaign/take-the-outpost.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Recover the Supplies",
+    "slug": "recover-the-supplies",
+    "file": "cards/generic/campaign/recover-the-supplies.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Intercept the Transmission",
+    "slug": "intercept-the-transmission",
+    "file": "cards/generic/campaign/intercept-the-transmission.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Clear the Region",
+    "slug": "clear-the-region",
+    "file": "cards/generic/campaign/clear-the-region.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Sabotage the Base",
+    "slug": "sabotage-the-base",
+    "file": "cards/generic/campaign/sabotage-the-base.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Defend the Position",
+    "slug": "defend-the-position",
+    "file": "cards/generic/campaign/defend-the-position.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Ambush",
+    "slug": "ambush",
+    "file": "cards/generic/campaign/ambush.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Pinned Down",
+    "slug": "pinned-down",
+    "file": "cards/generic/campaign/pinned-down.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Push",
+    "slug": "push",
+    "file": "cards/generic/campaign/push.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Assault",
+    "slug": "assault",
+    "file": "cards/generic/campaign/assault.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Maximum Firepower",
+    "slug": "maximum-firepower",
+    "file": "cards/generic/campaign/maximum-firepower.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Reward: Steady Progress",
+    "slug": "reward-steady-progress",
+    "file": "cards/generic/campaign/reward-steady-progress.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Setback: Slow Going",
+    "slug": "setback-slow-going",
+    "file": "cards/generic/campaign/setback-slow-going.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Setback: Growing Threat",
+    "slug": "setback-growing-threat",
+    "file": "cards/generic/campaign/setback-growing-threat.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Hold the Line",
+    "slug": "objective-hold-the-line",
+    "file": "cards/generic/campaign/objective-hold-the-line.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Push Forward",
+    "slug": "objective-push-forward",
+    "file": "cards/generic/campaign/objective-push-forward.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Setback: Outmaneuvered",
+    "slug": "setback-outmaneuvered",
+    "file": "cards/generic/campaign/setback-outmaneuvered.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Reward: Decisive Action",
+    "slug": "reward-decisive-action",
+    "file": "cards/generic/campaign/reward-decisive-action.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Seize Ground",
+    "slug": "objective-seize-ground",
+    "file": "cards/generic/campaign/objective-seize-ground.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Eliminate",
+    "slug": "objective-eliminate",
+    "file": "cards/generic/campaign/objective-eliminate.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Defining Trait: Relentless",
+    "slug": "defining-trait-relentless",
+    "file": "cards/generic/campaign/defining-trait-relentless.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Setback: Losing Ground",
+    "slug": "setback-losing-ground",
+    "file": "cards/generic/campaign/setback-losing-ground.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Entrenched",
+    "slug": "objective-entrenched",
+    "file": "cards/generic/campaign/objective-entrenched.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Breakthrough",
+    "slug": "objective-breakthrough",
+    "file": "cards/generic/campaign/objective-breakthrough.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Defining Trait: Veteran",
+    "slug": "defining-trait-veteran",
+    "file": "cards/generic/campaign/defining-trait-veteran.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Setback: Overextended",
+    "slug": "setback-overextended",
+    "file": "cards/generic/campaign/setback-overextended.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Reward: Rising Star",
+    "slug": "reward-rising-star",
+    "file": "cards/generic/campaign/reward-rising-star.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Lead the Charge",
+    "slug": "objective-lead-the-charge",
+    "file": "cards/generic/campaign/objective-lead-the-charge.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: No Surrender",
+    "slug": "objective-no-surrender",
+    "file": "cards/generic/campaign/objective-no-surrender.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Defining Trait: Fearless",
+    "slug": "defining-trait-fearless",
+    "file": "cards/generic/campaign/defining-trait-fearless.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Setback: Pushed Back",
+    "slug": "setback-pushed-back",
+    "file": "cards/generic/campaign/setback-pushed-back.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Reward: Last Stand",
+    "slug": "reward-last-stand",
+    "file": "cards/generic/campaign/reward-last-stand.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Dig In",
+    "slug": "objective-dig-in",
+    "file": "cards/generic/campaign/objective-dig-in.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Objective: Stall",
+    "slug": "objective-stall",
+    "file": "cards/generic/campaign/objective-stall.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
+  },
+  {
+    "faction": "generic",
+    "kind": "campaign",
+    "title": "Defining Trait: Stubborn",
+    "slug": "defining-trait-stubborn",
+    "file": "cards/generic/campaign/defining-trait-stubborn.jpg",
+    "source": "DOC51_TOD_Cards.pdf"
   }
 ]
