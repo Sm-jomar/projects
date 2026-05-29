@@ -1,0 +1,4 @@
+# Dependencies for scripts/pdf_to_json.py
+#   pip install -r scripts/requirements.txt
+pymupdf
+Pillow
