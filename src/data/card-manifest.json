@@ -6697,5 +6697,165 @@
     "slug": "recon-patrol",
     "file": "cards/republic/upgrade/recon-patrol.jpg",
     "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "unit",
+    "title": "Mandalorian Super Commando, Captain",
+    "slug": "mandalorian-super-commando-captain",
+    "file": "cards/mercenary/unit/mandalorian-super-commando-captain.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "unit",
+    "title": "Mandalorian Super Commando, Gunslinger",
+    "slug": "mandalorian-super-commando-gunslinger",
+    "file": "cards/mercenary/unit/mandalorian-super-commando-gunslinger.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "unit",
+    "title": "Mandalorian Super Commando, Heavy Infantry",
+    "slug": "mandalorian-super-commando-heavy-infantry",
+    "file": "cards/mercenary/unit/mandalorian-super-commando-heavy-infantry.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "upgrade",
+    "title": "Whistling Birds",
+    "slug": "whistling-birds",
+    "file": "cards/mercenary/upgrade/whistling-birds.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "upgrade",
+    "title": "Beskar Armor",
+    "slug": "beskar-armor",
+    "file": "cards/mercenary/upgrade/beskar-armor.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "upgrade",
+    "title": "Jetpack Overdrive",
+    "slug": "jetpack-overdrive",
+    "file": "cards/mercenary/upgrade/jetpack-overdrive.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "upgrade",
+    "title": "Durasteel Blades",
+    "slug": "durasteel-blades",
+    "file": "cards/mercenary/upgrade/durasteel-blades.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "upgrade",
+    "title": "Grappling Hooks",
+    "slug": "grappling-hooks",
+    "file": "cards/mercenary/upgrade/grappling-hooks.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "mercenary",
+    "kind": "upgrade",
+    "title": "Reinforced Helmet",
+    "slug": "reinforced-helmet",
+    "file": "cards/mercenary/upgrade/reinforced-helmet.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Death Trooper, Captain",
+    "slug": "imperial-death-trooper-captain",
+    "file": "cards/imperials/unit/imperial-death-trooper-captain.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Death Trooper",
+    "slug": "imperial-death-trooper",
+    "file": "cards/imperials/unit/imperial-death-trooper.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Death Trooper, Heavy",
+    "slug": "imperial-death-trooper-heavy",
+    "file": "cards/imperials/unit/imperial-death-trooper-heavy.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Death Trooper Strike Team, Sniper",
+    "slug": "imperial-death-trooper-strike-team-sniper",
+    "file": "cards/imperials/unit/imperial-death-trooper-strike-team-sniper.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Death Trooper, Comms Technician",
+    "slug": "imperial-death-trooper-comms-technician",
+    "file": "cards/imperials/unit/imperial-death-trooper-comms-technician.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Tactical Strike",
+    "slug": "tactical-strike",
+    "file": "cards/imperials/upgrade/tactical-strike.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Dead to Rights",
+    "slug": "dead-to-rights",
+    "file": "cards/imperials/upgrade/dead-to-rights.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Precision Targeting",
+    "slug": "precision-targeting",
+    "file": "cards/imperials/upgrade/precision-targeting.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Experimental Ordnance",
+    "slug": "experimental-ordnance",
+    "file": "cards/imperials/upgrade/experimental-ordnance.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Grenade Barrage",
+    "slug": "grenade-barrage",
+    "file": "cards/imperials/upgrade/grenade-barrage.jpg",
+    "source": "Spec-Ops_Small.pdf"
+  },
+  {
+    "faction": "imperials",
+    "kind": "upgrade",
+    "title": "Comms Jammer",
+    "slug": "comms-jammer",
+    "file": "cards/imperials/upgrade/comms-jammer.jpg",
+    "source": "Spec-Ops_Small.pdf"
   }
 ]
