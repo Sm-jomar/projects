@@ -1,23 +1,28 @@
 /**
- * Cloudflare Worker: commit Legion flag exports into the repo.
+ * Cloudflare Worker for the Legion army builder.
  *
- * The static GitHub Pages app POSTs its flag JSON here; this Worker
+ * Serves the built SPA via the ASSETS binding for all routes except
+ * `POST /api/flags`, which commits flag exports into the repo: it
  * authenticates as a GitHub App installation and writes the payload to
  *   flags/incoming/flags-<ISO>.json
- * on the default branch.
+ * on the default branch. Because the app and this endpoint share an
+ * origin, no CORS is needed in the browser.
  *
- * Secrets (set with `wrangler secret put <NAME>`):
+ * Secrets (set on the Worker in the Cloudflare dashboard):
  *   GH_APP_ID            - the GitHub App's numeric App ID
  *   GH_APP_PRIVATE_KEY   - the App's private key, full PEM (PKCS#8)
  *   GH_INSTALLATION_ID   - installation id of the App on the repo
  *   FLAG_SHARED_SECRET   - optional; if set, requests must send a matching
  *                          X-Flag-Secret header
  *
- * Vars (in wrangler.toml [vars]):
+ * Vars (in wrangler.jsonc "vars"):
  *   REPO_OWNER, REPO_NAME, ALLOWED_ORIGIN
  */
 
+const FLAG_PATH = "/api/flags";
+
 export interface Env {
+  ASSETS: { fetch(request: Request): Promise<Response> };
   GH_APP_ID: string;
   GH_APP_PRIVATE_KEY: string;
   GH_INSTALLATION_ID: string;
@@ -122,6 +127,16 @@ async function commitFile(
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
+    const url = new URL(request.url);
+    if (url.pathname === FLAG_PATH) {
+      return handleFlags(request, env);
+    }
+    // Everything else is served by the built SPA.
+    return env.ASSETS.fetch(request);
+  },
+};
+
+async function handleFlags(request: Request, env: Env): Promise<Response> {
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: corsHeaders(env) });
     }
@@ -165,8 +180,7 @@ export default {
     } catch (err) {
       return json({ error: String((err as Error).message) }, 502, env);
     }
-  },
-};
+}
 
 // Standard (non-url) base64 for the GitHub contents API.
 function b64Standard(bytes: Uint8Array): string {

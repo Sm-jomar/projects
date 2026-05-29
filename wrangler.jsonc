@@ -1,14 +1,21 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "wrangler",
+  "main": "worker/src/index.ts",
   "compatibility_date": "2026-05-28",
   "observability": {
     "enabled": true
   },
   "assets": {
+    "binding": "ASSETS",
     "not_found_handling": "single-page-application"
   },
   "compatibility_flags": [
     "nodejs_compat"
-  ]
+  ],
+  "vars": {
+    "REPO_OWNER": "sm-jomar",
+    "REPO_NAME": "projects",
+    "ALLOWED_ORIGIN": "https://legion.eslegion.com"
+  }
 }

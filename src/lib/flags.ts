@@ -119,8 +119,8 @@ export function downloadFlags(filename: string, clearAfter = true): number {
  * throws — network/backend errors are swallowed (the browser download is
  * the reliable fallback). */
 export async function postFlagsToBackend(): Promise<boolean> {
-  const endpoint = import.meta.env.VITE_FLAG_ENDPOINT as string | undefined;
-  if (!endpoint) return false;
+  const endpoint =
+    (import.meta.env.VITE_FLAG_ENDPOINT as string | undefined) ?? "/api/flags";
   if (flagCount() === 0) return false;
   const secret = import.meta.env.VITE_FLAG_SECRET as string | undefined;
   try {

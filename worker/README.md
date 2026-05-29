@@ -1,16 +1,22 @@
-# Legion flag worker
+# Legion flag handler
 
-A tiny Cloudflare Worker that receives flag-report JSON from the army
-builder and commits it into this repo at `flags/incoming/flags-<time>.json`,
-authenticating as a GitHub App installation. The static site can't hold a
-GitHub token, so this Worker holds the App credentials instead.
+`src/index.ts` is the Cloudflare Worker that backs the army builder. It
+serves the built SPA (via the `ASSETS` binding) for every route except
+`POST /api/flags`, which receives flag-report JSON and commits it into this
+repo at `flags/incoming/flags-<time>.json`, authenticating as a GitHub App
+installation. Because the app and the endpoint share an origin, the browser
+needs no CORS.
+
+It is **not** a separate deployment: the root `wrangler.jsonc` points
+`main` at this file, so the app's existing Cloudflare Workers Build bundles
+and deploys it together with the SPA.
 
 ## One-time setup
 
 ### 1. Create a GitHub App
 
 1. GitHub → Settings → Developer settings → **GitHub Apps** → **New GitHub App**.
-2. Name: anything (e.g. `legion-flag-committer`). Homepage URL: your Pages site.
+2. Name: anything (e.g. `legion-flag-committer`). Homepage URL: your site.
 3. Uncheck **Webhook → Active** (not needed).
 4. **Repository permissions** → **Contents: Read and write**. Nothing else.
 5. Create the app. Note the **App ID**.
@@ -18,59 +24,46 @@ GitHub token, so this Worker holds the App credentials instead.
 7. **Install App** → install on `sm-jomar/projects` only.
 8. After install, the URL is `.../installations/<INSTALLATION_ID>` — note that number.
 
-### 2. Deploy the Worker
+### 2. Add the secrets to the Worker
 
-```bash
-cd worker
-npm install
-npx wrangler login            # authorize wrangler with your Cloudflare account
-# edit wrangler.toml ALLOWED_ORIGIN if your site origin differs
-
-npx wrangler secret put GH_APP_ID            # paste the App ID
-npx wrangler secret put GH_INSTALLATION_ID   # paste the installation id
-npx wrangler secret put GH_APP_PRIVATE_KEY   # paste the FULL .pem contents
-npx wrangler secret put FLAG_SHARED_SECRET   # optional: any random string
-
-npx wrangler deploy
-```
-
-`wrangler deploy` prints the Worker URL, e.g.
-`https://legion-flag-worker.<your-subdomain>.workers.dev`.
-
-### 3. Point the app at the Worker
-
-Set these as repo/Pages build env vars (or in a local `.env` for dev):
+In the Cloudflare dashboard → your Worker → **Settings → Variables and
+Secrets**, add these as **secrets** (encrypted):
 
 ```
-VITE_FLAG_ENDPOINT=https://legion-flag-worker.<your-subdomain>.workers.dev
-VITE_FLAG_SECRET=<the same FLAG_SHARED_SECRET, if you set one>
+GH_APP_ID            # the App ID
+GH_INSTALLATION_ID   # the installation id
+GH_APP_PRIVATE_KEY   # the FULL .pem contents
+FLAG_SHARED_SECRET   # optional: any random string
 ```
 
-When `VITE_FLAG_ENDPOINT` is set, the app POSTs flag exports to the Worker
-(in addition to the browser download). When it's empty, it falls back to
-download-only — so the app works with or without the backend.
+`REPO_OWNER`, `REPO_NAME`, and `ALLOWED_ORIGIN` are plain vars and live in
+the root `wrangler.jsonc` under `"vars"`.
 
-## Local test
+### 3. Client wiring
 
-```bash
-cd worker
-npx wrangler dev
-# in another shell:
-curl -X POST http://localhost:8787 \
+The app POSTs to the same-origin path `/api/flags` by default, so no build
+env var is required. To override (e.g. point at a different host during
+dev) set `VITE_FLAG_ENDPOINT`; `VITE_FLAG_SECRET` is sent as `X-Flag-Secret`
+if `FLAG_SHARED_SECRET` is configured. The browser download always runs as a
+fallback, so the app still works if the backend is unavailable.
+
+## Verify
+
+```
+curl -i https://<your-site>/api/flags          # GET -> 405 (POST only)
+curl -X POST https://<your-site>/api/flags \
   -H 'Content-Type: application/json' \
-  -H 'X-Flag-Secret: <secret>' \
   -d '{"format":"legion-builder-flags","version":1,"flags":[{"id":"x","kind":"unit","name":"Test","flaggedAt":0}]}'
 ```
 
-A successful call returns `{ "ok": true, "path": "flags/incoming/...", "count": 1 }`
+A successful POST returns `{ "ok": true, "path": "flags/incoming/...", "count": 1 }`
 and creates that file in the repo.
 
 ## Notes / tradeoffs
 
-- CORS is locked to `ALLOWED_ORIGIN`. `FLAG_SHARED_SECRET` adds a second
-  gate, but since the secret ships in the static bundle it's obfuscation,
-  not strong auth. Flags are low-value; worst case is junk commits under
-  `flags/incoming/`, which are easy to delete. For stronger protection add
-  Cloudflare Turnstile or rate limiting.
+- `FLAG_SHARED_SECRET` is optional and, since any `VITE_FLAG_SECRET` ships in
+  the static bundle, it's obfuscation, not strong auth. Flags are low-value;
+  worst case is junk commits under `flags/incoming/`, easy to delete. For
+  stronger protection add Cloudflare Turnstile or rate limiting.
 - The App token is generated per request and lives ~9 minutes; nothing is
   persisted in the Worker.
