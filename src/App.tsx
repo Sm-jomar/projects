@@ -6,6 +6,7 @@ import { ArmyRoster } from "./components/ArmyRoster";
 import { SavedListsPanel } from "./components/SavedListsPanel";
 import { ReferencePanel } from "./components/ReferencePanel";
 import { RegisterPanel } from "./components/RegisterPanel";
+import { TabletopPanel } from "./components/TabletopPanel";
 import { DEFAULT_POINTS_CAP } from "./lib/factions";
 import type { ArmyEntry, FactionId, SavedArmy, Unit } from "./lib/types";
 import {
@@ -46,6 +47,7 @@ export default function App() {
   const [showSaved, setShowSaved] = useState(false);
   const [showReference, setShowReference] = useState(false);
   const [showRegisters, setShowRegisters] = useState(false);
+  const [showTabletop, setShowTabletop] = useState(false);
   const [savedToast, setSavedToast] = useState<string | null>(null);
   const [lastAutoExport, setLastAutoExportState] = useState<number | null>(() =>
     getLastAutoExport(),
@@ -206,6 +208,9 @@ export default function App() {
           <button onClick={() => setShowReference(true)}>
             Reference
           </button>
+          <button onClick={() => setShowTabletop(true)}>
+            Tabletop
+          </button>
           <button onClick={() => setShowRegisters(true)}>
             Tours of Duty
           </button>
@@ -281,6 +286,10 @@ export default function App() {
 
       {showRegisters && (
         <RegisterPanel onClose={() => setShowRegisters(false)} />
+      )}
+
+      {showTabletop && (
+        <TabletopPanel onClose={() => setShowTabletop(false)} />
       )}
 
       {savedToast && <div className="toast">{savedToast}</div>}
