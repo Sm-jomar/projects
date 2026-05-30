@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { TabletopCanvas, type Tool } from "./TabletopCanvas";
 import { DiceRoller } from "./DiceRoller";
 import {
-  GAME_TYPES, newTabletop, addToken, addTerrain,
+  GAME_TYPES, newTabletop, addToken, addTerrain, addTokenForUnit,
   type GameType, type TabletopState, type Terrain, type Token, type FactionColor,
 } from "../lib/tabletop";
+import { listArmies } from "../lib/storage";
+import { unitById } from "../data/catalog";
+import { cardForUnit } from "../lib/cardLookup";
+import { FACTIONS } from "../lib/factions";
+import type { SavedArmy, Unit } from "../lib/types";
 
 type Props = { onClose: () => void };
 
@@ -33,6 +38,24 @@ const SNAP_OPTIONS = [
   { value: 3,   label: '3"' },
 ];
 
+// One roster entry resolved from a SavedArmy: links the saved entry ID
+// (slot) to the catalog Unit and its card image URL.
+type RosterEntry = {
+  entryId: string;
+  unit: Unit;
+  portraitUrl: string | null;
+};
+
+function resolveRoster(army: SavedArmy): RosterEntry[] {
+  const out: RosterEntry[] = [];
+  for (const e of army.entries) {
+    const u = unitById(e.unitId);
+    if (!u) continue;
+    out.push({ entryId: e.entryId, unit: u, portraitUrl: cardForUnit(u) });
+  }
+  return out;
+}
+
 export function TabletopPanel({ onClose }: Props) {
   const [state, setState] = useState<TabletopState>(() => newTabletop("standard"));
   const [tool, setTool] = useState<Tool>("move");
@@ -42,6 +65,29 @@ export function TabletopPanel({ onClose }: Props) {
   const [sidebar, setSidebar] = useState<"setup" | "dice">("setup");
   const [customW, setCustomW] = useState(72);
   const [customH, setCustomH] = useState(36);
+
+  // Player + army loading. localStorage is synchronous, so we can read the
+  // saved-army list straight into initial state — no effect needed.
+  const [armies, setArmies] = useState<SavedArmy[]>(() => listArmies());
+  const [armyPickerOpen, setArmyPickerOpen] = useState(false);
+  const [loadedArmy, setLoadedArmy] = useState<SavedArmy | null>(null);
+  const [opponentFaction, setOpponentFaction] = useState<FactionColor>("imperials");
+
+  function openArmyPicker() {
+    // Re-read in case the user saved a list in another tab while this
+    // modal was open.
+    setArmies(listArmies());
+    openArmyPicker();
+  }
+
+  const roster = useMemo(() => loadedArmy ? resolveRoster(loadedArmy) : [], [loadedArmy]);
+  // Count of tokens already placed for each roster entry, so the row can
+  // show "(2 on board)" and dim itself when there's no copy left to place.
+  const placedByEntry: Record<string, number> = useMemo(() => {
+    const m: Record<string, number> = {};
+    for (const t of state.tokens) if (t.unitId) m[t.unitId] = (m[t.unitId] ?? 0) + 1;
+    return m;
+  }, [state.tokens]);
 
   function setGameType(gt: GameType) {
     const size = gt === "custom" ? { widthInches: customW, heightInches: customH } : GAME_TYPES[gt].size;
@@ -53,7 +99,33 @@ export function TabletopPanel({ onClose }: Props) {
   }
 
   function spawnToken(color: FactionColor) {
-    setState((s) => addToken(s, { color, label: "Unit" }));
+    setState((s) => addToken(s, { color, label: color === "neutral" ? "Unit" : "Opp" }));
+  }
+
+  function placeUnitAtCenter(r: RosterEntry) {
+    setState((s) => addTokenForUnit(s, r.unit, r.portraitUrl));
+  }
+
+  function onDropPayload(payload: string, at: { x: number; y: number }) {
+    try {
+      const data = JSON.parse(payload) as { unitId: string };
+      const u = unitById(data.unitId);
+      if (!u) return;
+      const portrait = cardForUnit(u);
+      setState((s) => addTokenForUnit(s, u, portrait, at));
+    } catch {
+      // Ignore — payload wasn't ours.
+    }
+  }
+
+  function loadArmy(a: SavedArmy) {
+    setLoadedArmy(a);
+    setArmyPickerOpen(false);
+    // Default opponent color to a different faction.
+    if (a.faction === opponentFaction) {
+      const fallback = (FACTION_COLORS.find((f) => f.id !== a.faction && f.id !== "neutral")?.id) ?? "imperials";
+      setOpponentFaction(fallback as FactionColor);
+    }
   }
 
   function deleteSelected() {
@@ -111,6 +183,7 @@ export function TabletopPanel({ onClose }: Props) {
               showGrid={showGrid}
               selectedId={selectedId}
               onSelect={setSelectedId}
+              onDropPayload={onDropPayload}
             />
           </div>
 
@@ -144,6 +217,82 @@ export function TabletopPanel({ onClose }: Props) {
                 </section>
 
                 <section>
+                  <h3>Your army</h3>
+                  {loadedArmy ? (
+                    <div className="tt-army-loaded">
+                      <div className="tt-army-loaded-info">
+                        <span className="tt-army-loaded-name">{loadedArmy.name || "Untitled"}</span>
+                        <span className="muted small">
+                          {FACTIONS[loadedArmy.faction]?.short ?? loadedArmy.faction} · {loadedArmy.entries.length} units
+                        </span>
+                      </div>
+                      <div className="tt-army-loaded-actions">
+                        <button onClick={() => openArmyPicker()}>Change</button>
+                        <button className="ghost-btn" onClick={() => setLoadedArmy(null)}>Clear</button>
+                      </div>
+                    </div>
+                  ) : (
+                    <button className="tt-palette-btn" onClick={() => openArmyPicker()}>
+                      {armies.length === 0 ? "No saved lists" : `Choose from ${armies.length} saved list${armies.length === 1 ? "" : "s"}…`}
+                    </button>
+                  )}
+                  {armyPickerOpen && (
+                    <ul className="tt-army-picker">
+                      {armies.length === 0 ? (
+                        <li className="muted small empty">Save a list from the Builder first, then come back.</li>
+                      ) : (
+                        armies.map((a) => (
+                          <li key={a.id}>
+                            <button onClick={() => loadArmy(a)}>
+                              <span className="tt-army-picker-name">{a.name || "Untitled"}</span>
+                              <span className="muted small">
+                                {FACTIONS[a.faction]?.short ?? a.faction} · {a.entries.length} units
+                              </span>
+                            </button>
+                          </li>
+                        ))
+                      )}
+                      <li><button className="ghost-btn" onClick={() => setArmyPickerOpen(false)}>Cancel</button></li>
+                    </ul>
+                  )}
+                </section>
+
+                {loadedArmy && roster.length > 0 && (
+                  <section>
+                    <h3>Roster — drag onto board</h3>
+                    <ul className="tt-roster">
+                      {roster.map((r) => {
+                        const placed = placedByEntry[r.unit.id] ?? 0;
+                        return (
+                          <li key={r.entryId}
+                              className="tt-roster-row"
+                              draggable
+                              onDragStart={(e) => {
+                                e.dataTransfer.setData("application/x-legion-token", JSON.stringify({ unitId: r.unit.id }));
+                                e.dataTransfer.effectAllowed = "copy";
+                              }}>
+                            <div className="tt-roster-portrait"
+                                 style={r.portraitUrl ? { backgroundImage: `url(${r.portraitUrl})` } : undefined}>
+                              {!r.portraitUrl && r.unit.name.slice(0, 2)}
+                            </div>
+                            <div className="tt-roster-info">
+                              <span className="tt-roster-name">{r.unit.name}</span>
+                              <span className="muted small">
+                                {r.unit.rank}{placed > 0 ? ` · ${placed} on board` : ""}
+                              </span>
+                            </div>
+                            <button className="tt-roster-add" onClick={() => placeUnitAtCenter(r)} title="Add to center of board">＋</button>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                    <p className="muted small tt-hint">
+                      Drag a unit to drop it where you want, or tap <b>＋</b> to place at the center then drag it around.
+                    </p>
+                  </section>
+                )}
+
+                <section>
                   <h3>Terrain</h3>
                   <div className="tt-palette">
                     {TERRAIN_PRESETS.map((p) => (
@@ -153,11 +302,19 @@ export function TabletopPanel({ onClose }: Props) {
                 </section>
 
                 <section>
-                  <h3>Tokens</h3>
-                  <div className="tt-palette">
-                    {FACTION_COLORS.map((f) => (
-                      <button key={f.id} className="tt-palette-btn" onClick={() => spawnToken(f.id)}>+ {f.label}</button>
+                  <h3>Opponent / quick tokens</h3>
+                  <div className="tt-faction-pills">
+                    {FACTION_COLORS.filter((f) => f.id !== "neutral").map((f) => (
+                      <button key={f.id}
+                              className={"tt-faction-pill faction-" + f.id + (opponentFaction === f.id ? " active" : "")}
+                              onClick={() => setOpponentFaction(f.id)}>
+                        {f.label}
+                      </button>
                     ))}
+                  </div>
+                  <div className="tt-quick-token-row">
+                    <button className="tt-palette-btn" onClick={() => spawnToken(opponentFaction)}>+ {FACTION_COLORS.find((f) => f.id === opponentFaction)?.label} token</button>
+                    <button className="tt-palette-btn" onClick={() => spawnToken("neutral")}>+ Neutral</button>
                   </div>
                 </section>
 
@@ -208,3 +365,4 @@ export function TabletopPanel({ onClose }: Props) {
     </div>
   );
 }
+
