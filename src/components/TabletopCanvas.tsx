@@ -57,9 +57,13 @@ type Props = {
   showGrid: boolean;
   selectedId: string | null;
   onSelect: (id: string | null) => void;
+  /** Called when something is dropped on the canvas via HTML5 DnD. The
+   * payload string comes from `dataTransfer.getData("application/x-legion-token")`
+   * and the position is in map inches. */
+  onDropPayload?: (payload: string, atInches: { x: number; y: number }) => void;
 };
 
-export function TabletopCanvas({ state, onState, tool, snapInches, showGrid, selectedId, onSelect }: Props) {
+export function TabletopCanvas({ state, onState, tool, snapInches, showGrid, selectedId, onSelect, onDropPayload }: Props) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
   const [drag, setDrag] = useState<DragState>({ kind: "none" });
@@ -206,6 +210,24 @@ export function TabletopCanvas({ state, onState, tool, snapInches, showGrid, sel
 
   function onTouchEnd() { touchRef.current = { mode: null }; }
 
+  // --- HTML5 drag-drop (drag a roster row onto the board) ----------------
+  function onDragOver(e: React.DragEvent) {
+    if (!onDropPayload) return;
+    if (e.dataTransfer.types.includes("application/x-legion-token")) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "copy";
+    }
+  }
+
+  function onDrop(e: React.DragEvent) {
+    if (!onDropPayload) return;
+    const payload = e.dataTransfer.getData("application/x-legion-token");
+    if (!payload) return;
+    e.preventDefault();
+    const at = clientToMapInches(e.clientX, e.clientY);
+    onDropPayload(payload, { x: snap(at.x), y: snap(at.y) });
+  }
+
   // --- Geometry helpers --------------------------------------------------
   const mapW = state.map.widthInches * UNITS_PER_INCH;
   const mapH = state.map.heightInches * UNITS_PER_INCH;
@@ -214,7 +236,8 @@ export function TabletopCanvas({ state, onState, tool, snapInches, showGrid, sel
     <div className="tt-canvas-wrap" ref={wrapRef}
          onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={onMouseUp}
          onWheel={onWheel}
-         onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}>
+         onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}
+         onDragOver={onDragOver} onDrop={onDrop}>
       <svg ref={svgRef}
            className="tt-svg"
            width="100%"
@@ -270,22 +293,50 @@ export function TabletopCanvas({ state, onState, tool, snapInches, showGrid, sel
             </g>
           ))}
 
+          {/* Token portrait clip paths — one per token with a portrait */}
+          <defs>
+            {state.tokens.filter((t) => t.portraitUrl).map((tk) => {
+              const px = tk.x * UNITS_PER_INCH;
+              const py = tk.y * UNITS_PER_INCH;
+              const sz = tk.size * UNITS_PER_INCH;
+              return (
+                <clipPath key={tk.id} id={`tt-clip-${tk.id}`} clipPathUnits="userSpaceOnUse">
+                  <circle cx={px + sz / 2} cy={py + sz / 2} r={sz / 2 - 1.5 / view.scale} />
+                </clipPath>
+              );
+            })}
+          </defs>
+
           {/* Tokens */}
           {state.tokens.map((tk) => {
             const px = tk.x * UNITS_PER_INCH;
             const py = tk.y * UNITS_PER_INCH;
             const sz = tk.size * UNITS_PER_INCH;
+            const hasPortrait = !!tk.portraitUrl;
             return (
               <g key={tk.id} data-item="token"
                  onMouseDown={(e) => onItemMouseDown(e, tk, "token")}
                  style={{ cursor: "grab" }}>
+                {/* Ring colored by faction; thicker when selected. */}
                 <circle cx={px + sz / 2} cy={py + sz / 2} r={sz / 2 - 1 / view.scale}
-                        fill={FACTION_FILL[tk.color]}
+                        fill={hasPortrait ? "#0e0f12" : FACTION_FILL[tk.color]}
                         stroke={selectedId === tk.id ? "#ffd24a" : FACTION_STROKE[tk.color]}
                         strokeWidth={(selectedId === tk.id ? 2.5 : 1.5) / view.scale} />
-                <text x={px + sz / 2} y={py + sz / 2 + 4 / view.scale}
-                      textAnchor="middle" fontSize={10 / view.scale}
-                      fill="#0e0f12" fontWeight={700}>{tk.label.slice(0, 3)}</text>
+                {hasPortrait && (
+                  // Show the unit's card image cropped to a circle. Slice-fit
+                  // anchored to the top so the portrait/art area (always at
+                  // the top of a Legion card) is what appears in the token.
+                  <image href={tk.portraitUrl}
+                         x={px} y={py} width={sz} height={sz}
+                         preserveAspectRatio="xMidYMin slice"
+                         clipPath={`url(#tt-clip-${tk.id})`}
+                         pointerEvents="none" />
+                )}
+                {!hasPortrait && (
+                  <text x={px + sz / 2} y={py + sz / 2 + 4 / view.scale}
+                        textAnchor="middle" fontSize={10 / view.scale}
+                        fill="#0e0f12" fontWeight={700}>{tk.label.slice(0, 3)}</text>
+                )}
                 {tk.badge && (
                   <g>
                     <circle cx={px + sz - 2 / view.scale} cy={py + 2 / view.scale} r={5 / view.scale} fill="#0e0f12" stroke="#ffd24a" strokeWidth={1 / view.scale} />

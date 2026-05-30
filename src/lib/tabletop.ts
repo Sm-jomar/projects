@@ -44,6 +44,12 @@ export type Token = {
   color: FactionColor;
   /** Optional small badge text (e.g. wound count, suppression). */
   badge?: string;
+  /** If set, this token represents a specific catalog unit. Used to render
+   * the unit's card-portrait inside the token circle. */
+  unitId?: string;
+  /** Pre-resolved URL of the unit's card image (kept here so the canvas
+   * doesn't have to re-query the manifest on every render). */
+  portraitUrl?: string;
 };
 
 export type TabletopState = {
@@ -131,4 +137,34 @@ export function addTerrain(state: TabletopState, partial: Partial<Terrain> = {})
     ...partial,
   };
   return { ...state, terrain: [...state.terrain, t] };
+}
+
+// --- Unit -> token helpers -----------------------------------------------
+// Pick a base size based on the unit's catalog type/rank. Trooper units get
+// 1", heavies 1.25", vehicles 2", emplacements 1.5".
+type UnitLike = { id: string; name: string; faction: string; type: string; rank: string };
+
+export function unitBaseSize(unit: UnitLike): number {
+  if (unit.type === "ground-vehicle" || unit.type === "repulsor-vehicle") return BASE_SIZE.vehicle ?? 2;
+  if (unit.type === "emplacement-trooper") return BASE_SIZE.emplacement ?? 1.5;
+  if (unit.rank === "heavy") return BASE_SIZE.heavy ?? 1.25;
+  return BASE_SIZE.trooper ?? 1;
+}
+
+export function addTokenForUnit(
+  state: TabletopState,
+  unit: UnitLike,
+  portraitUrl: string | null,
+  position?: { x: number; y: number },
+): TabletopState {
+  const size = unitBaseSize(unit);
+  const partial: Partial<Token> = {
+    unitId: unit.id,
+    label: unit.name,
+    color: unit.faction as FactionColor,
+    size,
+  };
+  if (portraitUrl) partial.portraitUrl = portraitUrl;
+  if (position) { partial.x = position.x - size / 2; partial.y = position.y - size / 2; }
+  return addToken(state, partial);
 }
