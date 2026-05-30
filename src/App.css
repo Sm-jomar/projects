@@ -27,6 +27,11 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif;
   font-size: 14px;
+  /* Prevent iOS Safari from auto-inflating text on pages it heuristically
+     decides aren't mobile-friendly. Without this, the faction picker
+     renders at ~3x intended size on iPhone. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 button {
