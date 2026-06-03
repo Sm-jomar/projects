@@ -13,9 +13,12 @@ Usage:
     python3 scripts/pdf_to_json.py file.pdf --out data/my-doc \
         --max-dim 1400 --quality 80
     python3 scripts/pdf_to_json.py file.pdf --no-images   # text only
+    python3 scripts/pdf_to_json.py file.pdf --no-text-file # skip the .txt
+    python3 scripts/pdf_to_json.py file.pdf --text-only   # just the .txt
 
 Output (default out dir = data/<pdf-stem>/):
     <out>/content.json        page-by-page text + image filenames + metadata
+    <out>/content.txt         plain text, page-separated (skip with --no-text-file)
     <out>/images/pNNN_iM.jpg  embedded images, recompressed
 
 Requires: pymupdf, Pillow   (pip install pymupdf Pillow)
@@ -74,7 +77,8 @@ def pick_pdfs() -> list[Path]:
 
 
 def convert_pdf(pdf: Path, out: Path, max_dim: int, quality: int,
-                min_image_px: int, no_images: bool) -> None:
+                min_image_px: int, no_images: bool,
+                write_text_file: bool, write_json: bool) -> None:
     out.mkdir(parents=True, exist_ok=True)
     img_dir = out / "images"
     if not no_images:
@@ -112,16 +116,33 @@ def convert_pdf(pdf: Path, out: Path, max_dim: int, quality: int,
         })
     doc.close()
 
-    content = {
-        "source": pdf.name,
-        "pageCount": len(pages_out),
-        "imageCount": total_images,
-        "pages": pages_out,
-    }
-    (out / "content.json").write_text(json.dumps(content, indent=2))
+    if write_json:
+        content = {
+            "source": pdf.name,
+            "pageCount": len(pages_out),
+            "imageCount": total_images,
+            "pages": pages_out,
+        }
+        (out / "content.json").write_text(json.dumps(content, indent=2))
 
-    json_kb = (out / "content.json").stat().st_size / 1024
-    print(f"Wrote {(out / 'content.json').resolve()} ({json_kb:.0f} KB)")
+    if write_text_file:
+        # Human-readable plain text with a page header per page so search
+        # results are still easy to locate. UTF-8 keeps en-dashes, smart
+        # quotes, and Star Wars accented names intact.
+        lines: list[str] = [f"# {pdf.name}", ""]
+        for p in pages_out:
+            lines.append(f"=== Page {p['page']} ===")
+            if p["text"]:
+                lines.append(p["text"])
+            lines.append("")
+        (out / "content.txt").write_text("\n".join(lines), encoding="utf-8")
+
+    if write_json:
+        json_kb = (out / "content.json").stat().st_size / 1024
+        print(f"Wrote {(out / 'content.json').resolve()} ({json_kb:.0f} KB)")
+    if write_text_file:
+        txt_kb = (out / "content.txt").stat().st_size / 1024
+        print(f"Wrote {(out / 'content.txt').resolve()} ({txt_kb:.0f} KB)")
     print(f"  {len(pages_out)} pages, {total_images} images -> "
           f"{img_dir.resolve() if not no_images else '(skipped)'}")
 
@@ -137,11 +158,19 @@ def main() -> int:
     ap.add_argument("--min-image-px", type=int, default=200,
                     help="skip embedded images whose long side is under this")
     ap.add_argument("--no-images", action="store_true", help="extract text only")
+    ap.add_argument("--no-text-file", action="store_true",
+                    help="skip the plain-text .txt output (JSON only)")
+    ap.add_argument("--text-only", action="store_true",
+                    help="only write content.txt (no JSON, no images)")
     args = ap.parse_args()
 
     pdfs = list(args.pdf) or pick_pdfs()
     if not pdfs:
         sys.exit("No PDF selected. Pass path(s) as arguments or choose a file in the dialog.")
+
+    write_json = not args.text_only
+    write_text = not args.no_text_file
+    no_images = args.no_images or args.text_only
 
     ok = 0
     for pdf in pdfs:
@@ -153,7 +182,8 @@ def main() -> int:
         else:
             out = (args.out or Path("data")) / pdf.stem.lower().replace(" ", "-")
         print(f"\nConverting {pdf.name} ...")
-        convert_pdf(pdf, out, args.max_dim, args.quality, args.min_image_px, args.no_images)
+        convert_pdf(pdf, out, args.max_dim, args.quality, args.min_image_px,
+                    no_images, write_text, write_json)
         ok += 1
 
     if ok:
