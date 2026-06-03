@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import "./App.css";
 import { FactionPicker } from "./components/FactionPicker";
 import { UnitBrowser } from "./components/UnitBrowser";
@@ -7,6 +7,11 @@ import { SavedListsPanel } from "./components/SavedListsPanel";
 import { ReferencePanel } from "./components/ReferencePanel";
 import { RegisterPanel } from "./components/RegisterPanel";
 import { TabletopPanel } from "./components/TabletopPanel";
+// PDF importer pulls in ~10MB of WASM/JS (pdf.js, tesseract.js, jszip);
+// lazy-load it so the main bundle stays small for users who don't import.
+const PdfImporterPanel = lazy(() =>
+  import("./components/PdfImporterPanel").then((m) => ({ default: m.PdfImporterPanel })),
+);
 import { DEFAULT_POINTS_CAP } from "./lib/factions";
 import type { ArmyEntry, FactionId, SavedArmy, Unit } from "./lib/types";
 import {
@@ -48,6 +53,7 @@ export default function App() {
   const [showReference, setShowReference] = useState(false);
   const [showRegisters, setShowRegisters] = useState(false);
   const [showTabletop, setShowTabletop] = useState(false);
+  const [showPdfImporter, setShowPdfImporter] = useState(false);
   const [savedToast, setSavedToast] = useState<string | null>(null);
   const [lastAutoExport, setLastAutoExportState] = useState<number | null>(() =>
     getLastAutoExport(),
@@ -214,6 +220,9 @@ export default function App() {
           <button onClick={() => setShowRegisters(true)}>
             Tours of Duty
           </button>
+          <button onClick={() => setShowPdfImporter(true)}>
+            PDF Import
+          </button>
           <button onClick={() => setShowSaved(true)}>
             Saved lists ({saved.length})
           </button>
@@ -290,6 +299,12 @@ export default function App() {
 
       {showTabletop && (
         <TabletopPanel onClose={() => setShowTabletop(false)} />
+      )}
+
+      {showPdfImporter && (
+        <Suspense fallback={<div className="modal-backdrop"><div className="toast">Loading PDF importer…</div></div>}>
+          <PdfImporterPanel onClose={() => setShowPdfImporter(false)} />
+        </Suspense>
       )}
 
       {savedToast && <div className="toast">{savedToast}</div>}
