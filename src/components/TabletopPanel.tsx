@@ -46,14 +46,15 @@ type RosterEntry = {
   portraitUrl: string | null;
 };
 
-function resolveRoster(army: SavedArmy): RosterEntry[] {
-  const out: RosterEntry[] = [];
+function resolveRoster(army: SavedArmy): { entries: RosterEntry[]; unmatched: number } {
+  const entries: RosterEntry[] = [];
+  let unmatched = 0;
   for (const e of army.entries) {
     const u = unitById(e.unitId);
-    if (!u) continue;
-    out.push({ entryId: e.entryId, unit: u, portraitUrl: cardForUnit(u) });
+    if (!u) { unmatched++; continue; }
+    entries.push({ entryId: e.entryId, unit: u, portraitUrl: cardForUnit(u) });
   }
-  return out;
+  return { entries, unmatched };
 }
 
 export function TabletopPanel({ onClose }: Props) {
@@ -77,13 +78,16 @@ export function TabletopPanel({ onClose }: Props) {
     // Re-read in case the user saved a list in another tab while this
     // modal was open.
     setArmies(listArmies());
-    openArmyPicker();
+    setArmyPickerOpen(true);
   }
 
-  const roster = useMemo(() => loadedArmy ? resolveRoster(loadedArmy) : [], [loadedArmy]);
-  // Count of tokens already placed for each roster entry, so the row can
-  // show "(2 on board)" and dim itself when there's no copy left to place.
-  const placedByEntry: Record<string, number> = useMemo(() => {
+  const { entries: roster, unmatched } = useMemo(
+    () => loadedArmy ? resolveRoster(loadedArmy) : { entries: [], unmatched: 0 },
+    [loadedArmy],
+  );
+  // Count of tokens already placed for each unit, so the row can show
+  // "(2 on board)".
+  const placedByUnit: Record<string, number> = useMemo(() => {
     const m: Record<string, number> = {};
     for (const t of state.tokens) if (t.unitId) m[t.unitId] = (m[t.unitId] ?? 0) + 1;
     return m;
@@ -196,27 +200,6 @@ export function TabletopPanel({ onClose }: Props) {
             {sidebar === "setup" ? (
               <div className="tt-setup">
                 <section>
-                  <h3>Game type</h3>
-                  <div className="tt-game-types">
-                    {(Object.keys(GAME_TYPES) as GameType[]).map((gt) => (
-                      <button key={gt}
-                              className={"tt-game-type" + (state.gameType === gt ? " active" : "")}
-                              onClick={() => setGameType(gt)}>
-                        <span className="tt-game-type-label">{GAME_TYPES[gt].label}</span>
-                        <span className="tt-game-type-desc muted small">{GAME_TYPES[gt].description}</span>
-                      </button>
-                    ))}
-                  </div>
-                  {state.gameType === "custom" && (
-                    <div className="tt-custom-size">
-                      <label>W <input type="number" min={12} max={144} value={customW} onChange={(e) => { const v = Number(e.target.value) || 0; setCustomW(v); setState({ ...state, map: { ...state.map, widthInches: v } }); }} /></label>
-                      <label>H <input type="number" min={12} max={144} value={customH} onChange={(e) => { const v = Number(e.target.value) || 0; setCustomH(v); setState({ ...state, map: { ...state.map, heightInches: v } }); }} /></label>
-                      <span className="muted small">inches</span>
-                    </div>
-                  )}
-                </section>
-
-                <section>
                   <h3>Your army</h3>
                   {loadedArmy ? (
                     <div className="tt-army-loaded">
@@ -257,40 +240,76 @@ export function TabletopPanel({ onClose }: Props) {
                   )}
                 </section>
 
-                {loadedArmy && roster.length > 0 && (
+                {loadedArmy && (
                   <section>
-                    <h3>Roster — drag onto board</h3>
-                    <ul className="tt-roster">
-                      {roster.map((r) => {
-                        const placed = placedByEntry[r.unit.id] ?? 0;
-                        return (
-                          <li key={r.entryId}
-                              className="tt-roster-row"
-                              draggable
-                              onDragStart={(e) => {
-                                e.dataTransfer.setData("application/x-legion-token", JSON.stringify({ unitId: r.unit.id }));
-                                e.dataTransfer.effectAllowed = "copy";
-                              }}>
-                            <div className="tt-roster-portrait"
-                                 style={r.portraitUrl ? { backgroundImage: `url(${r.portraitUrl})` } : undefined}>
-                              {!r.portraitUrl && r.unit.name.slice(0, 2)}
-                            </div>
-                            <div className="tt-roster-info">
-                              <span className="tt-roster-name">{r.unit.name}</span>
-                              <span className="muted small">
-                                {r.unit.rank}{placed > 0 ? ` · ${placed} on board` : ""}
-                              </span>
-                            </div>
-                            <button className="tt-roster-add" onClick={() => placeUnitAtCenter(r)} title="Add to center of board">＋</button>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                    <p className="muted small tt-hint">
-                      Drag a unit to drop it where you want, or tap <b>＋</b> to place at the center then drag it around.
-                    </p>
+                    <h3>Deploy units</h3>
+                    {roster.length === 0 ? (
+                      <p className="muted small empty-roster">
+                        {loadedArmy.entries.length === 0
+                          ? "This list has no units yet. Add some in the Builder and save."
+                          : `None of the ${loadedArmy.entries.length} entr${loadedArmy.entries.length === 1 ? "y" : "ies"} in this list match the unit catalog — the saved IDs may be from an older version.`}
+                      </p>
+                    ) : (
+                      <>
+                        <ul className="tt-roster">
+                          {roster.map((r) => {
+                            const placed = placedByUnit[r.unit.id] ?? 0;
+                            return (
+                              <li key={r.entryId}
+                                  className="tt-roster-row"
+                                  draggable
+                                  onDragStart={(e) => {
+                                    e.dataTransfer.setData("application/x-legion-token", JSON.stringify({ unitId: r.unit.id }));
+                                    e.dataTransfer.effectAllowed = "copy";
+                                  }}>
+                                <div className="tt-roster-portrait"
+                                     style={r.portraitUrl ? { backgroundImage: `url(${r.portraitUrl})` } : undefined}>
+                                  {!r.portraitUrl && r.unit.name.slice(0, 2)}
+                                </div>
+                                <div className="tt-roster-info">
+                                  <span className="tt-roster-name">{r.unit.name}</span>
+                                  <span className="muted small">
+                                    {r.unit.rank}{placed > 0 ? ` · ${placed} on board` : ""}
+                                  </span>
+                                </div>
+                                <button className="tt-roster-add" onClick={() => placeUnitAtCenter(r)} title="Deploy to center of board">＋</button>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                        {unmatched > 0 && (
+                          <p className="muted small">
+                            {unmatched} unit{unmatched === 1 ? "" : "s"} in this list couldn't be matched to the catalog.
+                          </p>
+                        )}
+                        <p className="muted small tt-hint">
+                          Drag a unit onto the board, or tap <b>＋</b> to deploy at the center.
+                        </p>
+                      </>
+                    )}
                   </section>
                 )}
+
+                <section>
+                  <h3>Game type</h3>
+                  <div className="tt-game-types">
+                    {(Object.keys(GAME_TYPES) as GameType[]).map((gt) => (
+                      <button key={gt}
+                              className={"tt-game-type" + (state.gameType === gt ? " active" : "")}
+                              onClick={() => setGameType(gt)}>
+                        <span className="tt-game-type-label">{GAME_TYPES[gt].label}</span>
+                        <span className="tt-game-type-desc muted small">{GAME_TYPES[gt].description}</span>
+                      </button>
+                    ))}
+                  </div>
+                  {state.gameType === "custom" && (
+                    <div className="tt-custom-size">
+                      <label>W <input type="number" min={12} max={144} value={customW} onChange={(e) => { const v = Number(e.target.value) || 0; setCustomW(v); setState({ ...state, map: { ...state.map, widthInches: v } }); }} /></label>
+                      <label>H <input type="number" min={12} max={144} value={customH} onChange={(e) => { const v = Number(e.target.value) || 0; setCustomH(v); setState({ ...state, map: { ...state.map, heightInches: v } }); }} /></label>
+                      <span className="muted small">inches</span>
+                    </div>
+                  )}
+                </section>
 
                 <section>
                   <h3>Terrain</h3>
