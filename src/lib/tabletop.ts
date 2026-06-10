@@ -60,7 +60,56 @@ export type Token = {
   /** True once the unit has activated this round; rendered dimmed with a
    * check mark. Cleared by "End round". */
   activated?: boolean;
+  /** True if the unit has an order this round (independent of activation).
+   * Cleared by "End round". */
+  ordered?: boolean;
+  /** Which side this token belongs to for status tallies. Defaults derived
+   * from color (rebels/republic = blue, imperials/separatists = red, etc.)
+   * if not set explicitly. */
+  side?: "blue" | "red";
 };
+
+// --- Movement templates ---------------------------------------------------
+// Legion uses jointed movement templates (60mm per "speed" segment, ~15mm
+// wide). The official ones bend independently at every joint. We model the
+// same shape: an anchor point on the token and one angle per segment.
+//
+// Real templates are 60mm = 2.36"; we round to 2.5" so dimensions feel
+// natural on an inch-based grid. Players can compare against a physical
+// template by counting segments rather than reading off exact inches.
+export const TEMPLATE_SEGMENT_INCHES = 2.5;
+export const TEMPLATE_WIDTH_INCHES = 0.6;
+
+export type MoveTemplate = {
+  /** Token the template is attached to. */
+  tokenId: string;
+  /** 1, 2, or 3 segments — matches the speed value. */
+  speed: 1 | 2 | 3;
+  /** Per-segment heading in degrees, where 0 = up. Each segment is
+   * independent (segment N starts at the end of segment N-1; its heading
+   * is angles[N]). Defaults to [0, 0, 0]. */
+  angles: number[];
+};
+
+/** Walk the joints starting from `anchor`, returning every point along
+ * the template (start, joint1, joint2, ..., end). Used by the canvas to
+ * render and by the panel to compute where Apply moves the token. */
+export function templatePoints(
+  anchor: { x: number; y: number },
+  angles: number[],
+): { x: number; y: number }[] {
+  const pts: { x: number; y: number }[] = [{ ...anchor }];
+  let p = { ...anchor };
+  for (const deg of angles) {
+    const rad = (deg * Math.PI) / 180;
+    p = {
+      x: p.x + Math.sin(rad) * TEMPLATE_SEGMENT_INCHES,
+      y: p.y - Math.cos(rad) * TEMPLATE_SEGMENT_INCHES,
+    };
+    pts.push({ ...p });
+  }
+  return pts;
+}
 
 export type TabletopState = {
   gameType: GameType;
@@ -70,7 +119,32 @@ export type TabletopState = {
   round: number;
   vp: { blue: number; red: number };
   deployment: DeploymentKey | null;
+  /** Only one template at a time — like having one template in hand. */
+  moveTemplate: MoveTemplate | null;
+  /** Command-card hand state per side. Each entry tracks pip + played. */
+  hands: { blue: CommandHand; red: CommandHand };
 };
+
+export type CommandCard = {
+  /** 1..4 — the activation pip count. */
+  pips: number;
+  /** True once the user has marked the card as played this game. */
+  played: boolean;
+};
+
+export type CommandHand = {
+  /** The seven cards in hand; the standard Legion deck is 1,1,2,2,3,3,4. */
+  cards: CommandCard[];
+  /** Index of the card the player set as their pick this round, or null. */
+  thisRound: number | null;
+};
+
+export function newCommandHand(): CommandHand {
+  return {
+    cards: [1, 1, 2, 2, 3, 3, 4].map((pips) => ({ pips, played: false })),
+    thisRound: null,
+  };
+}
 
 export function newTabletop(gameType: GameType = "standard"): TabletopState {
   return {
@@ -81,7 +155,29 @@ export function newTabletop(gameType: GameType = "standard"): TabletopState {
     round: 1,
     vp: { blue: 0, red: 0 },
     deployment: null,
+    moveTemplate: null,
+    hands: { blue: newCommandHand(), red: newCommandHand() },
   };
+}
+
+// Heuristic for which side a token belongs to when not set explicitly.
+// Rebels and Republic default to Blue (the "good guys"); Imperials and
+// Separatists to Red; everything else stays neutral.
+export function tokenSide(t: Token): "blue" | "red" | "neutral" {
+  if (t.side) return t.side;
+  if (t.color === "rebels" || t.color === "republic") return "blue";
+  if (t.color === "imperials" || t.color === "separatists") return "red";
+  return "neutral";
+}
+
+/** The point on a token's edge where its movement template is anchored
+ * (the front of the base, given its facing). */
+export function templateAnchor(token: Token): { x: number; y: number } {
+  const cx = token.x + token.size / 2;
+  const cy = token.y + token.size / 2;
+  const r = token.size / 2;
+  const rad = ((token.rotation ?? 0) * Math.PI) / 180;
+  return { x: cx + Math.sin(rad) * r, y: cy - Math.cos(rad) * r };
 }
 
 // --- Token footprints (Legion base sizes, in inches) ----------------------
@@ -150,13 +246,21 @@ export function loadTabletop(): TabletopState | null {
       return null;
     }
     // Merge over fresh defaults so states saved by older versions of the
-    // app pick up new fields (round, vp, deployment, ...).
+    // app pick up new fields (round, vp, deployment, moveTemplate, hands, ...).
     const base = newTabletop(parsed.gameType ?? "standard");
     return {
       ...base,
       ...parsed,
       map: { ...base.map, ...(parsed.map ?? {}) },
       vp: { ...base.vp, ...(parsed.vp ?? {}) },
+      // Movement templates are transient — drop any that got serialized.
+      moveTemplate: null,
+      hands: parsed.hands
+        ? {
+            blue: { ...base.hands.blue, ...parsed.hands.blue, cards: parsed.hands.blue?.cards ?? base.hands.blue.cards },
+            red:  { ...base.hands.red,  ...parsed.hands.red,  cards: parsed.hands.red?.cards  ?? base.hands.red.cards },
+          }
+        : base.hands,
     };
   } catch {
     return null;

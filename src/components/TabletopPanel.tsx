@@ -3,9 +3,10 @@ import { TabletopCanvas, type Tool } from "./TabletopCanvas";
 import { DiceRoller } from "./DiceRoller";
 import {
   GAME_TYPES, DEPLOYMENTS, newTabletop, addToken, addTerrain, addTokenForUnit,
-  loadTabletop, saveTabletop, newId,
+  loadTabletop, saveTabletop, newId, newCommandHand, tokenSide,
+  templateAnchor, templatePoints,
   type GameType, type TabletopState, type Terrain, type Token, type FactionColor,
-  type DeploymentKey,
+  type DeploymentKey, type MoveTemplate, type CommandHand,
 } from "../lib/tabletop";
 import { listArmies } from "../lib/storage";
 import { unitById } from "../data/catalog";
@@ -216,21 +217,92 @@ export function TabletopPanel({ onClose }: Props) {
     });
   }
 
+  // --- Movement templates --------------------------------------------------
+  function startTemplate(speed: 1 | 2 | 3) {
+    if (!selectedToken) return;
+    // Default each segment to point the same way the token is facing (so
+    // the template starts as a straight line out the front of the base).
+    const initial = selectedToken.rotation ?? 0;
+    const angles = Array.from({ length: speed }, () => initial);
+    commit({ ...state, moveTemplate: { tokenId: selectedToken.id, speed, angles } });
+  }
+
+  function updateTemplate(template: MoveTemplate) {
+    // Transient updates while dragging — don't push to undo history every
+    // frame; the initial startTemplate already snapshotted.
+    setState({ ...state, moveTemplate: template });
+  }
+
+  function applyTemplate() {
+    const t = state.moveTemplate;
+    if (!t) return;
+    const tk = state.tokens.find((x) => x.id === t.tokenId);
+    if (!tk) return;
+    const pts = templatePoints(templateAnchor(tk), t.angles);
+    const endPt = pts[pts.length - 1]!;
+    // The end of the template becomes the new FRONT of the token, so the
+    // token center is the end point minus a base radius along the new
+    // heading. The new facing is the heading of the last segment.
+    const finalHeading = t.angles[t.angles.length - 1]!;
+    const rad = (finalHeading * Math.PI) / 180;
+    const r = tk.size / 2;
+    const newCx = endPt.x - Math.sin(rad) * r;
+    const newCy = endPt.y + Math.cos(rad) * r;
+    commit({
+      ...state,
+      moveTemplate: null,
+      tokens: state.tokens.map((x) => x.id === tk.id
+        ? { ...x, x: newCx - r, y: newCy - r, rotation: finalHeading }
+        : x),
+    });
+  }
+
+  function cancelTemplate() {
+    commit({ ...state, moveTemplate: null });
+  }
+
+  // --- Command hand -------------------------------------------------------
+  function togglePlayed(side: "blue" | "red", index: number) {
+    const hand = state.hands[side];
+    const cards = hand.cards.map((c, i) => i === index ? { ...c, played: !c.played } : c);
+    commit({ ...state, hands: { ...state.hands, [side]: { ...hand, cards } } });
+  }
+
+  function pickThisRound(side: "blue" | "red", index: number | null) {
+    const hand = state.hands[side];
+    commit({ ...state, hands: { ...state.hands, [side]: { ...hand, thisRound: index } } });
+  }
+
+  function resetHand(side: "blue" | "red") {
+    commit({ ...state, hands: { ...state.hands, [side]: newCommandHand() } });
+  }
+
   function endRound() {
+    // Mark each side's "this round" card as played, clear the bid for the
+    // next round, then ready and de-order every unit.
+    const sweep = (h: CommandHand): CommandHand => ({
+      cards: h.thisRound != null
+        ? h.cards.map((c, i) => i === h.thisRound ? { ...c, played: true } : c)
+        : h.cards,
+      thisRound: null,
+    });
     commit({
       ...state,
       round: state.round + 1,
-      tokens: state.tokens.map((t) => ({ ...t, activated: false })),
+      tokens: state.tokens.map((t) => ({ ...t, activated: false, ordered: false })),
+      hands: { blue: sweep(state.hands.blue), red: sweep(state.hands.red) },
     });
   }
 
   function resetGame() {
-    if (!confirm("Reset round to 1, zero both VP scores, and ready all units? The board layout stays.")) return;
+    if (!confirm("Reset round to 1, zero both VP scores, ready all units, and shuffle both command decks? The board layout stays.")) return;
     commit({
       ...state,
       round: 1,
       vp: { blue: 0, red: 0 },
-      tokens: state.tokens.map((t) => ({ ...t, activated: false, wounds: 0, suppression: 0 })),
+      moveTemplate: null,
+      tokens: state.tokens.map((t) => ({ ...t, activated: false, ordered: false, wounds: 0, suppression: 0 })),
+      hands: { blue: newCommandHand(), red: newCommandHand() },
     });
   }
 
@@ -261,6 +333,19 @@ export function TabletopPanel({ onClose }: Props) {
 
   const selectedToken = state.tokens.find((t) => t.id === selectedId);
   const selectedTerrain = state.terrain.find((t) => t.id === selectedId);
+
+  // Per-side order tallies for the status bar — only counts unit tokens
+  // that belong to that side.
+  const orderTally = useMemo(() => {
+    const t = { blue: { ordered: 0, total: 0 }, red: { ordered: 0, total: 0 } };
+    for (const tk of state.tokens) {
+      const s = tokenSide(tk);
+      if (s === "neutral" || tk.kind !== "unit") continue;
+      t[s].total++;
+      if (tk.ordered) t[s].ordered++;
+    }
+    return t;
+  }, [state.tokens]);
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
@@ -299,12 +384,18 @@ export function TabletopPanel({ onClose }: Props) {
                 <button onClick={() => bumpVp("blue", -1)} aria-label="Blue VP minus">−</button>
                 <b>{state.vp.blue}</b>
                 <button onClick={() => bumpVp("blue", 1)} aria-label="Blue VP plus">+</button>
+                <span className="tt-status-label tt-status-sub" title="Units with orders this round / total units">
+                  Orders <b>{orderTally.blue.ordered}/{orderTally.blue.total}</b>
+                </span>
               </div>
               <div className="tt-status-group tt-status-red">
                 <span className="tt-status-label">Red VP</span>
                 <button onClick={() => bumpVp("red", -1)} aria-label="Red VP minus">−</button>
                 <b>{state.vp.red}</b>
                 <button onClick={() => bumpVp("red", 1)} aria-label="Red VP plus">+</button>
+                <span className="tt-status-label tt-status-sub" title="Units with orders this round / total units">
+                  Orders <b>{orderTally.red.ordered}/{orderTally.red.total}</b>
+                </span>
               </div>
               <button className="tt-undo" onClick={undo} disabled={histLen === 0} title="Undo (Ctrl+Z)">↶ Undo</button>
             </div>
@@ -320,7 +411,22 @@ export function TabletopPanel({ onClose }: Props) {
                 onDropPayload={onDropPayload}
                 onDragStart={() => pushHistory(state)}
                 onToggleActivated={toggleActivated}
+                onTemplateUpdate={updateTemplate}
               />
+
+              {/* Command card hands docked beneath the canvas — one row
+                  per side. Click a pip to mark it played; click again to
+                  bring it back. The yellow ring marks this round's pick. */}
+              <div className="tt-hands">
+                <HandRow side="blue" hand={state.hands.blue}
+                  onTogglePlayed={togglePlayed}
+                  onPickRound={pickThisRound}
+                  onReset={resetHand} />
+                <HandRow side="red" hand={state.hands.red}
+                  onTogglePlayed={togglePlayed}
+                  onPickRound={pickThisRound}
+                  onReset={resetHand} />
+              </div>
             </div>
           </div>
 
@@ -535,7 +641,49 @@ export function TabletopPanel({ onClose }: Props) {
                              onChange={(e) => updateSelectedToken({ activated: e.target.checked })} />
                       Activated this round
                     </label>
+                    <label className="tt-check">
+                      <input type="checkbox" checked={!!selectedToken.ordered}
+                             onChange={(e) => updateSelectedToken({ ordered: e.target.checked })} />
+                      Has an order
+                    </label>
+                    <label>Side
+                      <select value={selectedToken.side ?? "(auto)"}
+                              onChange={(e) => {
+                                const v = e.target.value;
+                                updateSelectedToken({ side: v === "(auto)" ? undefined : (v as "blue" | "red") });
+                              }}>
+                        <option value="(auto)">Auto ({tokenSide(selectedToken)})</option>
+                        <option value="blue">Blue</option>
+                        <option value="red">Red</option>
+                      </select>
+                    </label>
                     <label>Badge <input value={selectedToken.badge ?? ""} placeholder="e.g. ion" onChange={(e) => updateSelectedToken({ badge: e.target.value || undefined })} /></label>
+
+                    {/* Movement templates appear here when a token is
+                        selected. The buttons are disabled while a template
+                        is already in play for a different token. */}
+                    <div className="tt-move-row">
+                      <span className="tt-counter-label">Move</span>
+                      <div className="tt-move-controls">
+                        {([1, 2, 3] as const).map((sp) => {
+                          const active = state.moveTemplate?.tokenId === selectedToken.id && state.moveTemplate.speed === sp;
+                          return (
+                            <button key={sp}
+                                    className={"tt-move-btn" + (active ? " active" : "")}
+                                    onClick={() => active ? cancelTemplate() : startTemplate(sp)}>
+                              {sp}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    {state.moveTemplate?.tokenId === selectedToken.id && (
+                      <div className="tt-edit-actions">
+                        <button className="tt-apply" onClick={applyTemplate}>Apply move ▸</button>
+                        <button className="ghost-btn" onClick={cancelTemplate}>Cancel</button>
+                      </div>
+                    )}
+
                     <div className="tt-edit-actions">
                       <button onClick={duplicateSelected}>Duplicate</button>
                       <button className="danger" onClick={deleteSelected}>Delete</button>
@@ -569,8 +717,8 @@ export function TabletopPanel({ onClose }: Props) {
 
                 <p className="muted small tt-hint">
                   Drag pieces with mouse or finger; pinch or scroll to zoom; shift-drag or <b>Pan</b> to move the view.
-                  Double-click a token to mark it activated. <b>Delete</b> removes the selection, <b>Ctrl+Z</b> undoes.
-                  The board auto-saves — close and come back any time.
+                  Double-click a token to mark it activated. Pick a Move template <b>1/2/3</b> while a token is selected; drag joint dots to bend, then <b>Apply</b>.
+                  <b>Delete</b> removes the selection, <b>Ctrl+Z</b> undoes. The board auto-saves.
                 </p>
               </div>
             ) : (
@@ -579,6 +727,59 @@ export function TabletopPanel({ onClose }: Props) {
           </aside>
         </div>
       </div>
+    </div>
+  );
+}
+
+function HandRow(props: {
+  side: "blue" | "red";
+  hand: CommandHand;
+  onTogglePlayed: (side: "blue" | "red", index: number) => void;
+  onPickRound: (side: "blue" | "red", index: number | null) => void;
+  onReset: (side: "blue" | "red") => void;
+}) {
+  const { side, hand, onTogglePlayed, onPickRound, onReset } = props;
+  const remaining = hand.cards.filter((c) => !c.played).length;
+  return (
+    <div className={"tt-hand tt-hand-" + side}>
+      <span className="tt-hand-label">{side === "blue" ? "Blue" : "Red"} hand</span>
+      <div className="tt-hand-pips">
+        {hand.cards.map((c, i) => {
+          const isPick = hand.thisRound === i;
+          return (
+            <button key={i}
+              className={
+                "tt-pip" +
+                (c.played ? " played" : "") +
+                (isPick ? " bid" : "")
+              }
+              title={
+                c.played
+                  ? `Played (${c.pips} pip${c.pips === 1 ? "" : "s"}). Click to undo.`
+                  : isPick
+                    ? "This round's pick — click to clear"
+                    : `Click to bid this card (${c.pips} pip${c.pips === 1 ? "" : "s"}). Long press / shift-click to mark played.`
+              }
+              onClick={(e) => {
+                // Shift-click directly marks the card played; plain click
+                // bids it for this round (or clears the bid if already set).
+                if (e.shiftKey) {
+                  onTogglePlayed(side, i);
+                } else if (isPick) {
+                  onPickRound(side, null);
+                } else {
+                  onPickRound(side, i);
+                }
+              }}>
+              {c.pips}
+            </button>
+          );
+        })}
+      </div>
+      <span className="tt-hand-meta muted small">
+        {remaining}/{hand.cards.length} left
+      </span>
+      <button className="ghost-btn small" onClick={() => onReset(side)} title="Reshuffle / restore all seven cards">↻</button>
     </div>
   );
 }

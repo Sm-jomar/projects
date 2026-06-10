@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import type { TabletopState, Token, Terrain, FactionColor } from "../lib/tabletop";
-import { deploymentZones } from "../lib/tabletop";
+import type { TabletopState, Token, Terrain, FactionColor, MoveTemplate } from "../lib/tabletop";
+import {
+  deploymentZones, templateAnchor, templatePoints, TEMPLATE_WIDTH_INCHES,
+} from "../lib/tabletop";
 
 // ----- Visual constants ---------------------------------------------------
 // 1 inch = 12 SVG units. Keeps math simple and font sizes legible.
@@ -41,12 +43,13 @@ const FACTION_STROKE: Record<FactionColor, string> = {
 };
 
 // Drag-state machine. Either we're dragging an item, drawing the ruler,
-// panning the view, or doing nothing.
+// panning the view, bending a movement-template joint, or doing nothing.
 type DragState =
   | { kind: "none" }
   | { kind: "item"; itemId: string; itemType: "token" | "terrain"; offsetX: number; offsetY: number }
   | { kind: "ruler"; startX: number; startY: number; endX: number; endY: number }
-  | { kind: "pan"; startClientX: number; startClientY: number; startTx: number; startTy: number };
+  | { kind: "pan"; startClientX: number; startClientY: number; startTx: number; startTy: number }
+  | { kind: "template-joint"; jointIndex: number };
 
 export type Tool = "move" | "ruler" | "pan";
 
@@ -67,11 +70,13 @@ type Props = {
   onDragStart?: () => void;
   /** Double-click/double-tap on a token toggles its activated flag. */
   onToggleActivated?: (tokenId: string) => void;
+  /** Called while the user is bending a movement-template joint. */
+  onTemplateUpdate?: (template: MoveTemplate) => void;
 };
 
 export function TabletopCanvas({
   state, onState, tool, snapInches, showGrid, selectedId, onSelect,
-  onDropPayload, onDragStart, onToggleActivated,
+  onDropPayload, onDragStart, onToggleActivated, onTemplateUpdate,
 }: Props) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -175,6 +180,23 @@ export function TabletopCanvas({
       } else {
         onState({ ...state, terrain: state.terrain.map((t) => t.id === drag.itemId ? { ...t, x: nx, y: ny } : t) });
       }
+    } else if (drag.kind === "template-joint" && state.moveTemplate) {
+      // Bend the segment so it points from the previous joint toward the
+      // pointer. The point we're dragging is the END of segment[jointIndex];
+      // its start is the END of segment[jointIndex - 1] (or the anchor).
+      const t = state.moveTemplate;
+      const tk = state.tokens.find((x) => x.id === t.tokenId);
+      if (!tk) return;
+      const inches = clientToMapInches(e.clientX, e.clientY);
+      const pts = templatePoints(templateAnchor(tk), t.angles);
+      const startPt = pts[drag.jointIndex]!;
+      const dx = inches.x - startPt.x;
+      const dy = inches.y - startPt.y;
+      // Heading where 0 = up, positive = right.
+      const heading = (Math.atan2(dx, -dy) * 180) / Math.PI;
+      const newAngles = t.angles.slice();
+      newAngles[drag.jointIndex] = heading;
+      onTemplateUpdate?.({ ...t, angles: newAngles });
     }
   }
 
@@ -440,6 +462,63 @@ export function TabletopCanvas({
               </g>
             );
           })}
+
+          {/* Movement template (one at a time, anchored to its token) */}
+          {state.moveTemplate && (() => {
+            const t = state.moveTemplate;
+            const tk = state.tokens.find((x) => x.id === t.tokenId);
+            if (!tk) return null;
+            const pts = templatePoints(templateAnchor(tk), t.angles);
+            const U = UNITS_PER_INCH;
+            const halfW = (TEMPLATE_WIDTH_INCHES / 2) * U;
+            // Each segment: a rectangle aligned to the segment heading.
+            const segments = t.angles.map((deg, i) => {
+              const start = pts[i]!;
+              const end = pts[i + 1]!;
+              const rad = (deg * Math.PI) / 180;
+              // Perpendicular offset to widen the rectangle.
+              const px = Math.cos(rad) * halfW;
+              const py = Math.sin(rad) * halfW;
+              const sx = start.x * U, sy = start.y * U;
+              const ex = end.x * U, ey = end.y * U;
+              return (
+                <polygon key={i}
+                  points={`${sx - px},${sy - py} ${sx + px},${sy + py} ${ex + px},${ey + py} ${ex - px},${ey - py}`}
+                  fill="#ffd24a" fillOpacity={0.18}
+                  stroke="#ffd24a" strokeOpacity={0.7}
+                  strokeWidth={1 / view.scale} />
+              );
+            });
+            const handles = pts.slice(1).map((pt, i) => (
+              <circle key={`h${i}`}
+                data-item="template-joint"
+                cx={pt.x * U} cy={pt.y * U}
+                r={(i === pts.length - 2 ? 7 : 5) / view.scale}
+                fill={i === pts.length - 2 ? "#ffd24a" : "#0e0f12"}
+                stroke="#ffd24a"
+                strokeWidth={2 / view.scale}
+                style={{ cursor: "grab" }}
+                onPointerDown={(e) => {
+                  e.stopPropagation();
+                  wrapRef.current?.setPointerCapture(e.pointerId);
+                  onDragStart?.();
+                  setDrag({ kind: "template-joint", jointIndex: i });
+                }}
+              />
+            ));
+            return (
+              <g pointerEvents="visiblePainted">
+                {segments}
+                {handles}
+                <text x={pts[pts.length - 1]!.x * U + 8 / view.scale}
+                      y={pts[pts.length - 1]!.y * U}
+                      fontSize={10 / view.scale} fill="#ffd24a"
+                      paintOrder="stroke" stroke="#0e0f12" strokeWidth={2.5 / view.scale}>
+                  Speed {t.speed}
+                </text>
+              </g>
+            );
+          })()}
 
           {/* Ruler */}
           {drag.kind === "ruler" && (() => {
