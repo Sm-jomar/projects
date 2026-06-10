@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { TabletopState, Token, Terrain, FactionColor } from "../lib/tabletop";
+import { deploymentZones } from "../lib/tabletop";
 
 // ----- Visual constants ---------------------------------------------------
 // 1 inch = 12 SVG units. Keeps math simple and font sizes legible.
@@ -61,9 +62,17 @@ type Props = {
    * payload string comes from `dataTransfer.getData("application/x-legion-token")`
    * and the position is in map inches. */
   onDropPayload?: (payload: string, atInches: { x: number; y: number }) => void;
+  /** Called once at the start of an item drag — the parent uses this to
+   * snapshot state for undo before the flood of transient onState calls. */
+  onDragStart?: () => void;
+  /** Double-click/double-tap on a token toggles its activated flag. */
+  onToggleActivated?: (tokenId: string) => void;
 };
 
-export function TabletopCanvas({ state, onState, tool, snapInches, showGrid, selectedId, onSelect, onDropPayload }: Props) {
+export function TabletopCanvas({
+  state, onState, tool, snapInches, showGrid, selectedId, onSelect,
+  onDropPayload, onDragStart, onToggleActivated,
+}: Props) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
   const [drag, setDrag] = useState<DragState>({ kind: "none" });
@@ -107,9 +116,23 @@ export function TabletopCanvas({ state, onState, tool, snapInches, showGrid, sel
     return Math.round(n / snapInches) * snapInches;
   }
 
-  // --- Mouse handlers ----------------------------------------------------
-  function onMouseDown(e: React.MouseEvent) {
+  // --- Pointer handlers (mouse + touch + pen, unified) --------------------
+  // Pointer events replace the old mouse-only handlers so single-finger
+  // token drags work on phones. Two-finger pinch zoom is still handled by
+  // the touch handlers below, which set pinch mode; pointer handlers bail
+  // out while a pinch is in progress.
+  const touchRef = useRef<{
+    mode: "pinch" | null;
+    startDist?: number;
+    startScale?: number;
+    startMid?: { x: number; y: number };
+    startView?: { tx: number; ty: number };
+  }>({ mode: null });
+
+  function onPointerDown(e: React.PointerEvent) {
+    if (touchRef.current.mode === "pinch") return;
     if ((e.target as Element).closest("[data-item]")) return; // item handler will fire
+    wrapRef.current?.setPointerCapture(e.pointerId);
     const inches = clientToMapInches(e.clientX, e.clientY);
     if (tool === "ruler") {
       setDrag({ kind: "ruler", startX: inches.x, startY: inches.y, endX: inches.x, endY: inches.y });
@@ -120,18 +143,23 @@ export function TabletopCanvas({ state, onState, tool, snapInches, showGrid, sel
       e.preventDefault();
     } else {
       onSelect(null); // clicked empty board
+      setDrag({ kind: "none" });
     }
   }
 
-  function onItemMouseDown(e: React.MouseEvent, item: Token | Terrain, itemType: "token" | "terrain") {
+  function onItemPointerDown(e: React.PointerEvent, item: Token | Terrain, itemType: "token" | "terrain") {
     if (tool === "ruler" || tool === "pan") return;
+    if (touchRef.current.mode === "pinch") return;
     e.stopPropagation();
+    wrapRef.current?.setPointerCapture(e.pointerId);
     onSelect(item.id);
+    onDragStart?.();
     const inches = clientToMapInches(e.clientX, e.clientY);
     setDrag({ kind: "item", itemId: item.id, itemType, offsetX: inches.x - item.x, offsetY: inches.y - item.y });
   }
 
-  function onMouseMove(e: React.MouseEvent) {
+  function onPointerMove(e: React.PointerEvent) {
+    if (touchRef.current.mode === "pinch") return;
     if (drag.kind === "none") return;
     if (drag.kind === "pan") {
       setView({ ...view, tx: drag.startTx + (e.clientX - drag.startClientX), ty: drag.startTy + (e.clientY - drag.startClientY) });
@@ -150,11 +178,10 @@ export function TabletopCanvas({ state, onState, tool, snapInches, showGrid, sel
     }
   }
 
-  function onMouseUp() {
+  function onPointerUp() {
     if (drag.kind === "ruler") {
-      // Keep the ruler displayed after release until next click — let user
-      // read the measurement. Convert to a transient "measurement" by
-      // leaving the state as-is: the next mousedown clears it.
+      // Keep the ruler displayed after release so the measurement can be
+      // read; the next pointerdown replaces it.
       return;
     }
     setDrag({ kind: "none" });
@@ -173,17 +200,12 @@ export function TabletopCanvas({ state, onState, tool, snapInches, showGrid, sel
     setView({ scale: newScale, tx: cx - (cx - view.tx) * k, ty: cy - (cy - view.ty) * k });
   }
 
-  // --- Touch handlers (single-finger drag/pan, two-finger pinch) ---------
-  const touchRef = useRef<{
-    mode: "single" | "pinch" | null;
-    startDist?: number;
-    startScale?: number;
-    startMid?: { x: number; y: number };
-    startView?: { tx: number; ty: number };
-  }>({ mode: null });
-
+  // --- Two-finger pinch zoom ----------------------------------------------
   function onTouchStart(e: React.TouchEvent) {
     if (e.touches.length === 2) {
+      // A second finger landed: cancel any in-progress single-finger drag
+      // so the piece doesn't fly around while pinching.
+      setDrag({ kind: "none" });
       const t0 = e.touches[0]!, t1 = e.touches[1]!;
       const dist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY);
       const wrap = wrapRef.current!;
@@ -208,7 +230,9 @@ export function TabletopCanvas({ state, onState, tool, snapInches, showGrid, sel
     }
   }
 
-  function onTouchEnd() { touchRef.current = { mode: null }; }
+  function onTouchEnd(e: React.TouchEvent) {
+    if (e.touches.length < 2) touchRef.current = { mode: null };
+  }
 
   // --- HTML5 drag-drop (drag a roster row onto the board) ----------------
   function onDragOver(e: React.DragEvent) {
@@ -234,7 +258,7 @@ export function TabletopCanvas({ state, onState, tool, snapInches, showGrid, sel
 
   return (
     <div className="tt-canvas-wrap" ref={wrapRef}
-         onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={onMouseUp}
+         onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
          onWheel={onWheel}
          onTouchStart={onTouchStart} onTouchMove={onTouchMove} onTouchEnd={onTouchEnd}
          onDragOver={onDragOver} onDrop={onDrop}>
@@ -246,6 +270,27 @@ export function TabletopCanvas({ state, onState, tool, snapInches, showGrid, sel
         <g transform={`translate(${view.tx} ${view.ty}) scale(${view.scale})`}>
           {/* Mat */}
           <rect x={0} y={0} width={mapW} height={mapH} fill="#1d2832" stroke="#3a4154" strokeWidth={1 / view.scale} />
+
+          {/* Deployment zones (under everything else) */}
+          {state.deployment && (() => {
+            const z = deploymentZones(state.deployment, state.map);
+            const U = UNITS_PER_INCH;
+            const dash = `${5 / view.scale} ${4 / view.scale}`;
+            return (
+              <g>
+                <rect x={z.blue.x * U} y={z.blue.y * U} width={z.blue.w * U} height={z.blue.h * U}
+                      fill="#3a78c2" fillOpacity={0.12} stroke="#5a9ae2" strokeOpacity={0.5}
+                      strokeDasharray={dash} strokeWidth={1.5 / view.scale} />
+                <text x={(z.blue.x + 0.5) * U} y={(z.blue.y + 1.2) * U} fontSize={12 / view.scale}
+                      fill="#9bc1ec" fillOpacity={0.7} fontWeight={700}>BLUE</text>
+                <rect x={z.red.x * U} y={z.red.y * U} width={z.red.w * U} height={z.red.h * U}
+                      fill="#c24a3a" fillOpacity={0.12} stroke="#e2735a" strokeOpacity={0.5}
+                      strokeDasharray={dash} strokeWidth={1.5 / view.scale} />
+                <text x={(z.red.x + 0.5) * U} y={(z.red.y + 1.2) * U} fontSize={12 / view.scale}
+                      fill="#ffb0a0" fillOpacity={0.7} fontWeight={700}>RED</text>
+              </g>
+            );
+          })()}
 
           {/* Grid */}
           {showGrid && (
@@ -278,7 +323,7 @@ export function TabletopCanvas({ state, onState, tool, snapInches, showGrid, sel
             <g key={t.id}
                data-item="terrain"
                transform={`translate(${t.x * UNITS_PER_INCH} ${t.y * UNITS_PER_INCH}) rotate(${t.rotation})`}
-               onMouseDown={(e) => onItemMouseDown(e, t, "terrain")}
+               onPointerDown={(e) => onItemPointerDown(e, t, "terrain")}
                style={{ cursor: "move" }}>
               {t.shape === "rect" ? (
                 <rect x={0} y={0} width={t.width * UNITS_PER_INCH} height={t.height * UNITS_PER_INCH}
@@ -312,36 +357,85 @@ export function TabletopCanvas({ state, onState, tool, snapInches, showGrid, sel
             const px = tk.x * UNITS_PER_INCH;
             const py = tk.y * UNITS_PER_INCH;
             const sz = tk.size * UNITS_PER_INCH;
+            const cx = px + sz / 2;
+            const cy = py + sz / 2;
             const hasPortrait = !!tk.portraitUrl;
+            const badgeR = 5 / view.scale;
+            const badgeFont = 7 / view.scale;
             return (
               <g key={tk.id} data-item="token"
-                 onMouseDown={(e) => onItemMouseDown(e, tk, "token")}
+                 onPointerDown={(e) => onItemPointerDown(e, tk, "token")}
+                 onDoubleClick={(e) => { e.stopPropagation(); onToggleActivated?.(tk.id); }}
                  style={{ cursor: "grab" }}>
-                {/* Ring colored by faction; thicker when selected. */}
-                <circle cx={px + sz / 2} cy={py + sz / 2} r={sz / 2 - 1 / view.scale}
-                        fill={hasPortrait ? "#0e0f12" : FACTION_FILL[tk.color]}
-                        stroke={selectedId === tk.id ? "#ffd24a" : FACTION_STROKE[tk.color]}
-                        strokeWidth={(selectedId === tk.id ? 2.5 : 1.5) / view.scale} />
-                {hasPortrait && (
-                  // Show the unit's card image cropped to a circle. Slice-fit
-                  // anchored to the top so the portrait/art area (always at
-                  // the top of a Legion card) is what appears in the token.
-                  <image href={tk.portraitUrl}
-                         x={px} y={py} width={sz} height={sz}
-                         preserveAspectRatio="xMidYMin slice"
-                         clipPath={`url(#tt-clip-${tk.id})`}
-                         pointerEvents="none" />
+                {/* Body dims once activated; badges stay full-opacity. */}
+                <g opacity={tk.activated ? 0.45 : 1}>
+                  <circle cx={cx} cy={cy} r={sz / 2 - 1 / view.scale}
+                          fill={hasPortrait ? "#0e0f12" : FACTION_FILL[tk.color]}
+                          stroke={selectedId === tk.id ? "#ffd24a" : FACTION_STROKE[tk.color]}
+                          strokeWidth={(selectedId === tk.id ? 2.5 : 1.5) / view.scale} />
+                  {hasPortrait && (
+                    // Card art cropped to a circle. Slice-fit anchored to the
+                    // top so the portrait area of the card is what shows.
+                    <image href={tk.portraitUrl}
+                           x={px} y={py} width={sz} height={sz}
+                           preserveAspectRatio="xMidYMin slice"
+                           clipPath={`url(#tt-clip-${tk.id})`}
+                           pointerEvents="none" />
+                  )}
+                  {!hasPortrait && (
+                    <text x={cx} y={cy + 4 / view.scale}
+                          textAnchor="middle" fontSize={10 / view.scale}
+                          fill="#0e0f12" fontWeight={700}>{tk.label.slice(0, 3)}</text>
+                  )}
+                  {/* Facing arrow (vehicles / anything with rotation set) */}
+                  {tk.rotation != null && (() => {
+                    const a = (tk.rotation * Math.PI) / 180;
+                    const r = sz / 2 - 1 / view.scale;
+                    const tipX = cx + r * Math.sin(a);
+                    const tipY = cy - r * Math.cos(a);
+                    return (
+                      <g stroke="#ffd24a" strokeWidth={2 / view.scale}>
+                        <line x1={cx} y1={cy} x2={tipX} y2={tipY} />
+                        <circle cx={tipX} cy={tipY} r={2.5 / view.scale} fill="#ffd24a" stroke="none" />
+                      </g>
+                    );
+                  })()}
+                </g>
+
+                {/* Activated check */}
+                {tk.activated && (
+                  <text x={px + 3 / view.scale} y={py + 9 / view.scale}
+                        fontSize={9 / view.scale} fill="#9be29b" fontWeight={700}>✓</text>
                 )}
-                {!hasPortrait && (
-                  <text x={px + sz / 2} y={py + sz / 2 + 4 / view.scale}
-                        textAnchor="middle" fontSize={10 / view.scale}
-                        fill="#0e0f12" fontWeight={700}>{tk.label.slice(0, 3)}</text>
-                )}
+                {/* Custom badge (top-right) */}
                 {tk.badge && (
                   <g>
-                    <circle cx={px + sz - 2 / view.scale} cy={py + 2 / view.scale} r={5 / view.scale} fill="#0e0f12" stroke="#ffd24a" strokeWidth={1 / view.scale} />
-                    <text x={px + sz - 2 / view.scale} y={py + 5 / view.scale} textAnchor="middle" fontSize={7 / view.scale} fill="#ffd24a" fontWeight={700}>{tk.badge}</text>
+                    <circle cx={px + sz - 2 / view.scale} cy={py + 2 / view.scale} r={badgeR} fill="#0e0f12" stroke="#ffd24a" strokeWidth={1 / view.scale} />
+                    <text x={px + sz - 2 / view.scale} y={py + 2 / view.scale + badgeFont * 0.4} textAnchor="middle" fontSize={badgeFont} fill="#ffd24a" fontWeight={700}>{tk.badge}</text>
                   </g>
+                )}
+                {/* Wounds (bottom-right, red) */}
+                {(tk.wounds ?? 0) > 0 && (
+                  <g>
+                    <circle cx={px + sz - 2 / view.scale} cy={py + sz - 2 / view.scale} r={badgeR} fill="#5a1414" stroke="#ff6b6b" strokeWidth={1 / view.scale} />
+                    <text x={px + sz - 2 / view.scale} y={py + sz - 2 / view.scale + badgeFont * 0.4} textAnchor="middle" fontSize={badgeFont} fill="#ffb0b0" fontWeight={700}>{tk.wounds}</text>
+                  </g>
+                )}
+                {/* Suppression (bottom-left, orange) */}
+                {(tk.suppression ?? 0) > 0 && (
+                  <g>
+                    <circle cx={px + 2 / view.scale} cy={py + sz - 2 / view.scale} r={badgeR} fill="#5a4214" stroke="#ffc24a" strokeWidth={1 / view.scale} />
+                    <text x={px + 2 / view.scale} y={py + sz - 2 / view.scale + badgeFont * 0.4} textAnchor="middle" fontSize={badgeFont} fill="#ffe0a0" fontWeight={700}>{tk.suppression}</text>
+                  </g>
+                )}
+                {/* Name label under the selected token */}
+                {selectedId === tk.id && (
+                  <text x={cx} y={py + sz + 11 / view.scale}
+                        textAnchor="middle" fontSize={9 / view.scale}
+                        fill="#ffd24a" fontWeight={600}
+                        paintOrder="stroke" stroke="#0e0f12" strokeWidth={2.5 / view.scale}>
+                    {tk.label}
+                  </text>
                 )}
               </g>
             );
@@ -380,4 +474,3 @@ export function TabletopCanvas({ state, onState, tool, snapInches, showGrid, sel
     </div>
   );
 }
-

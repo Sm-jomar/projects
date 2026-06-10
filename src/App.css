@@ -988,12 +988,62 @@ input, select {
   display: grid;
   grid-template-columns: 1fr 320px;
 }
+.tt-canvas-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  border-right: 1px solid var(--border);
+}
+.tt-status-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 6px 10px;
+  background: var(--panel-2);
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+}
+.tt-status-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.tt-status-group button {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1;
+}
+.tt-status-group b {
+  min-width: 20px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.tt-status-label { color: var(--muted); }
+.tt-status-blue .tt-status-label,
+.tt-status-blue b { color: #9bc1ec; }
+.tt-status-red .tt-status-label,
+.tt-status-red b { color: #ff8a80; }
+.tt-endround {
+  margin-left: 4px;
+  padding: 3px 10px;
+  font-size: 12px;
+  width: auto !important;
+}
+.tt-undo {
+  margin-left: auto;
+  padding: 3px 10px;
+  font-size: 12px;
+}
 .tt-canvas-host {
   position: relative;
+  flex: 1;
   min-height: 0;
   background: #0b1116;
   overflow: hidden;
-  border-right: 1px solid var(--border);
 }
 .tt-canvas-wrap {
   width: 100%;
@@ -1113,6 +1163,46 @@ input, select {
 .tt-edit-row { display: flex; gap: 6px; }
 .tt-edit-row label { flex: 1; }
 .tt-edit-row input { width: 100%; }
+.tt-counter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.tt-counter-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tt-counter-controls button {
+  min-width: 26px;
+  height: 26px;
+  padding: 0 6px;
+  font-size: 14px;
+  line-height: 1;
+}
+.tt-counter-controls b {
+  min-width: 26px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+.tt-check {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 6px;
+}
+.tt-edit-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+.tt-edit-actions button { flex: 1; }
 .tt-hint { line-height: 1.4; }
 
 /* ----- Dice roller ----- */
@@ -1412,7 +1502,8 @@ input, select {
 @media (max-width: 720px) {
   .tabletop-modal { width: 100vw; height: 100vh; border-radius: 0; }
   .tabletop-body { grid-template-columns: 1fr; grid-template-rows: 60vh 1fr; }
-  .tt-canvas-host { border-right: none; border-bottom: 1px solid var(--border); }
+  .tt-canvas-col { border-right: none; border-bottom: 1px solid var(--border); }
+  .tt-status-bar { gap: 8px; }
   .tt-tool-row { justify-content: flex-start; }
   .tt-palette { grid-template-columns: 1fr 1fr 1fr; }
 }
