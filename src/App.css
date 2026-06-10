@@ -1205,6 +1205,109 @@ input, select {
 .tt-edit-actions button { flex: 1; }
 .tt-hint { line-height: 1.4; }
 
+/* ----- Movement template controls ----- */
+.tt-move-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.tt-counter-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.tt-move-controls {
+  display: flex;
+  gap: 4px;
+}
+.tt-move-btn {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-weight: 700;
+  font-size: 14px;
+}
+.tt-move-btn.active {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+}
+.tt-apply {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
+/* ----- Status bar order tally ----- */
+.tt-status-sub {
+  margin-left: 8px;
+  font-size: 11px;
+}
+.tt-status-sub b {
+  margin-left: 2px;
+  color: var(--text);
+}
+
+/* ----- Command card hands ----- */
+.tt-hands {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 10px;
+  background: var(--panel-2);
+  border-top: 1px solid var(--border);
+}
+.tt-hand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+.tt-hand-label {
+  min-width: 70px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 11px;
+}
+.tt-hand-blue .tt-hand-label { color: #9bc1ec; }
+.tt-hand-red  .tt-hand-label { color: #ff8a80; }
+.tt-hand-pips {
+  display: flex;
+  gap: 4px;
+}
+.tt-pip {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 50%;
+  background: var(--bg);
+}
+.tt-pip.played {
+  opacity: 0.3;
+  text-decoration: line-through;
+  text-decoration-color: var(--muted);
+}
+.tt-pip.bid {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(255, 210, 74, 0.3);
+}
+.tt-hand-meta { font-variant-numeric: tabular-nums; }
+.ghost-btn.small {
+  padding: 2px 6px;
+  font-size: 12px;
+  width: auto;
+}
+
 /* ----- Dice roller ----- */
 .dice-roller {
   display: flex;
