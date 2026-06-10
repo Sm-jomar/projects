@@ -42,7 +42,7 @@ export type Token = {
   size: number;
   label: string;
   color: FactionColor;
-  /** Optional small badge text (e.g. wound count, suppression). */
+  /** Optional small badge text (free-form, top-right). */
   badge?: string;
   /** If set, this token represents a specific catalog unit. Used to render
    * the unit's card-portrait inside the token circle. */
@@ -50,6 +50,16 @@ export type Token = {
   /** Pre-resolved URL of the unit's card image (kept here so the canvas
    * doesn't have to re-query the manifest on every render). */
   portraitUrl?: string;
+  /** Facing in degrees (0 = up). Rendered as an arrow on the token rim.
+   * Undefined = no facing shown (most trooper units don't need one). */
+  rotation?: number;
+  /** Wound counter (bottom-right red badge when > 0). */
+  wounds?: number;
+  /** Suppression counter (bottom-left orange badge when > 0). */
+  suppression?: number;
+  /** True once the unit has activated this round; rendered dimmed with a
+   * check mark. Cleared by "End round". */
+  activated?: boolean;
 };
 
 export type TabletopState = {
@@ -57,6 +67,9 @@ export type TabletopState = {
   map: MapSize;
   terrain: Terrain[];
   tokens: Token[];
+  round: number;
+  vp: { blue: number; red: number };
+  deployment: DeploymentKey | null;
 };
 
 export function newTabletop(gameType: GameType = "standard"): TabletopState {
@@ -65,6 +78,9 @@ export function newTabletop(gameType: GameType = "standard"): TabletopState {
     map: { ...GAME_TYPES[gameType].size },
     terrain: [],
     tokens: [],
+    round: 1,
+    vp: { blue: 0, red: 0 },
+    deployment: null,
   };
 }
 
@@ -81,22 +97,78 @@ export const BASE_SIZE: Record<string, number> = {
 };
 
 // --- Deployment zone presets ---------------------------------------------
-// For now we describe deployment as zones the player visualizes themselves;
-// future phases can render these on the canvas.
-export type DeploymentZone = {
-  name: string;
-  blue: { x: number; y: number; w: number; h: number };
-  red:  { x: number; y: number; w: number; h: number };
+// Geometric play aids rendered on the mat — not exact AMG deployment-card
+// shapes, but close enough to set up a fair game. Depth scales down on
+// small boards so the zones never overlap.
+export type DeploymentKey = "long-edges" | "short-edges" | "corners";
+
+export const DEPLOYMENTS: Record<DeploymentKey, string> = {
+  "long-edges": "Long edges",
+  "short-edges": "Short edges",
+  corners: "Opposite corners",
 };
 
-export function defaultDeployment(map: MapSize): DeploymentZone {
-  // Long edges, 12" deep each side, leaving a 12" neutral strip down the
-  // middle for a 36"-tall board (matches Standard play).
-  return {
-    name: "Long edges",
-    blue: { x: 0, y: 0, w: map.widthInches, h: 12 },
-    red:  { x: 0, y: map.heightInches - 12, w: map.widthInches, h: 12 },
-  };
+export type Zone = { x: number; y: number; w: number; h: number };
+
+export function deploymentZones(
+  key: DeploymentKey,
+  map: MapSize,
+): { blue: Zone; red: Zone } {
+  const W = map.widthInches;
+  const H = map.heightInches;
+  const depth = Math.min(12, Math.floor(Math.min(W, H) / 3));
+  switch (key) {
+    case "long-edges":
+      return {
+        blue: { x: 0, y: 0, w: W, h: depth },
+        red: { x: 0, y: H - depth, w: W, h: depth },
+      };
+    case "short-edges":
+      return {
+        blue: { x: 0, y: 0, w: depth, h: H },
+        red: { x: W - depth, y: 0, w: depth, h: H },
+      };
+    case "corners":
+      return {
+        blue: { x: 0, y: 0, w: W * 0.4, h: H * 0.4 },
+        red: { x: W * 0.6, y: H * 0.6, w: W * 0.4, h: H * 0.4 },
+      };
+  }
+}
+
+// --- Persistence ------------------------------------------------------------
+// The whole board auto-saves so closing the Tabletop (or the tab) doesn't
+// lose a game in progress.
+const STORAGE_KEY = "legion-builder.tabletop.v1";
+
+export function loadTabletop(): TabletopState | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<TabletopState>;
+    if (!parsed || typeof parsed !== "object" || !Array.isArray(parsed.tokens)) {
+      return null;
+    }
+    // Merge over fresh defaults so states saved by older versions of the
+    // app pick up new fields (round, vp, deployment, ...).
+    const base = newTabletop(parsed.gameType ?? "standard");
+    return {
+      ...base,
+      ...parsed,
+      map: { ...base.map, ...(parsed.map ?? {}) },
+      vp: { ...base.vp, ...(parsed.vp ?? {}) },
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function saveTabletop(s: TabletopState): void {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+  } catch {
+    // Quota exceeded / private browsing — losing autosave isn't fatal.
+  }
 }
 
 // --- ID helper ------------------------------------------------------------
@@ -165,6 +237,10 @@ export function addTokenForUnit(
     size,
   };
   if (portraitUrl) partial.portraitUrl = portraitUrl;
+  // Vehicles care about facing; give them an arrow from the start.
+  if (unit.type === "ground-vehicle" || unit.type === "repulsor-vehicle") {
+    partial.rotation = 0;
+  }
   if (position) { partial.x = position.x - size / 2; partial.y = position.y - size / 2; }
   return addToken(state, partial);
 }

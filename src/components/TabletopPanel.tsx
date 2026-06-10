@@ -1,9 +1,11 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { TabletopCanvas, type Tool } from "./TabletopCanvas";
 import { DiceRoller } from "./DiceRoller";
 import {
-  GAME_TYPES, newTabletop, addToken, addTerrain, addTokenForUnit,
+  GAME_TYPES, DEPLOYMENTS, newTabletop, addToken, addTerrain, addTokenForUnit,
+  loadTabletop, saveTabletop, newId,
   type GameType, type TabletopState, type Terrain, type Token, type FactionColor,
+  type DeploymentKey,
 } from "../lib/tabletop";
 import { listArmies } from "../lib/storage";
 import { unitById } from "../data/catalog";
@@ -38,6 +40,8 @@ const SNAP_OPTIONS = [
   { value: 3,   label: '3"' },
 ];
 
+const HISTORY_LIMIT = 50;
+
 // One roster entry resolved from a SavedArmy: links the saved entry ID
 // (slot) to the catalog Unit and its card image URL.
 type RosterEntry = {
@@ -58,7 +62,8 @@ function resolveRoster(army: SavedArmy): { entries: RosterEntry[]; unmatched: nu
 }
 
 export function TabletopPanel({ onClose }: Props) {
-  const [state, setState] = useState<TabletopState>(() => newTabletop("standard"));
+  // Restore an in-progress game if one was auto-saved.
+  const [state, setState] = useState<TabletopState>(() => loadTabletop() ?? newTabletop("standard"));
   const [tool, setTool] = useState<Tool>("move");
   const [snap, setSnap] = useState(1);
   const [showGrid, setShowGrid] = useState(true);
@@ -66,6 +71,41 @@ export function TabletopPanel({ onClose }: Props) {
   const [sidebar, setSidebar] = useState<"setup" | "dice">("setup");
   const [customW, setCustomW] = useState(72);
   const [customH, setCustomH] = useState(36);
+
+  // --- Undo ----------------------------------------------------------------
+  // History holds snapshots taken *before* each discrete mutation. Item
+  // drags snapshot once at drag start (via onDragStart) so the per-frame
+  // transient updates don't flood the stack.
+  const historyRef = useRef<TabletopState[]>([]);
+  const [histLen, setHistLen] = useState(0);
+
+  function pushHistory(snapshot: TabletopState) {
+    const h = historyRef.current;
+    h.push(snapshot);
+    if (h.length > HISTORY_LIMIT) h.shift();
+    setHistLen(h.length);
+  }
+
+  function commit(next: TabletopState) {
+    pushHistory(state);
+    setState(next);
+  }
+
+  function undo() {
+    const prev = historyRef.current.pop();
+    if (prev) {
+      setState(prev);
+      setHistLen(historyRef.current.length);
+    }
+  }
+
+  // --- Autosave --------------------------------------------------------------
+  // Debounced so dragging (a state update per pointermove) doesn't hammer
+  // localStorage with synchronous writes.
+  useEffect(() => {
+    const t = setTimeout(() => saveTabletop(state), 400);
+    return () => clearTimeout(t);
+  }, [state]);
 
   // Player + army loading. localStorage is synchronous, so we can read the
   // saved-army list straight into initial state — no effect needed.
@@ -95,19 +135,19 @@ export function TabletopPanel({ onClose }: Props) {
 
   function setGameType(gt: GameType) {
     const size = gt === "custom" ? { widthInches: customW, heightInches: customH } : GAME_TYPES[gt].size;
-    setState({ ...state, gameType: gt, map: size });
+    commit({ ...state, gameType: gt, map: size });
   }
 
   function spawnTerrain(p: typeof TERRAIN_PRESETS[number]) {
-    setState((s) => addTerrain(s, { kind: p.kind, label: p.label, width: p.width, height: p.height, shape: p.shape }));
+    commit(addTerrain(state, { kind: p.kind, label: p.label, width: p.width, height: p.height, shape: p.shape }));
   }
 
   function spawnToken(color: FactionColor) {
-    setState((s) => addToken(s, { color, label: color === "neutral" ? "Unit" : "Opp" }));
+    commit(addToken(state, { color, label: color === "neutral" ? "Unit" : "Opp" }));
   }
 
   function placeUnitAtCenter(r: RosterEntry) {
-    setState((s) => addTokenForUnit(s, r.unit, r.portraitUrl));
+    commit(addTokenForUnit(state, r.unit, r.portraitUrl));
   }
 
   function onDropPayload(payload: string, at: { x: number; y: number }) {
@@ -116,7 +156,7 @@ export function TabletopPanel({ onClose }: Props) {
       const u = unitById(data.unitId);
       if (!u) return;
       const portrait = cardForUnit(u);
-      setState((s) => addTokenForUnit(s, u, portrait, at));
+      commit(addTokenForUnit(state, u, portrait, at));
     } catch {
       // Ignore — payload wasn't ours.
     }
@@ -134,7 +174,7 @@ export function TabletopPanel({ onClose }: Props) {
 
   function deleteSelected() {
     if (!selectedId) return;
-    setState({
+    commit({
       ...state,
       tokens: state.tokens.filter((t) => t.id !== selectedId),
       terrain: state.terrain.filter((t) => t.id !== selectedId),
@@ -142,15 +182,82 @@ export function TabletopPanel({ onClose }: Props) {
     setSelectedId(null);
   }
 
+  function duplicateSelected() {
+    if (!selectedId) return;
+    const tk = state.tokens.find((t) => t.id === selectedId);
+    if (tk) {
+      const copy: Token = { ...tk, id: newId("tk"), x: tk.x + 1, y: tk.y + 1, activated: false };
+      commit({ ...state, tokens: [...state.tokens, copy] });
+      setSelectedId(copy.id);
+      return;
+    }
+    const tr = state.terrain.find((t) => t.id === selectedId);
+    if (tr) {
+      const copy: Terrain = { ...tr, id: newId("tr"), x: tr.x + 1, y: tr.y + 1 };
+      commit({ ...state, terrain: [...state.terrain, copy] });
+      setSelectedId(copy.id);
+    }
+  }
+
   function updateSelectedToken(patch: Partial<Token>) {
     if (!selectedId) return;
-    setState({ ...state, tokens: state.tokens.map((t) => t.id === selectedId ? { ...t, ...patch } : t) });
+    commit({ ...state, tokens: state.tokens.map((t) => t.id === selectedId ? { ...t, ...patch } : t) });
   }
 
   function updateSelectedTerrain(patch: Partial<Terrain>) {
     if (!selectedId) return;
-    setState({ ...state, terrain: state.terrain.map((t) => t.id === selectedId ? { ...t, ...patch } : t) });
+    commit({ ...state, terrain: state.terrain.map((t) => t.id === selectedId ? { ...t, ...patch } : t) });
   }
+
+  function toggleActivated(tokenId: string) {
+    commit({
+      ...state,
+      tokens: state.tokens.map((t) => t.id === tokenId ? { ...t, activated: !t.activated } : t),
+    });
+  }
+
+  function endRound() {
+    commit({
+      ...state,
+      round: state.round + 1,
+      tokens: state.tokens.map((t) => ({ ...t, activated: false })),
+    });
+  }
+
+  function resetGame() {
+    if (!confirm("Reset round to 1, zero both VP scores, and ready all units? The board layout stays.")) return;
+    commit({
+      ...state,
+      round: 1,
+      vp: { blue: 0, red: 0 },
+      tokens: state.tokens.map((t) => ({ ...t, activated: false, wounds: 0, suppression: 0 })),
+    });
+  }
+
+  function bumpVp(side: "blue" | "red", delta: number) {
+    commit({ ...state, vp: { ...state.vp, [side]: Math.max(0, state.vp[side] + delta) } });
+  }
+
+  // --- Keyboard shortcuts ----------------------------------------------------
+  // Declared after the handlers it dispatches to. No dependency array on
+  // purpose: the listener is cheap to re-attach and always sees fresh state.
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      const t = e.target as HTMLElement | null;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT")) return;
+      if ((e.key === "Delete" || e.key === "Backspace") && selectedId) {
+        e.preventDefault();
+        deleteSelected();
+      } else if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") {
+        e.preventDefault();
+        undo();
+      } else if (e.key === "Escape") {
+        setSelectedId(null);
+      }
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  });
 
   const selectedToken = state.tokens.find((t) => t.id === selectedId);
   const selectedTerrain = state.terrain.find((t) => t.id === selectedId);
@@ -178,17 +285,43 @@ export function TabletopPanel({ onClose }: Props) {
         </header>
 
         <div className="tabletop-body">
-          <div className="tt-canvas-host">
-            <TabletopCanvas
-              state={state}
-              onState={setState}
-              tool={tool}
-              snapInches={snap}
-              showGrid={showGrid}
-              selectedId={selectedId}
-              onSelect={setSelectedId}
-              onDropPayload={onDropPayload}
-            />
+          <div className="tt-canvas-col">
+            <div className="tt-status-bar">
+              <div className="tt-status-group">
+                <span className="tt-status-label">Round</span>
+                <button onClick={() => commit({ ...state, round: Math.max(1, state.round - 1) })} aria-label="Previous round">−</button>
+                <b>{state.round}</b>
+                <button onClick={() => commit({ ...state, round: state.round + 1 })} aria-label="Next round">+</button>
+                <button className="tt-endround" onClick={endRound} title="Advance to the next round and ready all units">End round ▸</button>
+              </div>
+              <div className="tt-status-group tt-status-blue">
+                <span className="tt-status-label">Blue VP</span>
+                <button onClick={() => bumpVp("blue", -1)} aria-label="Blue VP minus">−</button>
+                <b>{state.vp.blue}</b>
+                <button onClick={() => bumpVp("blue", 1)} aria-label="Blue VP plus">+</button>
+              </div>
+              <div className="tt-status-group tt-status-red">
+                <span className="tt-status-label">Red VP</span>
+                <button onClick={() => bumpVp("red", -1)} aria-label="Red VP minus">−</button>
+                <b>{state.vp.red}</b>
+                <button onClick={() => bumpVp("red", 1)} aria-label="Red VP plus">+</button>
+              </div>
+              <button className="tt-undo" onClick={undo} disabled={histLen === 0} title="Undo (Ctrl+Z)">↶ Undo</button>
+            </div>
+            <div className="tt-canvas-host">
+              <TabletopCanvas
+                state={state}
+                onState={setState}
+                tool={tool}
+                snapInches={snap}
+                showGrid={showGrid}
+                selectedId={selectedId}
+                onSelect={setSelectedId}
+                onDropPayload={onDropPayload}
+                onDragStart={() => pushHistory(state)}
+                onToggleActivated={toggleActivated}
+              />
+            </div>
           </div>
 
           <aside className="tt-sidebar">
@@ -304,11 +437,28 @@ export function TabletopPanel({ onClose }: Props) {
                   </div>
                   {state.gameType === "custom" && (
                     <div className="tt-custom-size">
-                      <label>W <input type="number" min={12} max={144} value={customW} onChange={(e) => { const v = Number(e.target.value) || 0; setCustomW(v); setState({ ...state, map: { ...state.map, widthInches: v } }); }} /></label>
-                      <label>H <input type="number" min={12} max={144} value={customH} onChange={(e) => { const v = Number(e.target.value) || 0; setCustomH(v); setState({ ...state, map: { ...state.map, heightInches: v } }); }} /></label>
+                      <label>W <input type="number" min={12} max={144} value={customW} onChange={(e) => { const v = Number(e.target.value) || 0; setCustomW(v); commit({ ...state, map: { ...state.map, widthInches: v } }); }} /></label>
+                      <label>H <input type="number" min={12} max={144} value={customH} onChange={(e) => { const v = Number(e.target.value) || 0; setCustomH(v); commit({ ...state, map: { ...state.map, heightInches: v } }); }} /></label>
                       <span className="muted small">inches</span>
                     </div>
                   )}
+                </section>
+
+                <section>
+                  <h3>Deployment zones</h3>
+                  <div className="tt-faction-pills">
+                    <button className={"tt-faction-pill" + (state.deployment === null ? " active" : "")}
+                            onClick={() => commit({ ...state, deployment: null })}>
+                      None
+                    </button>
+                    {(Object.keys(DEPLOYMENTS) as DeploymentKey[]).map((k) => (
+                      <button key={k}
+                              className={"tt-faction-pill" + (state.deployment === k ? " active" : "")}
+                              onClick={() => commit({ ...state, deployment: k })}>
+                        {DEPLOYMENTS[k]}
+                      </button>
+                    ))}
+                  </div>
                 </section>
 
                 <section>
@@ -347,8 +497,49 @@ export function TabletopPanel({ onClose }: Props) {
                       </select>
                     </label>
                     <label>Size (in) <input type="number" min={0.5} max={4} step={0.25} value={selectedToken.size} onChange={(e) => updateSelectedToken({ size: Number(e.target.value) || 1 })} /></label>
-                    <label>Badge <input value={selectedToken.badge ?? ""} placeholder="e.g. 2" onChange={(e) => updateSelectedToken({ badge: e.target.value || undefined })} /></label>
-                    <button className="danger" onClick={deleteSelected}>Delete</button>
+
+                    <div className="tt-counter-row">
+                      <span>Wounds</span>
+                      <div className="tt-counter-controls">
+                        <button onClick={() => updateSelectedToken({ wounds: Math.max(0, (selectedToken.wounds ?? 0) - 1) })}>−</button>
+                        <b>{selectedToken.wounds ?? 0}</b>
+                        <button onClick={() => updateSelectedToken({ wounds: (selectedToken.wounds ?? 0) + 1 })}>+</button>
+                      </div>
+                    </div>
+                    <div className="tt-counter-row">
+                      <span>Suppression</span>
+                      <div className="tt-counter-controls">
+                        <button onClick={() => updateSelectedToken({ suppression: Math.max(0, (selectedToken.suppression ?? 0) - 1) })}>−</button>
+                        <b>{selectedToken.suppression ?? 0}</b>
+                        <button onClick={() => updateSelectedToken({ suppression: (selectedToken.suppression ?? 0) + 1 })}>+</button>
+                      </div>
+                    </div>
+                    <div className="tt-counter-row">
+                      <span>Facing</span>
+                      <div className="tt-counter-controls">
+                        {selectedToken.rotation != null ? (
+                          <>
+                            <button onClick={() => updateSelectedToken({ rotation: ((selectedToken.rotation ?? 0) - 45 + 360) % 360 })} title="Rotate left 45°">⟲</button>
+                            <b>{selectedToken.rotation}°</b>
+                            <button onClick={() => updateSelectedToken({ rotation: ((selectedToken.rotation ?? 0) + 45) % 360 })} title="Rotate right 45°">⟳</button>
+                            <button onClick={() => updateSelectedToken({ rotation: undefined })} title="Remove facing arrow">×</button>
+                          </>
+                        ) : (
+                          <button onClick={() => updateSelectedToken({ rotation: 0 })}>Add arrow</button>
+                        )}
+                      </div>
+                    </div>
+
+                    <label className="tt-check">
+                      <input type="checkbox" checked={!!selectedToken.activated}
+                             onChange={(e) => updateSelectedToken({ activated: e.target.checked })} />
+                      Activated this round
+                    </label>
+                    <label>Badge <input value={selectedToken.badge ?? ""} placeholder="e.g. ion" onChange={(e) => updateSelectedToken({ badge: e.target.value || undefined })} /></label>
+                    <div className="tt-edit-actions">
+                      <button onClick={duplicateSelected}>Duplicate</button>
+                      <button className="danger" onClick={deleteSelected}>Delete</button>
+                    </div>
                   </section>
                 )}
 
@@ -361,18 +552,25 @@ export function TabletopPanel({ onClose }: Props) {
                       <label>H <input type="number" min={0.5} max={48} step={0.5} value={selectedTerrain.height} onChange={(e) => updateSelectedTerrain({ height: Number(e.target.value) || 1 })} disabled={selectedTerrain.shape === "circle"} /></label>
                       <label>Rot <input type="number" min={-180} max={180} step={5} value={selectedTerrain.rotation} onChange={(e) => updateSelectedTerrain({ rotation: Number(e.target.value) || 0 })} /></label>
                     </div>
-                    <button className="danger" onClick={deleteSelected}>Delete</button>
+                    <div className="tt-edit-actions">
+                      <button onClick={duplicateSelected}>Duplicate</button>
+                      <button className="danger" onClick={deleteSelected}>Delete</button>
+                    </div>
                   </section>
                 )}
 
                 <section>
                   <h3>Board</h3>
-                  <button onClick={() => setState({ ...state, terrain: [], tokens: [] })} className="danger">Clear board</button>
+                  <div className="tt-edit-actions">
+                    <button onClick={resetGame}>Reset game</button>
+                    <button className="danger" onClick={() => { if (confirm("Remove every token and terrain piece from the board?")) commit({ ...state, terrain: [], tokens: [] }); }}>Clear board</button>
+                  </div>
                 </section>
 
                 <p className="muted small tt-hint">
-                  Drag tokens & terrain. Wheel or pinch to zoom. Hold shift or pick <b>Pan</b> to drag the view.
-                  The selected token shows range bands (6/12/18/24"). Use the <b>Ruler</b> tool to measure between two points.
+                  Drag pieces with mouse or finger; pinch or scroll to zoom; shift-drag or <b>Pan</b> to move the view.
+                  Double-click a token to mark it activated. <b>Delete</b> removes the selection, <b>Ctrl+Z</b> undoes.
+                  The board auto-saves — close and come back any time.
                 </p>
               </div>
             ) : (
@@ -384,4 +582,3 @@ export function TabletopPanel({ onClose }: Props) {
     </div>
   );
 }
-
