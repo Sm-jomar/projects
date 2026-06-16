@@ -1,7 +1,9 @@
-import { useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   importPdf, toJsonString, toPlainText, toZipBlob, downloadBlob, downloadText,
+  DEFAULT_CARD_CUT,
   type ImportResult, type OcrMode, type Progress,
+  type CardCutOptions, type CardCutMode,
 } from "../lib/pdfImporter";
 
 type Props = { onClose: () => void };
@@ -14,6 +16,7 @@ export function PdfImporterPanel({ onClose }: Props) {
   const [imageQuality, setImageQuality] = useState(0.8);
   const [imageMaxDim, setImageMaxDim] = useState(1400);
   const [ocrDpi, setOcrDpi] = useState(200);
+  const [cardCut, setCardCut] = useState<CardCutOptions>({ ...DEFAULT_CARD_CUT });
   const [running, setRunning] = useState(false);
   const [progress, setProgress] = useState<Progress | null>(null);
   const [result, setResult] = useState<ImportResult | null>(null);
@@ -53,7 +56,7 @@ export function PdfImporterPanel({ onClose }: Props) {
     setProgress({ phase: "loading", message: "Starting…" });
     try {
       const r = await importPdf(file, {
-        ocrMode, includeImages, imageQuality, imageMaxDim, ocrDpi,
+        ocrMode, includeImages, imageQuality, imageMaxDim, ocrDpi, cardCut,
         onProgress: setProgress,
       });
       setResult(r);
@@ -81,14 +84,45 @@ export function PdfImporterPanel({ onClose }: Props) {
 
   const ocrPages = result?.pages.filter((p) => p.textSource === "ocr").length ?? 0;
   const previewPage = result?.pages[previewIdx];
-  const previewImageUrl =
-    previewPage && previewPage.images[0] && result
+
+  // Page image URL, regenerated when the previewed page changes. Revoked
+  // on unmount/swap so we don't leak blob URLs.
+  const previewImageUrl = useObjectUrl(
+    previewPage && result
       ? (() => {
-          const imgName = previewPage.images[0].replace(/^images\//, "");
-          const blob = result.images.get(imgName);
-          return blob ? URL.createObjectURL(blob) : null;
+          const imgName = previewPage.images[0]?.replace(/^images\//, "");
+          return imgName ? result.images.get(imgName) ?? null : null;
         })()
-      : null;
+      : null,
+  );
+
+  // Per-card preview URLs — built once per page so the carousel doesn't
+  // recreate them on each render.
+  const previewCards = useMemo(() => {
+    if (!previewPage || !result) return [];
+    return previewPage.cards
+      .map((path) => {
+        const name = path.replace(/^cards\//, "");
+        const blob = result.cards.get(name);
+        return blob ? { name, url: URL.createObjectURL(blob) } : null;
+      })
+      .filter(Boolean) as Array<{ name: string; url: string }>;
+  }, [previewPage, result]);
+
+  // Free those card URLs when leaving this page.
+  useEffect(() => {
+    return () => {
+      for (const c of previewCards) URL.revokeObjectURL(c.url);
+    };
+  }, [previewCards]);
+
+  // Cards-on-page rectangles overlaid on the preview image (in canvas pixels).
+  const previewRects = useMemo(() => {
+    if (!previewPage || !result) return [];
+    return result.cardManifest
+      .filter((c) => c.page === previewPage.page)
+      .map((c) => c.rect);
+  }, [previewPage, result]);
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
@@ -140,10 +174,70 @@ export function PdfImporterPanel({ onClose }: Props) {
             </section>
 
             <section>
-              <h3>Images</h3>
+              <h3>Cut individual cards</h3>
+              <div className="pdf-opt-pills">
+                {(["off", "grid", "auto"] as CardCutMode[]).map((m) => (
+                  <button key={m}
+                          className={"pdf-pill" + (cardCut.mode === m ? " active" : "")}
+                          onClick={() => setCardCut({ ...cardCut, mode: m })}>
+                    {m === "off" ? "Off" : m === "grid" ? "Grid" : "Auto-detect"}
+                  </button>
+                ))}
+              </div>
+              {cardCut.mode === "grid" && (
+                <>
+                  <div className="pdf-num-row">
+                    <label>Rows
+                      <input type="number" min={1} max={10} value={cardCut.rows}
+                             onChange={(e) => setCardCut({ ...cardCut, rows: Math.max(1, Number(e.target.value) || 1) })} />
+                    </label>
+                    <label>Cols
+                      <input type="number" min={1} max={10} value={cardCut.cols}
+                             onChange={(e) => setCardCut({ ...cardCut, cols: Math.max(1, Number(e.target.value) || 1) })} />
+                    </label>
+                  </div>
+                  <div className="pdf-num-row">
+                    <label>Margin
+                      <input type="number" min={0} max={0.2} step={0.005} value={cardCut.marginFrac}
+                             onChange={(e) => setCardCut({ ...cardCut, marginFrac: Number(e.target.value) || 0 })} />
+                    </label>
+                    <label>Gutter
+                      <input type="number" min={0} max={0.1} step={0.005} value={cardCut.gutterFrac}
+                             onChange={(e) => setCardCut({ ...cardCut, gutterFrac: Number(e.target.value) || 0 })} />
+                    </label>
+                  </div>
+                  <p className="muted small">
+                    Margin and gutter are fractions of the short page side. Defaults work for
+                    3×3 unit-card sheets — bump margin to 0.06 if the outer cards get clipped.
+                  </p>
+                </>
+              )}
+              {cardCut.mode === "auto" && (
+                <>
+                  <div className="pdf-num-row">
+                    <label>Threshold
+                      <input type="number" min={150} max={255} step={5} value={cardCut.autoThreshold}
+                             onChange={(e) => setCardCut({ ...cardCut, autoThreshold: Number(e.target.value) || 240 })} />
+                    </label>
+                    <label>Min card px
+                      <input type="number" min={40} max={500} step={10} value={cardCut.autoMinSizePx}
+                             onChange={(e) => setCardCut({ ...cardCut, autoMinSizePx: Number(e.target.value) || 120 })} />
+                    </label>
+                  </div>
+                  <p className="muted small">
+                    Looks for near-white gutter bands. Lower the threshold for cream/tan
+                    backgrounds. If it can't find any, the importer falls back to the Grid
+                    settings.
+                  </p>
+                </>
+              )}
+            </section>
+
+            <section>
+              <h3>Page images</h3>
               <label className="pdf-toggle">
                 <input type="checkbox" checked={includeImages} onChange={(e) => setIncludeImages(e.target.checked)} />
-                Render each page as a JPEG
+                Render each page as a JPEG (in addition to any card cuts)
               </label>
               {includeImages && (
                 <div className="pdf-num-row">
@@ -193,7 +287,9 @@ export function PdfImporterPanel({ onClose }: Props) {
               <section className="pdf-result-actions">
                 <h3>Downloads</h3>
                 <div className="pdf-result-summary muted small">
-                  {result.pageCount} page{result.pageCount === 1 ? "" : "s"} · {result.imageCount} image{result.imageCount === 1 ? "" : "s"}
+                  {result.pageCount} page{result.pageCount === 1 ? "" : "s"} ·
+                  {" "}{result.imageCount} image{result.imageCount === 1 ? "" : "s"} ·
+                  {" "}{result.cardCount} card{result.cardCount === 1 ? "" : "s"}
                   {ocrPages > 0 && <> · {ocrPages} OCR'd</>}
                 </div>
                 <div className="pdf-download-row">
@@ -212,6 +308,10 @@ export function PdfImporterPanel({ onClose }: Props) {
                 <p className="muted small">
                   Everything runs in your browser — nothing is uploaded. Works offline once loaded.
                 </p>
+                <p className="muted small">
+                  Turn on <b>Cut individual cards</b> for printable card-sheet PDFs and the
+                  importer will slice them into one image per card.
+                </p>
               </div>
             )}
 
@@ -221,16 +321,49 @@ export function PdfImporterPanel({ onClose }: Props) {
                   <button disabled={previewIdx === 0} onClick={() => setPreviewIdx((i) => Math.max(0, i - 1))}>‹</button>
                   <span>Page {previewIdx + 1} of {result.pages.length}
                     {previewPage.textSource === "ocr" && <span className="pdf-ocr-tag"> OCR</span>}
+                    {previewCards.length > 0 && <span className="pdf-ocr-tag pdf-card-tag"> {previewCards.length} cards</span>}
                   </span>
                   <button disabled={previewIdx === result.pages.length - 1}
                           onClick={() => setPreviewIdx((i) => Math.min(result.pages.length - 1, i + 1))}>›</button>
                 </div>
                 <div className="pdf-preview-cols">
-                  {previewImageUrl && (
-                    <div className="pdf-preview-image">
-                      <img src={previewImageUrl} alt={`Page ${previewIdx + 1}`} />
-                    </div>
-                  )}
+                  <div className="pdf-preview-image">
+                    {previewImageUrl ? (
+                      <div className="pdf-preview-img-wrap">
+                        <img src={previewImageUrl} alt={`Page ${previewIdx + 1}`} />
+                        {previewRects.length > 0 && (
+                          <svg className="pdf-preview-rects"
+                               viewBox={`0 0 ${previewPage.width} ${previewPage.height}`}
+                               preserveAspectRatio="xMidYMid meet">
+                            {previewRects.map((r, i) => (
+                              <g key={i}>
+                                <rect x={r.x} y={r.y} width={r.w} height={r.h}
+                                      fill="none" stroke="#ffd24a" strokeWidth={Math.max(2, previewPage.width * 0.003)} />
+                                <rect x={r.x} y={r.y} width={Math.max(28, previewPage.width * 0.04)} height={Math.max(28, previewPage.width * 0.04)}
+                                      fill="#ffd24a" />
+                                <text x={r.x + Math.max(8, previewPage.width * 0.01)}
+                                      y={r.y + Math.max(22, previewPage.width * 0.03)}
+                                      fontSize={Math.max(18, previewPage.width * 0.024)}
+                                      fill="#0e0f12" fontWeight={700}>{i + 1}</text>
+                              </g>
+                            ))}
+                          </svg>
+                        )}
+                      </div>
+                    ) : (
+                      <p className="muted small">No page image — enable "Render each page as a JPEG".</p>
+                    )}
+                    {previewCards.length > 0 && (
+                      <div className="pdf-card-strip">
+                        {previewCards.map((c, i) => (
+                          <figure key={c.name} className="pdf-card-thumb">
+                            <img src={c.url} alt={`Card ${i + 1}`} />
+                            <figcaption>{i + 1}</figcaption>
+                          </figure>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                   <pre className="pdf-preview-text">{previewPage.text || "(no text on this page)"}</pre>
                 </div>
               </>
@@ -240,6 +373,19 @@ export function PdfImporterPanel({ onClose }: Props) {
       </div>
     </div>
   );
+}
+
+/** Stable object URL for a Blob — created on change, revoked on swap or
+ * unmount. Returns null when the source Blob is null. */
+function useObjectUrl(blob: Blob | null): string | null {
+  // useMemo creates the URL during render so we don't have to set state
+  // from an effect; useEffect just owns the revoke cleanup.
+  const url = useMemo(() => (blob ? URL.createObjectURL(blob) : null), [blob]);
+  useEffect(() => {
+    if (!url) return;
+    return () => URL.revokeObjectURL(url);
+  }, [url]);
+  return url;
 }
 
 function baseName(filename: string): string {
