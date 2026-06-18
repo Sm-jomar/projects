@@ -310,7 +310,27 @@ input, select {
 .unit-row:last-child { border-bottom: none; }
 .unit-row.clickable { cursor: pointer; }
 .unit-row.clickable:hover { background: var(--panel-2); }
-.unit-row-main { flex: 1; min-width: 0; }
+/* Card-backed rows: a touch taller so the portrait that bleeds in from
+   the right edge reads as a face rather than a sliver. The hover state
+   tightens the gradient so the image dims under the cursor — feels more
+   interactive than just shifting the row color. */
+.unit-row.unit-row-card {
+  min-height: 64px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.unit-row.unit-row-card.clickable:hover {
+  background-image:
+    linear-gradient(to right, var(--panel-2) 0%, var(--panel-2) 45%, rgba(0, 0, 0, 0.15) 95%),
+    inherit !important;
+}
+.unit-row-main {
+  flex: 1;
+  min-width: 0;
+  /* Keep text comfortably inside the opaque part of the gradient so the
+     image never starts behind a word. */
+  max-width: 65%;
+}
 .unit-row-name { font-weight: 600; }
 .unit-row-sub { font-size: 12px; margin-top: 2px; }
 .unit-row-meta { font-size: 12px; margin-top: 2px; }

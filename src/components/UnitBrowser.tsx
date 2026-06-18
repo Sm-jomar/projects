@@ -96,10 +96,26 @@ export function UnitBrowser({
           const check = canAdd(army, u);
           const cost = effectiveUnitPoints(u, army.pointsMode);
           const adjusted = army.pointsMode === "v2_6" && cost !== u.points;
+          const cardUrl = cardForUnit(u);
+          // Layered backgrounds: gradient on top fades the panel color to
+          // transparent moving right; the card image sits underneath,
+          // anchored to the right edge and scaled up so the upper portrait
+          // shows through. Falls back to the plain row look when there's
+          // no card image for this unit.
+          const rowStyle: React.CSSProperties | undefined = cardUrl
+            ? {
+                backgroundImage:
+                  `linear-gradient(to right, var(--panel) 0%, var(--panel) 35%, rgba(0,0,0,0) 90%), url(${cardUrl})`,
+                backgroundSize: "100% 100%, auto 220%",
+                backgroundPosition: "0 0, right top",
+                backgroundRepeat: "no-repeat",
+              }
+            : undefined;
           return (
             <li
               key={u.id}
-              className="unit-row clickable"
+              className={"unit-row clickable" + (cardUrl ? " unit-row-card" : "")}
+              style={rowStyle}
               onClick={() => setPreview(u)}
               title="Click to preview card"
             >
