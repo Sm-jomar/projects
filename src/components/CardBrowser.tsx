@@ -14,7 +14,7 @@ type CardEntry = {
 const MANIFEST = manifestRaw as CardEntry[];
 
 const FACTIONS = ["rebels", "imperials", "republic", "separatists", "mercenary", "generic"] as const;
-const KINDS = ["unit", "upgrade", "command", "battle", "campaign"] as const;
+const KINDS = ["unit", "upgrade", "command", "battle", "campaign", "spec-ops"] as const;
 
 const FACTION_LABEL: Record<string, string> = {
   rebels: "Rebels",
@@ -30,6 +30,7 @@ const KIND_LABEL: Record<string, string> = {
   command: "Command",
   battle: "Battle",
   campaign: "Campaign",
+  "spec-ops": "Spec Ops",
 };
 
 const BASE = import.meta.env.BASE_URL;
