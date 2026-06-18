@@ -1,12 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  importPdf, toJsonString, toPlainText, toZipBlob, downloadBlob, downloadText,
+  importPdf, toJsonString, toPlainText, toZipBlob, toRulebookBundle,
+  downloadBlob, downloadText, slugFromFilename,
   DEFAULT_CARD_CUT,
   type ImportResult, type OcrMode, type Progress,
-  type CardCutOptions, type CardCutMode,
+  type CardCutOptions, type CardCutMode, type RulebookManifestEntry,
 } from "../lib/pdfImporter";
+import rulebookManifest from "../data/rulebook-manifest.json";
 
 type Props = { onClose: () => void };
+
+const EXISTING_RULEBOOKS = rulebookManifest as RulebookManifestEntry[];
 
 export function PdfImporterPanel({ onClose }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
@@ -23,6 +27,17 @@ export function PdfImporterPanel({ onClose }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [previewIdx, setPreviewIdx] = useState(0);
 
+  // Save-as-rulebook flow. Slug pre-fills from the chosen filename; the
+  // user can edit it before downloading the bundle. archivePrevious is
+  // forced on if the typed slug matches an existing entry.
+  const [rulebookSlug, setRulebookSlug] = useState("");
+  const [rulebookTitle, setRulebookTitle] = useState("");
+  const [archivePrevious, setArchivePrevious] = useState(true);
+  const slugCollision = useMemo(
+    () => EXISTING_RULEBOOKS.some((b) => b.slug === rulebookSlug && !b.archived),
+    [rulebookSlug],
+  );
+
   function chooseFile() { fileRef.current?.click(); }
 
   function onFile(e: React.ChangeEvent<HTMLInputElement>) {
@@ -32,6 +47,11 @@ export function PdfImporterPanel({ onClose }: Props) {
       setResult(null);
       setError(null);
       setProgress(null);
+      // Pre-fill the rulebook fields from the filename so the user only
+      // has to tweak rather than retype.
+      const slug = slugFromFilename(f.name);
+      setRulebookSlug(slug);
+      setRulebookTitle(humanizeSlug(slug));
     }
   }
 
@@ -43,9 +63,26 @@ export function PdfImporterPanel({ onClose }: Props) {
       setResult(null);
       setError(null);
       setProgress(null);
+      const slug = slugFromFilename(f.name);
+      setRulebookSlug(slug);
+      setRulebookTitle(humanizeSlug(slug));
     } else if (f) {
       setError(`"${f.name}" doesn't look like a PDF.`);
     }
+  }
+
+  async function downloadRulebookBundle() {
+    if (!result || !file || !rulebookSlug.trim() || !rulebookTitle.trim()) return;
+    const zip = await toRulebookBundle(
+      result, file,
+      {
+        slug: rulebookSlug.trim(),
+        title: rulebookTitle.trim(),
+        archivePrevious,
+      },
+      EXISTING_RULEBOOKS,
+    );
+    downloadBlob(zip, `${rulebookSlug.trim()}-rulebook-bundle.zip`);
   }
 
   async function run() {
@@ -299,6 +336,46 @@ export function PdfImporterPanel({ onClose }: Props) {
                 </div>
               </section>
             )}
+
+            {result && file && (
+              <section className="pdf-result-actions">
+                <h3>Save as rulebook to repo</h3>
+                <p className="muted small">
+                  Produces a ZIP whose layout mirrors the repository: drop the
+                  contents at the repo root and commit. The original PDF lands
+                  at <code>pdfs/&lt;slug&gt;/source.pdf</code>, the page images
+                  under <code>public/rulebooks/&lt;slug&gt;/</code>, and
+                  <code> src/data/rulebook-manifest.json </code> is updated
+                  so it appears in Reference → Rulebooks.
+                </p>
+                <div className="pdf-rulebook-fields">
+                  <label>Slug
+                    <input type="text" value={rulebookSlug}
+                           onChange={(e) => setRulebookSlug(slugFromFilename(e.target.value))}
+                           placeholder="battle-forces" />
+                  </label>
+                  <label>Title
+                    <input type="text" value={rulebookTitle}
+                           onChange={(e) => setRulebookTitle(e.target.value)}
+                           placeholder="Battle Forces (Q3 2026)" />
+                  </label>
+                  {slugCollision && (
+                    <div className="pdf-rulebook-warn">
+                      A rulebook with slug "{rulebookSlug}" already exists.
+                      <label className="pdf-toggle" style={{ marginTop: 4 }}>
+                        <input type="checkbox" checked={archivePrevious}
+                               onChange={(e) => setArchivePrevious(e.target.checked)} />
+                        Archive the existing one (recommended) — uncheck to add this as a -v2 instead.
+                      </label>
+                    </div>
+                  )}
+                  <button className="pdf-run-btn" onClick={downloadRulebookBundle}
+                          disabled={!rulebookSlug.trim() || !rulebookTitle.trim()}>
+                    Download rulebook bundle (.zip)
+                  </button>
+                </div>
+              </section>
+            )}
           </aside>
 
           <div className="pdf-preview">
@@ -390,4 +467,14 @@ function useObjectUrl(blob: Blob | null): string | null {
 
 function baseName(filename: string): string {
   return filename.replace(/\.pdf$/i, "");
+}
+
+/** "battle-forces" -> "Battle Forces" — a starting point for the user
+ * to edit in the rulebook-title field. */
+function humanizeSlug(slug: string): string {
+  return slug
+    .split("-")
+    .filter(Boolean)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
 }

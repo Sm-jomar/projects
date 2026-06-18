@@ -468,3 +468,164 @@ export function downloadBlob(blob: Blob, filename: string): void {
 export function downloadText(text: string, filename: string, mime: string): void {
   downloadBlob(new Blob([text], { type: mime }), filename);
 }
+
+// --- Rulebook bundle ------------------------------------------------------
+// Produces a ZIP that mirrors the repository's expected paths so the user
+// can unzip into the repo root and commit. The bundle includes the
+// original PDF binary at pdfs/<slug>/source.pdf so the script-side
+// tools (and Claude on future sessions) can read it back from the repo.
+
+export type RulebookManifestEntry = {
+  slug: string;
+  title: string;
+  source: string;
+  pages: string[];
+  /** Set when this entry was archived because a newer version of the same
+   * slug was added. Older entries get a "-archived-<date>" suffix on
+   * their slug so the new entry can keep the original slug. */
+  archived?: boolean;
+  /** ISO date when this entry was archived. */
+  archivedAt?: string;
+};
+
+export type RulebookOptions = {
+  slug: string;
+  title: string;
+  /** When true, any existing manifest entry with this slug gets renamed
+   * to "<slug>-archived-YYYY-MM-DD" with archived:true, and the new
+   * entry takes the clean slug. When false, the new entry is added
+   * with a "-vN" suffix if the slug is taken. */
+  archivePrevious: boolean;
+};
+
+/** Apply a new entry to an existing manifest, handling the
+ * slug-collision rules above. Pure — does not mutate the input. */
+export function applyManifestUpdate(
+  existing: RulebookManifestEntry[],
+  newEntry: RulebookManifestEntry,
+  archivePrevious: boolean,
+): RulebookManifestEntry[] {
+  const out = existing.map((b) => ({ ...b }));
+  const i = out.findIndex((b) => b.slug === newEntry.slug);
+  if (i === -1) {
+    out.push(newEntry);
+    return out;
+  }
+  if (archivePrevious) {
+    const date = new Date().toISOString().slice(0, 10);
+    out[i] = {
+      ...out[i]!,
+      slug: `${out[i]!.slug}-archived-${date}`,
+      archived: true,
+      archivedAt: date,
+    };
+    out.push(newEntry);
+  } else {
+    // Find an unused -vN suffix.
+    let n = 2;
+    while (out.some((b) => b.slug === `${newEntry.slug}-v${n}`)) n++;
+    out.push({ ...newEntry, slug: `${newEntry.slug}-v${n}` });
+  }
+  return out;
+}
+
+export async function toRulebookBundle(
+  result: ImportResult,
+  sourceFile: File,
+  options: RulebookOptions,
+  existingManifest: RulebookManifestEntry[],
+): Promise<Blob> {
+  const zip = new JSZip();
+  const slug = options.slug;
+
+  // 1. Original PDF — kept in /pdfs/<slug>/ rather than /public/ so it
+  //    isn't served by the static host but stays accessible to scripts
+  //    and to future repo-aware sessions.
+  zip.file(`pdfs/${slug}/source.pdf`, sourceFile);
+
+  // 2. Page images — landed under public/rulebooks/<slug>/ to match the
+  //    rest of the rulebooks the viewer already knows how to render.
+  const pagesFolder = zip.folder(`public/rulebooks/${slug}`);
+  const pagePaths: string[] = [];
+  if (pagesFolder) {
+    const names = Array.from(result.images.keys()).sort();
+    for (const name of names) {
+      const blob = result.images.get(name)!;
+      pagesFolder.file(name, blob);
+      pagePaths.push(`rulebooks/${slug}/${name}`);
+    }
+  }
+
+  // 3. Card cuts (if any) — handy for the resources tab even though the
+  //    rulebook viewer itself doesn't use them.
+  if (result.cards.size > 0) {
+    const cardsFolder = zip.folder(`public/cards/${slug}`);
+    if (cardsFolder) {
+      for (const [name, blob] of result.cards) cardsFolder.file(name, blob);
+    }
+  }
+
+  // 4. Extracted text + JSON manifest, in case future scripts want them.
+  const docFolder = zip.folder(`pdfs/${slug}`);
+  if (docFolder) {
+    docFolder.file("content.json", toJsonString(result));
+    docFolder.file("content.txt", toPlainText(result));
+  }
+
+  // 5. Updated rulebook manifest. We always write the full file so the
+  //    user only has to drop it in place.
+  const newEntry: RulebookManifestEntry = {
+    slug,
+    title: options.title,
+    source: sourceFile.name,
+    pages: pagePaths,
+  };
+  const updated = applyManifestUpdate(existingManifest, newEntry, options.archivePrevious);
+  zip.file(
+    "src/data/rulebook-manifest.json",
+    JSON.stringify(updated, null, 2) + "\n",
+  );
+
+  // 6. A README so the workflow is obvious when the bundle is opened.
+  zip.file(
+    "README-COMMIT.md",
+    [
+      `# ${options.title}`,
+      "",
+      "Unzip this bundle at the repository root, then commit the new",
+      "and modified files. The layout matches the repo so nothing should",
+      "land outside the expected paths:",
+      "",
+      `- \`pdfs/${slug}/source.pdf\`  — original PDF (kept out of /public/)`,
+      `- \`pdfs/${slug}/content.json\`, \`content.txt\` — extracted text`,
+      `- \`public/rulebooks/${slug}/p*.jpg\` — page images for the viewer`,
+      result.cards.size > 0
+        ? `- \`public/cards/${slug}/*.jpg\` — extracted card cuts`
+        : "",
+      "- `src/data/rulebook-manifest.json` — manifest updated with this",
+      "  new rulebook" + (options.archivePrevious ? " (any existing entry with the same slug archived)" : ""),
+      "",
+      "Once committed, the rulebook viewer in the deployed site will list",
+      "this book under Reference > Rulebooks. Archived entries stay in",
+      "the manifest under an `archived: true` flag so they aren't surfaced",
+      "by default but are still browseable.",
+    ]
+      .filter(Boolean)
+      .join("\n"),
+  );
+
+  return zip.generateAsync({ type: "blob" });
+}
+
+/** Suggest a slug from the source PDF filename. Strips common
+ * prefixes and the .pdf extension. */
+export function slugFromFilename(filename: string): string {
+  return filename
+    .toLowerCase()
+    .replace(/\.pdf$/i, "")
+    .replace(/^doc\d+_/, "")
+    .replace(/_/g, "-")
+    .replace(/[^a-z0-9-]/g, "")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}

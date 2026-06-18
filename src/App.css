@@ -1863,6 +1863,43 @@ input, select {
   background: #4a3a18;
   color: #ffd24a;
 }
+
+/* ----- Rulebook archive toggle ----- */
+.rb-archive-toggle {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+.rb-row-archived {
+  opacity: 0.7;
+}
+.rb-row.empty {
+  justify-content: center;
+  padding: 18px;
+}
+
+/* ----- Save-as-rulebook section in importer ----- */
+.pdf-rulebook-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pdf-rulebook-fields label {
+  flex-direction: column !important;
+  align-items: stretch;
+}
+.pdf-rulebook-fields input[type="text"] {
+  font-size: 13px;
+  padding: 6px 8px;
+}
+.pdf-rulebook-warn {
+  padding: 6px 8px;
+  background: rgba(255, 210, 74, 0.12);
+  border: 1px solid rgba(255, 210, 74, 0.4);
+  border-radius: 4px;
+  font-size: 12px;
+  color: #ffd97a;
+}
 .pdf-preview-text {
   overflow: auto;
   margin: 0;

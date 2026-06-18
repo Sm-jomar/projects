@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import manifestRaw from "../data/rulebook-manifest.json";
 
 type Book = {
@@ -6,7 +6,9 @@ type Book = {
   title: string;
   source: string;
   pages: string[];
-  pageCount: number;
+  pageCount?: number;
+  archived?: boolean;
+  archivedAt?: string;
 };
 
 const BOOKS = manifestRaw as Book[];
@@ -15,6 +17,16 @@ const BASE = import.meta.env.BASE_URL;
 export function RulebookViewer() {
   const [active, setActive] = useState<Book | null>(null);
   const [page, setPage] = useState(0);
+  const [showArchived, setShowArchived] = useState(false);
+
+  // Split the manifest by archive status so the list can hide old
+  // versions by default while still letting the user opt-in to see them.
+  const { activeBooks, archivedBooks } = useMemo(() => {
+    const a: Book[] = [];
+    const z: Book[] = [];
+    for (const b of BOOKS) (b.archived ? z : a).push(b);
+    return { activeBooks: a, archivedBooks: z };
+  }, []);
 
   function open(b: Book) {
     setActive(b);
@@ -50,17 +62,36 @@ export function RulebookViewer() {
     );
   }
 
+  const listed = showArchived ? archivedBooks : activeBooks;
+
   return (
-    <ul className="rb-list">
-      {BOOKS.map((b) => (
-        <li key={b.slug} className="rb-row">
-          <div className="rb-row-main">
-            <div className="rb-row-title">{b.title}</div>
-            <div className="rb-row-meta muted small">{b.pageCount} pages</div>
-          </div>
-          <button onClick={() => open(b)}>Open</button>
-        </li>
-      ))}
-    </ul>
+    <>
+      <ul className="rb-list">
+        {listed.map((b) => (
+          <li key={b.slug} className={"rb-row" + (b.archived ? " rb-row-archived" : "")}>
+            <div className="rb-row-main">
+              <div className="rb-row-title">
+                {b.title}
+                {b.archived && <span className="muted small"> · archived {b.archivedAt ?? ""}</span>}
+              </div>
+              <div className="rb-row-meta muted small">{b.pageCount ?? b.pages.length} pages</div>
+            </div>
+            <button onClick={() => open(b)}>Open</button>
+          </li>
+        ))}
+        {listed.length === 0 && (
+          <li className="rb-row muted empty">No {showArchived ? "archived " : ""}rulebooks.</li>
+        )}
+      </ul>
+      {archivedBooks.length > 0 && (
+        <div className="rb-archive-toggle">
+          <button className="ghost-btn" onClick={() => setShowArchived((v) => !v)}>
+            {showArchived
+              ? `← Active rulebooks (${activeBooks.length})`
+              : `Show archived versions (${archivedBooks.length}) →`}
+          </button>
+        </div>
+      )}
+    </>
   );
 }
