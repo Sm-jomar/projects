@@ -56,6 +56,13 @@ const SNAP_OPTIONS = [
 
 const HISTORY_LIMIT = 50;
 
+// The deployment where remote multiplayer actually works (the Cloudflare
+// Worker that serves /api/room). The static GitHub Pages site has no room
+// endpoint, so the "Open multiplayer site" button jumps here. Swap this to
+// https://play.eslegion.com once eslegion.com's DNS is on Cloudflare and a
+// custom-domain route is added back to wrangler.jsonc.
+const PLAY_SITE_URL = "https://wrangler.sm-af6.workers.dev";
+
 // One roster entry resolved from a SavedArmy: links the saved entry ID
 // (slot) to the catalog Unit and its card image URL.
 type RosterEntry = {
@@ -922,6 +929,22 @@ function OnlinePanel(props: {
   const connecting = online && (online.status === "connecting" || online.status === "reconnecting");
   const failed = online && (online.status === "error" || online.status === "closed");
 
+  // Whether this page is already served by the multiplayer-capable site.
+  // If not (e.g. the static GitHub Pages mirror), surface a button to jump
+  // there — carrying any ?room= code along so an invite still lands.
+  const onPlaySite = (() => {
+    try {
+      return location.origin === new URL(PLAY_SITE_URL).origin;
+    } catch {
+      return false;
+    }
+  })();
+  function openPlaySite() {
+    const code = online?.code ?? new URLSearchParams(location.search).get("room") ?? "";
+    const url = code ? `${PLAY_SITE_URL}/?room=${encodeURIComponent(code)}` : PLAY_SITE_URL;
+    window.open(url, "_blank", "noopener");
+  }
+
   const shareUrl =
     online?.code
       ? `${location.origin}${location.pathname}?room=${online.code}`
@@ -937,6 +960,18 @@ function OnlinePanel(props: {
         <strong>Remote play</strong>
         <button className="close-btn" onClick={onClosePanel}>×</button>
       </div>
+
+      {!onPlaySite && (
+        <div className="tt-online-site">
+          <button className="pdf-run-btn" onClick={openPlaySite}>
+            Open multiplayer site ↗
+          </button>
+          <p className="muted small tt-online-note">
+            Remote play only works on the multiplayer site. This button opens it
+            in a new tab (carrying your room code if you have one).
+          </p>
+        </div>
+      )}
 
       {!online && (
         <>
