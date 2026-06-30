@@ -751,6 +751,15 @@
   {
     "faction": "generic",
     "kind": "spec-ops",
+    "title": "B2 SUPER BATTLE DROID",
+    "slug": "b2-super-battle-droid",
+    "file": "cards/spec-ops/b2-super-battle-droid.jpg",
+    "source": "spec-ops_small",
+    "points": null
+  },
+  {
+    "faction": "generic",
+    "kind": "spec-ops",
     "title": "BTTLE DR",
     "slug": "battle-droid",
     "file": "cards/spec-ops/battle-droid.jpg",
@@ -886,6 +895,15 @@
   {
     "faction": "generic",
     "kind": "spec-ops",
+    "title": "IG-100 MAGNAGUARD",
+    "slug": "ig-100-magnaguard",
+    "file": "cards/spec-ops/ig-100-magnaguard.jpg",
+    "source": "spec-ops_small",
+    "points": null
+  },
+  {
+    "faction": "generic",
+    "kind": "spec-ops",
     "title": "IMMOBILIZED VEHICLE",
     "slug": "immobilized-vehicle",
     "file": "cards/spec-ops/immobilized-vehicle.jpg",
@@ -934,15 +952,6 @@
     "title": "MAGNAGUARD, Electrowhip",
     "slug": "magnaguard-electrowhip",
     "file": "cards/spec-ops/magnaguard-electrowhip.jpg",
-    "source": "spec-ops_small",
-    "points": null
-  },
-  {
-    "faction": "generic",
-    "kind": "spec-ops",
-    "title": "MAGNAGR, Iarge A",
-    "slug": "magnaguard-large-a",
-    "file": "cards/spec-ops/magnaguard-large-a.jpg",
     "source": "spec-ops_small",
     "points": null
   },
@@ -1066,15 +1075,6 @@
   {
     "faction": "generic",
     "kind": "spec-ops",
-    "title": "SPER BATTLE DR, Ton Me. Btw Ke Ur",
-    "slug": "super-battle-droid-ton-me-btw-ke-ur",
-    "file": "cards/spec-ops/super-battle-droid-ton-me-btw-ke-ur.jpg",
-    "source": "spec-ops_small",
-    "points": null
-  },
-  {
-    "faction": "generic",
-    "kind": "spec-ops",
     "title": "TACTICAL DR",
     "slug": "tactical-droid",
     "file": "cards/spec-ops/tactical-droid.jpg",
@@ -1102,9 +1102,9 @@
   {
     "faction": "generic",
     "kind": "spec-ops",
-    "title": "WKER D",
-    "slug": "worker-d",
-    "file": "cards/spec-ops/worker-d.jpg",
+    "title": "WORKER DROID",
+    "slug": "worker-droid",
+    "file": "cards/spec-ops/worker-droid.jpg",
     "source": "spec-ops_small",
     "points": null
   },
