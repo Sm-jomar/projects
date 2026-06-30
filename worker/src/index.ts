@@ -19,10 +19,17 @@
  *   REPO_OWNER, REPO_NAME, ALLOWED_ORIGIN
  */
 
+import { RoomDO } from "./room";
+
 const FLAG_PATH = "/api/flags";
+// Remote-tabletop room sockets: /api/room/<code>/ws
+const ROOM_PREFIX = "/api/room/";
+
+export { RoomDO };
 
 export interface Env {
   ASSETS: { fetch(request: Request): Promise<Response> };
+  ROOM: DurableObjectNamespace;
   GH_APP_ID: string;
   GH_APP_PRIVATE_KEY: string;
   GH_INSTALLATION_ID: string;
@@ -31,6 +38,9 @@ export interface Env {
   REPO_NAME: string;
   ALLOWED_ORIGIN: string;
 }
+
+// Share codes are 6 chars from an unambiguous alphabet (no 0/O/1/I).
+const CODE_RE = /^[A-Z0-9]{4,12}$/;
 
 function corsHeaders(env: Env): HeadersInit {
   return {
@@ -131,10 +141,34 @@ export default {
     if (url.pathname === FLAG_PATH) {
       return handleFlags(request, env);
     }
+    if (url.pathname.startsWith(ROOM_PREFIX)) {
+      return handleRoom(request, env, url);
+    }
     // Everything else is served by the built SPA.
     return env.ASSETS.fetch(request);
   },
 };
+
+// Route a room WebSocket to its Durable Object. Path is
+//   /api/room/<CODE>/ws
+// The DO is addressed by name == CODE, so the same code always lands on
+// the same object (created on demand).
+function handleRoom(request: Request, env: Env, url: URL): Response | Promise<Response> {
+  const rest = url.pathname.slice(ROOM_PREFIX.length); // "<CODE>/ws"
+  const [code, action] = rest.split("/");
+  if (!code || !CODE_RE.test(code)) {
+    return new Response("bad room code", { status: 400 });
+  }
+  if (action !== "ws") {
+    return new Response("not found", { status: 404 });
+  }
+  if (request.headers.get("Upgrade") !== "websocket") {
+    return new Response("expected websocket", { status: 426 });
+  }
+  const id = env.ROOM.idFromName(code);
+  const stub = env.ROOM.get(id);
+  return stub.fetch(request);
+}
 
 async function handleFlags(request: Request, env: Env): Promise<Response> {
     if (request.method === "OPTIONS") {
