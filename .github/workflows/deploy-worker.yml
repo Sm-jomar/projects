@@ -1,0 +1,74 @@
+name: Deploy Worker (Cloudflare)
+
+# Deploys the Cloudflare Worker — the part that serves the app on the
+# Worker URL AND runs the live multiplayer rooms (the RoomDO Durable
+# Object). This is separate from deploy.yml, which only publishes the
+# static site to GitHub Pages and CANNOT run the Worker / multiplayer.
+#
+# Runs on every push to main, and can be triggered by hand from the
+# Actions tab (Run workflow). It no-ops with a warning until the
+# CLOUDFLARE_API_TOKEN secret is set, so it never fails a commit before
+# you've added credentials.
+#
+# One-time setup (all in the browser):
+#   1. Cloudflare dashboard → My Profile → API Tokens → Create Token →
+#      "Edit Cloudflare Workers" template. Create it, copy the token.
+#   2. Account ID: Cloudflare dashboard → Workers & Pages → copy the
+#      "Account ID" shown on the right.
+#   3. This repo → Settings → Secrets and variables → Actions →
+#      New repository secret:
+#        - CLOUDFLARE_API_TOKEN   = the token from step 1
+#        - CLOUDFLARE_ACCOUNT_ID  = the id from step 2
+#   4. Actions tab → "Deploy Worker (Cloudflare)" → Run workflow.
+#
+# Deploying does NOT touch the Worker's existing secrets (the GitHub-App
+# keys behind /api/flags); those persist across deploys. The RoomDO
+# migration in wrangler.jsonc applies automatically on the first deploy.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Don't pile up Worker deploys if several pushes land together.
+concurrency:
+  group: deploy-worker
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      # Mapped to env so we can gate the deploy step on its presence —
+      # secrets can't be read directly in an `if:` condition.
+      CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Builds dist/client (the SPA the Worker serves via ASSETS) and
+      # dist/wrangler (the Worker bundle).
+      - run: npm run build
+
+      - name: Deploy to Cloudflare
+        if: ${{ env.CF_API_TOKEN != '' }}
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # `wrangler deploy` only; the build already ran above.
+          command: deploy
+
+      - name: Verify multiplayer route
+        if: ${{ env.CF_API_TOKEN != '' }}
+        run: |
+          echo "Worker deployed. The room route should answer 426 (Expected"
+          echo "websocket) on the Worker URL: /api/room/<CODE>/ws"
+
+      - name: No credentials — skipped
+        if: ${{ env.CF_API_TOKEN == '' }}
+        run: |
+          echo "::warning title=Worker not deployed::CLOUDFLARE_API_TOKEN is not set, so the Worker (and multiplayer) was NOT deployed. Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID under Settings → Secrets and variables → Actions, then re-run this workflow."
