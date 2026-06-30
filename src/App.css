@@ -1095,6 +1095,13 @@ input, select {
   color: var(--accent);
 }
 .tt-online-share { align-self: stretch; }
+.tt-online-site {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
 .tt-online-peers {
   display: flex;
   flex-wrap: wrap;
