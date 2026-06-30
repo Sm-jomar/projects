@@ -13,8 +13,21 @@ import { unitById } from "../data/catalog";
 import { cardForUnit } from "../lib/cardLookup";
 import { FACTIONS } from "../lib/factions";
 import type { SavedArmy, Unit } from "../lib/types";
+import {
+  RoomClient, generateRoomCode,
+  type ConnStatus, type Peer, type RoomHandlers,
+} from "../lib/roomClient";
 
 type Props = { onClose: () => void };
+
+// Live-multiplayer connection state surfaced to the UI.
+type OnlineState = {
+  status: ConnStatus;
+  code: string;
+  you: Peer | null;
+  peers: Peer[];
+  error?: string;
+};
 
 const TERRAIN_PRESETS: Array<{ kind: Terrain["kind"]; label: string; width: number; height: number; shape: Terrain["shape"] }> = [
   { kind: "rock",      label: "Rock",      width: 3, height: 2, shape: "circle" },
@@ -107,6 +120,93 @@ export function TabletopPanel({ onClose }: Props) {
     const t = setTimeout(() => saveTabletop(state), 400);
     return () => clearTimeout(t);
   }, [state]);
+
+  // --- Remote play (Durable Object room) -----------------------------------
+  const [online, setOnline] = useState<OnlineState | null>(null);
+  const [onlineOpen, setOnlineOpen] = useState(false);
+  const [joinCode, setJoinCode] = useState(
+    () => new URLSearchParams(location.search).get("room")?.toUpperCase() ?? "",
+  );
+  const roomRef = useRef<RoomClient | null>(null);
+  // Always-fresh state for the seed-on-join callback (which fires outside
+  // the render that owns `state`). Kept in sync via an effect rather than
+  // assigned during render.
+  const stateRef = useRef(state);
+  useEffect(() => { stateRef.current = state; }, [state]);
+  // JSON of the last board we sent OR received, so the outbound sync
+  // effect can tell a local edit (push it) from an echo of a remote one
+  // (skip it) and avoid an infinite relay loop.
+  const remoteEchoRef = useRef<string | null>(null);
+
+  function buildHandlers(): RoomHandlers {
+    return {
+      onStatus: (status, detail) =>
+        setOnline((o) => (o ? { ...o, status, error: detail } : o)),
+      onWelcome: (you, remoteState, peers) => {
+        setOnline((o) => ({
+          status: "open",
+          code: roomRef.current?.code ?? o?.code ?? "",
+          you,
+          peers,
+        }));
+        if (remoteState) {
+          // Joining an existing room — adopt its board.
+          remoteEchoRef.current = JSON.stringify(remoteState);
+          setState(remoteState);
+        } else {
+          // First one in — seed the room with our current board.
+          remoteEchoRef.current = JSON.stringify(stateRef.current);
+          roomRef.current?.sendState(stateRef.current);
+        }
+      },
+      onState: (remoteState) => {
+        remoteEchoRef.current = JSON.stringify(remoteState);
+        setState(remoteState);
+      },
+      onPresence: (peers) => setOnline((o) => (o ? { ...o, peers } : o)),
+    };
+  }
+
+  function hostRoom() {
+    const code = generateRoomCode();
+    startRoom(code);
+  }
+
+  function joinRoom() {
+    const code = joinCode.trim().toUpperCase();
+    if (code.length < 4) return;
+    startRoom(code);
+  }
+
+  function startRoom(code: string) {
+    roomRef.current?.close();
+    remoteEchoRef.current = null;
+    const client = new RoomClient(code, "", buildHandlers());
+    roomRef.current = client;
+    setOnline({ status: "connecting", code: client.code, you: null, peers: [] });
+    client.connect();
+  }
+
+  function leaveRoom() {
+    roomRef.current?.close();
+    roomRef.current = null;
+    remoteEchoRef.current = null;
+    setOnline(null);
+  }
+
+  // Push local board changes to the room. The echo guard skips states
+  // that originated remotely (just applied via setState above).
+  useEffect(() => {
+    const client = roomRef.current;
+    if (!client || online?.status !== "open") return;
+    const js = JSON.stringify(state);
+    if (js === remoteEchoRef.current) return;
+    remoteEchoRef.current = js;
+    client.sendState(state);
+  }, [state, online?.status]);
+
+  // Tear the socket down when the Tabletop closes.
+  useEffect(() => () => roomRef.current?.close(), []);
 
   // Player + army loading. localStorage is synchronous, so we can read the
   // saved-army list straight into initial state — no effect needed.
@@ -365,6 +465,30 @@ export function TabletopPanel({ onClose }: Props) {
             <label className="tt-snap">
               <input type="checkbox" checked={showGrid} onChange={(e) => setShowGrid(e.target.checked)} /> grid
             </label>
+          </div>
+          <div className="tt-online-wrap">
+            <button
+              className={"tt-online-btn" + (online?.status === "open" ? " live" : "")}
+              onClick={() => setOnlineOpen((v) => !v)}
+              title="Play online with a friend"
+            >
+              {online?.status === "open"
+                ? `● ${online.code}`
+                : online
+                  ? "● connecting…"
+                  : "Play online"}
+            </button>
+            {onlineOpen && (
+              <OnlinePanel
+                online={online}
+                joinCode={joinCode}
+                onJoinCodeChange={setJoinCode}
+                onHost={hostRoom}
+                onJoin={joinRoom}
+                onLeave={leaveRoom}
+                onClosePanel={() => setOnlineOpen(false)}
+              />
+            )}
           </div>
           <button className="close-btn" onClick={onClose}>×</button>
         </header>
@@ -780,6 +904,112 @@ function HandRow(props: {
         {remaining}/{hand.cards.length} left
       </span>
       <button className="ghost-btn small" onClick={() => onReset(side)} title="Reshuffle / restore all seven cards">↻</button>
+    </div>
+  );
+}
+
+function OnlinePanel(props: {
+  online: OnlineState | null;
+  joinCode: string;
+  onJoinCodeChange: (v: string) => void;
+  onHost: () => void;
+  onJoin: () => void;
+  onLeave: () => void;
+  onClosePanel: () => void;
+}) {
+  const { online, joinCode, onJoinCodeChange, onHost, onJoin, onLeave, onClosePanel } = props;
+  const connected = online?.status === "open";
+  const connecting = online && (online.status === "connecting" || online.status === "reconnecting");
+  const failed = online && (online.status === "error" || online.status === "closed");
+
+  const shareUrl =
+    online?.code
+      ? `${location.origin}${location.pathname}?room=${online.code}`
+      : "";
+
+  function copy(text: string) {
+    navigator.clipboard?.writeText(text).catch(() => {});
+  }
+
+  return (
+    <div className="tt-online-panel" onClick={(e) => e.stopPropagation()}>
+      <div className="tt-online-head">
+        <strong>Remote play</strong>
+        <button className="close-btn" onClick={onClosePanel}>×</button>
+      </div>
+
+      {!online && (
+        <>
+          <p className="muted small">
+            Play on a shared board with a friend. One person hosts and shares the
+            code; the other joins. Moves, terrain, dice and scores stay in sync.
+          </p>
+          <button className="pdf-run-btn" onClick={onHost}>Host a new game</button>
+          <div className="tt-online-join">
+            <input
+              type="text"
+              placeholder="CODE"
+              value={joinCode}
+              maxLength={12}
+              onChange={(e) => onJoinCodeChange(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))}
+              onKeyDown={(e) => { if (e.key === "Enter") onJoin(); }}
+            />
+            <button onClick={onJoin} disabled={joinCode.trim().length < 4}>Join</button>
+          </div>
+          <p className="muted small tt-online-note">
+            Remote play runs on the Cloudflare Worker deployment. If hosting or
+            joining never connects, you're on the static site — open the app from
+            the Worker URL instead.
+          </p>
+        </>
+      )}
+
+      {online && (
+        <>
+          <div className="tt-online-status-row">
+            <span className={"tt-online-dot " + online.status} />
+            <span>
+              {connected ? "Connected" : connecting ? "Connecting…" : "Disconnected"}
+              {online.you && connected && (
+                <> · you are <b className={"tt-side-" + online.you.color}>{online.you.color}</b></>
+              )}
+            </span>
+          </div>
+
+          <div className="tt-online-code-row">
+            <div className="tt-online-code">{online.code}</div>
+            <button onClick={() => copy(online.code)} title="Copy code">Copy code</button>
+          </div>
+          {shareUrl && (
+            <button className="ghost-btn small tt-online-share" onClick={() => copy(shareUrl)}>
+              Copy invite link
+            </button>
+          )}
+
+          <div className="tt-online-peers">
+            {online.peers.length === 0 ? (
+              <span className="muted small">No one else here yet — share the code.</span>
+            ) : (
+              online.peers.map((p) => (
+                <span key={p.id} className={"tt-online-peer tt-side-" + p.color}>
+                  ● {p.name}
+                  {online.you?.id === p.id && " (you)"}
+                </span>
+              ))
+            )}
+          </div>
+
+          {failed && (
+            <p className="muted small tt-online-note">
+              Couldn't reach the room server. Remote play only works on the
+              Worker deployment — if you're on the static site, reopen the app
+              from the Worker URL. Retrying automatically…
+            </p>
+          )}
+
+          <button className="danger" onClick={onLeave}>Leave game</button>
+        </>
+      )}
     </div>
   );
 }

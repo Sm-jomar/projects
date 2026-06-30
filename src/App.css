@@ -1015,6 +1015,96 @@ input, select {
   min-height: 0;
   border-right: 1px solid var(--border);
 }
+
+/* ----- Remote play (online) ----- */
+.tt-online-wrap { position: relative; }
+.tt-online-btn {
+  font-size: 12px;
+  white-space: nowrap;
+}
+.tt-online-btn.live {
+  border-color: var(--ok);
+  color: var(--ok);
+}
+.tt-online-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 280px;
+  z-index: 50;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.tt-online-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.tt-online-head .close-btn { font-size: 18px; }
+.tt-online-join {
+  display: flex;
+  gap: 6px;
+}
+.tt-online-join input {
+  flex: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  text-align: center;
+}
+.tt-online-note { line-height: 1.4; margin: 0; }
+.tt-online-status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+.tt-online-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--muted);
+  flex-shrink: 0;
+}
+.tt-online-dot.open { background: var(--ok); box-shadow: 0 0 6px var(--ok); }
+.tt-online-dot.connecting,
+.tt-online-dot.reconnecting { background: var(--accent); }
+.tt-online-dot.error,
+.tt-online-dot.closed { background: var(--danger); }
+.tt-online-code-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tt-online-code {
+  flex: 1;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-align: center;
+  padding: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--accent);
+}
+.tt-online-share { align-self: stretch; }
+.tt-online-peers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  font-size: 12px;
+}
+.tt-online-peer { white-space: nowrap; }
+.tt-side-blue { color: #6fa8e6; }
+.tt-side-red { color: #e67a6f; }
+.tt-side-spectator { color: var(--muted); }
 .tt-status-bar {
   display: flex;
   align-items: center;
