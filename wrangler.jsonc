@@ -5,11 +5,15 @@
   "compatibility_date": "2026-05-28",
   // Serve the Worker (app + multiplayer) at a friendly custom domain.
   // custom_domain:true makes `wrangler deploy` create the DNS record and
-  // provision the cert automatically, as long as eslegion.com is a zone
-  // on this Cloudflare account. The workers.dev URL keeps working too.
+  // provision the cert automatically. zone_name is required because
+  // wrangler can't always infer the zone from the hostname. Requires
+  // eslegion.com to be a zone on this Cloudflare account.
   "routes": [
-    { "pattern": "play.eslegion.com", "custom_domain": true }
+    { "pattern": "play.eslegion.com", "custom_domain": true, "zone_name": "eslegion.com" }
   ],
+  // Keep the wrangler.sm-af6.workers.dev URL working as a fallback —
+  // adding `routes` would otherwise disable it by default.
+  "workers_dev": true,
   "observability": {
     "enabled": true
   },
