@@ -63,6 +63,9 @@ const HISTORY_LIMIT = 50;
 // custom-domain route is added back to wrangler.jsonc.
 const PLAY_SITE_URL = "https://wrangler.sm-af6.workers.dev";
 
+// Remembers the player's display name between sessions.
+const NAME_KEY = "legion-tabletop.playername";
+
 // One roster entry resolved from a SavedArmy: links the saved entry ID
 // (slot) to the catalog Unit and its card image URL.
 type RosterEntry = {
@@ -129,11 +132,19 @@ export function TabletopPanel({ onClose }: Props) {
   }, [state]);
 
   // --- Remote play (Durable Object room) -----------------------------------
+  const hasRoomParam = new URLSearchParams(location.search).has("room");
   const [online, setOnline] = useState<OnlineState | null>(null);
-  const [onlineOpen, setOnlineOpen] = useState(false);
+  // Auto-open the panel when arriving via an invite link so the player is
+  // immediately prompted for a name + color before joining.
+  const [onlineOpen, setOnlineOpen] = useState(hasRoomParam);
   const [joinCode, setJoinCode] = useState(
     () => new URLSearchParams(location.search).get("room")?.toUpperCase() ?? "",
   );
+  // Player identity, remembered between sessions. Empty name forces the
+  // prompt; color is the requested side (server honors it if free).
+  const [playerName, setPlayerName] = useState(() => localStorage.getItem(NAME_KEY) ?? "");
+  const [preferredColor, setPreferredColor] = useState<"blue" | "red">("blue");
+  const [colorNote, setColorNote] = useState<string | null>(null);
   const roomRef = useRef<RoomClient | null>(null);
   // Always-fresh state for the seed-on-join callback (which fires outside
   // the render that owns `state`). Kept in sync via an effect rather than
@@ -170,28 +181,55 @@ export function TabletopPanel({ onClose }: Props) {
         remoteEchoRef.current = JSON.stringify(remoteState);
         setState(remoteState);
       },
-      onPresence: (peers) => setOnline((o) => (o ? { ...o, peers } : o)),
+      onPresence: (peers) =>
+        // Refresh the roster and re-derive our own identity (color/name
+        // can change after welcome) by matching the client's id.
+        setOnline((o) => {
+          if (!o) return o;
+          const you = o.you ? peers.find((p) => p.id === o.you!.id) ?? o.you : o.you;
+          return { ...o, peers, you };
+        }),
+      onColorDenied: (color) => {
+        setColorNote(`${color} is already taken by the other player.`);
+        setTimeout(() => setColorNote(null), 3000);
+      },
     };
   }
 
   function hostRoom() {
-    const code = generateRoomCode();
-    startRoom(code);
+    if (!playerName.trim()) return;
+    startRoom(generateRoomCode());
   }
 
   function joinRoom() {
     const code = joinCode.trim().toUpperCase();
-    if (code.length < 4) return;
+    if (code.length < 4 || !playerName.trim()) return;
     startRoom(code);
   }
 
   function startRoom(code: string) {
+    const name = playerName.trim();
+    localStorage.setItem(NAME_KEY, name);
     roomRef.current?.close();
     remoteEchoRef.current = null;
-    const client = new RoomClient(code, "", buildHandlers());
+    const client = new RoomClient(code, name, preferredColor, buildHandlers());
     roomRef.current = client;
     setOnline({ status: "connecting", code: client.code, you: null, peers: [] });
     client.connect();
+  }
+
+  function changeMyColor(color: "blue" | "red") {
+    setPreferredColor(color);
+    roomRef.current?.setColor(color);
+  }
+
+  function renameMe(name: string) {
+    setPlayerName(name);
+    const trimmed = name.trim();
+    if (trimmed) {
+      localStorage.setItem(NAME_KEY, trimmed);
+      roomRef.current?.setName(trimmed);
+    }
   }
 
   function leaveRoom() {
@@ -199,6 +237,7 @@ export function TabletopPanel({ onClose }: Props) {
     roomRef.current = null;
     remoteEchoRef.current = null;
     setOnline(null);
+    setColorNote(null);
   }
 
   // Push local board changes to the room. The echo guard skips states
@@ -490,8 +529,15 @@ export function TabletopPanel({ onClose }: Props) {
                 online={online}
                 joinCode={joinCode}
                 onJoinCodeChange={setJoinCode}
+                playerName={playerName}
+                onNameChange={setPlayerName}
+                preferredColor={preferredColor}
+                onPreferredColorChange={setPreferredColor}
+                colorNote={colorNote}
                 onHost={hostRoom}
                 onJoin={joinRoom}
+                onChangeColor={changeMyColor}
+                onRename={renameMe}
                 onLeave={leaveRoom}
                 onClosePanel={() => setOnlineOpen(false)}
               />
@@ -919,15 +965,33 @@ function OnlinePanel(props: {
   online: OnlineState | null;
   joinCode: string;
   onJoinCodeChange: (v: string) => void;
+  playerName: string;
+  onNameChange: (v: string) => void;
+  preferredColor: "blue" | "red";
+  onPreferredColorChange: (c: "blue" | "red") => void;
+  colorNote: string | null;
   onHost: () => void;
   onJoin: () => void;
+  onChangeColor: (c: "blue" | "red") => void;
+  onRename: (name: string) => void;
   onLeave: () => void;
   onClosePanel: () => void;
 }) {
-  const { online, joinCode, onJoinCodeChange, onHost, onJoin, onLeave, onClosePanel } = props;
+  const {
+    online, joinCode, onJoinCodeChange, playerName, onNameChange,
+    preferredColor, onPreferredColorChange, colorNote,
+    onHost, onJoin, onChangeColor, onRename, onLeave, onClosePanel,
+  } = props;
   const connected = online?.status === "open";
   const connecting = online && (online.status === "connecting" || online.status === "reconnecting");
   const failed = online && (online.status === "error" || online.status === "closed");
+  const nameOk = playerName.trim().length > 0;
+  // Colors held by OTHER players — used to disable those swap buttons.
+  const takenByOthers = new Set(
+    (online?.peers ?? [])
+      .filter((p) => p.id !== online?.you?.id)
+      .map((p) => p.color),
+  );
 
   // Whether this page is already served by the multiplayer-capable site.
   // If not (e.g. the static GitHub Pages mirror), surface a button to jump
@@ -979,7 +1043,42 @@ function OnlinePanel(props: {
             Play on a shared board with a friend. One person hosts and shares the
             code; the other joins. Moves, terrain, dice and scores stay in sync.
           </p>
-          <button className="pdf-run-btn" onClick={onHost}>Host a new game</button>
+
+          <label className="tt-online-field">
+            Your name
+            <input
+              type="text"
+              placeholder="e.g. Sam"
+              value={playerName}
+              maxLength={24}
+              autoFocus
+              onChange={(e) => onNameChange(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key !== "Enter" || !nameOk) return;
+                if (joinCode.trim().length >= 4) onJoin();
+                else onHost();
+              }}
+            />
+          </label>
+
+          <div className="tt-online-field">
+            <span>Play as</span>
+            <div className="tt-color-choice">
+              {(["blue", "red"] as const).map((c) => (
+                <button
+                  key={c}
+                  className={"tt-color-btn tt-side-" + c + (preferredColor === c ? " active" : "")}
+                  onClick={() => onPreferredColorChange(c)}
+                >
+                  {preferredColor === c ? "● " : ""}{c[0]!.toUpperCase() + c.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <button className="pdf-run-btn" onClick={onHost} disabled={!nameOk}>
+            Host a new game
+          </button>
           <div className="tt-online-join">
             <input
               type="text"
@@ -987,14 +1086,14 @@ function OnlinePanel(props: {
               value={joinCode}
               maxLength={12}
               onChange={(e) => onJoinCodeChange(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))}
-              onKeyDown={(e) => { if (e.key === "Enter") onJoin(); }}
+              onKeyDown={(e) => { if (e.key === "Enter" && nameOk) onJoin(); }}
             />
-            <button onClick={onJoin} disabled={joinCode.trim().length < 4}>Join</button>
+            <button onClick={onJoin} disabled={joinCode.trim().length < 4 || !nameOk}>Join</button>
           </div>
+          {!nameOk && <p className="muted small">Enter a name to host or join.</p>}
           <p className="muted small tt-online-note">
-            Remote play runs on the Cloudflare Worker deployment. If hosting or
-            joining never connects, you're on the static site — open the app from
-            the Worker URL instead.
+            Your preferred color is granted if it's free; otherwise you get the
+            other side and can swap once it opens up.
           </p>
         </>
       )}
@@ -1010,6 +1109,44 @@ function OnlinePanel(props: {
               )}
             </span>
           </div>
+
+          {connected && (
+            <>
+              <label className="tt-online-field">
+                Your name
+                <input
+                  type="text"
+                  value={playerName}
+                  maxLength={24}
+                  onChange={(e) => onNameChange(e.target.value)}
+                  onBlur={() => onRename(playerName)}
+                  onKeyDown={(e) => { if (e.key === "Enter") onRename(playerName); }}
+                />
+              </label>
+              <div className="tt-online-field">
+                <span>Your color</span>
+                <div className="tt-color-choice">
+                  {(["blue", "red"] as const).map((c) => {
+                    const isMine = online.you?.color === c;
+                    const taken = takenByOthers.has(c);
+                    return (
+                      <button
+                        key={c}
+                        className={"tt-color-btn tt-side-" + c + (isMine ? " active" : "")}
+                        disabled={taken && !isMine}
+                        title={taken && !isMine ? `${c} is taken` : `Play as ${c}`}
+                        onClick={() => onChangeColor(c)}
+                      >
+                        {isMine ? "● " : ""}{c[0]!.toUpperCase() + c.slice(1)}
+                        {taken && !isMine ? " ✕" : ""}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+              {colorNote && <p className="muted small tt-online-warn">{colorNote}</p>}
+            </>
+          )}
 
           <div className="tt-online-code-row">
             <div className="tt-online-code">{online.code}</div>

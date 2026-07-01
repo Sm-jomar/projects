@@ -33,6 +33,7 @@ type ClientMsg =
   | { t: "state"; state: unknown }
   | { t: "cursor"; x: number; y: number }
   | { t: "name"; name: string }
+  | { t: "setColor"; color: string }
   | { t: "dice"; entry: unknown }
   | { t: "ping" };
 
@@ -54,10 +55,10 @@ export class RoomDO extends DurableObject<RoomEnv> {
     const client = pair[0];
     const server = pair[1];
 
-    // Pick a free player color. blue is the host (first in), red is the
-    // opponent, everyone after is a spectator.
-    const color = this.pickColor();
+    // Honor the player's requested color when it's free; otherwise fall
+    // back to the first open slot (blue, then red), then spectator.
     const url = new URL(request.url);
+    const color = this.pickColor(url.searchParams.get("color"));
     const name = (url.searchParams.get("name") || "").slice(0, 24) || defaultName(color);
     const att: Attachment = { id: randomId(), color, name };
 
@@ -115,6 +116,28 @@ export class RoomDO extends DurableObject<RoomEnv> {
         this.broadcastPresence(null);
         break;
       }
+      case "setColor": {
+        const want = msg.color;
+        if (want !== "blue" && want !== "red" && want !== "spectator") break;
+        // A blue/red slot can only be held by one socket at a time. If
+        // someone else has it, deny the change so the requester keeps
+        // their current color.
+        if (want === "blue" || want === "red") {
+          for (const other of this.ctx.getWebSockets()) {
+            if (other === ws) continue;
+            const a2 = other.deserializeAttachment() as Attachment | null;
+            if (a2 && a2.color === want) {
+              this.send(ws, { t: "colorDenied", color: want });
+              return;
+            }
+          }
+        }
+        ws.serializeAttachment({ ...att, color: want });
+        // The requester learns its new color from the presence roster
+        // (it can match itself by id), and everyone sees the swap.
+        this.broadcastPresence(null);
+        break;
+      }
       case "ping":
         this.send(ws, { t: "pong" });
         break;
@@ -136,11 +159,14 @@ export class RoomDO extends DurableObject<RoomEnv> {
 
   // --- helpers ----------------------------------------------------------
 
-  private pickColor(): PlayerColor {
+  private pickColor(preferred?: string | null): PlayerColor {
     const taken = new Set<PlayerColor>();
     for (const ws of this.ctx.getWebSockets()) {
       const att = ws.deserializeAttachment() as Attachment | null;
       if (att) taken.add(att.color);
+    }
+    if ((preferred === "blue" || preferred === "red") && !taken.has(preferred)) {
+      return preferred;
     }
     if (!taken.has("blue")) return "blue";
     if (!taken.has("red")) return "red";
