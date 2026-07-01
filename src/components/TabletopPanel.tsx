@@ -15,7 +15,7 @@ import { FACTIONS } from "../lib/factions";
 import type { SavedArmy, Unit } from "../lib/types";
 import {
   RoomClient, generateRoomCode,
-  type ConnStatus, type Peer, type RoomHandlers,
+  type ConnStatus, type Peer, type RoomHandlers, type PlayerColor,
 } from "../lib/roomClient";
 
 type Props = { onClose: () => void };
@@ -110,7 +110,12 @@ export function TabletopPanel({ onClose }: Props) {
     setHistLen(h.length);
   }
 
+  // Spectators are watch-only. Read via a ref so commit (defined before
+  // the `online` state) can see the current value.
+  const readOnlyRef = useRef(false);
+
   function commit(next: TabletopState) {
+    if (readOnlyRef.current) return;
     pushHistory(state);
     setState(next);
   }
@@ -143,9 +148,14 @@ export function TabletopPanel({ onClose }: Props) {
   // Player identity, remembered between sessions. Empty name forces the
   // prompt; color is the requested side (server honors it if free).
   const [playerName, setPlayerName] = useState(() => localStorage.getItem(NAME_KEY) ?? "");
-  const [preferredColor, setPreferredColor] = useState<"blue" | "red">("blue");
+  const [preferredColor, setPreferredColor] = useState<PlayerColor>("blue");
   const [colorNote, setColorNote] = useState<string | null>(null);
   const roomRef = useRef<RoomClient | null>(null);
+
+  // Watch-only when connected as a spectator. Kept in a ref (above) so the
+  // early-defined commit() can honor it without a stale-closure hazard.
+  const readOnly = online?.status === "open" && online.you?.color === "spectator";
+  useEffect(() => { readOnlyRef.current = !!readOnly; }, [readOnly]);
   // Always-fresh state for the seed-on-join callback (which fires outside
   // the render that owns `state`). Kept in sync via an effect rather than
   // assigned during render.
@@ -218,7 +228,7 @@ export function TabletopPanel({ onClose }: Props) {
     client.connect();
   }
 
-  function changeMyColor(color: "blue" | "red") {
+  function changeMyColor(color: PlayerColor) {
     setPreferredColor(color);
     roomRef.current?.setColor(color);
   }
@@ -241,15 +251,16 @@ export function TabletopPanel({ onClose }: Props) {
   }
 
   // Push local board changes to the room. The echo guard skips states
-  // that originated remotely (just applied via setState above).
+  // that originated remotely (just applied via setState above). Spectators
+  // never push — the server ignores them anyway, but this avoids the noise.
   useEffect(() => {
     const client = roomRef.current;
-    if (!client || online?.status !== "open") return;
+    if (!client || online?.status !== "open" || readOnly) return;
     const js = JSON.stringify(state);
     if (js === remoteEchoRef.current) return;
     remoteEchoRef.current = js;
     client.sendState(state);
-  }, [state, online?.status]);
+  }, [state, online?.status, readOnly]);
 
   // Tear the socket down when the Tabletop closes.
   useEffect(() => () => roomRef.current?.close(), []);
@@ -548,7 +559,12 @@ export function TabletopPanel({ onClose }: Props) {
 
         <div className="tabletop-body">
           <div className="tt-canvas-col">
-            <div className="tt-status-bar">
+            {readOnly && (
+              <div className="tt-spectating-bar">
+                👁 Spectating — you can watch, pan and measure, but not change the board.
+              </div>
+            )}
+            <div className={"tt-status-bar" + (readOnly ? " readonly" : "")}>
               <div className="tt-status-group">
                 <span className="tt-status-label">Round</span>
                 <button onClick={() => commit({ ...state, round: Math.max(1, state.round - 1) })} aria-label="Previous round">−</button>
@@ -589,12 +605,13 @@ export function TabletopPanel({ onClose }: Props) {
                 onDragStart={() => pushHistory(state)}
                 onToggleActivated={toggleActivated}
                 onTemplateUpdate={updateTemplate}
+                readOnly={readOnly}
               />
 
               {/* Command card hands docked beneath the canvas — one row
                   per side. Click a pip to mark it played; click again to
                   bring it back. The yellow ring marks this round's pick. */}
-              <div className="tt-hands">
+              <div className={"tt-hands" + (readOnly ? " readonly" : "")}>
                 <HandRow side="blue" hand={state.hands.blue}
                   onTogglePlayed={togglePlayed}
                   onPickRound={pickThisRound}
@@ -614,7 +631,13 @@ export function TabletopPanel({ onClose }: Props) {
             </div>
 
             {sidebar === "setup" ? (
-              <div className="tt-setup">
+              <div className={"tt-setup" + (readOnly ? " readonly" : "")}>
+                {readOnly && (
+                  <p className="tt-spectating-note">
+                    👁 Spectating — board editing is disabled. Switch to Blue or Red
+                    in <b>Play online</b> to take a side.
+                  </p>
+                )}
                 <section>
                   <h3>Your army</h3>
                   {loadedArmy ? (
@@ -967,12 +990,12 @@ function OnlinePanel(props: {
   onJoinCodeChange: (v: string) => void;
   playerName: string;
   onNameChange: (v: string) => void;
-  preferredColor: "blue" | "red";
-  onPreferredColorChange: (c: "blue" | "red") => void;
+  preferredColor: PlayerColor;
+  onPreferredColorChange: (c: PlayerColor) => void;
   colorNote: string | null;
   onHost: () => void;
   onJoin: () => void;
-  onChangeColor: (c: "blue" | "red") => void;
+  onChangeColor: (c: PlayerColor) => void;
   onRename: (name: string) => void;
   onLeave: () => void;
   onClosePanel: () => void;
@@ -1064,7 +1087,7 @@ function OnlinePanel(props: {
           <div className="tt-online-field">
             <span>Play as</span>
             <div className="tt-color-choice">
-              {(["blue", "red"] as const).map((c) => (
+              {(["blue", "red", "spectator"] as const).map((c) => (
                 <button
                   key={c}
                   className={"tt-color-btn tt-side-" + c + (preferredColor === c ? " active" : "")}
@@ -1126,9 +1149,10 @@ function OnlinePanel(props: {
               <div className="tt-online-field">
                 <span>Your color</span>
                 <div className="tt-color-choice">
-                  {(["blue", "red"] as const).map((c) => {
+                  {(["blue", "red", "spectator"] as const).map((c) => {
                     const isMine = online.you?.color === c;
-                    const taken = takenByOthers.has(c);
+                    // Spectator is shared (many allowed); blue/red are exclusive.
+                    const taken = c !== "spectator" && takenByOthers.has(c);
                     return (
                       <button
                         key={c}

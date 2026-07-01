@@ -72,11 +72,14 @@ type Props = {
   onToggleActivated?: (tokenId: string) => void;
   /** Called while the user is bending a movement-template joint. */
   onTemplateUpdate?: (template: MoveTemplate) => void;
+  /** Watch-only mode (spectator): tokens/terrain/templates can't be moved
+   * or activated, but pan, zoom, selection and the ruler still work. */
+  readOnly?: boolean;
 };
 
 export function TabletopCanvas({
   state, onState, tool, snapInches, showGrid, selectedId, onSelect,
-  onDropPayload, onDragStart, onToggleActivated, onTemplateUpdate,
+  onDropPayload, onDragStart, onToggleActivated, onTemplateUpdate, readOnly = false,
 }: Props) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -156,8 +159,11 @@ export function TabletopCanvas({
     if (tool === "ruler" || tool === "pan") return;
     if (touchRef.current.mode === "pinch") return;
     e.stopPropagation();
-    wrapRef.current?.setPointerCapture(e.pointerId);
     onSelect(item.id);
+    // Watch-only: selecting a piece (to see its range rings) is fine, but
+    // don't begin a drag that would move it.
+    if (readOnly) return;
+    wrapRef.current?.setPointerCapture(e.pointerId);
     onDragStart?.();
     const inches = clientToMapInches(e.clientX, e.clientY);
     setDrag({ kind: "item", itemId: item.id, itemType, offsetX: inches.x - item.x, offsetY: inches.y - item.y });
@@ -387,7 +393,7 @@ export function TabletopCanvas({
             return (
               <g key={tk.id} data-item="token"
                  onPointerDown={(e) => onItemPointerDown(e, tk, "token")}
-                 onDoubleClick={(e) => { e.stopPropagation(); onToggleActivated?.(tk.id); }}
+                 onDoubleClick={(e) => { e.stopPropagation(); if (!readOnly) onToggleActivated?.(tk.id); }}
                  style={{ cursor: "grab" }}>
                 {/* Body dims once activated; badges stay full-opacity. */}
                 <g opacity={tk.activated ? 0.45 : 1}>
@@ -500,6 +506,7 @@ export function TabletopCanvas({
                 style={{ cursor: "grab" }}
                 onPointerDown={(e) => {
                   e.stopPropagation();
+                  if (readOnly) return;
                   wrapRef.current?.setPointerCapture(e.pointerId);
                   onDragStart?.();
                   setDrag({ kind: "template-joint", jointIndex: i });

@@ -95,6 +95,11 @@ export class RoomDO extends DurableObject<RoomEnv> {
 
     switch (msg.t) {
       case "state": {
+        // Spectators are watch-only: never let their board changes
+        // persist or reach other players. This is the authoritative
+        // guard — the client also locks its UI, but this stops a
+        // tampered client too.
+        if (att.color === "spectator") return;
         // Persist + relay. Cap stored size so a bad client can't blow up
         // the object's storage.
         const json = JSON.stringify(msg.state);
@@ -160,6 +165,9 @@ export class RoomDO extends DurableObject<RoomEnv> {
   // --- helpers ----------------------------------------------------------
 
   private pickColor(preferred?: string | null): PlayerColor {
+    // An explicit spectator request is always honored (any number of
+    // spectators allowed).
+    if (preferred === "spectator") return "spectator";
     const taken = new Set<PlayerColor>();
     for (const ws of this.ctx.getWebSockets()) {
       const att = ws.deserializeAttachment() as Attachment | null;
