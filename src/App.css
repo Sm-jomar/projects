@@ -1133,9 +1133,45 @@ input, select {
   border-color: #e67a6f;
   background: rgba(230, 122, 111, 0.15);
 }
+.tt-color-btn.tt-side-spectator { color: var(--muted); }
+.tt-color-btn.tt-side-spectator.active {
+  border-color: var(--muted);
+  background: rgba(139, 148, 168, 0.15);
+  color: var(--text);
+}
 .tt-online-warn {
   color: var(--accent);
   margin: 0;
+}
+
+/* ----- Spectator (watch-only) ----- */
+.tt-spectating-bar {
+  padding: 6px 12px;
+  background: rgba(139, 148, 168, 0.14);
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-size: 12px;
+  text-align: center;
+}
+.tt-spectating-note {
+  margin: 0 0 8px;
+  padding: 8px 10px;
+  background: rgba(139, 148, 168, 0.12);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+/* Disable interactive controls while spectating, but keep readouts legible. */
+.tt-status-bar.readonly button {
+  pointer-events: none;
+  opacity: 0.35;
+}
+.tt-setup.readonly section,
+.tt-hands.readonly {
+  pointer-events: none;
+  opacity: 0.5;
 }
 .tt-online-peers {
   display: flex;
