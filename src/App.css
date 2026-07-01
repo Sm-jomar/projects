@@ -1102,6 +1102,41 @@ input, select {
   padding-bottom: 8px;
   border-bottom: 1px solid var(--border);
 }
+.tt-online-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.tt-online-field input[type="text"] {
+  font-size: 14px;
+  padding: 7px 9px;
+}
+.tt-color-choice {
+  display: flex;
+  gap: 6px;
+}
+.tt-color-btn {
+  flex: 1;
+  padding: 7px 10px;
+  font-weight: 700;
+  border-width: 2px;
+}
+.tt-color-btn.tt-side-blue { color: #6fa8e6; }
+.tt-color-btn.tt-side-red { color: #e67a6f; }
+.tt-color-btn.tt-side-blue.active {
+  border-color: #6fa8e6;
+  background: rgba(111, 168, 230, 0.15);
+}
+.tt-color-btn.tt-side-red.active {
+  border-color: #e67a6f;
+  background: rgba(230, 122, 111, 0.15);
+}
+.tt-online-warn {
+  color: var(--accent);
+  margin: 0;
+}
 .tt-online-peers {
   display: flex;
   flex-wrap: wrap;

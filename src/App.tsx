@@ -52,7 +52,11 @@ export default function App() {
   const [showSaved, setShowSaved] = useState(false);
   const [showReference, setShowReference] = useState(false);
   const [showRegisters, setShowRegisters] = useState(false);
-  const [showTabletop, setShowTabletop] = useState(false);
+  // Auto-open the Tabletop when arriving on a multiplayer invite link
+  // (?room=CODE) so the join + name/color prompt appears immediately.
+  const [showTabletop, setShowTabletop] = useState(
+    () => new URLSearchParams(window.location.search).has("room"),
+  );
   const [showPdfImporter, setShowPdfImporter] = useState(false);
   const [savedToast, setSavedToast] = useState<string | null>(null);
   const [lastAutoExport, setLastAutoExportState] = useState<number | null>(() =>

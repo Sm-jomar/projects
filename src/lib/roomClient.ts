@@ -23,6 +23,8 @@ export type RoomHandlers = {
   onCursor?: (id: string, color: PlayerColor, x: number, y: number) => void;
   onPresence?: (peers: Peer[]) => void;
   onDice?: (id: string, color: PlayerColor, entry: unknown) => void;
+  /** The server refused a color change because another player holds it. */
+  onColorDenied?: (color: PlayerColor) => void;
 };
 
 const STATE_THROTTLE_MS = 60;
@@ -40,7 +42,7 @@ export function generateRoomCode(len = 6): string {
   return out;
 }
 
-function roomWsUrl(code: string, name: string): string {
+function roomWsUrl(code: string, name: string, color: string): string {
   const override = import.meta.env.VITE_ROOM_ORIGIN as string | undefined;
   let base: string;
   if (override) {
@@ -49,13 +51,17 @@ function roomWsUrl(code: string, name: string): string {
     const proto = location.protocol === "https:" ? "wss:" : "ws:";
     base = `${proto}//${location.host}`;
   }
-  const q = name ? `?name=${encodeURIComponent(name)}` : "";
-  return `${base}/api/room/${encodeURIComponent(code)}/ws${q}`;
+  const params = new URLSearchParams();
+  if (name) params.set("name", name);
+  if (color) params.set("color", color);
+  const q = params.toString();
+  return `${base}/api/room/${encodeURIComponent(code)}/ws${q ? `?${q}` : ""}`;
 }
 
 export class RoomClient {
   readonly code: string;
   private name: string;
+  private preferredColor: string;
   private handlers: RoomHandlers;
   private ws: WebSocket | null = null;
   private closedByUser = false;
@@ -69,9 +75,10 @@ export class RoomClient {
 
   you: Peer | null = null;
 
-  constructor(code: string, name: string, handlers: RoomHandlers) {
+  constructor(code: string, name: string, preferredColor: string, handlers: RoomHandlers) {
     this.code = code.toUpperCase();
     this.name = name;
+    this.preferredColor = preferredColor;
     this.handlers = handlers;
   }
 
@@ -84,7 +91,7 @@ export class RoomClient {
     this.handlers.onStatus?.(this.reconnectAttempts > 0 ? "reconnecting" : "connecting");
     let ws: WebSocket;
     try {
-      ws = new WebSocket(roomWsUrl(this.code, this.name));
+      ws = new WebSocket(roomWsUrl(this.code, this.name, this.preferredColor));
     } catch (err) {
       this.handlers.onStatus?.("error", String((err as Error).message));
       this.scheduleReconnect();
@@ -143,11 +150,22 @@ export class RoomClient {
           Number(msg.x), Number(msg.y),
         );
         break;
-      case "presence":
-        this.handlers.onPresence?.((msg.peers ?? []) as Peer[]);
+      case "presence": {
+        const peers = (msg.peers ?? []) as Peer[];
+        // Keep our own cached identity in sync — color/name can change
+        // after the initial welcome.
+        if (this.you) {
+          const mine = peers.find((p) => p.id === this.you!.id);
+          if (mine) this.you = mine;
+        }
+        this.handlers.onPresence?.(peers);
         break;
+      }
       case "dice":
         this.handlers.onDice?.(String(msg.id), msg.color as PlayerColor, msg.entry);
+        break;
+      case "colorDenied":
+        this.handlers.onColorDenied?.(msg.color as PlayerColor);
         break;
     }
   }
@@ -183,6 +201,12 @@ export class RoomClient {
   setName(name: string): void {
     this.name = name;
     this.raw({ t: "name", name });
+  }
+
+  setColor(color: PlayerColor): void {
+    // Remembered so a reconnect re-requests the same slot.
+    this.preferredColor = color;
+    this.raw({ t: "setColor", color });
   }
 
   private raw(obj: unknown): void {
