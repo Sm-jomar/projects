@@ -101,7 +101,19 @@ input, select {
 }
 .app-title { display: flex; align-items: baseline; gap: 12px; }
 .app-title h1 { font-size: 18px; margin: 0; }
-.app-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.app-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; align-items: center; }
+/* Anchor styled to match the header buttons so "Home" navigates to the hub. */
+.app-home-btn {
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.app-home-btn:hover { background: #2b3142; border-color: #3a4154; }
 
 .main {
   flex: 1;
