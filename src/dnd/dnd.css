@@ -1,0 +1,246 @@
+.dnd-app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.dnd-app-loading { padding: 40px; text-align: center; color: var(--muted); }
+
+/* ----- Header / nav ----- */
+.dnd-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 10px 18px;
+  background: var(--panel);
+  border-bottom: 2px solid var(--dnd-accent);
+}
+.dnd-brand { display: flex; align-items: baseline; gap: 10px; }
+.dnd-brand h1 { font-size: 20px; margin: 0; color: var(--dnd-accent-2); }
+.dnd-home-link {
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 18px;
+  align-self: center;
+}
+.dnd-home-link:hover { color: var(--text); }
+.dnd-nav { display: flex; gap: 6px; flex: 1; flex-wrap: wrap; }
+.dnd-nav-btn { font-size: 13px; }
+.dnd-nav-btn.active {
+  border-color: var(--dnd-accent-2);
+  color: var(--dnd-accent-2);
+}
+.dnd-cross-link {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.dnd-cross-link:hover { color: var(--accent); }
+
+.dnd-main { flex: 1; min-height: 0; overflow: auto; padding: 18px; }
+
+/* ----- Generic section chrome ----- */
+.dnd-section { max-width: 1100px; margin: 0 auto; }
+.dnd-section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.dnd-section-head h2 { margin: 0; font-size: 20px; flex: 1; }
+.dnd-primary {
+  border-color: var(--dnd-accent-2);
+  color: var(--dnd-accent-2);
+  font-weight: 600;
+}
+.dnd-autosave { flex: 1; text-align: right; }
+.dnd-coming-soon {
+  padding: 32px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ----- Card lists (characters) ----- */
+.dnd-card-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.dnd-card-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.dnd-card-main { flex: 1; min-width: 0; }
+.dnd-card-title { font-weight: 600; font-size: 15px; }
+.dnd-card-actions { display: flex; gap: 6px; }
+
+/* ----- Character sheet ----- */
+.dnd-sheet-header {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+.dnd-name-field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+.dnd-name-field span { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.dnd-name-field input { font-size: 20px; font-weight: 700; padding: 8px 10px; }
+.dnd-header-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+}
+.dnd-field { display: flex; flex-direction: column; gap: 3px; }
+.dnd-field > span { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+.dnd-field.compact input { padding: 4px 8px; }
+.dnd-mini-field { display: flex; flex-direction: column; gap: 3px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+.dnd-mini-field input, .dnd-mini-field select { text-transform: none; }
+
+.dnd-sheet-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  align-items: start;
+}
+@media (max-width: 900px) { .dnd-sheet-cols { grid-template-columns: 1fr; } }
+.dnd-sheet-col { display: flex; flex-direction: column; gap: 12px; }
+
+.dnd-inspiration-prof {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+.dnd-check { display: flex; align-items: center; gap: 6px; }
+.dnd-prof-field { display: flex; flex-direction: column; gap: 3px; font-size: 11px; text-transform: uppercase; color: var(--muted); }
+.dnd-prof-field input { width: 56px; text-align: center; }
+
+.dnd-abilities {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.dnd-ability {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 4px;
+}
+.dnd-ability-name { font-size: 11px; letter-spacing: 0.08em; color: var(--muted); }
+.dnd-ability-score { width: 54px; text-align: center; font-size: 18px; font-weight: 700; padding: 4px; }
+.dnd-ability-mod {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--dnd-accent-2);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1px 12px;
+  margin-top: 2px;
+}
+
+.dnd-box {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 0;
+}
+.dnd-box legend { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); padding: 0 4px; }
+.dnd-prof-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+  font-size: 13px;
+}
+.dnd-prof-total {
+  min-width: 30px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  color: var(--dnd-accent-2);
+}
+.dnd-passive { display: flex; align-items: center; justify-content: space-between; font-size: 13px; }
+.dnd-passive b { font-size: 18px; }
+
+.dnd-combat-top { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.dnd-combat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 4px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.dnd-combat-box b { font-size: 20px; color: var(--text); }
+.dnd-combat-box input { width: 60px; text-align: center; font-size: 18px; font-weight: 700; }
+.dnd-hp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
+.dnd-death-saves { margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+.dnd-death-row { display: flex; align-items: center; justify-content: space-between; }
+.dnd-death-pips { display: flex; gap: 6px; }
+.dnd-pip {
+  width: 18px; height: 18px; border-radius: 50%;
+  padding: 0; border: 1px solid var(--border); background: var(--bg);
+}
+.dnd-death-pips.ok .dnd-pip.filled { background: var(--ok); border-color: var(--ok); }
+.dnd-death-pips.bad .dnd-pip.filled { background: var(--danger); border-color: var(--danger); }
+
+.dnd-attacks { display: flex; flex-direction: column; gap: 4px; }
+.dnd-attack-head, .dnd-attack-row {
+  display: grid;
+  grid-template-columns: 1.4fr 0.6fr 1.6fr 24px;
+  gap: 6px;
+  align-items: center;
+}
+.dnd-attack-head { font-size: 10px; text-transform: uppercase; color: var(--muted); }
+.dnd-attack-row input { padding: 4px 6px; }
+.dnd-attack-row .danger { padding: 2px 6px; }
+
+.dnd-spell-grid { display: grid; grid-template-columns: 1fr 0.7fr 0.7fr 0.7fr; gap: 6px; margin-bottom: 8px; }
+.dnd-coin { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.dnd-coin input { text-align: center; }
+
+.dnd-textarea textarea { width: 100%; }
+
+/* ----- DM notes ----- */
+.dnd-notes-body { display: grid; grid-template-columns: 220px 1fr; gap: 12px; min-height: 420px; }
+@media (max-width: 720px) { .dnd-notes-body { grid-template-columns: 1fr; } }
+.dnd-notes-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.dnd-notes-item {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 10px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.dnd-notes-item.active { border-color: var(--dnd-accent-2); }
+.dnd-notes-item-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+.dnd-notes-del { padding: 0 6px; font-size: 14px; line-height: 1; }
+.dnd-notes-editor {
+  display: flex; flex-direction: column; gap: 8px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+}
+.dnd-notes-title { font-size: 16px; font-weight: 700; }
+.dnd-notes-text { flex: 1; min-height: 340px; line-height: 1.5; }

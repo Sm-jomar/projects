@@ -1,0 +1,57 @@
+.landing {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  gap: 32px;
+}
+.landing-head { text-align: center; }
+.landing-head h1 {
+  margin: 0;
+  font-size: 44px;
+  letter-spacing: 0.02em;
+}
+.landing-head p { margin: 8px 0 0; font-size: 16px; }
+
+.landing-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(260px, 340px));
+  gap: 24px;
+  width: 100%;
+  max-width: 760px;
+}
+@media (max-width: 680px) {
+  .landing-grid { grid-template-columns: 1fr; }
+}
+
+.landing-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 220px;
+  padding: 24px;
+  border-radius: 14px;
+  border: 2px solid var(--border);
+  background: var(--panel);
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.12s ease, border-color 0.12s ease;
+}
+.landing-card:hover { transform: translateY(-4px); }
+.landing-card h2 { margin: 0 0 10px; font-size: 24px; }
+.landing-card p { margin: 0; color: var(--muted); line-height: 1.5; }
+.landing-card-go {
+  margin-top: 20px;
+  font-weight: 700;
+  font-size: 15px;
+  align-self: flex-end;
+}
+.landing-card.legion:hover { border-color: var(--accent); }
+.landing-card.legion .landing-card-go { color: var(--accent); }
+.landing-card.dnd:hover { border-color: var(--dnd-accent-2); }
+.landing-card.dnd .landing-card-go { color: var(--dnd-accent-2); }
+.landing-card.dnd h2 { color: var(--dnd-accent-2); }
+
+.landing-foot { margin-top: 8px; }
