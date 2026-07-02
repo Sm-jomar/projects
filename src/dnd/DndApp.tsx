@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./dnd.css";
 import { CharacterSheets } from "./CharacterSheets";
 import { DmNotes } from "./DmNotes";
+import { DndTabletop } from "./DndTabletop";
 import { legionUrl, homeUrl } from "../lib/appRouting";
 
 type Section = "characters" | "notes" | "rulebooks" | "tabletop";
@@ -41,8 +42,7 @@ export function DndApp() {
         {section === "notes" && <DmNotes />}
         {section === "rulebooks" && <ComingSoon title="Rulebooks"
           note="Import your own D&D PDFs and browse them here. This will reuse the same PDF importer + rulebook viewer built for Legion." />}
-        {section === "tabletop" && <ComingSoon title="Tabletop"
-          note="A dungeon-map play surface where players load their character sheets, with live multiplayer over the same room server used by Legion. Coming in the next update." />}
+        {section === "tabletop" && <DndTabletop />}
       </main>
     </div>
   );
