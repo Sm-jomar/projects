@@ -22,6 +22,7 @@ import {
   saveArmy,
 } from "./lib/storage";
 import { autoExportFlags, getLastAutoExport } from "./lib/flags";
+import { homeUrl } from "./lib/appRouting";
 
 const AUTO_EXPORT_INTERVAL_MS = 30 * 60 * 1000; // 30 minutes
 
@@ -209,6 +210,9 @@ export default function App() {
           <span className="muted small">Star Wars: Legion</span>
         </div>
         <div className="app-actions">
+          <a className="app-home-btn" href={homeUrl()} title="Back to eslegion.com">
+            ⌂ Home
+          </a>
           {army && (
             <>
               <button onClick={persist}>Save</button>

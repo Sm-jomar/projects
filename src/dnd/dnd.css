@@ -19,11 +19,16 @@
 .dnd-brand h1 { font-size: 20px; margin: 0; color: var(--dnd-accent-2); }
 .dnd-home-link {
   text-decoration: none;
-  color: var(--muted);
-  font-size: 18px;
+  color: var(--text);
+  font-size: 13px;
   align-self: center;
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--panel-2);
+  white-space: nowrap;
 }
-.dnd-home-link:hover { color: var(--text); }
+.dnd-home-link:hover { border-color: var(--dnd-accent-2); color: var(--dnd-accent-2); }
 .dnd-nav { display: flex; gap: 6px; flex: 1; flex-wrap: wrap; }
 .dnd-nav-btn { font-size: 13px; }
 .dnd-nav-btn.active {

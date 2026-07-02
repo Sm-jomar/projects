@@ -21,7 +21,7 @@ export function DndApp() {
     <div className="dnd-app">
       <header className="dnd-header">
         <div className="dnd-brand">
-          <a className="dnd-home-link" href={homeUrl()} title="Back to eslegion.com">◂</a>
+          <a className="dnd-home-link" href={homeUrl()} title="Back to eslegion.com">⌂ Home</a>
           <h1>Dungeons &amp; Dragons</h1>
           <span className="muted small">eslegion.com</span>
         </div>
