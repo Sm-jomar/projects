@@ -1,5 +1,7 @@
 // Tabletop session model. Everything the canvas needs to render a game state.
 
+import { logId, type LogActor, type LogEntry } from "./auditLog";
+
 export type GameType = "skirmish" | "standard" | "grand-army" | "custom";
 
 export type MapSize = { widthInches: number; heightInches: number };
@@ -123,6 +125,8 @@ export type TabletopState = {
   moveTemplate: MoveTemplate | null;
   /** Command-card hand state per side. Each entry tracks pip + played. */
   hands: { blue: CommandHand; red: CommandHand };
+  /** Shared audit log (synced + persisted with the board). */
+  log?: LogEntry[];
 };
 
 export type CommandCard = {
@@ -157,8 +161,51 @@ export function newTabletop(gameType: GameType = "standard"): TabletopState {
     deployment: null,
     moveTemplate: null,
     hands: { blue: newCommandHand(), red: newCommandHand() },
+    log: [],
   };
 }
+
+// Diff two Legion boards into audit-log entries. Covers token moves (with
+// from/to for ghost replay), adds/removes, wound/suppression changes, VP
+// and round changes. Positions are in inches.
+export function diffLegion(prev: TabletopState, next: TabletopState, actor: LogActor): LogEntry[] {
+  const out: LogEntry[] = [];
+  const prevById = new Map(prev.tokens.map((t) => [t.id, t]));
+  const nextById = new Map(next.tokens.map((t) => [t.id, t]));
+  const mk = (kind: LogEntry["kind"], text: string, move?: LogEntry["move"]): LogEntry =>
+    ({ id: logId(), ts: Date.now(), actor, kind, text, ...(move ? { move } : {}) });
+
+  for (const t of next.tokens) {
+    const p = prevById.get(t.id);
+    if (!p) { out.push(mk("add", `added ${t.label || "a token"}`)); continue; }
+    if (p.x !== t.x || p.y !== t.y) {
+      out.push(mk("move", `moved ${t.label || "a token"}`, {
+        from: { x: p.x, y: p.y }, to: { x: t.x, y: t.y }, size: t.size, color: FACTION_STROKE[t.color],
+      }));
+    }
+    if ((p.wounds ?? 0) !== (t.wounds ?? 0)) {
+      const d = (t.wounds ?? 0) - (p.wounds ?? 0);
+      out.push(mk("hp", `${t.label || "token"} wounds ${d >= 0 ? "+" : ""}${d}`));
+    }
+    if ((p.suppression ?? 0) !== (t.suppression ?? 0)) {
+      const d = (t.suppression ?? 0) - (p.suppression ?? 0);
+      out.push(mk("hp", `${t.label || "token"} suppression ${d >= 0 ? "+" : ""}${d}`));
+    }
+  }
+  for (const p of prev.tokens) {
+    if (!nextById.has(p.id)) out.push(mk("remove", `removed ${p.label || "a token"}`));
+  }
+  if (prev.vp.blue !== next.vp.blue) out.push(mk("vp", `Blue VP → ${next.vp.blue}`));
+  if (prev.vp.red !== next.vp.red) out.push(mk("vp", `Red VP → ${next.vp.red}`));
+  if (prev.round !== next.round) out.push(mk("round", `advanced to round ${next.round}`));
+  return out;
+}
+
+// Faction ring colors, reused for ghost-replay tinting.
+const FACTION_STROKE: Record<FactionColor, string> = {
+  rebels: "#f6c14a", imperials: "#9bc1ec", republic: "#f6c14a",
+  separatists: "#c19be0", mercenary: "#e0c477", neutral: "#888",
+};
 
 // Heuristic for which side a token belongs to when not set explicitly.
 // Rebels and Republic default to Blue (the "good guys"); Imperials and

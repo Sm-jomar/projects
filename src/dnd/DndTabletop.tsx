@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import {
   newDndTabletop, loadDndTabletop, saveDndTabletop, downscaleImage,
-  initiativeOrder, newId, TOKEN_COLORS,
+  initiativeOrder, newId, TOKEN_COLORS, diffDnd,
   type DndTabletopState, type DndToken,
 } from "./dndTabletop";
 import { listCharacters } from "./dndStorage";
 import type { DndCharacter } from "./dndTypes";
 import { RoomClient, generateRoomCode, type ConnStatus, type Peer, type RoomHandlers } from "../lib/roomClient";
 import { dndPlayUrl } from "../lib/appRouting";
+import { appendLog, type LogActor, type LogEntry } from "../lib/auditLog";
+import { AuditLogView } from "../components/AuditLogView";
 
 const U = 48; // SVG units per grid cell
 const NAME_KEY = "dnd.playername";
@@ -50,6 +52,44 @@ export function DndTabletop() {
   const readOnly = online?.status === "open" && online.you?.color === "spectator";
   useEffect(() => { readOnlyRef.current = !!readOnly; }, [readOnly]);
 
+  // --- Audit log + ghost replay --------------------------------------------
+  // The current actor stamped onto locally-generated log entries.
+  const actor: LogActor = online?.status === "open" && online.you
+    ? { name: online.you.name, color: online.you.color === "spectator" ? "#8b94a8" : online.you.color }
+    : { name: playerName.trim() || "You", color: playerColor };
+  const actorRef = useRef(actor);
+  useEffect(() => { actorRef.current = actor; });
+  // Previous board (for diffing) + the JSON of the last remotely-applied
+  // state (so remote updates aren't re-logged locally).
+  const prevRef = useRef(state);
+  const appliedRemoteRef = useRef<string | null>(null);
+  const diffTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [ghost, setGhost] = useState<LogEntry["move"] | null>(null);
+  const ghostTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  function showGhost(m: LogEntry["move"]) {
+    if (!m) return;
+    setGhost(m);
+    if (ghostTimer.current) clearTimeout(ghostTimer.current);
+    ghostTimer.current = setTimeout(() => setGhost(null), 5000);
+  }
+
+  // Generate log entries by diffing local changes. Debounced so a drag
+  // (which updates state every frame) logs one move on settle, not dozens.
+  // Remote applications set prevRef without logging (the actor's own client
+  // already logged them).
+  useEffect(() => {
+    const curJson = JSON.stringify(state);
+    if (appliedRemoteRef.current === curJson) { prevRef.current = state; return; }
+    if (diffTimer.current) clearTimeout(diffTimer.current);
+    diffTimer.current = setTimeout(() => {
+      const prev = prevRef.current;
+      prevRef.current = state;
+      const entries = diffDnd(prev, state, actorRef.current);
+      if (entries.length) setState((s) => ({ ...s, log: appendLog(s.log, entries) }));
+    }, 350);
+  }, [state]);
+
   function buildHandlers(): RoomHandlers<DndTabletopState> {
     return {
       onStatus: (status, detail) => setOnline((o) => (o ? { ...o, status, error: detail } : o)),
@@ -57,14 +97,21 @@ export function DndTabletop() {
       onWelcome: (you, remoteState, peers) => {
         setOnline({ status: "open", code: roomRef.current?.code ?? "", you, peers });
         if (remoteState) {
-          remoteEchoRef.current = JSON.stringify(remoteState);
+          const js = JSON.stringify(remoteState);
+          remoteEchoRef.current = js;
+          appliedRemoteRef.current = js;
           setState(remoteState);
         } else {
           remoteEchoRef.current = JSON.stringify(stateRef.current);
           roomRef.current?.sendState(stateRef.current);
         }
       },
-      onState: (remoteState) => { remoteEchoRef.current = JSON.stringify(remoteState); setState(remoteState); },
+      onState: (remoteState) => {
+        const js = JSON.stringify(remoteState);
+        remoteEchoRef.current = js;
+        appliedRemoteRef.current = js;
+        setState(remoteState);
+      },
       onPresence: (peers) => setOnline((o) => {
         if (!o) return o;
         const you = o.you ? peers.find((p) => p.id === o.you!.id) ?? o.you : o.you;
@@ -213,6 +260,7 @@ export function DndTabletop() {
           selectedId={selectedId}
           onSelect={setSelectedId}
           onMoveToken={(id, x, y) => updateToken(id, { x, y })}
+          ghost={ghost}
         />
 
         <aside className="dnd-tt-side">
@@ -320,6 +368,16 @@ export function DndTabletop() {
           </section>
 
           <section>
+            <div className="dnd-tt-init-head">
+              <h3>Log</h3>
+              {(state.log?.length ?? 0) > 0 && (
+                <button className="ghost-btn small" onClick={() => patch({ log: [] })} title="Clear the log">Clear</button>
+              )}
+            </div>
+            <AuditLogView log={state.log} onReplay={showGhost} />
+          </section>
+
+          <section>
             <h3>Board</h3>
             <button className="danger" onClick={() => { if (confirm("Remove all tokens?")) patch({ tokens: [], activeTokenId: null }); }}>Clear tokens</button>
           </section>
@@ -343,11 +401,12 @@ type DragState =
   | { kind: "token"; id: string; offX: number; offY: number }
   | { kind: "pan"; sx: number; sy: number; tx: number; ty: number };
 
-function DungeonCanvas({ state, selectedId, onSelect, onMoveToken }: {
+function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, ghost }: {
   state: DndTabletopState;
   selectedId: string | null;
   onSelect: (id: string | null) => void;
   onMoveToken: (id: string, x: number, y: number) => void;
+  ghost: LogEntry["move"] | null;
 }) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const [view, setView] = useState({ tx: 0, ty: 0, scale: 1 });
@@ -465,6 +524,22 @@ function DungeonCanvas({ state, selectedId, onSelect, onMoveToken }: {
               </g>
             );
           })}
+
+          {/* Ghost replay: the last move's origin, path and destination. */}
+          {ghost && (() => {
+            const sz = ghost.size ?? 1;
+            const col = ghost.color ?? "#ffd24a";
+            const fx = (ghost.from.x + sz / 2) * U, fy = (ghost.from.y + sz / 2) * U;
+            const tx = (ghost.to.x + sz / 2) * U, ty = (ghost.to.y + sz / 2) * U;
+            const r = (sz * U) / 2 - 2;
+            return (
+              <g pointerEvents="none" className="dnd-ghost">
+                <circle cx={fx} cy={fy} r={r} fill={col} fillOpacity={0.25} stroke={col} strokeDasharray={`${5 / view.scale} ${4 / view.scale}`} strokeWidth={2 / view.scale} />
+                <line x1={fx} y1={fy} x2={tx} y2={ty} stroke={col} strokeWidth={3 / view.scale} strokeDasharray={`${6 / view.scale} ${5 / view.scale}`} />
+                <circle cx={tx} cy={ty} r={r + 3 / view.scale} fill="none" stroke={col} strokeWidth={3 / view.scale} />
+              </g>
+            );
+          })()}
         </g>
       </svg>
       <div className="dnd-tt-overlay small muted">
@@ -598,3 +673,4 @@ function MultiplayerPanel(props: {
     </div>
   );
 }
+

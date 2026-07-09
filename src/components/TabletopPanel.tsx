@@ -3,11 +3,13 @@ import { TabletopCanvas, type Tool } from "./TabletopCanvas";
 import { DiceRoller } from "./DiceRoller";
 import {
   GAME_TYPES, DEPLOYMENTS, newTabletop, addToken, addTerrain, addTokenForUnit,
-  loadTabletop, saveTabletop, newId, newCommandHand, tokenSide,
+  loadTabletop, saveTabletop, newId, newCommandHand, tokenSide, diffLegion,
   templateAnchor, templatePoints,
   type GameType, type TabletopState, type Terrain, type Token, type FactionColor,
   type DeploymentKey, type MoveTemplate, type CommandHand,
 } from "../lib/tabletop";
+import { appendLog, type LogActor, type LogEntry } from "../lib/auditLog";
+import { AuditLogView } from "./AuditLogView";
 import { listArmies } from "../lib/storage";
 import { unitById } from "../data/catalog";
 import { cardForUnit } from "../lib/cardLookup";
@@ -83,6 +85,13 @@ function resolveRoster(army: SavedArmy): { entries: RosterEntry[]; unmatched: nu
     entries.push({ entryId: e.entryId, unit: u, portraitUrl: cardForUnit(u) });
   }
   return { entries, unmatched };
+}
+
+// Display color for a Legion player in the audit log (blue/red/spectator).
+function legionActorColor(color: string): string {
+  if (color === "blue") return "#6fa8e6";
+  if (color === "red") return "#e67a6f";
+  return "#8b94a8";
 }
 
 export function TabletopPanel({ onClose }: Props) {
@@ -161,6 +170,38 @@ export function TabletopPanel({ onClose }: Props) {
   // assigned during render.
   const stateRef = useRef(state);
   useEffect(() => { stateRef.current = state; }, [state]);
+
+  // --- Audit log + ghost replay --------------------------------------------
+  const actor: LogActor = online?.status === "open" && online.you
+    ? { name: online.you.name, color: legionActorColor(online.you.color) }
+    : { name: playerName.trim() || "You", color: "#8b94a8" };
+  const actorRef = useRef(actor);
+  useEffect(() => { actorRef.current = actor; });
+  const prevRef = useRef(state);
+  const appliedRemoteRef = useRef<string | null>(null);
+  const diffTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [ghost, setGhost] = useState<LogEntry["move"] | null>(null);
+  const ghostTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  function showGhost(m: LogEntry["move"]) {
+    if (!m) return;
+    setGhost(m);
+    if (ghostTimer.current) clearTimeout(ghostTimer.current);
+    ghostTimer.current = setTimeout(() => setGhost(null), 5000);
+  }
+  // Auto-log local changes by diffing; debounced so a drag logs one move on
+  // settle. States applied from the network only advance the diff baseline.
+  useEffect(() => {
+    const curJson = JSON.stringify(state);
+    if (appliedRemoteRef.current === curJson) { prevRef.current = state; return; }
+    if (diffTimer.current) clearTimeout(diffTimer.current);
+    diffTimer.current = setTimeout(() => {
+      const prev = prevRef.current;
+      prevRef.current = state;
+      const entries = diffLegion(prev, state, actorRef.current);
+      if (entries.length) setState((s) => ({ ...s, log: appendLog(s.log, entries) }));
+    }, 350);
+  }, [state]);
+
   // JSON of the last board we sent OR received, so the outbound sync
   // effect can tell a local edit (push it) from an echo of a remote one
   // (skip it) and avoid an infinite relay loop.
@@ -179,7 +220,9 @@ export function TabletopPanel({ onClose }: Props) {
         }));
         if (remoteState) {
           // Joining an existing room — adopt its board.
-          remoteEchoRef.current = JSON.stringify(remoteState);
+          const js = JSON.stringify(remoteState);
+          remoteEchoRef.current = js;
+          appliedRemoteRef.current = js;
           setState(remoteState);
         } else {
           // First one in — seed the room with our current board.
@@ -188,7 +231,9 @@ export function TabletopPanel({ onClose }: Props) {
         }
       },
       onState: (remoteState) => {
-        remoteEchoRef.current = JSON.stringify(remoteState);
+        const js = JSON.stringify(remoteState);
+        remoteEchoRef.current = js;
+        appliedRemoteRef.current = js;
         setState(remoteState);
       },
       onPresence: (peers) =>
@@ -606,6 +651,7 @@ export function TabletopPanel({ onClose }: Props) {
                 onToggleActivated={toggleActivated}
                 onTemplateUpdate={updateTemplate}
                 readOnly={readOnly}
+                ghost={ghost}
               />
 
               {/* Command card hands docked beneath the canvas — one row
@@ -906,6 +952,16 @@ export function TabletopPanel({ onClose }: Props) {
                     </div>
                   </section>
                 )}
+
+                <section>
+                  <div className="tt-init-head">
+                    <h3>Log</h3>
+                    {(state.log?.length ?? 0) > 0 && (
+                      <button className="ghost-btn small" onClick={() => commit({ ...state, log: [] })}>Clear</button>
+                    )}
+                  </div>
+                  <AuditLogView log={state.log} onReplay={showGhost} />
+                </section>
 
                 <section>
                   <h3>Board</h3>
