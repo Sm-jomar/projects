@@ -1,19 +1,11 @@
 import { useState } from "react";
+import { useDndRoom, type RollPayload } from "./dndRoom";
+import { RollFeed } from "./RollFeed";
 
 // Standard D&D polyhedral set (d100 = percentile). d12 included since it's
 // part of a normal dice set.
 const DICE = [4, 6, 8, 10, 12, 20, 100] as const;
 type Sides = (typeof DICE)[number];
-
-type DieRoll = { sides: number; value: number };
-type RollResult = {
-  id: string;
-  label: string;
-  rolls: DieRoll[];
-  modifier: number;
-  total: number;
-  note?: string;
-};
 
 // Fair single-die roll using the crypto RNG.
 function rollDie(sides: number): number {
@@ -21,9 +13,6 @@ function rollDie(sides: number): number {
   crypto.getRandomValues(a);
   return (a[0]! % sides) + 1;
 }
-
-let rid = 0;
-function newRid(): string { rid = (rid + 1) % 100000; return `r${Date.now().toString(36)}${rid}`; }
 
 function poolLabel(pool: Record<number, number>, modifier: number): string {
   const parts = DICE.filter((s) => (pool[s] ?? 0) > 0).map((s) => `${pool[s]}d${s}`);
@@ -33,55 +22,61 @@ function poolLabel(pool: Record<number, number>, modifier: number): string {
 }
 
 export function DiceRoller() {
+  const room = useDndRoom();
   const [pool, setPool] = useState<Record<number, number>>({});
   const [modifier, setModifier] = useState(0);
-  const [history, setHistory] = useState<RollResult[]>([]);
 
   const poolCount = DICE.reduce((n, s) => n + (pool[s] ?? 0), 0);
+  const connected = room.online?.status === "open";
 
   function addDie(s: Sides) { setPool((p) => ({ ...p, [s]: (p[s] ?? 0) + 1 })); }
   function removeDie(s: Sides) { setPool((p) => ({ ...p, [s]: Math.max(0, (p[s] ?? 0) - 1) })); }
   function clearPool() { setPool({}); setModifier(0); }
 
-  function push(r: RollResult) { setHistory((h) => [r, ...h].slice(0, 40)); }
+  // All rolls flow through the room context: added to the shared feed and
+  // broadcast to the other players when connected.
+  function roll(payload: RollPayload) { room.sendRoll(payload); }
 
   function rollPool() {
     if (poolCount === 0) return;
-    const rolls: DieRoll[] = [];
+    const rolls: { sides: number; value: number }[] = [];
     for (const s of DICE) for (let i = 0; i < (pool[s] ?? 0); i++) rolls.push({ sides: s, value: rollDie(s) });
     const sum = rolls.reduce((a, r) => a + r.value, 0);
-    // Crit flavor only for a lone d20.
     let note: string | undefined;
     if (rolls.length === 1 && rolls[0]!.sides === 20) {
       if (rolls[0]!.value === 20) note = "Natural 20!";
       else if (rolls[0]!.value === 1) note = "Natural 1…";
     }
-    push({ id: newRid(), label: poolLabel(pool, modifier), rolls, modifier, total: sum + modifier, note });
+    roll({ label: poolLabel(pool, modifier), rolls, modifier, total: sum + modifier, note });
   }
 
   function rollD20(mode: "normal" | "adv" | "dis") {
+    const modLabel = modifier ? ` ${modifier >= 0 ? "+" : "−"} ${Math.abs(modifier)}` : "";
     if (mode === "normal") {
       const v = rollDie(20);
       const note = v === 20 ? "Natural 20!" : v === 1 ? "Natural 1…" : undefined;
-      push({ id: newRid(), label: `d20${modifier ? ` ${modifier >= 0 ? "+" : "−"} ${Math.abs(modifier)}` : ""}`, rolls: [{ sides: 20, value: v }], modifier, total: v + modifier, note });
+      roll({ label: `d20${modLabel}`, rolls: [{ sides: 20, value: v }], modifier, total: v + modifier, note });
       return;
     }
     const a = rollDie(20), b = rollDie(20);
     const chosen = mode === "adv" ? Math.max(a, b) : Math.min(a, b);
-    const note = `${mode === "adv" ? "Advantage" : "Disadvantage"} — rolled ${a} & ${b}` + (chosen === 20 ? " · Natural 20!" : chosen === 1 ? " · Natural 1…" : "");
-    push({ id: newRid(), label: `d20 (${mode === "adv" ? "adv" : "dis"})${modifier ? ` ${modifier >= 0 ? "+" : "−"} ${Math.abs(modifier)}` : ""}`, rolls: [{ sides: 20, value: chosen }], modifier, total: chosen + modifier, note });
+    const note = `${mode === "adv" ? "Advantage" : "Disadvantage"} — rolled ${a} & ${b}`
+      + (chosen === 20 ? " · Natural 20!" : chosen === 1 ? " · Natural 1…" : "");
+    roll({ label: `d20 (${mode === "adv" ? "adv" : "dis"})${modLabel}`, rolls: [{ sides: 20, value: chosen }], modifier, total: chosen + modifier, note });
   }
 
   function flipCoin() {
-    const heads = rollDie(2) === 1;
-    push({ id: newRid(), label: "Coin flip", rolls: [], modifier: 0, total: 0, note: heads ? "Heads" : "Tails" });
+    roll({ label: "Coin flip", rolls: [], modifier: 0, total: 0, note: rollDie(2) === 1 ? "Heads" : "Tails" });
   }
 
   return (
     <div className="dnd-section dnd-dice">
       <div className="dnd-section-head">
         <h2>Dice</h2>
-        {history.length > 0 && <button className="ghost-btn small" onClick={() => setHistory([])}>Clear history</button>}
+        <span className="muted small dnd-dice-share">
+          {connected ? `Shared with ${room.online!.peers.length} player${room.online!.peers.length === 1 ? "" : "s"}` : "Solo — join a game to share rolls"}
+        </span>
+        {room.rollFeed.length > 0 && <button className="ghost-btn small" onClick={room.clearRolls}>Clear feed</button>}
       </div>
 
       <div className="dnd-dice-body">
@@ -98,7 +93,6 @@ export function DiceRoller() {
                 </button>
               ))}
             </div>
-
             <div className="dnd-dice-controls">
               <div className="dnd-mod">
                 <span>Modifier</span>
@@ -126,37 +120,12 @@ export function DiceRoller() {
             </div>
           </section>
 
-          <StrawPicker onResult={(note) => push({ id: newRid(), label: "Short straw", rolls: [], modifier: 0, total: 0, note })} />
+          <StrawPicker onResult={(note) => roll({ label: "Short straw", rolls: [], modifier: 0, total: 0, note })} />
         </div>
 
         <div className="dnd-dice-right">
-          <h3>History</h3>
-          {history.length === 0 ? (
-            <p className="muted small">Rolls appear here.</p>
-          ) : (
-            <ul className="dnd-roll-log">
-              {history.map((r) => (
-                <li key={r.id} className="dnd-roll">
-                  <div className="dnd-roll-top">
-                    <span className="dnd-roll-label">{r.label}</span>
-                    {r.rolls.length > 0 && (
-                      <span className="dnd-roll-total">{r.total}</span>
-                    )}
-                  </div>
-                  {r.rolls.length > 0 && (
-                    <div className="dnd-roll-dice">
-                      {r.rolls.map((d, i) => (
-                        <span key={i} className={"dnd-roll-die" + (d.sides === 20 && d.value === 20 ? " crit" : d.sides === 20 && d.value === 1 ? " fumble" : "")}
-                              title={`d${d.sides}`}>{d.value}</span>
-                      ))}
-                      {r.modifier !== 0 && <span className="dnd-roll-mod">{r.modifier >= 0 ? `+${r.modifier}` : r.modifier}</span>}
-                    </div>
-                  )}
-                  {r.note && <div className={"dnd-roll-note" + (r.note.includes("Natural 20") ? " crit" : r.note.includes("Natural 1") ? " fumble" : "")}>{r.note}</div>}
-                </li>
-              ))}
-            </ul>
-          )}
+          <h3>Roll feed</h3>
+          <RollFeed feed={room.rollFeed} emptyText="Rolls appear here — and are shared with everyone in your game." />
         </div>
       </div>
     </div>

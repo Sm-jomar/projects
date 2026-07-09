@@ -4,6 +4,7 @@ import { CharacterSheets } from "./CharacterSheets";
 import { DmNotes } from "./DmNotes";
 import { DndTabletop } from "./DndTabletop";
 import { DiceRoller } from "./DiceRoller";
+import { DndRoomProvider } from "./DndRoomContext";
 import { legionUrl, homeUrl } from "../lib/appRouting";
 
 type Section = "characters" | "notes" | "dice" | "rulebooks" | "tabletop";
@@ -16,7 +17,18 @@ const NAV: { key: Section; label: string }[] = [
   { key: "tabletop", label: "Tabletop" },
 ];
 
+// The room connection (and shared dice feed) live in this provider so they
+// persist across section switches and are shared between the tabletop and
+// the dice roller.
 export function DndApp() {
+  return (
+    <DndRoomProvider>
+      <DndAppInner />
+    </DndRoomProvider>
+  );
+}
+
+function DndAppInner() {
   // An invite link (?room=CODE) lands straight on the Tabletop.
   const [section, setSection] = useState<Section>(
     () => new URLSearchParams(window.location.search).has("room") ? "tabletop" : "characters",

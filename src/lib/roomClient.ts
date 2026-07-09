@@ -210,6 +210,12 @@ export class RoomClient<S> {
     this.raw({ t: "cursor", x, y });
   }
 
+  // Broadcast a dice roll (or similar event) to the other players. The
+  // server relays it without storing; the entry should carry its own actor.
+  sendDice(entry: unknown): void {
+    this.raw({ t: "dice", entry });
+  }
+
   setName(name: string): void {
     this.name = name;
     this.raw({ t: "name", name });
