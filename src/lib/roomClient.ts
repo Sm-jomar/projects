@@ -10,21 +10,25 @@
 // optional VITE_ROOM_ORIGIN override lets a build point the socket at a
 // specific worker origin if we ever want cross-origin play.
 
-import type { TabletopState } from "./tabletop";
-
-export type PlayerColor = "blue" | "red" | "spectator";
+// `color` is the player's identity/role. Legion uses "blue"|"red"|
+// "spectator"; D&D uses a hex color (an editor) or "spectator". The room
+// is generic over its board-state type S so both apps can share it.
+export type PlayerColor = string;
 export type Peer = { id: string; color: PlayerColor; name: string };
 export type ConnStatus = "idle" | "connecting" | "open" | "reconnecting" | "closed" | "error";
+export type RoomApp = "legion" | "dnd";
 
-export type RoomHandlers = {
+export type RoomHandlers<S> = {
   onStatus?: (status: ConnStatus, detail?: string) => void;
-  onWelcome?: (you: Peer, state: TabletopState | null, peers: Peer[]) => void;
-  onState?: (state: TabletopState, fromId: string) => void;
+  onWelcome?: (you: Peer, state: S | null, peers: Peer[]) => void;
+  onState?: (state: S, fromId: string) => void;
   onCursor?: (id: string, color: PlayerColor, x: number, y: number) => void;
   onPresence?: (peers: Peer[]) => void;
   onDice?: (id: string, color: PlayerColor, entry: unknown) => void;
   /** The server refused a color change because another player holds it. */
   onColorDenied?: (color: PlayerColor) => void;
+  /** The room belongs to a different app (Legion vs D&D). */
+  onDenied?: (reason: string) => void;
 };
 
 const STATE_THROTTLE_MS = 60;
@@ -42,7 +46,7 @@ export function generateRoomCode(len = 6): string {
   return out;
 }
 
-function roomWsUrl(code: string, name: string, color: string): string {
+function roomWsUrl(code: string, name: string, color: string, app: RoomApp): string {
   const override = import.meta.env.VITE_ROOM_ORIGIN as string | undefined;
   let base: string;
   if (override) {
@@ -54,32 +58,35 @@ function roomWsUrl(code: string, name: string, color: string): string {
   const params = new URLSearchParams();
   if (name) params.set("name", name);
   if (color) params.set("color", color);
+  params.set("app", app);
   const q = params.toString();
   return `${base}/api/room/${encodeURIComponent(code)}/ws${q ? `?${q}` : ""}`;
 }
 
-export class RoomClient {
+export class RoomClient<S> {
   readonly code: string;
   private name: string;
   private preferredColor: string;
-  private handlers: RoomHandlers;
+  private app: RoomApp;
+  private handlers: RoomHandlers<S>;
   private ws: WebSocket | null = null;
   private closedByUser = false;
   private reconnectAttempts = 0;
   private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
 
   // Outbound throttling state.
-  private pendingState: TabletopState | null = null;
+  private pendingState: S | null = null;
   private stateTimer: ReturnType<typeof setTimeout> | null = null;
   private lastCursorAt = 0;
 
   you: Peer | null = null;
 
-  constructor(code: string, name: string, preferredColor: string, handlers: RoomHandlers) {
+  constructor(code: string, name: string, preferredColor: string, handlers: RoomHandlers<S>, app: RoomApp = "legion") {
     this.code = code.toUpperCase();
     this.name = name;
     this.preferredColor = preferredColor;
     this.handlers = handlers;
+    this.app = app;
   }
 
   connect(): void {
@@ -91,7 +98,7 @@ export class RoomClient {
     this.handlers.onStatus?.(this.reconnectAttempts > 0 ? "reconnecting" : "connecting");
     let ws: WebSocket;
     try {
-      ws = new WebSocket(roomWsUrl(this.code, this.name, this.preferredColor));
+      ws = new WebSocket(roomWsUrl(this.code, this.name, this.preferredColor, this.app));
     } catch (err) {
       this.handlers.onStatus?.("error", String((err as Error).message));
       this.scheduleReconnect();
@@ -136,13 +143,18 @@ export class RoomClient {
         this.you = msg.you as Peer;
         this.handlers.onWelcome?.(
           msg.you as Peer,
-          (msg.state ?? null) as TabletopState | null,
+          (msg.state ?? null) as S | null,
           (msg.peers ?? []) as Peer[],
         );
         break;
       }
+      case "denied":
+        // The room belongs to another app — don't fight it with reconnects.
+        this.closedByUser = true;
+        this.handlers.onDenied?.(String(msg.reason ?? "denied"));
+        break;
       case "state":
-        this.handlers.onState?.(msg.state as TabletopState, String(msg.from ?? ""));
+        this.handlers.onState?.(msg.state as S, String(msg.from ?? ""));
         break;
       case "cursor":
         this.handlers.onCursor?.(
@@ -180,7 +192,7 @@ export class RoomClient {
 
   // Throttled full-state push. Coalesces rapid updates (e.g. dragging) to
   // one send per STATE_THROTTLE_MS.
-  sendState(state: TabletopState): void {
+  sendState(state: S): void {
     this.pendingState = state;
     if (this.stateTimer) return;
     this.stateTimer = setTimeout(() => {

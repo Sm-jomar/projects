@@ -6,8 +6,15 @@ import {
 } from "./dndTabletop";
 import { listCharacters } from "./dndStorage";
 import type { DndCharacter } from "./dndTypes";
+import { RoomClient, generateRoomCode, type ConnStatus, type Peer, type RoomHandlers } from "../lib/roomClient";
+import { dndPlayUrl } from "../lib/appRouting";
 
 const U = 48; // SVG units per grid cell
+const NAME_KEY = "dnd.playername";
+const COLOR_KEY = "dnd.playercolor";
+const DEFAULT_COLOR = "#4a86c8";
+
+type OnlineState = { status: ConnStatus; code: string; you: Peer | null; peers: Peer[]; error?: string };
 
 export function DndTabletop() {
   const [state, setState] = useState<DndTabletopState>(() => loadDndTabletop() ?? newDndTabletop());
@@ -26,20 +33,98 @@ export function DndTabletop() {
     return () => clearTimeout(t);
   }, [state]);
 
+  // --- Multiplayer (shares the Legion Durable Object room server) ----------
+  const hasRoomParam = new URLSearchParams(location.search).has("room");
+  const [online, setOnline] = useState<OnlineState | null>(null);
+  const [onlineOpen, setOnlineOpen] = useState(hasRoomParam);
+  const [joinCode, setJoinCode] = useState(() => new URLSearchParams(location.search).get("room")?.toUpperCase() ?? "");
+  const [playerName, setPlayerName] = useState(() => localStorage.getItem(NAME_KEY) ?? "");
+  const [playerColor, setPlayerColor] = useState(() => localStorage.getItem(COLOR_KEY) ?? DEFAULT_COLOR);
+  const [spectator, setSpectator] = useState(false);
+  const roomRef = useRef<RoomClient<DndTabletopState> | null>(null);
+  const stateRef = useRef(state);
+  useEffect(() => { stateRef.current = state; }, [state]);
+  const remoteEchoRef = useRef<string | null>(null);
+  const readOnlyRef = useRef(false);
+
+  const readOnly = online?.status === "open" && online.you?.color === "spectator";
+  useEffect(() => { readOnlyRef.current = !!readOnly; }, [readOnly]);
+
+  function buildHandlers(): RoomHandlers<DndTabletopState> {
+    return {
+      onStatus: (status, detail) => setOnline((o) => (o ? { ...o, status, error: detail } : o)),
+      onDenied: () => setOnline((o) => (o ? { ...o, status: "error", error: "That code belongs to a Legion game. Use a different code." } : o)),
+      onWelcome: (you, remoteState, peers) => {
+        setOnline({ status: "open", code: roomRef.current?.code ?? "", you, peers });
+        if (remoteState) {
+          remoteEchoRef.current = JSON.stringify(remoteState);
+          setState(remoteState);
+        } else {
+          remoteEchoRef.current = JSON.stringify(stateRef.current);
+          roomRef.current?.sendState(stateRef.current);
+        }
+      },
+      onState: (remoteState) => { remoteEchoRef.current = JSON.stringify(remoteState); setState(remoteState); },
+      onPresence: (peers) => setOnline((o) => {
+        if (!o) return o;
+        const you = o.you ? peers.find((p) => p.id === o.you!.id) ?? o.you : o.you;
+        return { ...o, peers, you };
+      }),
+    };
+  }
+
+  function startRoom(code: string) {
+    const name = playerName.trim() || "Player";
+    localStorage.setItem(NAME_KEY, name);
+    localStorage.setItem(COLOR_KEY, playerColor);
+    roomRef.current?.close();
+    remoteEchoRef.current = null;
+    const identity = spectator ? "spectator" : playerColor;
+    const client = new RoomClient<DndTabletopState>(code, name, identity, buildHandlers(), "dnd");
+    roomRef.current = client;
+    setOnline({ status: "connecting", code: client.code, you: null, peers: [] });
+    client.connect();
+  }
+  function hostRoom() { if (playerName.trim()) startRoom(generateRoomCode()); }
+  function joinRoom() { const c = joinCode.trim().toUpperCase(); if (c.length >= 4 && playerName.trim()) startRoom(c); }
+  function changeIdentity(spec: boolean, color: string) {
+    setSpectator(spec);
+    setPlayerColor(color);
+    localStorage.setItem(COLOR_KEY, color);
+    roomRef.current?.setColor(spec ? "spectator" : color);
+  }
+  function leaveRoom() { roomRef.current?.close(); roomRef.current = null; remoteEchoRef.current = null; setOnline(null); }
+
+  // Push local changes to the room (skipped for spectators; the server
+  // ignores them anyway).
+  useEffect(() => {
+    const client = roomRef.current;
+    if (!client || online?.status !== "open" || readOnly) return;
+    const js = JSON.stringify(state);
+    if (js === remoteEchoRef.current) return;
+    remoteEchoRef.current = js;
+    client.sendState(state);
+  }, [state, online?.status, readOnly]);
+
+  useEffect(() => () => roomRef.current?.close(), []);
+
   const selected = state.tokens.find((t) => t.id === selectedId) ?? null;
   const order = initiativeOrder(state.tokens);
 
-  function patch(p: Partial<DndTabletopState>) { setState((s) => ({ ...s, ...p })); }
-  function patchMap(p: Partial<DndTabletopState["map"]>) { setState((s) => ({ ...s, map: { ...s.map, ...p } })); }
+  function patch(p: Partial<DndTabletopState>) { if (readOnlyRef.current) return; setState((s) => ({ ...s, ...p })); }
+  function patchMap(p: Partial<DndTabletopState["map"]>) { if (readOnlyRef.current) return; setState((s) => ({ ...s, map: { ...s.map, ...p } })); }
   function updateToken(id: string, p: Partial<DndToken>) {
+    if (readOnlyRef.current) return;
     setState((s) => ({ ...s, tokens: s.tokens.map((t) => (t.id === id ? { ...t, ...p } : t)) }));
   }
   function removeToken(id: string) {
+    if (readOnlyRef.current) return;
     setState((s) => ({ ...s, tokens: s.tokens.filter((t) => t.id !== id) }));
     if (selectedId === id) setSelectedId(null);
   }
 
   function addToken(partial: Partial<DndToken>) {
+    if (readOnlyRef.current) return;
     const color = TOKEN_COLORS[state.tokens.length % TOKEN_COLORS.length]!;
     const tk: DndToken = {
       id: newId(),
@@ -72,7 +157,9 @@ export function DndTabletop() {
     const f = e.target.files?.[0];
     if (!f) return;
     try {
-      const dataUrl = await downscaleImage(f);
+      // Smaller for multiplayer-friendliness — the map rides along in the
+      // synced room state.
+      const dataUrl = await downscaleImage(f, 1200, 0.72);
       patchMap({ imageUrl: dataUrl });
     } catch {
       setWarn("Could not read that image.");
@@ -97,7 +184,28 @@ export function DndTabletop() {
       <div className="dnd-section-head">
         <h2>Tabletop</h2>
         {warn && <span className="dnd-tt-warn small">{warn}</span>}
+        <div className="dnd-mp-wrap">
+          <button className={"dnd-mp-btn" + (online?.status === "open" ? " live" : "")}
+                  onClick={() => setOnlineOpen((v) => !v)}>
+            {online?.status === "open" ? `● ${online.code}` : online ? "● connecting…" : "Multiplayer"}
+          </button>
+          {onlineOpen && (
+            <MultiplayerPanel
+              online={online}
+              joinCode={joinCode} onJoinCodeChange={setJoinCode}
+              playerName={playerName} onNameChange={setPlayerName}
+              playerColor={playerColor} spectator={spectator}
+              onIdentityChange={changeIdentity}
+              onHost={hostRoom} onJoin={joinRoom} onLeave={leaveRoom}
+              onClosePanel={() => setOnlineOpen(false)}
+            />
+          )}
+        </div>
       </div>
+
+      {readOnly && (
+        <div className="dnd-tt-spectating">👁 Spectating — you can watch, pan and zoom, but not change the board.</div>
+      )}
 
       <div className="dnd-tt-body">
         <DungeonCanvas
@@ -363,6 +471,130 @@ function DungeonCanvas({ state, selectedId, onSelect, onMoveToken }: {
         {cols}×{rows} · {state.tokens.length} tokens · zoom {(view.scale * 100).toFixed(0)}%
         <button className="ghost-btn small" onClick={fit} title="Fit to view">⤢</button>
       </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+
+const MP_ORIGIN = "https://wrangler.sm-af6.workers.dev";
+
+function MultiplayerPanel(props: {
+  online: OnlineState | null;
+  joinCode: string; onJoinCodeChange: (v: string) => void;
+  playerName: string; onNameChange: (v: string) => void;
+  playerColor: string; spectator: boolean;
+  onIdentityChange: (spectator: boolean, color: string) => void;
+  onHost: () => void; onJoin: () => void; onLeave: () => void;
+  onClosePanel: () => void;
+}) {
+  const {
+    online, joinCode, onJoinCodeChange, playerName, onNameChange,
+    playerColor, spectator, onIdentityChange, onHost, onJoin, onLeave, onClosePanel,
+  } = props;
+  const connected = online?.status === "open";
+  const failed = online && (online.status === "error" || online.status === "closed");
+  const nameOk = playerName.trim().length > 0;
+  const amSpectator = online?.you?.color === "spectator";
+  const myColor = amSpectator ? "#8b94a8" : (online?.you?.color ?? playerColor);
+
+  const onPlaySite = (() => {
+    try { return location.origin === new URL(MP_ORIGIN).origin; } catch { return false; }
+  })();
+  function openPlaySite() {
+    const code = online?.code ?? new URLSearchParams(location.search).get("room") ?? "";
+    window.open(dndPlayUrl(code || undefined), "_blank", "noopener");
+  }
+  const shareUrl = online?.code ? `${MP_ORIGIN}/?app=dnd&room=${online.code}` : "";
+  function copy(t: string) { navigator.clipboard?.writeText(t).catch(() => {}); }
+
+  return (
+    <div className="dnd-mp-panel" onClick={(e) => e.stopPropagation()}>
+      <div className="dnd-mp-head">
+        <strong>Multiplayer</strong>
+        <button className="ghost-btn small" onClick={onClosePanel}>×</button>
+      </div>
+
+      {!onPlaySite && (
+        <div className="dnd-mp-site">
+          <button className="dnd-primary" onClick={openPlaySite}>Open multiplayer site ↗</button>
+          <p className="muted small">Remote play runs on the game server; this button opens it in a new tab (carrying your room code).</p>
+        </div>
+      )}
+
+      {!online && (
+        <>
+          <p className="muted small">Share a live map with your table. One person hosts and shares the code; others join. Tokens, initiative, HP and the map stay in sync.</p>
+          <label className="dnd-tt-field">Your name
+            <input value={playerName} maxLength={24} autoFocus
+                   onChange={(e) => onNameChange(e.target.value)}
+                   onKeyDown={(e) => { if (e.key !== "Enter" || !nameOk) return; if (joinCode.trim().length >= 4) onJoin(); else onHost(); }} />
+          </label>
+          <div className="dnd-mp-identity">
+            <label className="dnd-tt-field">Your color
+              <input type="color" value={playerColor} disabled={spectator}
+                     onChange={(e) => onIdentityChange(false, e.target.value)} />
+            </label>
+            <label className="dnd-tt-check">
+              <input type="checkbox" checked={spectator}
+                     onChange={(e) => onIdentityChange(e.target.checked, playerColor)} />
+              Spectate (watch only)
+            </label>
+          </div>
+          <button className="dnd-primary" onClick={onHost} disabled={!nameOk}>Host a new game</button>
+          <div className="dnd-mp-join">
+            <input placeholder="CODE" value={joinCode} maxLength={12}
+                   onChange={(e) => onJoinCodeChange(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))}
+                   onKeyDown={(e) => { if (e.key === "Enter" && nameOk) onJoin(); }} />
+            <button onClick={onJoin} disabled={joinCode.trim().length < 4 || !nameOk}>Join</button>
+          </div>
+          {!nameOk && <p className="muted small">Enter a name to host or join.</p>}
+        </>
+      )}
+
+      {online && (
+        <>
+          <div className="dnd-mp-status">
+            <span className={"dnd-mp-dot " + online.status} />
+            <span>{connected ? "Connected" : online.status === "connecting" ? "Connecting…" : "Disconnected"}
+              {connected && online.you && <> · <b style={{ color: myColor }}>{amSpectator ? "Spectator" : online.you.name}</b></>}
+            </span>
+          </div>
+
+          {connected && (
+            <div className="dnd-mp-identity">
+              <label className="dnd-tt-field">Your color
+                <input type="color" value={amSpectator ? "#8b94a8" : myColor} disabled={amSpectator}
+                       onChange={(e) => onIdentityChange(false, e.target.value)} />
+              </label>
+              <label className="dnd-tt-check">
+                <input type="checkbox" checked={amSpectator}
+                       onChange={(e) => onIdentityChange(e.target.checked, playerColor)} />
+                Spectate
+              </label>
+            </div>
+          )}
+
+          <div className="dnd-mp-code-row">
+            <div className="dnd-mp-code">{online.code}</div>
+            <button onClick={() => copy(online.code)}>Copy code</button>
+          </div>
+          {shareUrl && <button className="ghost-btn small" onClick={() => copy(shareUrl)}>Copy invite link</button>}
+
+          <div className="dnd-mp-peers">
+            {online.peers.length === 0 ? <span className="muted small">No one else here yet — share the code.</span> :
+              online.peers.map((p) => (
+                <span key={p.id} className="dnd-mp-peer">
+                  <span className="dnd-mp-peer-dot" style={{ background: p.color === "spectator" ? "#8b94a8" : p.color }} />
+                  {p.name}{p.color === "spectator" && " (spectator)"}{online.you?.id === p.id && " (you)"}
+                </span>
+              ))}
+          </div>
+
+          {failed && <p className="muted small">{online.error ?? "Disconnected — retrying…"}</p>}
+          <button className="danger" onClick={onLeave}>Leave game</button>
+        </>
+      )}
     </div>
   );
 }

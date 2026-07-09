@@ -330,3 +330,59 @@
 .dnd-tt-init-num { min-width: 22px; text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
 .dnd-tt-init-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
 .dnd-tt-init-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ----- D&D multiplayer ----- */
+.dnd-section-head .dnd-mp-wrap { position: relative; margin-left: auto; }
+.dnd-mp-btn { font-size: 12px; white-space: nowrap; }
+.dnd-mp-btn.live { border-color: var(--ok); color: var(--ok); }
+.dnd-mp-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 290px;
+  z-index: 50;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.dnd-mp-head { display: flex; align-items: center; justify-content: space-between; }
+.dnd-mp-site { display: flex; flex-direction: column; gap: 4px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+.dnd-mp-identity { display: flex; align-items: flex-end; gap: 12px; }
+.dnd-mp-identity .dnd-tt-field input[type="color"] { width: 48px; }
+.dnd-mp-join { display: flex; gap: 6px; }
+.dnd-mp-join input { flex: 1; text-transform: uppercase; letter-spacing: 0.15em; font-weight: 700; text-align: center; }
+.dnd-mp-status { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.dnd-mp-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--muted); flex-shrink: 0; }
+.dnd-mp-dot.open { background: var(--ok); box-shadow: 0 0 6px var(--ok); }
+.dnd-mp-dot.connecting, .dnd-mp-dot.reconnecting { background: var(--accent); }
+.dnd-mp-dot.error, .dnd-mp-dot.closed { background: var(--danger); }
+.dnd-mp-code-row { display: flex; align-items: center; gap: 8px; }
+.dnd-mp-code {
+  flex: 1;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-align: center;
+  padding: 8px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--dnd-accent-2);
+}
+.dnd-mp-peers { display: flex; flex-direction: column; gap: 4px; font-size: 13px; }
+.dnd-mp-peer { display: flex; align-items: center; gap: 6px; }
+.dnd-mp-peer-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+.dnd-tt-spectating {
+  padding: 6px 12px;
+  background: rgba(139,148,168,0.14);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  text-align: center;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
