@@ -1,0 +1,29 @@
+.audit-log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+.audit-log-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 4px 6px;
+  border-radius: 5px;
+  font-size: 12px;
+  line-height: 1.35;
+}
+.audit-log-row.replayable { cursor: pointer; }
+.audit-log-row.replayable:hover { background: var(--panel-2); }
+.audit-log-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+.audit-log-text { flex: 1; min-width: 0; }
+.audit-log-replay { color: var(--accent); }
+.audit-log-time { flex-shrink: 0; font-size: 11px; }
+
+/* Ghost-replay highlight pulses on either canvas. */
+.tt-ghost, .dnd-ghost { animation: ghost-pulse 1.2s ease-in-out infinite; }
+@keyframes ghost-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }

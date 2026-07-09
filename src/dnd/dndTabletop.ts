@@ -1,5 +1,7 @@
 // State model + persistence for the D&D dungeon tabletop.
 
+import { logId, type LogActor, type LogEntry } from "../lib/auditLog";
+
 export type TokenKind = "pc" | "monster" | "marker";
 
 export type DndToken = {
@@ -35,6 +37,8 @@ export type DndTabletopState = {
   round: number;
   /** Id of the token whose turn it is (initiative order), or null. */
   activeTokenId: string | null;
+  /** Shared audit log (synced + persisted with the board). */
+  log?: LogEntry[];
 };
 
 export function newDndTabletop(): DndTabletopState {
@@ -43,7 +47,42 @@ export function newDndTabletop(): DndTabletopState {
     tokens: [],
     round: 1,
     activeTokenId: null,
+    log: [],
   };
+}
+
+// Diff two board snapshots into audit-log entries, attributed to `actor`.
+// Covers piece moves (with from/to for ghost replay), adds/removes, HP
+// changes and round/turn changes. Ignores the log field itself.
+export function diffDnd(prev: DndTabletopState, next: DndTabletopState, actor: LogActor): LogEntry[] {
+  const out: LogEntry[] = [];
+  const prevById = new Map(prev.tokens.map((t) => [t.id, t]));
+  const nextById = new Map(next.tokens.map((t) => [t.id, t]));
+  const mk = (kind: LogEntry["kind"], text: string, move?: LogEntry["move"]): LogEntry =>
+    ({ id: logId(), ts: Date.now(), actor, kind, text, ...(move ? { move } : {}) });
+
+  for (const t of next.tokens) {
+    const p = prevById.get(t.id);
+    if (!p) { out.push(mk("add", `added ${t.name || "a token"}`)); continue; }
+    if (p.x !== t.x || p.y !== t.y) {
+      out.push(mk("move", `moved ${t.name || "a token"}`, {
+        from: { x: p.x, y: p.y }, to: { x: t.x, y: t.y }, size: t.size, color: t.color,
+      }));
+    }
+    if ((p.hpCurrent ?? null) !== (t.hpCurrent ?? null)) {
+      const d = (t.hpCurrent ?? 0) - (p.hpCurrent ?? 0);
+      out.push(mk("hp", `${t.name || "token"} HP ${d >= 0 ? "+" : ""}${d} (${t.hpCurrent ?? "?"}${t.hpMax != null ? "/" + t.hpMax : ""})`));
+    }
+  }
+  for (const p of prev.tokens) {
+    if (!nextById.has(p.id)) out.push(mk("remove", `removed ${p.name || "a token"}`));
+  }
+  if (prev.round !== next.round) out.push(mk("round", `advanced to round ${next.round}`));
+  if (prev.activeTokenId !== next.activeTokenId && next.activeTokenId) {
+    const t = nextById.get(next.activeTokenId);
+    out.push(mk("turn", `${t?.name || "a token"}'s turn`));
+  }
+  return out;
 }
 
 let idc = 0;

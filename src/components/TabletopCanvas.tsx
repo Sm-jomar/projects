@@ -75,11 +75,13 @@ type Props = {
   /** Watch-only mode (spectator): tokens/terrain/templates can't be moved
    * or activated, but pan, zoom, selection and the ruler still work. */
   readOnly?: boolean;
+  /** Ghost-replay highlight of a past move (inches), or null. */
+  ghost?: { from: { x: number; y: number }; to: { x: number; y: number }; size?: number; color?: string } | null;
 };
 
 export function TabletopCanvas({
   state, onState, tool, snapInches, showGrid, selectedId, onSelect,
-  onDropPayload, onDragStart, onToggleActivated, onTemplateUpdate, readOnly = false,
+  onDropPayload, onDragStart, onToggleActivated, onTemplateUpdate, readOnly = false, ghost = null,
 }: Props) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -523,6 +525,24 @@ export function TabletopCanvas({
                       paintOrder="stroke" stroke="#0e0f12" strokeWidth={2.5 / view.scale}>
                   Speed {t.speed}
                 </text>
+              </g>
+            );
+          })()}
+
+          {/* Ghost replay: origin, path and destination of a past move. */}
+          {ghost && (() => {
+            const sz = ghost.size ?? 1;
+            const col = ghost.color ?? "#ffd24a";
+            const fx = (ghost.from.x + sz / 2) * UNITS_PER_INCH, fy = (ghost.from.y + sz / 2) * UNITS_PER_INCH;
+            const tx = (ghost.to.x + sz / 2) * UNITS_PER_INCH, ty = (ghost.to.y + sz / 2) * UNITS_PER_INCH;
+            const r = (sz * UNITS_PER_INCH) / 2 - 1;
+            return (
+              <g pointerEvents="none" className="tt-ghost">
+                <circle cx={fx} cy={fy} r={r} fill={col} fillOpacity={0.22} stroke={col}
+                        strokeDasharray={`${4 / view.scale} ${3 / view.scale}`} strokeWidth={1.5 / view.scale} />
+                <line x1={fx} y1={fy} x2={tx} y2={ty} stroke={col} strokeWidth={2.5 / view.scale}
+                      strokeDasharray={`${5 / view.scale} ${4 / view.scale}`} />
+                <circle cx={tx} cy={ty} r={r + 2 / view.scale} fill="none" stroke={col} strokeWidth={2.5 / view.scale} />
               </g>
             );
           })()}
