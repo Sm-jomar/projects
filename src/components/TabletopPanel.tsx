@@ -150,7 +150,7 @@ export function TabletopPanel({ onClose }: Props) {
   const [playerName, setPlayerName] = useState(() => localStorage.getItem(NAME_KEY) ?? "");
   const [preferredColor, setPreferredColor] = useState<PlayerColor>("blue");
   const [colorNote, setColorNote] = useState<string | null>(null);
-  const roomRef = useRef<RoomClient | null>(null);
+  const roomRef = useRef<RoomClient<TabletopState> | null>(null);
 
   // Watch-only when connected as a spectator. Kept in a ref (above) so the
   // early-defined commit() can honor it without a stale-closure hazard.
@@ -166,7 +166,7 @@ export function TabletopPanel({ onClose }: Props) {
   // (skip it) and avoid an infinite relay loop.
   const remoteEchoRef = useRef<string | null>(null);
 
-  function buildHandlers(): RoomHandlers {
+  function buildHandlers(): RoomHandlers<TabletopState> {
     return {
       onStatus: (status, detail) =>
         setOnline((o) => (o ? { ...o, status, error: detail } : o)),
@@ -222,7 +222,7 @@ export function TabletopPanel({ onClose }: Props) {
     localStorage.setItem(NAME_KEY, name);
     roomRef.current?.close();
     remoteEchoRef.current = null;
-    const client = new RoomClient(code, name, preferredColor, buildHandlers());
+    const client = new RoomClient<TabletopState>(code, name, preferredColor, buildHandlers(), "legion");
     roomRef.current = client;
     setOnline({ status: "connecting", code: client.code, you: null, peers: [] });
     client.connect();

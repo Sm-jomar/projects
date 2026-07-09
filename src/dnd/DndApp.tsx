@@ -15,7 +15,10 @@ const NAV: { key: Section; label: string }[] = [
 ];
 
 export function DndApp() {
-  const [section, setSection] = useState<Section>("characters");
+  // An invite link (?room=CODE) lands straight on the Tabletop.
+  const [section, setSection] = useState<Section>(
+    () => new URLSearchParams(window.location.search).has("room") ? "tabletop" : "characters",
+  );
 
   return (
     <div className="dnd-app">

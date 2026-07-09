@@ -22,11 +22,13 @@ export interface RoomEnv {
 }
 
 // Per-connection metadata, kept on the socket via (de)serializeAttachment
-// so it survives hibernation.
-type PlayerColor = "blue" | "red" | "spectator";
-type Attachment = { id: string; color: PlayerColor; name: string };
+// so it survives hibernation. `color` doubles as identity/role:
+//   Legion: "blue" | "red" | "spectator"
+//   D&D:    a hex like "#4a86c8" (an editor), or "spectator" (watch-only)
+// The literal "spectator" always means watch-only in either app.
+type Attachment = { id: string; color: string; name: string };
 
-type Peer = { id: string; color: PlayerColor; name: string };
+type Peer = { id: string; color: string; name: string };
 
 // Messages are small JSON objects tagged with `t`.
 type ClientMsg =
@@ -38,6 +40,13 @@ type ClientMsg =
   | { t: "ping" };
 
 const STATE_KEY = "board-state";
+const APP_KEY = "room-app";
+// Room state can carry a downscaled dungeon-map image (D&D), so allow more
+// than a bare board's worth.
+const MAX_STATE_BYTES = 2_000_000;
+
+// Legion's two exclusive sides; D&D has no exclusive colors.
+const LEGION_EXCLUSIVE = new Set(["blue", "red"]);
 
 function randomId(): string {
   // Short opaque id for a connection/player.
@@ -55,10 +64,24 @@ export class RoomDO extends DurableObject<RoomEnv> {
     const client = pair[0];
     const server = pair[1];
 
-    // Honor the player's requested color when it's free; otherwise fall
-    // back to the first open slot (blue, then red), then spectator.
     const url = new URL(request.url);
-    const color = this.pickColor(url.searchParams.get("color"));
+    const app = url.searchParams.get("app") === "dnd" ? "dnd" : "legion";
+
+    // A room belongs to one app. The first connection stamps it; a later
+    // connection for the other app is refused so a Legion and a D&D room
+    // can never share a code and cross-contaminate.
+    const stampedApp = (await this.ctx.storage.get<string>(APP_KEY)) ?? null;
+    if (stampedApp && stampedApp !== app) {
+      this.ctx.acceptWebSocket(server);
+      this.send(server, { t: "denied", reason: "room-app-mismatch", app: stampedApp });
+      try { server.close(1008, "room belongs to another app"); } catch { /* noop */ }
+      return new Response(null, { status: 101, webSocket: client });
+    }
+    if (!stampedApp) await this.ctx.storage.put(APP_KEY, app);
+
+    // Honor the requested color/identity (see pickColor). Legion keeps its
+    // blue/red-then-spectator fallback; D&D takes the picked color as-is.
+    const color = this.pickColor(app, url.searchParams.get("color"));
     const name = (url.searchParams.get("name") || "").slice(0, 24) || defaultName(color);
     const att: Attachment = { id: randomId(), color, name };
 
@@ -103,7 +126,7 @@ export class RoomDO extends DurableObject<RoomEnv> {
         // Persist + relay. Cap stored size so a bad client can't blow up
         // the object's storage.
         const json = JSON.stringify(msg.state);
-        if (json.length > 512_000) return;
+        if (json.length > MAX_STATE_BYTES) return;
         await this.ctx.storage.put(STATE_KEY, msg.state);
         this.broadcast({ t: "state", state: msg.state, from: att.id }, ws);
         break;
@@ -122,12 +145,12 @@ export class RoomDO extends DurableObject<RoomEnv> {
         break;
       }
       case "setColor": {
-        const want = msg.color;
-        if (want !== "blue" && want !== "red" && want !== "spectator") break;
-        // A blue/red slot can only be held by one socket at a time. If
-        // someone else has it, deny the change so the requester keeps
-        // their current color.
-        if (want === "blue" || want === "red") {
+        const want = String(msg.color || "").slice(0, 16);
+        if (!want) break;
+        // Only Legion's blue/red are exclusive. If another socket holds
+        // the requested exclusive slot, deny so the requester keeps its
+        // current color. D&D colors (hex) are freely shared.
+        if (LEGION_EXCLUSIVE.has(want)) {
           for (const other of this.ctx.getWebSockets()) {
             if (other === ws) continue;
             const a2 = other.deserializeAttachment() as Attachment | null;
@@ -164,11 +187,16 @@ export class RoomDO extends DurableObject<RoomEnv> {
 
   // --- helpers ----------------------------------------------------------
 
-  private pickColor(preferred?: string | null): PlayerColor {
-    // An explicit spectator request is always honored (any number of
-    // spectators allowed).
+  private pickColor(app: string, preferred?: string | null): string {
+    // Spectator is always honored (any number of watchers).
     if (preferred === "spectator") return "spectator";
-    const taken = new Set<PlayerColor>();
+    // D&D: identity colors aren't exclusive — take the picked color, or a
+    // sensible default if none was supplied.
+    if (app === "dnd") {
+      return (preferred && /^#[0-9a-fA-F]{6}$/.test(preferred)) ? preferred : "#4a86c8";
+    }
+    // Legion: blue then red, else spectator.
+    const taken = new Set<string>();
     for (const ws of this.ctx.getWebSockets()) {
       const att = ws.deserializeAttachment() as Attachment | null;
       if (att) taken.add(att.color);
@@ -231,8 +259,9 @@ export class RoomDO extends DurableObject<RoomEnv> {
   }
 }
 
-function defaultName(color: PlayerColor): string {
+function defaultName(color: string): string {
   if (color === "blue") return "Blue player";
   if (color === "red") return "Red player";
-  return "Spectator";
+  if (color === "spectator") return "Spectator";
+  return "Player"; // D&D hex-colored editor
 }
