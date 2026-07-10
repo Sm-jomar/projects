@@ -1,72 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  newDndTabletop, loadDndTabletop, saveDndTabletop, downscaleImage,
-  initiativeOrder, newId, TOKEN_COLORS, diffDnd,
+  downscaleImage, initiativeOrder, newId, TOKEN_COLORS,
   type DndTabletopState, type DndToken,
 } from "./dndTabletop";
 import { listCharacters } from "./dndStorage";
 import type { DndCharacter } from "./dndTypes";
-import { RoomClient, generateRoomCode, type ConnStatus, type Peer, type RoomHandlers } from "../lib/roomClient";
 import { dndPlayUrl } from "../lib/appRouting";
-import { appendLog, type LogActor, type LogEntry } from "../lib/auditLog";
+import type { LogEntry } from "../lib/auditLog";
 import { AuditLogView } from "../components/AuditLogView";
+import { RollFeed } from "./RollFeed";
+import { useDndRoom, type OnlineState } from "./dndRoom";
 
 const U = 48; // SVG units per grid cell
-const NAME_KEY = "dnd.playername";
-const COLOR_KEY = "dnd.playercolor";
-const DEFAULT_COLOR = "#4a86c8";
-
-type OnlineState = { status: ConnStatus; code: string; you: Peer | null; peers: Peer[]; error?: string };
 
 export function DndTabletop() {
-  const [state, setState] = useState<DndTabletopState>(() => loadDndTabletop() ?? newDndTabletop());
+  // Connection + board state live in the app-level room context so they
+  // survive tab switches and are shared with the dice roller.
+  const room = useDndRoom();
+  const { state, setBoard, readOnly, online } = room;
+
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [chars] = useState<DndCharacter[]>(() => listCharacters());
   const [warn, setWarn] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  // Debounced persist; surfaces a warning if the map image blows the quota.
-  useEffect(() => {
-    const t = setTimeout(() => {
-      const ok = saveDndTabletop(state);
-      if (!ok) setWarn("Couldn't save locally — the map image may be too large. It still works this session.");
-      else setWarn(null);
-    }, 500);
-    return () => clearTimeout(t);
-  }, [state]);
-
-  // --- Multiplayer (shares the Legion Durable Object room server) ----------
-  const hasRoomParam = new URLSearchParams(location.search).has("room");
-  const [online, setOnline] = useState<OnlineState | null>(null);
-  const [onlineOpen, setOnlineOpen] = useState(hasRoomParam);
-  const [joinCode, setJoinCode] = useState(() => new URLSearchParams(location.search).get("room")?.toUpperCase() ?? "");
-  const [playerName, setPlayerName] = useState(() => localStorage.getItem(NAME_KEY) ?? "");
-  const [playerColor, setPlayerColor] = useState(() => localStorage.getItem(COLOR_KEY) ?? DEFAULT_COLOR);
-  const [spectator, setSpectator] = useState(false);
-  const roomRef = useRef<RoomClient<DndTabletopState> | null>(null);
-  const stateRef = useRef(state);
-  useEffect(() => { stateRef.current = state; }, [state]);
-  const remoteEchoRef = useRef<string | null>(null);
-  const readOnlyRef = useRef(false);
-
-  const readOnly = online?.status === "open" && online.you?.color === "spectator";
-  useEffect(() => { readOnlyRef.current = !!readOnly; }, [readOnly]);
-
-  // --- Audit log + ghost replay --------------------------------------------
-  // The current actor stamped onto locally-generated log entries.
-  const actor: LogActor = online?.status === "open" && online.you
-    ? { name: online.you.name, color: online.you.color === "spectator" ? "#8b94a8" : online.you.color }
-    : { name: playerName.trim() || "You", color: playerColor };
-  const actorRef = useRef(actor);
-  useEffect(() => { actorRef.current = actor; });
-  // Previous board (for diffing) + the JSON of the last remotely-applied
-  // state (so remote updates aren't re-logged locally).
-  const prevRef = useRef(state);
-  const appliedRemoteRef = useRef<string | null>(null);
-  const diffTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [ghost, setGhost] = useState<LogEntry["move"] | null>(null);
   const ghostTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
   function showGhost(m: LogEntry["move"]) {
     if (!m) return;
     setGhost(m);
@@ -74,104 +33,22 @@ export function DndTabletop() {
     ghostTimer.current = setTimeout(() => setGhost(null), 5000);
   }
 
-  // Generate log entries by diffing local changes. Debounced so a drag
-  // (which updates state every frame) logs one move on settle, not dozens.
-  // Remote applications set prevRef without logging (the actor's own client
-  // already logged them).
-  useEffect(() => {
-    const curJson = JSON.stringify(state);
-    if (appliedRemoteRef.current === curJson) { prevRef.current = state; return; }
-    if (diffTimer.current) clearTimeout(diffTimer.current);
-    diffTimer.current = setTimeout(() => {
-      const prev = prevRef.current;
-      prevRef.current = state;
-      const entries = diffDnd(prev, state, actorRef.current);
-      if (entries.length) setState((s) => ({ ...s, log: appendLog(s.log, entries) }));
-    }, 350);
-  }, [state]);
-
-  function buildHandlers(): RoomHandlers<DndTabletopState> {
-    return {
-      onStatus: (status, detail) => setOnline((o) => (o ? { ...o, status, error: detail } : o)),
-      onDenied: () => setOnline((o) => (o ? { ...o, status: "error", error: "That code belongs to a Legion game. Use a different code." } : o)),
-      onWelcome: (you, remoteState, peers) => {
-        setOnline({ status: "open", code: roomRef.current?.code ?? "", you, peers });
-        if (remoteState) {
-          const js = JSON.stringify(remoteState);
-          remoteEchoRef.current = js;
-          appliedRemoteRef.current = js;
-          setState(remoteState);
-        } else {
-          remoteEchoRef.current = JSON.stringify(stateRef.current);
-          roomRef.current?.sendState(stateRef.current);
-        }
-      },
-      onState: (remoteState) => {
-        const js = JSON.stringify(remoteState);
-        remoteEchoRef.current = js;
-        appliedRemoteRef.current = js;
-        setState(remoteState);
-      },
-      onPresence: (peers) => setOnline((o) => {
-        if (!o) return o;
-        const you = o.you ? peers.find((p) => p.id === o.you!.id) ?? o.you : o.you;
-        return { ...o, peers, you };
-      }),
-    };
-  }
-
-  function startRoom(code: string) {
-    const name = playerName.trim() || "Player";
-    localStorage.setItem(NAME_KEY, name);
-    localStorage.setItem(COLOR_KEY, playerColor);
-    roomRef.current?.close();
-    remoteEchoRef.current = null;
-    const identity = spectator ? "spectator" : playerColor;
-    const client = new RoomClient<DndTabletopState>(code, name, identity, buildHandlers(), "dnd");
-    roomRef.current = client;
-    setOnline({ status: "connecting", code: client.code, you: null, peers: [] });
-    client.connect();
-  }
-  function hostRoom() { if (playerName.trim()) startRoom(generateRoomCode()); }
-  function joinRoom() { const c = joinCode.trim().toUpperCase(); if (c.length >= 4 && playerName.trim()) startRoom(c); }
-  function changeIdentity(spec: boolean, color: string) {
-    setSpectator(spec);
-    setPlayerColor(color);
-    localStorage.setItem(COLOR_KEY, color);
-    roomRef.current?.setColor(spec ? "spectator" : color);
-  }
-  function leaveRoom() { roomRef.current?.close(); roomRef.current = null; remoteEchoRef.current = null; setOnline(null); }
-
-  // Push local changes to the room (skipped for spectators; the server
-  // ignores them anyway).
-  useEffect(() => {
-    const client = roomRef.current;
-    if (!client || online?.status !== "open" || readOnly) return;
-    const js = JSON.stringify(state);
-    if (js === remoteEchoRef.current) return;
-    remoteEchoRef.current = js;
-    client.sendState(state);
-  }, [state, online?.status, readOnly]);
-
-  useEffect(() => () => roomRef.current?.close(), []);
-
   const selected = state.tokens.find((t) => t.id === selectedId) ?? null;
   const order = initiativeOrder(state.tokens);
 
-  function patch(p: Partial<DndTabletopState>) { if (readOnlyRef.current) return; setState((s) => ({ ...s, ...p })); }
-  function patchMap(p: Partial<DndTabletopState["map"]>) { if (readOnlyRef.current) return; setState((s) => ({ ...s, map: { ...s.map, ...p } })); }
+  // setBoard is guarded by the context (no-ops for spectators).
+  function patch(p: Partial<DndTabletopState>) { setBoard((s) => ({ ...s, ...p })); }
+  function patchMap(p: Partial<DndTabletopState["map"]>) { setBoard((s) => ({ ...s, map: { ...s.map, ...p } })); }
   function updateToken(id: string, p: Partial<DndToken>) {
-    if (readOnlyRef.current) return;
-    setState((s) => ({ ...s, tokens: s.tokens.map((t) => (t.id === id ? { ...t, ...p } : t)) }));
+    setBoard((s) => ({ ...s, tokens: s.tokens.map((t) => (t.id === id ? { ...t, ...p } : t)) }));
   }
   function removeToken(id: string) {
-    if (readOnlyRef.current) return;
-    setState((s) => ({ ...s, tokens: s.tokens.filter((t) => t.id !== id) }));
+    setBoard((s) => ({ ...s, tokens: s.tokens.filter((t) => t.id !== id) }));
     if (selectedId === id) setSelectedId(null);
   }
 
   function addToken(partial: Partial<DndToken>) {
-    if (readOnlyRef.current) return;
+    if (readOnly) return;
     const color = TOKEN_COLORS[state.tokens.length % TOKEN_COLORS.length]!;
     const tk: DndToken = {
       id: newId(),
@@ -183,7 +60,7 @@ export function DndTabletop() {
       kind: "monster",
       ...partial,
     };
-    setState((s) => ({ ...s, tokens: [...s.tokens, tk] }));
+    setBoard((s) => ({ ...s, tokens: [...s.tokens, tk] }));
     setSelectedId(tk.id);
   }
 
@@ -233,18 +110,18 @@ export function DndTabletop() {
         {warn && <span className="dnd-tt-warn small">{warn}</span>}
         <div className="dnd-mp-wrap">
           <button className={"dnd-mp-btn" + (online?.status === "open" ? " live" : "")}
-                  onClick={() => setOnlineOpen((v) => !v)}>
+                  onClick={() => room.setOnlineOpen(!room.onlineOpen)}>
             {online?.status === "open" ? `● ${online.code}` : online ? "● connecting…" : "Multiplayer"}
           </button>
-          {onlineOpen && (
+          {room.onlineOpen && (
             <MultiplayerPanel
               online={online}
-              joinCode={joinCode} onJoinCodeChange={setJoinCode}
-              playerName={playerName} onNameChange={setPlayerName}
-              playerColor={playerColor} spectator={spectator}
-              onIdentityChange={changeIdentity}
-              onHost={hostRoom} onJoin={joinRoom} onLeave={leaveRoom}
-              onClosePanel={() => setOnlineOpen(false)}
+              joinCode={room.joinCode} onJoinCodeChange={room.setJoinCode}
+              playerName={room.playerName} onNameChange={room.setPlayerName}
+              playerColor={room.playerColor} spectator={room.spectator}
+              onIdentityChange={room.changeIdentity}
+              onHost={room.hostRoom} onJoin={room.joinRoom} onLeave={room.leaveRoom}
+              onClosePanel={() => room.setOnlineOpen(false)}
             />
           )}
         </div>
@@ -365,6 +242,16 @@ export function DndTabletop() {
                 <button className="dnd-primary" onClick={nextTurn}>Next turn ▸</button>
               </>
             )}
+          </section>
+
+          <section>
+            <div className="dnd-tt-init-head">
+              <h3>Dice rolls</h3>
+              {room.rollFeed.length > 0 && (
+                <button className="ghost-btn small" onClick={room.clearRolls}>Clear</button>
+              )}
+            </div>
+            <RollFeed feed={room.rollFeed} emptyText="No rolls yet. Roll in the Dice tab — everyone in the game sees them here." />
           </section>
 
           <section>

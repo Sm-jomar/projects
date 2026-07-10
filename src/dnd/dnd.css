@@ -451,3 +451,8 @@
 .dnd-roll-note { margin-top: 4px; font-size: 13px; font-weight: 600; }
 .dnd-roll-note.crit { color: var(--ok); }
 .dnd-roll-note.fumble { color: var(--danger); }
+
+/* Roll feed attribution (shared dice) */
+.dnd-dice-share { flex: 1; text-align: right; }
+.dnd-roll-who { display: inline-flex; align-items: center; gap: 5px; min-width: 0; }
+.dnd-roll-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
