@@ -1,5 +1,6 @@
 import "./landing.css";
 import { legionUrl, dndUrl } from "../lib/appRouting";
+import { ActiveSessions } from "./ActiveSessions";
 
 // The eslegion.com hub: pick a game, get sent to its subdomain.
 export function LandingPage() {
@@ -27,6 +28,8 @@ export function LandingPage() {
           <div className="landing-card-go">Enter ▸</div>
         </a>
       </div>
+
+      <ActiveSessions />
 
       <footer className="landing-foot muted small">
         eslegion.com

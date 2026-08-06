@@ -30,10 +30,14 @@
   },
   "durable_objects": {
     "bindings": [
-      { "name": "ROOM", "class_name": "RoomDO" }
+      { "name": "ROOM", "class_name": "RoomDO" },
+      // Single directory object (addressed by the fixed name "global") that
+      // indexes active rooms so the site can list live games.
+      { "name": "LOBBY", "class_name": "LobbyDO" }
     ]
   },
   "migrations": [
-    { "tag": "v1", "new_sqlite_classes": ["RoomDO"] }
+    { "tag": "v1", "new_sqlite_classes": ["RoomDO"] },
+    { "tag": "v2", "new_sqlite_classes": ["LobbyDO"] }
   ]
 }
