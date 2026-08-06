@@ -3,11 +3,15 @@
   "name": "projects",
   "main": "worker/src/index.ts",
   "compatibility_date": "2026-05-28",
-  // Keep the projects.sm-af6.workers.dev URL enabled explicitly. A custom
-  // domain (e.g. play.eslegion.com) can't be auto-provisioned here because
-  // eslegion.com's DNS isn't on this Cloudflare account; to use one, move
-  // the domain's nameservers to Cloudflare, then re-add a `routes` entry
-  // with custom_domain + zone_name.
+  // Served on two fronts:
+  //  - projects.sm-af6.workers.dev  (workers_dev, always on)
+  //  - eslegion.com  — bound to this Worker as a Custom Domain, managed in
+  //    the Cloudflare dashboard (Workers & Pages -> projects -> Domains &
+  //    Routes). It is intentionally NOT declared as a `routes` entry here:
+  //    the CI deploy token ("Edit Cloudflare Workers") lacks Zone DNS:Edit,
+  //    so provisioning the domain from config would fail the deploy. The
+  //    dashboard uses full account permissions and auto-creates the DNS
+  //    record + TLS cert.
   "workers_dev": true,
   "observability": {
     "enabled": true
@@ -22,7 +26,7 @@
   "vars": {
     "REPO_OWNER": "sm-jomar",
     "REPO_NAME": "projects",
-    "ALLOWED_ORIGIN": "https://legion.eslegion.com"
+    "ALLOWED_ORIGIN": "https://eslegion.com"
   },
   "durable_objects": {
     "bindings": [
