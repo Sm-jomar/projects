@@ -49,7 +49,7 @@ type WorkingArmy = {
 
 export default function App() {
   const [army, setArmy] = useState<WorkingArmy | null>(null);
-  const [saved, setSaved] = useState<SavedArmy[]>([]);
+  const [saved, setSaved] = useState<SavedArmy[]>(() => listArmies());
   const [showSaved, setShowSaved] = useState(false);
   const [showReference, setShowReference] = useState(false);
   const [showRegisters, setShowRegisters] = useState(false);
@@ -63,12 +63,9 @@ export default function App() {
   const [lastAutoExport, setLastAutoExportState] = useState<number | null>(() =>
     getLastAutoExport(),
   );
-  // Re-render every 30s so the "auto-saved Xm ago" label stays current.
-  const [, setNowTick] = useState(0);
-
-  useEffect(() => {
-    setSaved(listArmies());
-  }, []);
+  // A ticking clock so the "auto-saved Xm ago" label refreshes without
+  // calling Date.now() during render.
+  const [now, setNow] = useState(() => Date.now());
 
   // Every 30 minutes, if there are new flags, download them as JSON and
   // clear the store. NOTE: a static GitHub Pages site can't push to the
@@ -84,7 +81,7 @@ export default function App() {
         }
       });
     }, AUTO_EXPORT_INTERVAL_MS);
-    const label = setInterval(() => setNowTick((t) => t + 1), 30000);
+    const label = setInterval(() => setNow(Date.now()), 30000);
     return () => {
       clearInterval(tick);
       clearInterval(label);
@@ -237,7 +234,7 @@ export default function App() {
           <span className="muted small flag-clock" title="Flags auto-export to a JSON download every 30 minutes">
             🚩{" "}
             {lastAutoExport
-              ? `auto-saved ${formatElapsed(Date.now() - lastAutoExport)}`
+              ? `auto-saved ${formatElapsed(now - lastAutoExport)}`
               : "auto-save on (30m)"}
           </span>
         </div>
