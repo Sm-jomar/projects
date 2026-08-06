@@ -1,6 +1,7 @@
 import { createContext, useContext } from "react";
 import type { ConnStatus, Peer } from "../lib/roomClient";
-import type { DndTabletopState } from "./dndTabletop";
+import type { DndTabletopState, PlayerProfile } from "./dndTabletop";
+import type { DndCharacter } from "./dndTypes";
 import type { LogActor } from "../lib/auditLog";
 
 export type OnlineState = { status: ConnStatus; code: string; you: Peer | null; peers: Peer[]; error?: string };
@@ -42,6 +43,10 @@ export type DndRoomValue = {
   rollFeed: SharedRoll[];
   sendRoll: (payload: RollPayload) => void;
   clearRolls: () => void;
+  // Shared character profiles
+  myId: string | null;
+  profiles: Record<string, PlayerProfile>;
+  attachCharacter: (character: DndCharacter | null) => void;
 };
 
 export const DndRoomCtx = createContext<DndRoomValue | null>(null);

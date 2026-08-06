@@ -1,8 +1,18 @@
 // State model + persistence for the D&D dungeon tabletop.
 
 import { logId, type LogActor, type LogEntry } from "../lib/auditLog";
+import type { DndCharacter } from "./dndTypes";
 
 export type TokenKind = "pc" | "monster" | "marker";
+
+// A player's shared character sheet in a multiplayer game, keyed by their
+// connection id. The full sheet snapshot travels so everyone can view it.
+export type PlayerProfile = {
+  name: string;
+  color: string;
+  charId: string;
+  character: DndCharacter;
+};
 
 export type DndToken = {
   id: string;
@@ -39,6 +49,8 @@ export type DndTabletopState = {
   activeTokenId: string | null;
   /** Shared audit log (synced + persisted with the board). */
   log?: LogEntry[];
+  /** Players' shared character sheets, keyed by connection id. */
+  profiles?: Record<string, PlayerProfile>;
 };
 
 export function newDndTabletop(): DndTabletopState {
@@ -48,6 +60,7 @@ export function newDndTabletop(): DndTabletopState {
     round: 1,
     activeTokenId: null,
     log: [],
+    profiles: {},
   };
 }
 

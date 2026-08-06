@@ -5,6 +5,7 @@ import {
 } from "./dndTabletop";
 import { RoomClient, generateRoomCode, type RoomHandlers } from "../lib/roomClient";
 import { appendLog, type LogActor } from "../lib/auditLog";
+import type { DndCharacter } from "./dndTypes";
 import {
   DndRoomCtx, rollId,
   type DndRoomValue, type OnlineState, type SharedRoll, type RollPayload,
@@ -145,12 +146,38 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   }
   function clearRolls() { setRollFeed([]); }
 
+  // Attach (or clear) my character sheet to the shared board so everyone in
+  // the game can view it. Keyed by my connection id; prunes profiles of
+  // players no longer connected.
+  const myId = online?.status === "open" ? online.you?.id ?? null : null;
+  function attachCharacter(character: DndCharacter | null) {
+    if (!myId) return;
+    const you = online?.you;
+    setBoard((s) => {
+      const profiles = { ...(s.profiles ?? {}) };
+      const peerIds = new Set((online?.peers ?? []).map((p) => p.id));
+      for (const k of Object.keys(profiles)) if (!peerIds.has(k)) delete profiles[k];
+      if (character && you) {
+        profiles[myId] = {
+          name: you.name,
+          color: you.color === "spectator" ? "#8b94a8" : you.color,
+          charId: character.id,
+          character,
+        };
+      } else {
+        delete profiles[myId];
+      }
+      return { ...s, profiles };
+    });
+  }
+
   const value: DndRoomValue = {
     state, setBoard, readOnly: !!readOnly, actor,
     online, onlineOpen, setOnlineOpen, joinCode, setJoinCode,
     playerName, setPlayerName, playerColor, spectator,
     hostRoom, joinRoom, leaveRoom, changeIdentity,
     rollFeed, sendRoll, clearRolls,
+    myId, profiles: state.profiles ?? {}, attachCharacter,
   };
   return <DndRoomCtx.Provider value={value}>{children}</DndRoomCtx.Provider>;
 }
