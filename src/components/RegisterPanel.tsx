@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import type { TodRegister } from "../lib/types";
 import {
   deleteRegister,
@@ -19,14 +19,10 @@ type Props = {
 };
 
 export function RegisterPanel({ onClose }: Props) {
-  const [registers, setRegisters] = useState<TodRegister[]>([]);
+  const [registers, setRegisters] = useState<TodRegister[]>(() => listRegisters());
   const [editing, setEditing] = useState<TodRegister | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    setRegisters(listRegisters());
-  }, []);
 
   function refresh() {
     setRegisters(listRegisters());
