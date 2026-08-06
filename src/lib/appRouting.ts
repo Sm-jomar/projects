@@ -1,21 +1,22 @@
-// Which sub-app to render, decided from the ?app= param (with a hostname
-// fallback). For now everything runs on the existing deployment under
-// ?app=; the dedicated subdomains aren't wired yet.
+// Which sub-app to render, and the canonical cross-app links.
 //
-//   ?app=home   -> the game-chooser hub
-//   ?app=legion -> Star Wars: Legion   (also the default)
-//   ?app=dnd    -> Dungeons & Dragons
+// Everything is served from one origin (eslegion.com, plus the workers.dev
+// URL) by the Cloudflare Worker, routed by PATH:
 //
-// Hostname is still honored (dragons.* -> dnd, etc.) so switching to real
-// subdomains later needs no code change.
+//   /         -> the game-chooser hub (home)
+//   /legion   -> Star Wars: Legion
+//   /dnd      -> Dungeons & Dragons   (matched case-insensitively, e.g. /DnD)
+//
+// Legacy subdomains (legion.*, dragons.*) and the ?app= override still
+// resolve, so older links keep working during and after the cutover.
 
 export type AppKind = "home" | "legion" | "dnd";
 
-// Canonical base for cross-app links while everything lives on one domain.
-const BASE = "https://legion.eslegion.com";
-// The deployment that can actually run multiplayer (has /api/room). The
-// static site can't, so multiplayer buttons point here.
-const MP_BASE = "https://projects.sm-af6.workers.dev";
+// A guaranteed multiplayer-capable origin (the Worker serves /api/room).
+// Used only when the current page is NOT itself Worker-served — e.g. the old
+// GitHub Pages site while the Cloudflare cutover is in progress. Once
+// eslegion.com is on the Worker this is effectively never needed.
+const WORKER_ORIGIN = "https://projects.sm-af6.workers.dev";
 
 export function resolveApp(): AppKind {
   const params = new URLSearchParams(window.location.search);
@@ -23,21 +24,44 @@ export function resolveApp(): AppKind {
   if (override === "home" || override === "legion" || override === "dnd") {
     return override;
   }
-  const host = window.location.hostname.toLowerCase();
-  if (host.startsWith("dragons.")) return "dnd";
-  if (host.startsWith("legion.")) return "legion";
-  if (host === "eslegion.com" || host === "www.eslegion.com") return "home";
-  return "legion";
+
+  const path = window.location.pathname.toLowerCase().replace(/\/+$/, "");
+  if (path === "/legion" || path.startsWith("/legion/")) return "legion";
+  if (path === "/dnd" || path.startsWith("/dnd/")) return "dnd";
+
+  // Root path: legacy subdomains still open their app; otherwise the hub.
+  if (path === "" ) {
+    const host = window.location.hostname.toLowerCase();
+    if (host.startsWith("dragons.")) return "dnd";
+    if (host.startsWith("legion.")) return "legion";
+  }
+  return "home";
 }
 
-export function homeUrl(): string { return `${BASE}/?app=home`; }
-export function legionUrl(): string { return `${BASE}/?app=legion`; }
-export function dndUrl(): string { return `${BASE}/?app=dnd`; }
+// In-app navigation is same-origin PATHS, so links work identically on
+// eslegion.com, the workers.dev URL, and localhost.
+export function homeUrl(): string { return "/"; }
+export function legionUrl(): string { return "/legion"; }
+export function dndUrl(): string { return "/dnd"; }
 
-// Multiplayer-capable destinations (Worker), optionally carrying a room code.
-export function legionPlayUrl(room?: string): string {
-  return room ? `${MP_BASE}/?app=legion&room=${encodeURIComponent(room)}` : `${MP_BASE}/?app=legion`;
+// True when the current page is served by the Worker, so /api/room (live
+// multiplayer) is reachable on this same origin.
+export function roomsAvailableHere(): boolean {
+  const h = window.location.hostname.toLowerCase();
+  return (
+    h.endsWith(".workers.dev") ||
+    h === "eslegion.com" || h === "www.eslegion.com" ||
+    h === "localhost" || h === "127.0.0.1"
+  );
 }
-export function dndPlayUrl(room?: string): string {
-  return room ? `${MP_BASE}/?app=dnd&room=${encodeURIComponent(room)}` : `${MP_BASE}/?app=dnd`;
+
+// Absolute multiplayer URL for a sub-app (for invite links + the "open
+// multiplayer site" button). Same-origin when rooms are available here;
+// otherwise the guaranteed Worker origin.
+function playUrl(path: string, room?: string): string {
+  const origin = roomsAvailableHere() ? window.location.origin : WORKER_ORIGIN;
+  const q = room ? `?room=${encodeURIComponent(room)}` : "";
+  return `${origin}${path}${q}`;
 }
+export function legionPlayUrl(room?: string): string { return playUrl("/legion", room); }
+export function dndPlayUrl(room?: string): string { return playUrl("/dnd", room); }
