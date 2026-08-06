@@ -18,6 +18,7 @@ import { DurableObject } from "cloudflare:workers";
 
 export interface RoomEnv {
   ROOM: DurableObjectNamespace;
+  LOBBY: DurableObjectNamespace;
   ALLOWED_ORIGIN: string;
 }
 
@@ -41,6 +42,12 @@ type ClientMsg =
 
 const STATE_KEY = "board-state";
 const APP_KEY = "room-app";
+// The room's share code, remembered so lobby reports still work after the
+// object hibernates and rehydrates (a DO isn't told its own name).
+const CODE_KEY = "room-code";
+// Re-report an in-progress game to the lobby at most this often, so a long
+// game that isn't gaining/losing players doesn't age out of the list.
+const LOBBY_REFRESH_MS = 60_000;
 // Room state can carry a downscaled dungeon-map image (D&D), so allow more
 // than a bare board's worth.
 const MAX_STATE_BYTES = 2_000_000;
@@ -66,6 +73,10 @@ export class RoomDO extends DurableObject<RoomEnv> {
 
     const url = new URL(request.url);
     const app = url.searchParams.get("app") === "dnd" ? "dnd" : "legion";
+
+    // Remember our share code (…/api/room/<CODE>/ws) for lobby reports.
+    const codeFromPath = url.pathname.split("/").filter(Boolean)[2] ?? "";
+    if (codeFromPath) await this.ctx.storage.put(CODE_KEY, codeFromPath.toUpperCase());
 
     // A room belongs to one app. The first connection stamps it; a later
     // connection for the other app is refused so a Legion and a D&D room
@@ -129,6 +140,9 @@ export class RoomDO extends DurableObject<RoomEnv> {
         if (json.length > MAX_STATE_BYTES) return;
         await this.ctx.storage.put(STATE_KEY, msg.state);
         this.broadcast({ t: "state", state: msg.state, from: att.id }, ws);
+        // Keep a long-running game fresh in the lobby directory even when
+        // nobody joins or leaves (throttled — see LOBBY_REFRESH_MS).
+        this.reportToLobby(this.peers(), true);
         break;
       }
       case "cursor":
@@ -256,7 +270,44 @@ export class RoomDO extends DurableObject<RoomEnv> {
         // ignore
       }
     }
+    // The roster changed — refresh this room's entry in the lobby (an
+    // empty roster removes it).
+    this.reportToLobby(peers);
   }
+
+  // Push this room's roster to the lobby directory. Fire-and-forget: the
+  // lobby is a convenience index, so a failed report must never disturb
+  // play. Reports are unconditional on roster changes; callers passing
+  // `throttled` (ordinary gameplay traffic) only refresh periodically so
+  // a long game doesn't age out of the list.
+  private reportToLobby(peers: Peer[], throttled = false): void {
+    const now = Date.now();
+    if (throttled && now - this.lastLobbyReport < LOBBY_REFRESH_MS) return;
+    this.lastLobbyReport = now;
+
+    void (async () => {
+      try {
+        const code = await this.ctx.storage.get<string>(CODE_KEY);
+        if (!code) return;
+        const app = (await this.ctx.storage.get<string>(APP_KEY)) ?? "legion";
+        const stub = this.env.LOBBY.get(this.env.LOBBY.idFromName("global"));
+        await stub.fetch("https://lobby/report", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            code,
+            app,
+            players: peers.map((p) => ({ name: p.name, color: p.color })),
+          }),
+        });
+      } catch {
+        // Directory is best-effort; ignore.
+      }
+    })();
+  }
+
+  /** Timestamp of the last lobby report (in-memory; resets on eviction). */
+  private lastLobbyReport = 0;
 }
 
 function defaultName(color: string): string {

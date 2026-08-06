@@ -20,16 +20,20 @@
  */
 
 import { RoomDO } from "./room";
+import { LobbyDO } from "./lobby";
 
 const FLAG_PATH = "/api/flags";
 // Remote-tabletop room sockets: /api/room/<code>/ws
 const ROOM_PREFIX = "/api/room/";
+// Directory of currently-active rooms (read-only, for the lobby UI).
+const SESSIONS_PATH = "/api/sessions";
 
-export { RoomDO };
+export { RoomDO, LobbyDO };
 
 export interface Env {
   ASSETS: { fetch(request: Request): Promise<Response> };
   ROOM: DurableObjectNamespace;
+  LOBBY: DurableObjectNamespace;
   GH_APP_ID: string;
   GH_APP_PRIVATE_KEY: string;
   GH_INSTALLATION_ID: string;
@@ -141,6 +145,9 @@ export default {
     if (url.pathname === FLAG_PATH) {
       return handleFlags(request, env);
     }
+    if (url.pathname === SESSIONS_PATH) {
+      return handleSessions(request, env);
+    }
     if (url.pathname.startsWith(ROOM_PREFIX)) {
       return handleRoom(request, env, url);
     }
@@ -153,6 +160,31 @@ export default {
 //   /api/room/<CODE>/ws
 // The DO is addressed by name == CODE, so the same code always lands on
 // the same object (created on demand).
+// GET /api/sessions — the directory of currently-active rooms, so the site
+// can show live games. Read-only; the lobby is maintained by the rooms
+// themselves (see lobby.ts).
+async function handleSessions(request: Request, env: Env): Promise<Response> {
+  if (request.method !== "GET") {
+    return new Response("method not allowed", { status: 405 });
+  }
+  try {
+    const stub = env.LOBBY.get(env.LOBBY.idFromName("global"));
+    const res = await stub.fetch("https://lobby/list");
+    const body = await res.text();
+    return new Response(body, {
+      status: res.status,
+      headers: {
+        "content-type": "application/json",
+        // Always fetch fresh; the list changes as people come and go.
+        "cache-control": "no-store",
+      },
+    });
+  } catch {
+    // Never fail the page over the directory — report an empty lobby.
+    return Response.json({ sessions: [] }, { headers: { "cache-control": "no-store" } });
+  }
+}
+
 function handleRoom(request: Request, env: Env, url: URL): Response | Promise<Response> {
   const rest = url.pathname.slice(ROOM_PREFIX.length); // "<CODE>/ws"
   const [code, action] = rest.split("/");
