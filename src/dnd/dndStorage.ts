@@ -84,3 +84,36 @@ export function saveNote(n: DmNote): DmNote {
 export function deleteNote(id: string): void {
   writeNotes(readNotes().filter((n) => n.id !== id));
 }
+
+// --- Rulebooks: reference books organized by game edition -----------------
+
+export type RuleBook = {
+  id: string;
+  edition: string;
+  title: string;
+  category: string; // Core / Supplement / Adventure / Homebrew …
+  url: string;
+  notes: string;
+};
+
+export type RulebookStore = { edition: string; books: RuleBook[] };
+
+const RULEBOOKS_KEY = "dnd.rulebooks.v1";
+
+export function readRulebooks(): RulebookStore {
+  try {
+    const raw = localStorage.getItem(RULEBOOKS_KEY);
+    if (!raw) return { edition: "5e-2014", books: [] };
+    const parsed = JSON.parse(raw) as Partial<RulebookStore>;
+    return {
+      edition: typeof parsed.edition === "string" ? parsed.edition : "5e-2014",
+      books: Array.isArray(parsed.books) ? parsed.books : [],
+    };
+  } catch {
+    return { edition: "5e-2014", books: [] };
+  }
+}
+
+export function writeRulebooks(store: RulebookStore): void {
+  localStorage.setItem(RULEBOOKS_KEY, JSON.stringify(store));
+}

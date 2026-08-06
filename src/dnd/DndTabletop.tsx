@@ -5,10 +5,12 @@ import {
 } from "./dndTabletop";
 import { listCharacters } from "./dndStorage";
 import type { DndCharacter } from "./dndTypes";
+import type { PlayerProfile } from "./dndTabletop";
 import { dndPlayUrl } from "../lib/appRouting";
 import type { LogEntry } from "../lib/auditLog";
 import { AuditLogView } from "../components/AuditLogView";
 import { RollFeed } from "./RollFeed";
+import { CharacterSheetView } from "./CharacterSheetView";
 import { useDndRoom, type OnlineState } from "./dndRoom";
 
 const U = 48; // SVG units per grid cell
@@ -22,7 +24,11 @@ export function DndTabletop() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [chars] = useState<DndCharacter[]>(() => listCharacters());
   const [warn, setWarn] = useState<string | null>(null);
+  const [viewProfile, setViewProfile] = useState<PlayerProfile | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const connected = online?.status === "open";
+  const myProfile = room.myId ? room.profiles[room.myId] : undefined;
 
   const [ghost, setGhost] = useState<LogEntry["move"] | null>(null);
   const ghostTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -141,6 +147,36 @@ export function DndTabletop() {
         />
 
         <aside className="dnd-tt-side">
+          {connected && (
+            <section className="dnd-party">
+              <h3>Party</h3>
+              {!readOnly && (
+                <label className="dnd-tt-field">Your character
+                  <select value={myProfile?.charId ?? ""}
+                          onChange={(e) => room.attachCharacter(e.target.value ? (chars.find((x) => x.id === e.target.value) ?? null) : null)}>
+                    <option value="">None attached</option>
+                    {chars.map((c) => <option key={c.id} value={c.id}>{c.name || "Unnamed"} {c.className ? `(${c.className})` : ""}</option>)}
+                  </select>
+                </label>
+              )}
+              {chars.length === 0 && !readOnly && <p className="muted small">Build a sheet in Character Sheets to share it here.</p>}
+              <div className="dnd-party-roster">
+                {online!.peers.map((p) => {
+                  const prof = room.profiles[p.id];
+                  return (
+                    <div key={p.id} className="dnd-party-row">
+                      <span className="dnd-party-dot" style={{ background: p.color === "spectator" ? "#8b94a8" : p.color }} />
+                      <span className="dnd-party-name">{p.name}{p.id === room.myId ? " (you)" : ""}</span>
+                      {prof
+                        ? <button className="ghost-btn small" onClick={() => setViewProfile(prof)}>View sheet</button>
+                        : <span className="muted small">{p.color === "spectator" ? "spectator" : "no sheet"}</span>}
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
           <section>
             <h3>Map</h3>
             <div className="dnd-tt-row">
@@ -270,6 +306,21 @@ export function DndTabletop() {
           </section>
         </aside>
       </div>
+
+      {viewProfile && (
+        <div className="dnd-modal-overlay" onClick={() => setViewProfile(null)}>
+          <div className="dnd-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="dnd-modal-head">
+              <span className="dnd-party-dot" style={{ background: viewProfile.color }} />
+              <b>{viewProfile.name}’s character</b>
+              <button className="ghost-btn small" onClick={() => setViewProfile(null)}>Close</button>
+            </div>
+            <div className="dnd-modal-body">
+              <CharacterSheetView c={viewProfile.character} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

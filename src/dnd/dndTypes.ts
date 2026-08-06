@@ -41,6 +41,42 @@ export const SKILLS: { key: SkillKey; label: string; ability: AbilityKey }[] = [
 
 export type Attack = { name: string; bonus: string; damage: string };
 
+// A single spellbook entry. level 0 = cantrip, 1..9 = spell level.
+export type Spell = {
+  id: string;
+  name: string;
+  level: number;
+  prepared: boolean;
+  school: string;
+  castingTime: string;
+  range: string;
+  components: string;
+  duration: string;
+  notes: string;
+};
+
+// Spell slots for levels 1..9 (index 0 = 1st level). Cantrips have none.
+export type SpellSlot = { total: number; used: number };
+
+export const SPELL_LEVELS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
+
+export function spellLevelLabel(level: number): string {
+  if (level === 0) return "Cantrip";
+  const ord = ["", "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th"][level];
+  return `${ord} Level`;
+}
+
+export function newSpell(level = 0): Spell {
+  return {
+    id: newId("spell"), name: "", level, prepared: false,
+    school: "", castingTime: "", range: "", components: "", duration: "", notes: "",
+  };
+}
+
+export function emptySpellSlots(): SpellSlot[] {
+  return Array.from({ length: 9 }, () => ({ total: 0, used: 0 }));
+}
+
 export type DndCharacter = {
   id: string;
   updatedAt: number;
@@ -93,7 +129,11 @@ export type DndCharacter = {
   spellAbility: AbilityKey | "";
   spellSaveDc: string;
   spellAttackBonus: string;
-  spells: string; // free-form list, grouped by the player
+  spells: string; // free-form notes (kept for older sheets)
+  // Structured spellbook. Optional so sheets saved before this existed
+  // still load; the editor fills defaults on open.
+  spellbook?: Spell[];
+  spellSlots?: SpellSlot[];
 };
 
 export function abilityModifier(score: number): number {
@@ -151,5 +191,7 @@ export function blankCharacter(): DndCharacter {
     spellSaveDc: "",
     spellAttackBonus: "",
     spells: "",
+    spellbook: [],
+    spellSlots: emptySpellSlots(),
   };
 }
