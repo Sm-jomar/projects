@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   ABILITIES, SKILLS, abilityModifier, formatModifier, blankCharacter,
-  type DndCharacter, type AbilityKey, type Attack,
+  SPELL_LEVELS, spellLevelLabel, newSpell, emptySpellSlots,
+  type DndCharacter, type AbilityKey, type Attack, type Spell, type SpellSlot,
 } from "./dndTypes";
 import {
   listCharacters, loadCharacter, saveCharacter, deleteCharacter,
@@ -226,7 +227,7 @@ function CharacterEditor({ character, onChange, onBack, onDelete }: {
               <Field label="Save DC" value={c.spellSaveDc} onChange={(v) => set("spellSaveDc", v)} compact />
               <Field label="Atk Bonus" value={c.spellAttackBonus} onChange={(v) => set("spellAttackBonus", v)} compact />
             </div>
-            <TextArea label="Spells known / prepared" value={c.spells} onChange={(v) => set("spells", v)} rows={5} />
+            <p className="muted small">Add spells in the Spellbook below.</p>
           </fieldset>
 
           <fieldset className="dnd-box">
@@ -252,6 +253,15 @@ function CharacterEditor({ character, onChange, onBack, onDelete }: {
           <TextArea label="Flaws" value={c.flaws} onChange={(v) => set("flaws", v)} rows={2} />
         </div>
       </div>
+
+      {/* Spellbook: full width below the three columns. */}
+      <SpellbookEditor
+        spellbook={c.spellbook ?? []}
+        slots={c.spellSlots ?? emptySpellSlots()}
+        legacyNotes={c.spells}
+        onSpellbook={(sb) => set("spellbook", sb)}
+        onSlots={(s) => set("spellSlots", s)}
+      />
     </div>
   );
 }
@@ -316,6 +326,113 @@ function DeathRow({ label, count, onChange, tone }: {
         ))}
       </div>
     </div>
+  );
+}
+
+function SpellbookEditor({ spellbook, slots, legacyNotes, onSpellbook, onSlots }: {
+  spellbook: Spell[];
+  slots: SpellSlot[];
+  legacyNotes: string;
+  onSpellbook: (s: Spell[]) => void;
+  onSlots: (s: SpellSlot[]) => void;
+}) {
+  const [openId, setOpenId] = useState<string | null>(null);
+
+  function addSpell(level: number) {
+    const s = newSpell(level);
+    onSpellbook([...spellbook, s]);
+    setOpenId(s.id);
+  }
+  function updateSpell(id: string, patch: Partial<Spell>) {
+    onSpellbook(spellbook.map((s) => (s.id === id ? { ...s, ...patch } : s)));
+  }
+  function removeSpell(id: string) { onSpellbook(spellbook.filter((s) => s.id !== id)); }
+  function setSlot(i: number, patch: Partial<SpellSlot>) {
+    onSlots(slots.map((s, j) => (j === i ? { ...s, ...patch } : s)));
+  }
+
+  return (
+    <section className="dnd-spellbook">
+      <div className="dnd-section-head">
+        <h2>Spellbook</h2>
+        <button className="dnd-primary" onClick={() => addSpell(0)}>+ Add spell</button>
+      </div>
+
+      <div className="dnd-slots">
+        {slots.map((slot, i) => {
+          const level = i + 1;
+          return (
+            <div key={level} className="dnd-slot">
+              <span className="dnd-slot-lvl">{["1st","2nd","3rd","4th","5th","6th","7th","8th","9th"][i]}</span>
+              <div className="dnd-slot-fields">
+                <label>Total<input type="number" min={0} max={9} value={slot.total}
+                  onChange={(e) => setSlot(i, { total: Math.max(0, Number(e.target.value) || 0) })} /></label>
+                <label>Used<input type="number" min={0} max={slot.total} value={slot.used}
+                  onChange={(e) => setSlot(i, { used: Math.max(0, Math.min(slot.total, Number(e.target.value) || 0)) })} /></label>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {spellbook.length === 0 ? (
+        <p className="muted small">No spells yet. Use <b>+ Add spell</b>, or the per-level <b>+</b> buttons below.</p>
+      ) : null}
+
+      <div className="dnd-spell-levels">
+        {SPELL_LEVELS.map((level) => {
+          const inLevel = spellbook.filter((s) => s.level === level)
+            .sort((a, b) => a.name.localeCompare(b.name));
+          if (inLevel.length === 0 && level > 0) return null;
+          return (
+            <div key={level} className="dnd-spell-level">
+              <div className="dnd-spell-level-head">
+                <h3>{spellLevelLabel(level)}</h3>
+                <button className="ghost-btn small" onClick={() => addSpell(level)}>+ {level === 0 ? "cantrip" : "spell"}</button>
+              </div>
+              {inLevel.map((s) => (
+                <div key={s.id} className="dnd-spell-row">
+                  <div className="dnd-spell-main">
+                    {level > 0 && (
+                      <input type="checkbox" checked={s.prepared} title="Prepared"
+                             onChange={(e) => updateSpell(s.id, { prepared: e.target.checked })} />
+                    )}
+                    <input className="dnd-spell-name" value={s.name} placeholder="Spell name"
+                           onChange={(e) => updateSpell(s.id, { name: e.target.value })} />
+                    <select value={s.level} onChange={(e) => updateSpell(s.id, { level: Number(e.target.value) })} title="Level">
+                      {SPELL_LEVELS.map((l) => <option key={l} value={l}>{l === 0 ? "Cantrip" : `Lv ${l}`}</option>)}
+                    </select>
+                    <button className="ghost-btn small" onClick={() => setOpenId(openId === s.id ? null : s.id)}>
+                      {openId === s.id ? "▾" : "▸"}
+                    </button>
+                    <button className="danger" onClick={() => removeSpell(s.id)} aria-label="Remove spell">×</button>
+                  </div>
+                  {openId === s.id && (
+                    <div className="dnd-spell-detail">
+                      <div className="dnd-spell-meta">
+                        <Field label="School" value={s.school} onChange={(v) => updateSpell(s.id, { school: v })} compact />
+                        <Field label="Casting time" value={s.castingTime} onChange={(v) => updateSpell(s.id, { castingTime: v })} compact />
+                        <Field label="Range" value={s.range} onChange={(v) => updateSpell(s.id, { range: v })} compact />
+                        <Field label="Components" value={s.components} onChange={(v) => updateSpell(s.id, { components: v })} compact />
+                        <Field label="Duration" value={s.duration} onChange={(v) => updateSpell(s.id, { duration: v })} compact />
+                      </div>
+                      <TextArea label="Description" value={s.notes} onChange={(v) => updateSpell(s.id, { notes: v })} rows={3} />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          );
+        })}
+      </div>
+
+      {legacyNotes.trim() && (
+        <div className="dnd-box dnd-legacy-spells">
+          <span className="muted small">Older free-form spell notes:</span>
+          <p style={{ whiteSpace: "pre-wrap", margin: "4px 0 0" }}>{legacyNotes}</p>
+        </div>
+      )}
+    </section>
   );
 }
 
