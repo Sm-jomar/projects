@@ -9,6 +9,7 @@ import {
   type DeploymentKey, type MoveTemplate, type CommandHand,
 } from "../lib/tabletop";
 import { appendLog, type LogActor, type LogEntry } from "../lib/auditLog";
+import { legionPlayUrl, roomsAvailableHere } from "../lib/appRouting";
 import { AuditLogView } from "./AuditLogView";
 import { listArmies } from "../lib/storage";
 import { unitById } from "../data/catalog";
@@ -57,13 +58,6 @@ const SNAP_OPTIONS = [
 ];
 
 const HISTORY_LIMIT = 50;
-
-// The deployment where remote multiplayer actually works (the Cloudflare
-// Worker that serves /api/room). The static GitHub Pages site has no room
-// endpoint, so the "Open multiplayer site" button jumps here. Swap this to
-// https://play.eslegion.com once eslegion.com's DNS is on Cloudflare and a
-// custom-domain route is added back to wrangler.jsonc.
-const PLAY_SITE_URL = "https://projects.sm-af6.workers.dev";
 
 // Remembers the player's display name between sessions.
 const NAME_KEY = "legion-tabletop.playername";
@@ -1075,23 +1069,13 @@ function OnlinePanel(props: {
   // Whether this page is already served by the multiplayer-capable site.
   // If not (e.g. the static GitHub Pages mirror), surface a button to jump
   // there — carrying any ?room= code along so an invite still lands.
-  const onPlaySite = (() => {
-    try {
-      return location.origin === new URL(PLAY_SITE_URL).origin;
-    } catch {
-      return false;
-    }
-  })();
+  const onPlaySite = roomsAvailableHere();
   function openPlaySite() {
     const code = online?.code ?? new URLSearchParams(location.search).get("room") ?? "";
-    const url = code ? `${PLAY_SITE_URL}/?room=${encodeURIComponent(code)}` : PLAY_SITE_URL;
-    window.open(url, "_blank", "noopener");
+    window.open(legionPlayUrl(code || undefined), "_blank", "noopener");
   }
 
-  const shareUrl =
-    online?.code
-      ? `${location.origin}${location.pathname}?room=${online.code}`
-      : "";
+  const shareUrl = online?.code ? legionPlayUrl(online.code) : "";
 
   function copy(text: string) {
     navigator.clipboard?.writeText(text).catch(() => {});

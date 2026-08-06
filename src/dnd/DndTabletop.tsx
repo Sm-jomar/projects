@@ -6,7 +6,7 @@ import {
 import { listCharacters } from "./dndStorage";
 import type { DndCharacter } from "./dndTypes";
 import type { PlayerProfile } from "./dndTabletop";
-import { dndPlayUrl } from "../lib/appRouting";
+import { dndPlayUrl, roomsAvailableHere } from "../lib/appRouting";
 import type { LogEntry } from "../lib/auditLog";
 import { AuditLogView } from "../components/AuditLogView";
 import { RollFeed } from "./RollFeed";
@@ -490,8 +490,6 @@ function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, ghost }: {
 
 // ---------------------------------------------------------------------------
 
-const MP_ORIGIN = "https://projects.sm-af6.workers.dev";
-
 function MultiplayerPanel(props: {
   online: OnlineState | null;
   joinCode: string; onJoinCodeChange: (v: string) => void;
@@ -511,14 +509,13 @@ function MultiplayerPanel(props: {
   const amSpectator = online?.you?.color === "spectator";
   const myColor = amSpectator ? "#8b94a8" : (online?.you?.color ?? playerColor);
 
-  const onPlaySite = (() => {
-    try { return location.origin === new URL(MP_ORIGIN).origin; } catch { return false; }
-  })();
+  // Multiplayer runs on this same origin when the Worker serves the page.
+  const onPlaySite = roomsAvailableHere();
   function openPlaySite() {
     const code = online?.code ?? new URLSearchParams(location.search).get("room") ?? "";
     window.open(dndPlayUrl(code || undefined), "_blank", "noopener");
   }
-  const shareUrl = online?.code ? `${MP_ORIGIN}/?app=dnd&room=${online.code}` : "";
+  const shareUrl = online?.code ? dndPlayUrl(online.code) : "";
   function copy(t: string) { navigator.clipboard?.writeText(t).catch(() => {}); }
 
   return (
