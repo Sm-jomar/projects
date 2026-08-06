@@ -3,7 +3,7 @@
   "name": "projects",
   "main": "worker/src/index.ts",
   "compatibility_date": "2026-05-28",
-  // Keep the wrangler.sm-af6.workers.dev URL enabled explicitly. A custom
+  // Keep the projects.sm-af6.workers.dev URL enabled explicitly. A custom
   // domain (e.g. play.eslegion.com) can't be auto-provisioned here because
   // eslegion.com's DNS isn't on this Cloudflare account; to use one, move
   // the domain's nameservers to Cloudflare, then re-add a `routes` entry

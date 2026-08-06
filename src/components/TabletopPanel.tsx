@@ -63,7 +63,7 @@ const HISTORY_LIMIT = 50;
 // endpoint, so the "Open multiplayer site" button jumps here. Swap this to
 // https://play.eslegion.com once eslegion.com's DNS is on Cloudflare and a
 // custom-domain route is added back to wrangler.jsonc.
-const PLAY_SITE_URL = "https://wrangler.sm-af6.workers.dev";
+const PLAY_SITE_URL = "https://projects.sm-af6.workers.dev";
 
 // Remembers the player's display name between sessions.
 const NAME_KEY = "legion-tabletop.playername";

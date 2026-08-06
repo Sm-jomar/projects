@@ -15,7 +15,7 @@ export type AppKind = "home" | "legion" | "dnd";
 const BASE = "https://legion.eslegion.com";
 // The deployment that can actually run multiplayer (has /api/room). The
 // static site can't, so multiplayer buttons point here.
-const MP_BASE = "https://wrangler.sm-af6.workers.dev";
+const MP_BASE = "https://projects.sm-af6.workers.dev";
 
 export function resolveApp(): AppKind {
   const params = new URLSearchParams(window.location.search);

@@ -490,7 +490,7 @@ function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, ghost }: {
 
 // ---------------------------------------------------------------------------
 
-const MP_ORIGIN = "https://wrangler.sm-af6.workers.dev";
+const MP_ORIGIN = "https://projects.sm-af6.workers.dev";
 
 function MultiplayerPanel(props: {
   online: OnlineState | null;
