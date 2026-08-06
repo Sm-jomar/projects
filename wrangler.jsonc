@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "wrangler",
+  "name": "projects",
   "main": "worker/src/index.ts",
   "compatibility_date": "2026-05-28",
   // Keep the wrangler.sm-af6.workers.dev URL enabled explicitly. A custom
