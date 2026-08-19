@@ -42,6 +42,9 @@ export type DndRoomValue = {
   /** Host-time-only choice: keep the game off the public Live games list. */
   wantPrivate: boolean;
   setWantPrivate: (v: boolean) => void;
+  /** My uploaded avatar image (data URL), or null if none set. */
+  myAvatarUrl: string | null;
+  setMyAvatar: (dataUrl: string | null) => void;
   hostRoom: () => void;
   joinRoom: () => void;
   leaveRoom: () => void;
@@ -54,6 +57,8 @@ export type DndRoomValue = {
   myId: string | null;
   profiles: Record<string, PlayerProfile>;
   attachCharacter: (character: DndCharacter | null) => void;
+  /** Shared player avatar images (data URLs), keyed by connection id. */
+  avatars: Record<string, string>;
 };
 
 export const DndRoomCtx = createContext<DndRoomValue | null>(null);
