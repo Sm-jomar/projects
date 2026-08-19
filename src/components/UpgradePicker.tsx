@@ -4,6 +4,7 @@ import { cardForUpgrade } from "../lib/cardLookup";
 import { effectiveUpgradePoints } from "../lib/points";
 import type { ArmyEntry, Unit, Upgrade } from "../lib/types";
 import { canAddUpgrade, slotUsage, type ArmyState } from "../lib/validation";
+import { addOrUpdateFlag, flagFor, isFlagged, removeFlag } from "../lib/flags";
 
 const SLOT_LABEL: Record<string, string> = {
   armament: "Armament",
@@ -176,13 +177,48 @@ export function UpgradePicker({ army, entry, unit, onAttach, onClose }: Props) {
           </div>
           <div className="upgrade-preview-pane">
             {preview ? (
-              previewCard ? (
-                <img src={previewCard} alt={preview.name} />
-              ) : (
-                <div className="muted empty" style={{ padding: 24 }}>
-                  No card image found for "{preview.name}".
-                </div>
-              )
+              <div className="upgrade-preview-inner">
+                {previewCard ? (
+                  <img src={previewCard} alt={preview.name} />
+                ) : (
+                  <div className="muted empty" style={{ padding: 24 }}>
+                    No card image found for "{preview.name}".
+                  </div>
+                )}
+                <button
+                  className={"upgrade-flag-btn" + (isFlagged(preview.id) ? " danger" : "")}
+                  title={
+                    isFlagged(preview.id)
+                      ? `Flagged: ${flagFor(preview.id)?.reason ?? "(no reason)"}`
+                      : "Flag as wrong (points / text / card / etc.)"
+                  }
+                  onClick={() => {
+                    if (isFlagged(preview.id)) {
+                      if (confirm(`Remove flag on "${preview.name}"?`)) {
+                        removeFlag(preview.id);
+                        setPreview((p) => (p ? { ...p } : p));
+                      }
+                      return;
+                    }
+                    const reason = prompt(
+                      `What's wrong with "${preview.name}"?\n` +
+                        "(e.g. \"wrong points\", \"wrong slot\", \"missing card image\")",
+                      "",
+                    );
+                    if (reason === null) return;
+                    addOrUpdateFlag({
+                      id: preview.id,
+                      kind: "upgrade",
+                      name: preview.name,
+                      faction: unit.faction,
+                      reason: reason.trim() || undefined,
+                    });
+                    setPreview((p) => (p ? { ...p } : p));
+                  }}
+                >
+                  {isFlagged(preview.id) ? "🚩 Flagged" : "🚩 Flag as wrong"}
+                </button>
+              </div>
             ) : (
               <div className="muted empty" style={{ padding: 24 }}>
                 Select an upgrade to preview its card.

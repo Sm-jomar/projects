@@ -628,6 +628,16 @@ input, select {
   max-height: 100%;
   object-fit: contain;
 }
+.upgrade-preview-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-height: 0;
+  max-height: 100%;
+}
+.upgrade-preview-inner img { min-height: 0; }
+.upgrade-flag-btn { flex-shrink: 0; }
 
 @media (max-width: 720px) {
   .upgrade-picker-body { grid-template-columns: 1fr; grid-template-rows: 1fr 240px; }

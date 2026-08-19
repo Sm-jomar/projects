@@ -40,10 +40,6 @@ function unitAdjustment(unit: Pick<Unit, "name" | "faction">): UnitAdjustment | 
   if (direct && direct.faction === unit.faction) return direct;
   // Fuzzy / faction-tolerant fallback.
   const target = _norm(unit.name);
-  for (const entry of Object.values(ADJ.units)) {
-    if (entry.faction !== unit.faction) continue;
-    if (_norm(entry === direct ? "" : "") === target) return entry; // dead branch
-  }
   for (const [name, entry] of Object.entries(ADJ.units)) {
     if (_norm(name) === target && entry.faction === unit.faction) return entry;
   }
