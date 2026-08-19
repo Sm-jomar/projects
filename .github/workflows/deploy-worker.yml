@@ -1,9 +1,9 @@
 name: Deploy Worker (Cloudflare)
 
-# Deploys the Cloudflare Worker — the part that serves the app on the
-# Worker URL AND runs the live multiplayer rooms (the RoomDO Durable
-# Object). This is separate from deploy.yml, which only publishes the
-# static site to GitHub Pages and CANNOT run the Worker / multiplayer.
+# Deploys the Cloudflare Worker — the single thing that serves the app
+# (eslegion.com and projects.sm-af6.workers.dev) and runs the live
+# multiplayer rooms (the RoomDO/LobbyDO Durable Objects). GitHub Pages is
+# no longer used for anything; this is the only deploy path.
 #
 # Runs on every push to main, and can be triggered by hand from the
 # Actions tab (Run workflow). It no-ops with a warning until the
