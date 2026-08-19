@@ -134,6 +134,15 @@ export type Dossier = {
   id: string;
   dossierName: string;
   unitName: string;
+  /** Catalog unit id, if the dossier's unit was picked from the catalog
+   * (rather than typed free-form into Unit Name). Used with unitFaction
+   * to look up its card image. */
+  unitId?: string;
+  /** The picked unit's actual faction — needed alongside unitId for the
+   * card lookup (which is faction-scoped), since a dossier's unit isn't
+   * necessarily the same faction as the register overall (e.g. a
+   * Mercenary ally). */
+  unitFaction?: FactionId;
   setbacks: string;
   veteranRank: number; // 0..5
   experience: string;
@@ -142,9 +151,18 @@ export type Dossier = {
   pointsSpent: string;
 };
 
+export type RegisterObjective = {
+  id: string;
+  name: string;
+  completed: boolean;
+};
+
 export type TodRegister = {
   id: string;
   name: string;
+  /** The faction/army this campaign is being played as. Optional so
+   * registers saved before this field existed still load. */
+  faction?: FactionId;
   reputation: string;
   storyArc: string;
   combatPotential: string;
@@ -153,5 +171,8 @@ export type TodRegister = {
   strategicAssets: string;
   agendas: AgendaSlot[];
   dossiers: Dossier[];
+  /** Missions/objectives run in this campaign. Optional so older
+   * registers still load; treated as [] when absent. */
+  objectives?: RegisterObjective[];
   updatedAt: number;
 };
