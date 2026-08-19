@@ -30,6 +30,8 @@ type OnlineState = {
   you: Peer | null;
   peers: Peer[];
   error?: string;
+  /** Whether this room is hidden from the public Live games list. */
+  isPrivate?: boolean;
 };
 
 const TERRAIN_PRESETS: Array<{ kind: Terrain["kind"]; label: string; width: number; height: number; shape: Terrain["shape"] }> = [
@@ -61,6 +63,7 @@ const HISTORY_LIMIT = 50;
 
 // Remembers the player's display name between sessions.
 const NAME_KEY = "legion-tabletop.playername";
+const PRIVATE_KEY = "legion-tabletop.privategame";
 
 // One roster entry resolved from a SavedArmy: links the saved entry ID
 // (slot) to the catalog Unit and its card image URL.
@@ -152,6 +155,9 @@ export function TabletopPanel({ onClose }: Props) {
   // prompt; color is the requested side (server honors it if free).
   const [playerName, setPlayerName] = useState(() => localStorage.getItem(NAME_KEY) ?? "");
   const [preferredColor, setPreferredColor] = useState<PlayerColor>("blue");
+  // Host-time-only choice: keep the game off the public Live games list. A
+  // joiner connects into whatever privacy the host already chose.
+  const [wantPrivate, setWantPrivate] = useState(() => localStorage.getItem(PRIVATE_KEY) === "1");
   const [colorNote, setColorNote] = useState<string | null>(null);
   const roomRef = useRef<RoomClient<TabletopState> | null>(null);
 
@@ -211,6 +217,7 @@ export function TabletopPanel({ onClose }: Props) {
           code: roomRef.current?.code ?? o?.code ?? "",
           you,
           peers,
+          isPrivate: roomRef.current?.isPrivate ?? false,
         }));
         if (remoteState) {
           // Joining an existing room — adopt its board.
@@ -259,9 +266,10 @@ export function TabletopPanel({ onClose }: Props) {
   function startRoom(code: string) {
     const name = playerName.trim();
     localStorage.setItem(NAME_KEY, name);
+    localStorage.setItem(PRIVATE_KEY, wantPrivate ? "1" : "0");
     roomRef.current?.close();
     remoteEchoRef.current = null;
-    const client = new RoomClient<TabletopState>(code, name, preferredColor, buildHandlers(), "legion");
+    const client = new RoomClient<TabletopState>(code, name, preferredColor, buildHandlers(), "legion", wantPrivate);
     roomRef.current = client;
     setOnline({ status: "connecting", code: client.code, you: null, peers: [] });
     client.connect();
@@ -584,6 +592,8 @@ export function TabletopPanel({ onClose }: Props) {
                 preferredColor={preferredColor}
                 onPreferredColorChange={setPreferredColor}
                 colorNote={colorNote}
+                wantPrivate={wantPrivate}
+                onWantPrivateChange={setWantPrivate}
                 onHost={hostRoom}
                 onJoin={joinRoom}
                 onChangeColor={changeMyColor}
@@ -1043,6 +1053,8 @@ function OnlinePanel(props: {
   preferredColor: PlayerColor;
   onPreferredColorChange: (c: PlayerColor) => void;
   colorNote: string | null;
+  wantPrivate: boolean;
+  onWantPrivateChange: (v: boolean) => void;
   onHost: () => void;
   onJoin: () => void;
   onChangeColor: (c: PlayerColor) => void;
@@ -1052,7 +1064,7 @@ function OnlinePanel(props: {
 }) {
   const {
     online, joinCode, onJoinCodeChange, playerName, onNameChange,
-    preferredColor, onPreferredColorChange, colorNote,
+    preferredColor, onPreferredColorChange, colorNote, wantPrivate, onWantPrivateChange,
     onHost, onJoin, onChangeColor, onRename, onLeave, onClosePanel,
   } = props;
   const connected = online?.status === "open";
@@ -1139,6 +1151,11 @@ function OnlinePanel(props: {
             </div>
           </div>
 
+          <label className="tt-online-check">
+            <input type="checkbox" checked={wantPrivate}
+                   onChange={(e) => onWantPrivateChange(e.target.checked)} />
+            Private game (hide from the public Live games list)
+          </label>
           <button className="pdf-run-btn" onClick={onHost} disabled={!nameOk}>
             Host a new game
           </button>
@@ -1171,6 +1188,9 @@ function OnlinePanel(props: {
                 <> · you are <b className={"tt-side-" + online.you.color}>{online.you.color}</b></>
               )}
             </span>
+            {connected && online.isPrivate && (
+              <span className="tt-online-private" title="Hidden from the public Live games list">🔒 Private</span>
+            )}
           </div>
 
           {connected && (

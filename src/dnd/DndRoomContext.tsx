@@ -13,6 +13,7 @@ import {
 
 const NAME_KEY = "dnd.playername";
 const COLOR_KEY = "dnd.playercolor";
+const PRIVATE_KEY = "dnd.privategame";
 const DEFAULT_COLOR = "#4a86c8";
 
 export function DndRoomProvider({ children }: { children: React.ReactNode }) {
@@ -24,6 +25,9 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   const [playerName, setPlayerName] = useState(() => localStorage.getItem(NAME_KEY) ?? "");
   const [playerColor, setPlayerColor] = useState(() => localStorage.getItem(COLOR_KEY) ?? DEFAULT_COLOR);
   const [spectator, setSpectator] = useState(false);
+  // Only meaningful when hosting — a joiner connects into whatever privacy
+  // the host already chose. Remembered so the checkbox keeps your last pick.
+  const [wantPrivate, setWantPrivate] = useState(() => localStorage.getItem(PRIVATE_KEY) === "1");
   const [rollFeed, setRollFeed] = useState<SharedRoll[]>([]);
 
   const roomRef = useRef<RoomClient<DndTabletopState> | null>(null);
@@ -87,7 +91,7 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
       onStatus: (status, detail) => setOnline((o) => (o ? { ...o, status, error: detail } : o)),
       onDenied: () => setOnline((o) => (o ? { ...o, status: "error", error: "That code belongs to a Legion game. Use a different code." } : o)),
       onWelcome: (you, remoteState, peers) => {
-        setOnline({ status: "open", code: roomRef.current?.code ?? "", you, peers });
+        setOnline({ status: "open", code: roomRef.current?.code ?? "", you, peers, isPrivate: roomRef.current?.isPrivate ?? false });
         if (remoteState) {
           const js = JSON.stringify(remoteState);
           remoteEchoRef.current = js;
@@ -120,10 +124,11 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     const name = playerName.trim() || "Player";
     localStorage.setItem(NAME_KEY, name);
     localStorage.setItem(COLOR_KEY, playerColor);
+    localStorage.setItem(PRIVATE_KEY, wantPrivate ? "1" : "0");
     roomRef.current?.close();
     remoteEchoRef.current = null;
     const identity = spectator ? "spectator" : playerColor;
-    const client = new RoomClient<DndTabletopState>(code, name, identity, buildHandlers(), "dnd");
+    const client = new RoomClient<DndTabletopState>(code, name, identity, buildHandlers(), "dnd", wantPrivate);
     roomRef.current = client;
     setOnline({ status: "connecting", code: client.code, you: null, peers: [] });
     client.connect();
@@ -175,6 +180,7 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     state, setBoard, readOnly: !!readOnly, actor,
     online, onlineOpen, setOnlineOpen, joinCode, setJoinCode,
     playerName, setPlayerName, playerColor, spectator,
+    wantPrivate, setWantPrivate,
     hostRoom, joinRoom, leaveRoom, changeIdentity,
     rollFeed, sendRoll, clearRolls,
     myId, profiles: state.profiles ?? {}, attachCharacter,

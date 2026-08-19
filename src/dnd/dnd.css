@@ -361,6 +361,15 @@
 .dnd-mp-dot.open { background: var(--ok); box-shadow: 0 0 6px var(--ok); }
 .dnd-mp-dot.connecting, .dnd-mp-dot.reconnecting { background: var(--accent); }
 .dnd-mp-dot.error, .dnd-mp-dot.closed { background: var(--danger); }
+.dnd-mp-private {
+  margin-left: auto;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  background: rgba(139,148,168,0.18);
+  color: var(--muted);
+  white-space: nowrap;
+}
 .dnd-mp-code-row { display: flex; align-items: center; gap: 8px; }
 .dnd-mp-code {
   flex: 1;

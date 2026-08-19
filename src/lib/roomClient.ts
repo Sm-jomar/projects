@@ -46,7 +46,7 @@ export function generateRoomCode(len = 6): string {
   return out;
 }
 
-function roomWsUrl(code: string, name: string, color: string, app: RoomApp): string {
+function roomWsUrl(code: string, name: string, color: string, app: RoomApp, isPrivate: boolean): string {
   const override = import.meta.env.VITE_ROOM_ORIGIN as string | undefined;
   let base: string;
   if (override) {
@@ -59,6 +59,9 @@ function roomWsUrl(code: string, name: string, color: string, app: RoomApp): str
   if (name) params.set("name", name);
   if (color) params.set("color", color);
   params.set("app", app);
+  // Only meaningful on the connection that creates the room (the host's
+  // first join) — the server stamps it once and ignores it after that.
+  if (isPrivate) params.set("private", "1");
   const q = params.toString();
   return `${base}/api/room/${encodeURIComponent(code)}/ws${q ? `?${q}` : ""}`;
 }
@@ -68,6 +71,7 @@ export class RoomClient<S> {
   private name: string;
   private preferredColor: string;
   private app: RoomApp;
+  private wantPrivate: boolean;
   private handlers: RoomHandlers<S>;
   private ws: WebSocket | null = null;
   private closedByUser = false;
@@ -80,13 +84,21 @@ export class RoomClient<S> {
   private lastCursorAt = 0;
 
   you: Peer | null = null;
+  /** Whether this room is hidden from the public Live games list. Set from
+   * the server's welcome message, so it reflects reality even for a
+   * joiner who didn't request privacy themselves. */
+  isPrivate = false;
 
-  constructor(code: string, name: string, preferredColor: string, handlers: RoomHandlers<S>, app: RoomApp = "legion") {
+  constructor(
+    code: string, name: string, preferredColor: string, handlers: RoomHandlers<S>,
+    app: RoomApp = "legion", wantPrivate = false,
+  ) {
     this.code = code.toUpperCase();
     this.name = name;
     this.preferredColor = preferredColor;
     this.handlers = handlers;
     this.app = app;
+    this.wantPrivate = wantPrivate;
   }
 
   connect(): void {
@@ -98,7 +110,7 @@ export class RoomClient<S> {
     this.handlers.onStatus?.(this.reconnectAttempts > 0 ? "reconnecting" : "connecting");
     let ws: WebSocket;
     try {
-      ws = new WebSocket(roomWsUrl(this.code, this.name, this.preferredColor, this.app));
+      ws = new WebSocket(roomWsUrl(this.code, this.name, this.preferredColor, this.app, this.wantPrivate));
     } catch (err) {
       this.handlers.onStatus?.("error", String((err as Error).message));
       this.scheduleReconnect();
@@ -141,6 +153,7 @@ export class RoomClient<S> {
     switch (msg.t) {
       case "welcome": {
         this.you = msg.you as Peer;
+        this.isPrivate = msg.private === true;
         this.handlers.onWelcome?.(
           msg.you as Peer,
           (msg.state ?? null) as S | null,

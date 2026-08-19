@@ -45,6 +45,10 @@ const APP_KEY = "room-app";
 // The room's share code, remembered so lobby reports still work after the
 // object hibernates and rehydrates (a DO isn't told its own name).
 const CODE_KEY = "room-code";
+// Set once, from the host's initial connection (?private=1). A private room
+// never reports to the lobby, so it never appears in the public Live games
+// list — it's still fully joinable by code, just unlisted.
+const PRIVATE_KEY = "room-private";
 // Re-report an in-progress game to the lobby at most this often, so a long
 // game that isn't gaining/losing players doesn't age out of the list.
 const LOBBY_REFRESH_MS = 60_000;
@@ -88,7 +92,12 @@ export class RoomDO extends DurableObject<RoomEnv> {
       try { server.close(1008, "room belongs to another app"); } catch { /* noop */ }
       return new Response(null, { status: 101, webSocket: client });
     }
-    if (!stampedApp) await this.ctx.storage.put(APP_KEY, app);
+    if (!stampedApp) {
+      await this.ctx.storage.put(APP_KEY, app);
+      // Privacy is decided once, by whoever's connection creates the room.
+      // Later connections (joiners) can't flip it — matches the app stamp.
+      await this.ctx.storage.put(PRIVATE_KEY, url.searchParams.get("private") === "1");
+    }
 
     // Honor the requested color/identity (see pickColor). Legion keeps its
     // blue/red-then-spectator fallback; D&D takes the picked color as-is.
@@ -102,9 +111,11 @@ export class RoomDO extends DurableObject<RoomEnv> {
 
     // Send the welcome (current board + peer list) once the socket opens.
     const state = await this.ctx.storage.get<unknown>(STATE_KEY);
+    const isPrivate = (await this.ctx.storage.get<boolean>(PRIVATE_KEY)) ?? false;
     this.send(server, {
       t: "welcome",
       you: { id: att.id, color: att.color, name: att.name },
+      private: isPrivate,
       state: state ?? null,
       peers: this.peers(),
     });
@@ -287,6 +298,8 @@ export class RoomDO extends DurableObject<RoomEnv> {
 
     void (async () => {
       try {
+        const isPrivate = (await this.ctx.storage.get<boolean>(PRIVATE_KEY)) ?? false;
+        if (isPrivate) return; // never listed — still fully joinable by code
         const code = await this.ctx.storage.get<string>(CODE_KEY);
         if (!code) return;
         const app = (await this.ctx.storage.get<string>(APP_KEY)) ?? "legion";
