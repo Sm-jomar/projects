@@ -26,6 +26,7 @@ export function DndTabletop() {
   const [warn, setWarn] = useState<string | null>(null);
   const [viewProfile, setViewProfile] = useState<PlayerProfile | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const tokenIconFileRef = useRef<HTMLInputElement>(null);
 
   const connected = online?.status === "open";
   const myProfile = room.myId ? room.profiles[room.myId] : undefined;
@@ -98,6 +99,33 @@ export function DndTabletop() {
     }
   }
 
+  // Your avatar rides the same synced board state as everything else, so
+  // keep it small — even a full party's worth is negligible at this size.
+  async function onAvatarFile(file: File) {
+    try {
+      const dataUrl = await downscaleImage(file, 200, 0.78);
+      room.setMyAvatar(dataUrl);
+    } catch {
+      setWarn("Could not read that image.");
+    }
+  }
+
+  // Token icons ride the same synced board state as everything else, so
+  // keep them small — several tokens' worth shouldn't threaten the 2MB cap.
+  async function onTokenIconFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0];
+    const id = selected?.id;
+    if (!f || !id) return;
+    try {
+      const dataUrl = await downscaleImage(f, 256, 0.8);
+      updateToken(id, { avatarUrl: dataUrl });
+    } catch {
+      setWarn("Could not read that image.");
+    } finally {
+      if (tokenIconFileRef.current) tokenIconFileRef.current.value = "";
+    }
+  }
+
   function nextTurn() {
     if (order.length === 0) return;
     const i = order.findIndex((t) => t.id === state.activeTokenId);
@@ -126,6 +154,7 @@ export function DndTabletop() {
               playerName={room.playerName} onNameChange={room.setPlayerName}
               playerColor={room.playerColor} spectator={room.spectator}
               wantPrivate={room.wantPrivate} onWantPrivateChange={room.setWantPrivate}
+              myAvatarUrl={room.myAvatarUrl} onAvatarFile={onAvatarFile} onClearAvatar={() => room.setMyAvatar(null)}
               onIdentityChange={room.changeIdentity}
               onHost={room.hostRoom} onJoin={room.joinRoom} onLeave={room.leaveRoom}
               onClosePanel={() => room.setOnlineOpen(false)}
@@ -164,9 +193,12 @@ export function DndTabletop() {
               <div className="dnd-party-roster">
                 {online!.peers.map((p) => {
                   const prof = room.profiles[p.id];
+                  const avatar = room.avatars[p.id];
                   return (
                     <div key={p.id} className="dnd-party-row">
-                      <span className="dnd-party-dot" style={{ background: p.color === "spectator" ? "#8b94a8" : p.color }} />
+                      {avatar
+                        ? <span className="dnd-party-avatar" style={{ backgroundImage: `url(${avatar})` }} />
+                        : <span className="dnd-party-dot" style={{ background: p.color === "spectator" ? "#8b94a8" : p.color }} />}
                       <span className="dnd-party-name">{p.name}{p.id === room.myId ? " (you)" : ""}</span>
                       {prof
                         ? <button className="ghost-btn small" onClick={() => setViewProfile(prof)}>View sheet</button>
@@ -217,6 +249,12 @@ export function DndTabletop() {
             <div className="dnd-tt-row">
               <button onClick={() => addToken({ name: "Monster", kind: "monster", color: "#c84a4a" })}>+ Monster</button>
               <button onClick={() => addToken({ name: "Marker", kind: "marker", size: 1, color: "#c8a34a" })}>+ Marker</button>
+              {connected && !readOnly && (
+                <button onClick={() => addToken({
+                  name: room.actor.name, kind: "pc", color: room.actor.color,
+                  avatarUrl: room.myAvatarUrl ?? undefined,
+                })}>+ My token</button>
+              )}
             </div>
             {chars.length === 0 && <p className="muted small">No saved characters yet — build one in Character Sheets.</p>}
           </section>
@@ -227,6 +265,16 @@ export function DndTabletop() {
               <label className="dnd-tt-field">Name
                 <input value={selected.name} onChange={(e) => updateToken(selected.id, { name: e.target.value })} />
               </label>
+              <div className="dnd-tt-token-icon">
+                <span className="dnd-tt-token-icon-preview" style={selected.avatarUrl ? { backgroundImage: `url(${selected.avatarUrl})` } : { background: selected.color }} />
+                <div className="dnd-tt-row">
+                  <button onClick={() => tokenIconFileRef.current?.click()}>Upload icon</button>
+                  {selected.avatarUrl && (
+                    <button className="ghost-btn" onClick={() => updateToken(selected.id, { avatarUrl: undefined })}>Clear</button>
+                  )}
+                  <input ref={tokenIconFileRef} type="file" accept="image/*" hidden onChange={onTokenIconFile} />
+                </div>
+              </div>
               <div className="dnd-tt-grid2">
                 <label className="dnd-tt-field">Color
                   <input type="color" value={selected.color} onChange={(e) => updateToken(selected.id, { color: e.target.value })} />
@@ -438,6 +486,19 @@ function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, ghost }: {
               ))}
             </g>
           )}
+          {/* Token icon clip paths — one per token with an avatar image. */}
+          <defs>
+            {state.tokens.filter((t) => t.avatarUrl).map((t) => {
+              const cx = (t.x + t.size / 2) * U;
+              const cy = (t.y + t.size / 2) * U;
+              const r = (t.size * U) / 2 - 2;
+              return (
+                <clipPath key={t.id} id={`dnd-tk-clip-${t.id}`} clipPathUnits="userSpaceOnUse">
+                  <circle cx={cx} cy={cy} r={r - 1 / view.scale} />
+                </clipPath>
+              );
+            })}
+          </defs>
           {state.tokens.map((t) => {
             const cx = (t.x + t.size / 2) * U;
             const cy = (t.y + t.size / 2) * U;
@@ -445,14 +506,24 @@ function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, ghost }: {
             const active = t.id === state.activeTokenId;
             const sel = t.id === selectedId;
             const hpFrac = t.hpMax ? Math.max(0, Math.min(1, (t.hpCurrent ?? t.hpMax) / t.hpMax)) : null;
+            const hasIcon = !!t.avatarUrl;
             return (
               <g key={t.id} data-token={t.id} style={{ cursor: "grab" }}>
                 {active && <circle cx={cx} cy={cy} r={r + 4 / view.scale} fill="none" stroke="#ffd24a" strokeWidth={3 / view.scale} />}
                 <circle cx={cx} cy={cy} r={r} fill={t.color}
                         stroke={sel ? "#fff" : "#0009"} strokeWidth={(sel ? 3 : 1.5) / view.scale} />
-                <text x={cx} y={cy + 5} textAnchor="middle" fontSize={Math.min(18, t.size * 14)} fontWeight={700} fill="#fff" pointerEvents="none">
-                  {initials(t.name)}
-                </text>
+                {hasIcon && (
+                  <image href={t.avatarUrl}
+                         x={cx - r} y={cy - r} width={2 * r} height={2 * r}
+                         preserveAspectRatio="xMidYMid slice"
+                         clipPath={`url(#dnd-tk-clip-${t.id})`}
+                         pointerEvents="none" />
+                )}
+                {!hasIcon && (
+                  <text x={cx} y={cy + 5} textAnchor="middle" fontSize={Math.min(18, t.size * 14)} fontWeight={700} fill="#fff" pointerEvents="none">
+                    {initials(t.name)}
+                  </text>
+                )}
                 {hpFrac != null && (
                   <g pointerEvents="none">
                     <rect x={cx - r} y={cy + r - 6} width={2 * r} height={5} rx={2} fill="#000a" />
@@ -497,6 +568,7 @@ function MultiplayerPanel(props: {
   playerName: string; onNameChange: (v: string) => void;
   playerColor: string; spectator: boolean;
   wantPrivate: boolean; onWantPrivateChange: (v: boolean) => void;
+  myAvatarUrl: string | null; onAvatarFile: (file: File) => void; onClearAvatar: () => void;
   onIdentityChange: (spectator: boolean, color: string) => void;
   onHost: () => void; onJoin: () => void; onLeave: () => void;
   onClosePanel: () => void;
@@ -504,6 +576,7 @@ function MultiplayerPanel(props: {
   const {
     online, joinCode, onJoinCodeChange, playerName, onNameChange,
     playerColor, spectator, wantPrivate, onWantPrivateChange,
+    myAvatarUrl, onAvatarFile, onClearAvatar,
     onIdentityChange, onHost, onJoin, onLeave, onClosePanel,
   } = props;
   const connected = online?.status === "open";
@@ -511,6 +584,22 @@ function MultiplayerPanel(props: {
   const nameOk = playerName.trim().length > 0;
   const amSpectator = online?.you?.color === "spectator";
   const myColor = amSpectator ? "#8b94a8" : (online?.you?.color ?? playerColor);
+  const avatarFileRef = useRef<HTMLInputElement>(null);
+  function pickAvatarFile() {
+    const f = avatarFileRef.current?.files?.[0];
+    if (f) onAvatarFile(f);
+    if (avatarFileRef.current) avatarFileRef.current.value = "";
+  }
+  const avatarControl = (
+    <div className="dnd-mp-avatar">
+      <span className="dnd-mp-avatar-preview" style={myAvatarUrl ? { backgroundImage: `url(${myAvatarUrl})` } : undefined} />
+      <button className="ghost-btn small" onClick={() => avatarFileRef.current?.click()}>
+        {myAvatarUrl ? "Change avatar" : "Upload avatar"}
+      </button>
+      {myAvatarUrl && <button className="ghost-btn small" onClick={onClearAvatar}>Clear</button>}
+      <input ref={avatarFileRef} type="file" accept="image/*" hidden onChange={pickAvatarFile} />
+    </div>
+  );
 
   // Multiplayer runs on this same origin when the Worker serves the page.
   const onPlaySite = roomsAvailableHere();
@@ -554,6 +643,7 @@ function MultiplayerPanel(props: {
               Spectate (watch only)
             </label>
           </div>
+          {avatarControl}
           <label className="dnd-tt-check">
             <input type="checkbox" checked={wantPrivate}
                    onChange={(e) => onWantPrivateChange(e.target.checked)} />
@@ -595,6 +685,7 @@ function MultiplayerPanel(props: {
               </label>
             </div>
           )}
+          {connected && avatarControl}
 
           <div className="dnd-mp-code-row">
             <div className="dnd-mp-code">{online.code}</div>

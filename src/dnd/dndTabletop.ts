@@ -29,6 +29,8 @@ export type DndToken = {
   initiative?: number;
   /** Linked saved-character id, if this token came from a sheet. */
   charId?: string;
+  /** User-uploaded icon (data URL), rendered in place of the color disc. */
+  avatarUrl?: string;
 };
 
 export type DndMap = {
@@ -51,6 +53,9 @@ export type DndTabletopState = {
   log?: LogEntry[];
   /** Players' shared character sheets, keyed by connection id. */
   profiles?: Record<string, PlayerProfile>;
+  /** Players' uploaded avatar images (data URLs), keyed by connection id.
+   * Shown in the party roster and defaulted onto a "+ My token". */
+  avatars?: Record<string, string>;
 };
 
 export function newDndTabletop(): DndTabletopState {
@@ -61,6 +66,7 @@ export function newDndTabletop(): DndTabletopState {
     activeTokenId: null,
     log: [],
     profiles: {},
+    avatars: {},
   };
 }
 

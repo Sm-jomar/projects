@@ -512,7 +512,29 @@
 .dnd-party-roster { display: flex; flex-direction: column; gap: 4px; }
 .dnd-party-row { display: flex; align-items: center; gap: 7px; font-size: 13px; }
 .dnd-party-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.dnd-party-avatar {
+  width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+  background-size: cover; background-position: center top;
+  border: 1px solid var(--border);
+}
 .dnd-party-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Your avatar upload control, shown in the multiplayer panel. */
+.dnd-mp-avatar { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+.dnd-mp-avatar-preview {
+  width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+  background-size: cover; background-position: center top;
+  background-color: var(--panel-2);
+  border: 1px solid var(--border);
+}
+
+/* Per-token icon upload, in the token editor. */
+.dnd-tt-token-icon { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.dnd-tt-token-icon-preview {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  background-size: cover; background-position: center top;
+  border: 1px solid var(--border);
+}
 
 .dnd-modal-overlay {
   position: fixed; inset: 0; z-index: 100;

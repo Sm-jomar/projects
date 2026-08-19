@@ -14,6 +14,12 @@ import {
 const NAME_KEY = "dnd.playername";
 const COLOR_KEY = "dnd.playercolor";
 const PRIVATE_KEY = "dnd.privategame";
+// The uploaded avatar image itself (small data URL). Kept in localStorage
+// (not just the synced board) so it survives a reconnect — connection ids
+// are per-socket, so the board's `avatars` entry for an old id goes stale
+// the moment you rejoin; this lets it be silently reapplied under the new
+// id instead of forcing a re-upload every time.
+const AVATAR_KEY = "dnd.myavatar";
 const DEFAULT_COLOR = "#4a86c8";
 
 export function DndRoomProvider({ children }: { children: React.ReactNode }) {
@@ -28,6 +34,7 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   // Only meaningful when hosting — a joiner connects into whatever privacy
   // the host already chose. Remembered so the checkbox keeps your last pick.
   const [wantPrivate, setWantPrivate] = useState(() => localStorage.getItem(PRIVATE_KEY) === "1");
+  const [myAvatarUrl, setMyAvatarUrl] = useState<string | null>(() => localStorage.getItem(AVATAR_KEY));
   const [rollFeed, setRollFeed] = useState<SharedRoll[]>([]);
 
   const roomRef = useRef<RoomClient<DndTabletopState> | null>(null);
@@ -85,6 +92,22 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
 
   // Close the socket when the whole D&D app unmounts.
   useEffect(() => () => roomRef.current?.close(), []);
+
+  // Re-publish my locally-remembered avatar under a fresh connection id
+  // (every reconnect gets a new one) so it doesn't silently vanish from
+  // the shared board until you notice and re-upload.
+  useEffect(() => {
+    const id = online?.status === "open" ? online.you?.id : null;
+    if (!id || !myAvatarUrl) return;
+    const t = setTimeout(() => {
+      setStateRaw((s) => {
+        if (s.avatars?.[id] === myAvatarUrl) return s;
+        return { ...s, avatars: { ...(s.avatars ?? {}), [id]: myAvatarUrl } };
+      });
+    }, 0);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [online?.you?.id]);
 
   function buildHandlers(): RoomHandlers<DndTabletopState> {
     return {
@@ -176,14 +199,37 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     });
   }
 
+  // Upload (or clear) my avatar image. Stored locally so it survives
+  // reconnects, and mirrored into the shared board (keyed by connection id,
+  // same prune-on-roster-change pattern as attachCharacter) so everyone
+  // else's party roster picks it up. Uses the raw setter (not setBoard) —
+  // your own avatar is identity, not a board edit, so spectators can set
+  // one too.
+  function setMyAvatar(dataUrl: string | null) {
+    if (dataUrl) localStorage.setItem(AVATAR_KEY, dataUrl);
+    else localStorage.removeItem(AVATAR_KEY);
+    setMyAvatarUrl(dataUrl);
+    if (!myId) return;
+    setStateRaw((s) => {
+      const avatars = { ...(s.avatars ?? {}) };
+      const peerIds = new Set((online?.peers ?? []).map((p) => p.id));
+      for (const k of Object.keys(avatars)) if (!peerIds.has(k)) delete avatars[k];
+      if (dataUrl) avatars[myId] = dataUrl;
+      else delete avatars[myId];
+      return { ...s, avatars };
+    });
+  }
+
   const value: DndRoomValue = {
     state, setBoard, readOnly: !!readOnly, actor,
     online, onlineOpen, setOnlineOpen, joinCode, setJoinCode,
     playerName, setPlayerName, playerColor, spectator,
     wantPrivate, setWantPrivate,
+    myAvatarUrl, setMyAvatar,
     hostRoom, joinRoom, leaveRoom, changeIdentity,
     rollFeed, sendRoll, clearRolls,
     myId, profiles: state.profiles ?? {}, attachCharacter,
+    avatars: state.avatars ?? {},
   };
   return <DndRoomCtx.Provider value={value}>{children}</DndRoomCtx.Provider>;
 }
