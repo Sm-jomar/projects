@@ -1,5 +1,8 @@
-import type { Dossier, TodRegister } from "./types";
+import type { Dossier, FactionId, RegisterObjective, TodRegister } from "./types";
 import { newId } from "./storage";
+import { FACTIONS } from "./factions";
+
+const VALID_FACTIONS = new Set(Object.keys(FACTIONS));
 
 export function blankRegister(): TodRegister {
   return {
@@ -17,6 +20,7 @@ export function blankRegister(): TodRegister {
       { name: "", progression: 0 },
     ],
     dossiers: [],
+    objectives: [],
     updatedAt: Date.now(),
   };
 }
@@ -33,6 +37,10 @@ export function blankDossier(): Dossier {
     commendations: "",
     pointsSpent: "",
   };
+}
+
+export function blankObjective(): RegisterObjective {
+  return { id: newId(), name: "", completed: false };
 }
 
 const FILE_VERSION = 1;
@@ -90,6 +98,10 @@ export function jsonToRegisters(text: string): RegisterImportResult {
     const reg: TodRegister = {
       id: typeof r.id === "string" && r.id ? r.id : newId(),
       name: typeof r.name === "string" ? r.name : "",
+      faction:
+        typeof r.faction === "string" && VALID_FACTIONS.has(r.faction)
+          ? (r.faction as FactionId)
+          : undefined,
       reputation: typeof r.reputation === "string" ? r.reputation : "",
       storyArc: typeof r.storyArc === "string" ? r.storyArc : "",
       combatPotential: typeof r.combatPotential === "string" ? r.combatPotential : "",
@@ -112,12 +124,24 @@ export function jsonToRegisters(text: string): RegisterImportResult {
             id: typeof d?.id === "string" && d.id ? d.id : newId(),
             dossierName: typeof d?.dossierName === "string" ? d.dossierName : "",
             unitName: typeof d?.unitName === "string" ? d.unitName : "",
+            unitId: typeof d?.unitId === "string" && d.unitId ? d.unitId : undefined,
+            unitFaction:
+              typeof d?.unitFaction === "string" && VALID_FACTIONS.has(d.unitFaction)
+                ? (d.unitFaction as FactionId)
+                : undefined,
             setbacks: typeof d?.setbacks === "string" ? d.setbacks : "",
             veteranRank: Math.max(0, Math.min(5, Number(d?.veteranRank) || 0)),
             experience: typeof d?.experience === "string" ? d.experience : "",
             upgrades: typeof d?.upgrades === "string" ? d.upgrades : "",
             commendations: typeof d?.commendations === "string" ? d.commendations : "",
             pointsSpent: typeof d?.pointsSpent === "string" ? d.pointsSpent : "",
+          }))
+        : [],
+      objectives: Array.isArray(r.objectives)
+        ? r.objectives.map((o) => ({
+            id: typeof o?.id === "string" && o.id ? o.id : newId(),
+            name: typeof o?.name === "string" ? o.name : "",
+            completed: o?.completed === true,
           }))
         : [],
       updatedAt:

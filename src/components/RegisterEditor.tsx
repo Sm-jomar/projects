@@ -1,6 +1,9 @@
 import { useState } from "react";
-import type { AgendaSlot, Dossier, TodRegister } from "../lib/types";
-import { blankDossier } from "../lib/register";
+import type { AgendaSlot, Dossier, FactionId, RegisterObjective, TodRegister, Unit } from "../lib/types";
+import { blankDossier, blankObjective } from "../lib/register";
+import { FACTIONS } from "../lib/factions";
+import { cardForUnit } from "../lib/cardLookup";
+import { UnitPickerModal } from "./UnitPickerModal";
 
 type Props = {
   register: TodRegister;
@@ -47,6 +50,10 @@ export function RegisterEditor({
   onDelete,
 }: Props) {
   const [showDelete, setShowDelete] = useState(false);
+  // Index of the dossier currently picking a unit, or null. A number (not
+  // a boolean) so the picker knows which dossier to write the result into.
+  const [pickingUnitFor, setPickingUnitFor] = useState<number | null>(null);
+  const objectives = register.objectives ?? [];
 
   function setField<K extends keyof TodRegister>(key: K, value: TodRegister[K]) {
     onChange({ ...register, [key]: value });
@@ -74,6 +81,27 @@ export function RegisterEditor({
       "dossiers",
       register.dossiers.filter((_, i) => i !== idx),
     );
+  }
+
+  function pickUnitForDossier(unit: Unit) {
+    if (pickingUnitFor === null) return;
+    const d = register.dossiers[pickingUnitFor];
+    if (d) setDossier(pickingUnitFor, { ...d, unitId: unit.id, unitName: unit.name, unitFaction: unit.faction });
+    setPickingUnitFor(null);
+  }
+
+  function setObjective(idx: number, o: RegisterObjective) {
+    const next = objectives.slice();
+    next[idx] = o;
+    setField("objectives", next);
+  }
+
+  function addObjective() {
+    setField("objectives", [...objectives, blankObjective()]);
+  }
+
+  function removeObjective(idx: number) {
+    setField("objectives", objectives.filter((_, i) => i !== idx));
   }
 
   return (
@@ -118,6 +146,18 @@ export function RegisterEditor({
                 onChange={(e) => setField("name", e.target.value)}
                 placeholder="Operative or company name"
               />
+            </label>
+            <label className="field">
+              <span>Faction / Army</span>
+              <select
+                value={register.faction ?? ""}
+                onChange={(e) => setField("faction", (e.target.value || undefined) as FactionId | undefined)}
+              >
+                <option value="">— Choose faction —</option>
+                {Object.values(FACTIONS).map((f) => (
+                  <option key={f.id} value={f.id}>{f.name}</option>
+                ))}
+              </select>
             </label>
             <label className="field">
               <span>Reputation</span>
@@ -196,6 +236,36 @@ export function RegisterEditor({
 
         <section className="register-section">
           <div className="section-head">
+            <h3>Objectives ({objectives.length})</h3>
+            <button onClick={addObjective}>+ Add objective</button>
+          </div>
+          {objectives.length === 0 && (
+            <p className="muted small empty">No objectives yet — add the missions this campaign is running.</p>
+          )}
+          <ul className="objective-list">
+            {objectives.map((o, i) => (
+              <li key={o.id} className="objective-row">
+                <label className="objective-check">
+                  <input
+                    type="checkbox"
+                    checked={o.completed}
+                    onChange={(e) => setObjective(i, { ...o, completed: e.target.checked })}
+                  />
+                </label>
+                <input
+                  className={"objective-name" + (o.completed ? " done" : "")}
+                  value={o.name}
+                  placeholder="Objective / mission name"
+                  onChange={(e) => setObjective(i, { ...o, name: e.target.value })}
+                />
+                <button className="remove-btn" onClick={() => removeObjective(i)} title="Remove objective">×</button>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section className="register-section">
+          <div className="section-head">
             <h3>Dossiers ({register.dossiers.length})</h3>
             <button onClick={addDossier}>+ Add dossier</button>
           </div>
@@ -227,12 +297,27 @@ export function RegisterEditor({
                   </label>
                   <label className="field">
                     <span>Unit Name</span>
-                    <input
-                      value={d.unitName}
-                      onChange={(e) =>
-                        setDossier(i, { ...d, unitName: e.target.value })
-                      }
-                    />
+                    <div className="dossier-unit-row">
+                      {d.unitId && d.unitFaction && (
+                        <span
+                          className="dossier-unit-thumb"
+                          style={(() => {
+                            const card = cardForUnit({ id: d.unitId, name: d.unitName, faction: d.unitFaction });
+                            return card ? { backgroundImage: `url(${card})` } : undefined;
+                          })()}
+                        />
+                      )}
+                      <input
+                        value={d.unitName}
+                        placeholder="Type a name, or pick from the catalog"
+                        onChange={(e) =>
+                          setDossier(i, { ...d, unitName: e.target.value, unitId: undefined, unitFaction: undefined })
+                        }
+                      />
+                      <button type="button" className="ghost-btn small" onClick={() => setPickingUnitFor(i)}>
+                        Pick unit ▸
+                      </button>
+                    </div>
                   </label>
                   <label className="field">
                     <span>Setbacks</span>
@@ -299,6 +384,14 @@ export function RegisterEditor({
           </div>
         </section>
       </div>
+
+      {pickingUnitFor !== null && (
+        <UnitPickerModal
+          initialFaction={register.faction ?? ""}
+          onPick={pickUnitForDossier}
+          onClose={() => setPickingUnitFor(null)}
+        />
+      )}
     </div>
   );
 }
