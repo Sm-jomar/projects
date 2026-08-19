@@ -4,7 +4,11 @@ import type { DndTabletopState, PlayerProfile } from "./dndTabletop";
 import type { DndCharacter } from "./dndTypes";
 import type { LogActor } from "../lib/auditLog";
 
-export type OnlineState = { status: ConnStatus; code: string; you: Peer | null; peers: Peer[]; error?: string };
+export type OnlineState = {
+  status: ConnStatus; code: string; you: Peer | null; peers: Peer[]; error?: string;
+  /** Whether this room is hidden from the public Live games list. */
+  isPrivate?: boolean;
+};
 
 // A shared dice roll (or coin/straw result) broadcast to the room.
 export type SharedRoll = {
@@ -35,6 +39,9 @@ export type DndRoomValue = {
   setPlayerName: (v: string) => void;
   playerColor: string;
   spectator: boolean;
+  /** Host-time-only choice: keep the game off the public Live games list. */
+  wantPrivate: boolean;
+  setWantPrivate: (v: boolean) => void;
   hostRoom: () => void;
   joinRoom: () => void;
   leaveRoom: () => void;

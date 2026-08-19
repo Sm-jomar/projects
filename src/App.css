@@ -1089,6 +1089,21 @@ input, select {
 .tt-online-dot.reconnecting { background: var(--accent); }
 .tt-online-dot.error,
 .tt-online-dot.closed { background: var(--danger); }
+.tt-online-private {
+  margin-left: auto;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 10px;
+  background: rgba(139,148,168,0.18);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.tt-online-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
 .tt-online-code-row {
   display: flex;
   align-items: center;

@@ -125,6 +125,7 @@ export function DndTabletop() {
               joinCode={room.joinCode} onJoinCodeChange={room.setJoinCode}
               playerName={room.playerName} onNameChange={room.setPlayerName}
               playerColor={room.playerColor} spectator={room.spectator}
+              wantPrivate={room.wantPrivate} onWantPrivateChange={room.setWantPrivate}
               onIdentityChange={room.changeIdentity}
               onHost={room.hostRoom} onJoin={room.joinRoom} onLeave={room.leaveRoom}
               onClosePanel={() => room.setOnlineOpen(false)}
@@ -495,13 +496,15 @@ function MultiplayerPanel(props: {
   joinCode: string; onJoinCodeChange: (v: string) => void;
   playerName: string; onNameChange: (v: string) => void;
   playerColor: string; spectator: boolean;
+  wantPrivate: boolean; onWantPrivateChange: (v: boolean) => void;
   onIdentityChange: (spectator: boolean, color: string) => void;
   onHost: () => void; onJoin: () => void; onLeave: () => void;
   onClosePanel: () => void;
 }) {
   const {
     online, joinCode, onJoinCodeChange, playerName, onNameChange,
-    playerColor, spectator, onIdentityChange, onHost, onJoin, onLeave, onClosePanel,
+    playerColor, spectator, wantPrivate, onWantPrivateChange,
+    onIdentityChange, onHost, onJoin, onLeave, onClosePanel,
   } = props;
   const connected = online?.status === "open";
   const failed = online && (online.status === "error" || online.status === "closed");
@@ -551,6 +554,11 @@ function MultiplayerPanel(props: {
               Spectate (watch only)
             </label>
           </div>
+          <label className="dnd-tt-check">
+            <input type="checkbox" checked={wantPrivate}
+                   onChange={(e) => onWantPrivateChange(e.target.checked)} />
+            Private game (hide from the public Live games list)
+          </label>
           <button className="dnd-primary" onClick={onHost} disabled={!nameOk}>Host a new game</button>
           <div className="dnd-mp-join">
             <input placeholder="CODE" value={joinCode} maxLength={12}
@@ -569,6 +577,9 @@ function MultiplayerPanel(props: {
             <span>{connected ? "Connected" : online.status === "connecting" ? "Connecting…" : "Disconnected"}
               {connected && online.you && <> · <b style={{ color: myColor }}>{amSpectator ? "Spectator" : online.you.name}</b></>}
             </span>
+            {connected && online.isPrivate && (
+              <span className="dnd-mp-private" title="Hidden from the public Live games list">🔒 Private</span>
+            )}
           </div>
 
           {connected && (
