@@ -6,11 +6,19 @@
 //   /         -> the game-chooser hub (home)
 //   /legion   -> Star Wars: Legion
 //   /dnd      -> Dungeons & Dragons   (matched case-insensitively, e.g. /DnD)
+//   /model    -> hidden 3D-model studio — intentionally undiscoverable: no
+//                nav link, no helper exported for it anywhere in this file.
+//                Reachable only by typing the URL, and password-gated on
+//                top of that (see ModelStudio.tsx).
+//   /upload/<session_id> -> the Tripo Forge Custom GPT's browser upload
+//                page, reached only via a one-time link the GPT hands the
+//                user (see src/upload/UploadPage.tsx). Access control is
+//                the session's own random ?token=, not this routing.
 //
 // Legacy subdomains (legion.*, dragons.*) and the ?app= override still
 // resolve, so older links keep working during and after the cutover.
 
-export type AppKind = "home" | "legion" | "dnd";
+export type AppKind = "home" | "legion" | "dnd" | "model" | "upload";
 
 // A guaranteed multiplayer-capable origin (the Worker serves /api/room).
 // Used only when the current page is NOT itself Worker-served — e.g. the old
@@ -21,13 +29,15 @@ const WORKER_ORIGIN = "https://projects.sm-af6.workers.dev";
 export function resolveApp(): AppKind {
   const params = new URLSearchParams(window.location.search);
   const override = params.get("app");
-  if (override === "home" || override === "legion" || override === "dnd") {
+  if (override === "home" || override === "legion" || override === "dnd" || override === "model") {
     return override;
   }
 
   const path = window.location.pathname.toLowerCase().replace(/\/+$/, "");
   if (path === "/legion" || path.startsWith("/legion/")) return "legion";
   if (path === "/dnd" || path.startsWith("/dnd/")) return "dnd";
+  if (path === "/model" || path.startsWith("/model/")) return "model";
+  if (path.startsWith("/upload/")) return "upload";
 
   // Root path: legacy subdomains still open their app; otherwise the hub.
   if (path === "" ) {
