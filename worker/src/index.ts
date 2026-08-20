@@ -14,6 +14,17 @@
  *   GH_INSTALLATION_ID   - installation id of the App on the repo
  *   FLAG_SHARED_SECRET   - optional; if set, requests must send a matching
  *                          X-Flag-Secret header
+ *   MODEL_PAGE_SECRET    - shared password gating the hidden /model page
+ *                          and all /api/model/* routes (see model.ts)
+ *   TRIPO_API_KEY        - API key for the Tripo AI 3D-generation API,
+ *                          used by model.ts AND bridge.ts (shared client
+ *                          in tripo.ts)
+ *   BRIDGE_API_KEY       - Bearer key the Tripo Forge Custom GPT's Action
+ *                          uses to call /api/balance, /api/upload-session,
+ *                          /api/generate/*, /api/task/*, /api/convert
+ *                          (see bridge.ts). NOT the same secret as
+ *                          MODEL_PAGE_SECRET — the GPT never sees that
+ *                          one, and a human at /model never sees this one.
  *
  * Vars (in wrangler.jsonc "vars"):
  *   REPO_OWNER, REPO_NAME, ALLOWED_ORIGIN
@@ -21,16 +32,25 @@
 
 import { RoomDO } from "./room";
 import { LobbyDO } from "./lobby";
+import { UploadSessionDO } from "./uploadSession";
+import { handleModel, type ModelEnv } from "./model";
+import { handleBridge, type BridgeEnv } from "./bridge";
 
 const FLAG_PATH = "/api/flags";
 // Remote-tabletop room sockets: /api/room/<code>/ws
 const ROOM_PREFIX = "/api/room/";
 // Directory of currently-active rooms (read-only, for the lobby UI).
 const SESSIONS_PATH = "/api/sessions";
+// The hidden /model page's API — see model.ts.
+const MODEL_PREFIX = "/api/model/";
+// The Tripo Forge Custom GPT bridge + its browser upload page — see
+// bridge.ts for the full route list and BRIDGE_API_CONTRACT.md for the
+// spec this implements.
+const BRIDGE_PATHS = ["/health", "/api/balance", "/api/upload-session", "/api/generate/", "/api/task/", "/api/convert", "/api/upload-page/"];
 
-export { RoomDO, LobbyDO };
+export { RoomDO, LobbyDO, UploadSessionDO };
 
-export interface Env {
+export interface Env extends ModelEnv, BridgeEnv {
   ASSETS: { fetch(request: Request): Promise<Response> };
   ROOM: DurableObjectNamespace;
   LOBBY: DurableObjectNamespace;
@@ -150,6 +170,12 @@ export default {
     }
     if (url.pathname.startsWith(ROOM_PREFIX)) {
       return handleRoom(request, env, url);
+    }
+    if (url.pathname.startsWith(MODEL_PREFIX)) {
+      return handleModel(request, env, url);
+    }
+    if (BRIDGE_PATHS.some((p) => url.pathname === p || url.pathname.startsWith(p))) {
+      return handleBridge(request, env, url);
     }
     // Everything else is served by the built SPA.
     return env.ASSETS.fetch(request);

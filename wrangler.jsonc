@@ -33,11 +33,16 @@
       { "name": "ROOM", "class_name": "RoomDO" },
       // Single directory object (addressed by the fixed name "global") that
       // indexes active rooms so the site can list live games.
-      { "name": "LOBBY", "class_name": "LobbyDO" }
+      { "name": "LOBBY", "class_name": "LobbyDO" },
+      // One instance per Tripo Forge upload session (addressed by session
+      // id), plus one shared instance (addressed by "ratelimit") reused as
+      // the bridge's request counter. See worker/src/uploadSession.ts.
+      { "name": "UPLOAD_SESSION", "class_name": "UploadSessionDO" }
     ]
   },
   "migrations": [
     { "tag": "v1", "new_sqlite_classes": ["RoomDO"] },
-    { "tag": "v2", "new_sqlite_classes": ["LobbyDO"] }
+    { "tag": "v2", "new_sqlite_classes": ["LobbyDO"] },
+    { "tag": "v3", "new_sqlite_classes": ["UploadSessionDO"] }
   ]
 }
