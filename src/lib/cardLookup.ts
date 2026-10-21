@@ -110,7 +110,7 @@ const UNIT_CARD_OVERRIDES: Record<string, string | null> = {
   "imperials-stormtroopers-heavy-response-unit": "cards/imperials/unit/stormtroopers-hru.jpg",
   "imperials-stormtrooper-riot-squad": "cards/imperials/unit/stormtrooper-riot-squad.jpg",
   "imperials-tx-225-gavw-occupier-tank": "cards/imperials/unit/tx-225-gavw-occupier-tank.jpg",
-  "imperials-ig-88-assassin-droid": "cards/mercenary/unit/1g-88.jpg",
+  "imperials-ig-88-assassin-droid": "cards/mercenary/unit/ig-88-full.jpg",
   "imperials-ig-11-nurse-droid": "cards/mercenary/unit/ig-11.jpg",
   "imperials-boba-fett-infamous-bounty-hunter": "cards/mercenary/unit/boba-fett-bounty-hunter.jpg",
   "imperials-bossk-trandoshan-terror": "cards/mercenary/unit/bossk.jpg",
@@ -148,10 +148,10 @@ const UNIT_CARD_OVERRIDES: Record<string, string | null> = {
   "rebels-r2-d2": "cards/rebels/unit/r2-d2.jpg",
   "rebels-k-2so": "cards/rebels/unit/k-2so.jpg",
   "rebels-ahsoka-tano-fulcrum": "cards/rebels/unit/ahsoka-tano.jpg",
-  "rebels-logray-superstitious-shaman": "cards/mercenary/unit/logray.jpg",
+  "rebels-logray-superstitious-shaman": "cards/mercenary/unit/logray-full.jpg",
   "rebels-the-bad-batch": "cards/mercenary/unit/the-bap-batch.jpg",
-  "rebels-din-djarin-the-mandalorian": "cards/mercenary/unit/din-djarin.jpg",
-  "rebels-ewok-skirmishers": "cards/mercenary/unit/ewok-skirmishers.jpg",
+  "rebels-din-djarin-the-mandalorian": "cards/mercenary/unit/din-djarin-full.jpg",
+  "rebels-ewok-skirmishers": "cards/mercenary/unit/ewok-skirmishers-full.jpg",
   "rebels-ewok-slingers": "cards/mercenary/unit/ework-slingers.jpg",
   "rebels-wicket-hero-of-bright-tree": "cards/mercenary/unit/wicket.jpg",
   "rebels-boba-fett-daimyo-of-mos-espa": "cards/mercenary/unit/boba-fett.jpg",
@@ -188,11 +188,11 @@ const UNIT_CARD_OVERRIDES: Record<string, string | null> = {
   "separatists-bossk-trandoshan-terror": "cards/mercenary/unit/bossk.jpg",
   // Cards rebuilt from the Star Wars: Legion wiki:
   "separatists-droidekas": "cards/separatists/unit/droidekas.jpg",
+  "separatists-super-tactical-command-droid": "cards/separatists/unit/super-tactical-droid.jpg",
   "separatists-bx-series-droid-commandos-strike-team": "cards/separatists/unit/bx-series-droid-commandos-strike-team.jpg",
   // Separatists with no source card:
   "separatists-aqua-droids": null,
   "separatists-lm-432-crab-droid": null,
-  "separatists-super-tactical-command-droid": null,
   "separatists-super-tactical-command-droid-operative": null,
 
   // ============= REPUBLIC (re-paired by repair_faction_pairings.py) =============
@@ -230,12 +230,12 @@ const UNIT_CARD_OVERRIDES: Record<string, string | null> = {
   // ============= MERCENARY =============
   "mercenary-pyke-syndicate-foot-soldiers": "cards/mercenary/unit/dbvyie-svynpicate-foot-so-lpiers-i.jpg",
   "mercenary-black-sun-enforcers": "cards/mercenary/unit/black-sun-enfoorcers.jpg",
-  "mercenary-black-sun-vigo": "cards/mercenary/unit/black-sun-vigo.jpg",
+  "mercenary-black-sun-vigo": "cards/mercenary/unit/black-sun-vigo-full.jpg",
   "mercenary-cad-bane-needs-no-introduction": "cards/mercenary/unit/cap-bane.jpg",
   "mercenary-a-a5-speeder-truck": "cards/mercenary/unit/ya-l-fs5-speeeepeeer-truck.jpg",
   "mercenary-gar-saxon-militant-commando": "cards/mercenary/unit/garr-saxon.jpg",
   "mercenary-pyke-syndicate-capo": "cards/mercenary/unit/bvice-svyynpicate-capo.jpg",
-  "mercenary-swoop-bike-riders": "cards/mercenary/unit/4-swoop-bike-ringers.jpg",
+  "mercenary-swoop-bike-riders": "cards/mercenary/unit/swoop-bike-riders-full.jpg",
   // Mercenary with no source card:
   "mercenary-hondo-ohnaka": null,
   "mercenary-weequay-pirates": null,
