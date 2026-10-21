@@ -6,6 +6,7 @@ import {
 import { RoomClient, generateRoomCode, type RoomHandlers } from "../lib/roomClient";
 import { appendLog, type LogActor } from "../lib/auditLog";
 import type { DndCharacter } from "./dndTypes";
+import { loadCharacter } from "./dndStorage";
 import {
   DndRoomCtx, rollId,
   type DndRoomValue, type OnlineState, type SharedRoll, type RollPayload,
@@ -20,6 +21,9 @@ const PRIVATE_KEY = "dnd.privategame";
 // the moment you rejoin; this lets it be silently reapplied under the new
 // id instead of forcing a re-upload every time.
 const AVATAR_KEY = "dnd.myavatar";
+// Which saved sheet I last shared with a game, so it can be re-shared under
+// my new connection id after a reconnect (same churn problem as avatars).
+const ATTACHED_KEY = "dnd.attachedChar";
 const DEFAULT_COLOR = "#4a86c8";
 
 export function DndRoomProvider({ children }: { children: React.ReactNode }) {
@@ -109,6 +113,32 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [online?.you?.id]);
 
+  // Re-share my last-shared sheet under a fresh connection id, unless I'm
+  // spectating or it was deleted.
+  useEffect(() => {
+    const you = online?.status === "open" ? online.you : null;
+    if (!you) return;
+    const t = setTimeout(() => {
+      if (readOnlyRef.current) return;
+      let charId: string | null = null;
+      try { charId = localStorage.getItem(ATTACHED_KEY); } catch { /* storage unavailable */ }
+      const character = charId ? loadCharacter(charId) : undefined;
+      if (!character) return;
+      setStateRaw((s) => {
+        if (s.profiles?.[you.id]) return s;
+        return {
+          ...s,
+          profiles: {
+            ...(s.profiles ?? {}),
+            [you.id]: { name: you.name, color: you.color === "spectator" ? "#8b94a8" : you.color, charId: character.id, character },
+          },
+        };
+      });
+    }, 0);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [online?.you?.id]);
+
   function buildHandlers(): RoomHandlers<DndTabletopState> {
     return {
       onStatus: (status, detail) => setOnline((o) => (o ? { ...o, status, error: detail } : o)),
@@ -179,7 +209,11 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   // players no longer connected.
   const myId = online?.status === "open" ? online.you?.id ?? null : null;
   function attachCharacter(character: DndCharacter | null) {
-    if (!myId) return;
+    if (!myId || readOnlyRef.current) return;
+    try {
+      if (character) localStorage.setItem(ATTACHED_KEY, character.id);
+      else localStorage.removeItem(ATTACHED_KEY);
+    } catch { /* storage unavailable */ }
     const you = online?.you;
     setBoard((s) => {
       const profiles = { ...(s.profiles ?? {}) };

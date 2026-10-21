@@ -17,8 +17,33 @@ function readChars(): DndCharacter[] {
   }
 }
 
+// Components read characters through useCharacters() (a
+// useSyncExternalStore subscription), so every write notifies listeners and
+// the snapshot is cached to keep a stable reference between writes.
+const CHARS_EVENT = "dnd:characters";
+let charsCache: DndCharacter[] | null = null;
+
 function writeChars(list: DndCharacter[]): void {
   localStorage.setItem(CHARS_KEY, JSON.stringify(list));
+  charsCache = null;
+  window.dispatchEvent(new Event(CHARS_EVENT));
+}
+
+export function getCharactersSnapshot(): DndCharacter[] {
+  if (!charsCache) charsCache = listCharacters();
+  return charsCache;
+}
+
+export function subscribeCharacters(cb: () => void): () => void {
+  const onStorage = (e: StorageEvent) => {
+    if (e.key === CHARS_KEY) { charsCache = null; cb(); }
+  };
+  window.addEventListener(CHARS_EVENT, cb);
+  window.addEventListener("storage", onStorage);
+  return () => {
+    window.removeEventListener(CHARS_EVENT, cb);
+    window.removeEventListener("storage", onStorage);
+  };
 }
 
 export function listCharacters(): DndCharacter[] {

@@ -116,6 +116,21 @@ export const TOKEN_COLORS = [
   "#4ac8c8", "#c86a4a", "#c84a9a", "#6a6a6a",
 ];
 
+// A new token centred on the map, colour cycled from the palette; any
+// field can be overridden.
+export function makeToken(s: DndTabletopState, partial: Partial<DndToken>): DndToken {
+  return {
+    id: newId(),
+    name: "Token",
+    x: Math.round(s.map.cols / 2) - 0.5,
+    y: Math.round(s.map.rows / 2) - 0.5,
+    size: 1,
+    color: TOKEN_COLORS[s.tokens.length % TOKEN_COLORS.length]!,
+    kind: "monster",
+    ...partial,
+  };
+}
+
 // Initiative order: tokens with an initiative value, highest first; ties by
 // name. Tokens without initiative are dropped from the tracker.
 export function initiativeOrder(tokens: DndToken[]): DndToken[] {

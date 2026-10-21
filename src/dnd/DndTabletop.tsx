@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  downscaleImage, initiativeOrder, newId, TOKEN_COLORS,
+  downscaleImage, initiativeOrder, makeToken,
   type DndTabletopState, type DndToken,
 } from "./dndTabletop";
-import { listCharacters } from "./dndStorage";
-import type { DndCharacter } from "./dndTypes";
+import { useCharacters } from "./useCharacters";
 import type { PlayerProfile } from "./dndTabletop";
 import { dndPlayUrl, roomsAvailableHere } from "../lib/appRouting";
 import type { LogEntry } from "../lib/auditLog";
@@ -14,6 +13,14 @@ import { CharacterSheetView } from "./CharacterSheetView";
 import { useDndRoom, type OnlineState } from "./dndRoom";
 
 const U = 48; // SVG units per grid cell
+const SIDE_KEY = "dnd.ttSideCollapsed";
+
+function readSideCollapsed(): boolean {
+  try { return localStorage.getItem(SIDE_KEY) === "1"; } catch { return false; }
+}
+function writeSideCollapsed(v: boolean) {
+  try { localStorage.setItem(SIDE_KEY, v ? "1" : "0"); } catch { /* storage unavailable */ }
+}
 
 export function DndTabletop() {
   // Connection + board state live in the app-level room context so they
@@ -22,7 +29,8 @@ export function DndTabletop() {
   const { state, setBoard, readOnly, online } = room;
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [chars] = useState<DndCharacter[]>(() => listCharacters());
+  const chars = useCharacters();
+  const [sideCollapsed, setSideCollapsed] = useState(() => readSideCollapsed());
   const [warn, setWarn] = useState<string | null>(null);
   const [viewProfile, setViewProfile] = useState<PlayerProfile | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -56,17 +64,7 @@ export function DndTabletop() {
 
   function addToken(partial: Partial<DndToken>) {
     if (readOnly) return;
-    const color = TOKEN_COLORS[state.tokens.length % TOKEN_COLORS.length]!;
-    const tk: DndToken = {
-      id: newId(),
-      name: "Token",
-      x: Math.round(state.map.cols / 2) - 0.5,
-      y: Math.round(state.map.rows / 2) - 0.5,
-      size: 1,
-      color,
-      kind: "monster",
-      ...partial,
-    };
+    const tk = makeToken(state, partial);
     setBoard((s) => ({ ...s, tokens: [...s.tokens, tk] }));
     setSelectedId(tk.id);
   }
@@ -142,6 +140,11 @@ export function DndTabletop() {
       <div className="dnd-section-head">
         <h2>Tabletop</h2>
         {warn && <span className="dnd-tt-warn small">{warn}</span>}
+        <button className="ghost-btn small dnd-tt-side-toggle"
+                onClick={() => { const v = !sideCollapsed; setSideCollapsed(v); writeSideCollapsed(v); }}
+                title={sideCollapsed ? "Show the board tools" : "Hide the board tools for a bigger board"}>
+          {sideCollapsed ? "◂ Tools" : "Tools ▸"}
+        </button>
         <div className="dnd-mp-wrap">
           <button className={"dnd-mp-btn" + (online?.status === "open" ? " live" : "")}
                   onClick={() => room.setOnlineOpen(!room.onlineOpen)}>
@@ -167,7 +170,7 @@ export function DndTabletop() {
         <div className="dnd-tt-spectating">👁 Spectating — you can watch, pan and zoom, but not change the board.</div>
       )}
 
-      <div className="dnd-tt-body">
+      <div className={"dnd-tt-body" + (sideCollapsed ? " side-collapsed" : "")}>
         <DungeonCanvas
           state={state}
           selectedId={selectedId}
@@ -176,7 +179,7 @@ export function DndTabletop() {
           ghost={ghost}
         />
 
-        <aside className="dnd-tt-side">
+        <aside className="dnd-tt-side" hidden={sideCollapsed}>
           {connected && (
             <section className="dnd-party">
               <h3>Party</h3>
@@ -401,10 +404,25 @@ function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, ghost }: {
   const { cols, rows } = state.map;
   const W = cols * U, H = rows * U;
 
+  // Once the user has zoomed or panned, a container resize (e.g. the
+  // tabletop drawer opening or being dragged wider) keeps their view
+  // centred instead of snapping back to fit-to-board.
+  const userAdjustedRef = useRef(false);
+  const lastSizeRef = useRef<{ w: number; h: number } | null>(null);
+
   useEffect(() => {
     const wrap = wrapRef.current;
     if (!wrap) return;
-    const ro = new ResizeObserver(fit);
+    userAdjustedRef.current = false;
+    const onResize = () => {
+      const w = wrap.clientWidth, h = wrap.clientHeight;
+      const last = lastSizeRef.current;
+      lastSizeRef.current = { w, h };
+      if (!userAdjustedRef.current || !last) { fit(); return; }
+      const dw = w - last.w, dh = h - last.h;
+      if (dw || dh) setView((v) => ({ ...v, tx: v.tx + dw / 2, ty: v.ty + dh / 2 }));
+    };
+    const ro = new ResizeObserver(onResize);
     ro.observe(wrap);
     fit();
     return () => ro.disconnect();
@@ -445,6 +463,7 @@ function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, ghost }: {
   }
   function onPointerMove(e: React.PointerEvent) {
     if (drag.kind === "pan") {
+      userAdjustedRef.current = true;
       setView({ ...view, tx: drag.tx + (e.clientX - drag.sx), ty: drag.ty + (e.clientY - drag.sy) });
     } else if (drag.kind === "token") {
       const c = toCell(e.clientX, e.clientY);
@@ -456,8 +475,18 @@ function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, ghost }: {
   }
   function onPointerUp() { setDrag({ kind: "none" }); }
 
+  // React registers wheel listeners as passive, so page-scroll suppression
+  // needs a native non-passive listener.
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+    const stop = (e: WheelEvent) => e.preventDefault();
+    wrap.addEventListener("wheel", stop, { passive: false });
+    return () => wrap.removeEventListener("wheel", stop);
+  }, []);
+
   function onWheel(e: React.WheelEvent) {
-    e.preventDefault();
+    userAdjustedRef.current = true;
     const r = wrapRef.current!.getBoundingClientRect();
     const cx = e.clientX - r.left, cy = e.clientY - r.top;
     const ns = Math.max(0.15, Math.min(6, view.scale * Math.exp(-e.deltaY * 0.001)));
@@ -554,7 +583,7 @@ function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, ghost }: {
       </svg>
       <div className="dnd-tt-overlay small muted">
         {cols}×{rows} · {state.tokens.length} tokens · zoom {(view.scale * 100).toFixed(0)}%
-        <button className="ghost-btn small" onClick={fit} title="Fit to view">⤢</button>
+        <button className="ghost-btn small" onClick={() => { userAdjustedRef.current = false; fit(); }} title="Fit to view">⤢</button>
       </div>
     </div>
   );

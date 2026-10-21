@@ -32,7 +32,7 @@ async function tripoFetch(env: TripoEnv, path: string, init: RequestInit): Promi
 async function readJson<T>(res: Response): Promise<T> {
   const body = (await res.json().catch(() => null)) as (T & { message?: string }) | null;
   if (!res.ok) {
-    throw new TripoError(`Tripo ${res.status}: ${body?.message ?? (await res.text().catch(() => "")) || res.statusText}`);
+    throw new TripoError(`Tripo ${res.status}: ${body?.message ?? res.statusText}`);
   }
   if (body == null) throw new TripoError("Tripo returned an empty/invalid response");
   return body;
@@ -78,7 +78,7 @@ export type GenerationOptions = {
 
 // Detailed-miniature defaults the GPT expects, applied only where the
 // caller hasn't supplied an explicit value (never silently overridden).
-const DEFAULT_OPTS: Required<Omit<GenerationOptions, "face_limit">> = {
+const DEFAULT_OPTS: Required<Omit<GenerationOptions, "face_limit" | "prompt">> = {
   model_version: "v3.1-20260211",
   geometry_quality: "detailed",
   texture: true,

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { listNotes, saveNote, deleteNote, type DmNote } from "./dndStorage";
 import { newId } from "./dndTypes";
 
@@ -8,20 +8,35 @@ export function DmNotes() {
 
   const active = notes.find((n) => n.id === activeId) ?? null;
 
-  // Debounced persist of the active note.
-  useEffect(() => {
-    if (!active) return;
-    const t = setTimeout(() => saveNote(active), 500);
-    return () => clearTimeout(t);
-  }, [active]);
+  // Debounced persist. The pending edit is flushed when switching notes or
+  // unmounting (e.g. closing the tabletop drawer) so the last keystrokes
+  // are never dropped.
+  const pendingRef = useRef<DmNote | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  function flush() {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = null;
+    if (pendingRef.current) { saveNote(pendingRef.current); pendingRef.current = null; }
+  }
+  useEffect(() => () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    if (pendingRef.current) saveNote(pendingRef.current);
+  }, []);
 
   function update(patch: Partial<DmNote>) {
     if (!active) return;
-    setNotes((ns) => ns.map((n) => (n.id === active.id ? { ...n, ...patch } : n)));
+    const next = { ...active, ...patch };
+    setNotes((ns) => ns.map((n) => (n.id === next.id ? next : n)));
+    if (pendingRef.current && pendingRef.current.id !== next.id) flush();
+    pendingRef.current = next;
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(flush, 500);
   }
 
   function addNote() {
-    const n: DmNote = { id: newId("note"), title: "Untitled note", body: "", updatedAt: Date.now() };
+    flush();
+    // saveNote stamps updatedAt.
+    const n: DmNote = { id: newId("note"), title: "Untitled note", body: "", updatedAt: 0 };
     saveNote(n);
     setNotes(listNotes());
     setActiveId(n.id);
@@ -29,6 +44,7 @@ export function DmNotes() {
 
   function removeNote(id: string) {
     if (!confirm("Delete this note?")) return;
+    flush();
     deleteNote(id);
     const rest = listNotes();
     setNotes(rest);
