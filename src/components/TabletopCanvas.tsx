@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { TabletopState, Token, Terrain, FactionColor, MoveTemplate } from "../lib/tabletop";
+import { moveToken } from "../lib/squads";
+import { SquadMarkers } from "./SquadOverlay";
 import {
   deploymentZones, templateAnchor, templatePoints, TEMPLATE_WIDTH_INCHES,
 } from "../lib/tabletop";
@@ -184,7 +186,9 @@ export function TabletopCanvas({
       const nx = snap(inches.x - drag.offsetX);
       const ny = snap(inches.y - drag.offsetY);
       if (drag.itemType === "token") {
-        onState({ ...state, tokens: state.tokens.map((t) => t.id === drag.itemId ? { ...t, x: nx, y: ny } : t) });
+        // Squads stay base locked: the leader drags its squad along, other
+        // members slide to the nearest spot still in contact.
+        onState(moveToken(state, drag.itemId, nx, ny));
       } else {
         onState({ ...state, terrain: state.terrain.map((t) => t.id === drag.itemId ? { ...t, x: nx, y: ny } : t) });
       }
@@ -470,6 +474,8 @@ export function TabletopCanvas({
               </g>
             );
           })}
+
+          <SquadMarkers tokens={state.tokens} u={UNITS_PER_INCH} scale={view.scale} />
 
           {/* Movement template (one at a time, anchored to its token) */}
           {state.moveTemplate && (() => {
