@@ -9,8 +9,15 @@ import type { DndCharacter } from "./dndTypes";
 import { loadCharacter } from "./dndStorage";
 import {
   DndRoomCtx, rollId,
-  type DndRoomValue, type OnlineState, type SharedRoll, type RollPayload,
+  type DndRoomValue, type OnlineState, type SharedRoll, type RollPayload, type SendRollOpts,
 } from "./dndRoom";
+import {
+  clearSeatToken, deniedText, readSeatToken, writeSeatToken,
+  type CampaignInvite, type DmNotice, type IncomingRollRequest, type LinkedCampaign,
+  type OutgoingRollRequest, type RollRequest,
+} from "./dndProtocol";
+import { bestCodeFor } from "./campaignKeyring";
+import type { DndToken } from "./dndTabletop";
 
 const NAME_KEY = "dnd.playername";
 const COLOR_KEY = "dnd.playercolor";
@@ -27,7 +34,19 @@ const ATTACHED_KEY = "dnd.attachedChar";
 // My own board, parked while I'm in a game (joining replaces the local
 // board with the room's) and restored when I leave.
 const SOLO_KEY = "dnd.tabletop.solo.v1";
+// DM: tokens set aside off-board until revealed (only on this device).
+const STAGED_KEY = "dnd.staged.v1";
 const DEFAULT_COLOR = "#4a86c8";
+
+function readStaged(): DndToken[] {
+  try {
+    const raw = localStorage.getItem(STAGED_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? (parsed as DndToken[]) : [];
+  } catch {
+    return [];
+  }
+}
 
 export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   const [state, setStateRaw] = useState<DndTabletopState>(() => loadDndTabletop() ?? newDndTabletop());
@@ -44,6 +63,15 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   const [myAvatarUrl, setMyAvatarUrl] = useState<string | null>(() => localStorage.getItem(AVATAR_KEY));
   const [rollFeed, setRollFeed] = useState<SharedRoll[]>([]);
   const [syncWarning, setSyncWarning] = useState<string | null>(null);
+  // DM seat & campaign (protocol 2).
+  const [proto, setProto] = useState(1);
+  const [linkedCampaign, setLinkedCampaign] = useState<LinkedCampaign | null>(null);
+  const [dmNotice, setDmNotice] = useState<DmNotice | null>(null);
+  const [campaignInvites, setCampaignInvites] = useState<CampaignInvite[]>([]);
+  const [dmRollPublic, setDmRollPublic] = useState(false);
+  const [outgoingRequests, setOutgoingRequests] = useState<OutgoingRollRequest[]>([]);
+  const [rollRequests, setRollRequests] = useState<IncomingRollRequest[]>([]);
+  const [staged, setStagedState] = useState<DndToken[]>(readStaged);
 
   const roomRef = useRef<RoomClient<DndTabletopState> | null>(null);
   const stateRef = useRef(state);
@@ -56,6 +84,8 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   const replaceSummaryRef = useRef<string | null>(null);
   // Host intent, read by onWelcome when the new room has no state yet.
   const hostBlankRef = useRef(false);
+  // Campaign code to run (claim the DM seat + link) when hosting.
+  const hostCampaignRef = useRef<string | null>(null);
 
   const readOnly = online?.status === "open" && online.you?.color === "spectator";
   useEffect(() => { readOnlyRef.current = !!readOnly; }, [readOnly]);
@@ -155,8 +185,26 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     return {
       onStatus: (status, detail) => setOnline((o) => (o ? { ...o, status, error: detail } : o)),
       onDenied: () => setOnline((o) => (o ? { ...o, status: "error", error: "That code belongs to a Legion game. Use a different code." } : o)),
-      onWelcome: (you, remoteState, peers) => {
-        setOnline({ status: "open", code: roomRef.current?.code ?? "", you, peers, isPrivate: roomRef.current?.isPrivate ?? false });
+      onWelcome: (you, remoteState, peers, extra) => {
+        const client = roomRef.current;
+        const code = client?.code ?? "";
+        setOnline({ status: "open", code, you, peers, isPrivate: client?.isPrivate ?? false });
+        const p = typeof extra.proto === "number" ? extra.proto : 1;
+        setProto(p);
+        const linked = (extra.campaign && typeof extra.campaign === "object") ? extra.campaign as LinkedCampaign : null;
+        setLinkedCampaign(linked);
+        if (client && p >= 2) {
+          // Back in the DM seat after a reload / dropped connection, or
+          // take it now if I'm hosting a campaign.
+          const token = readSeatToken(code);
+          const hostCode = hostCampaignRef.current;
+          hostCampaignRef.current = null;
+          if (token) {
+            client.sendApp({ t: "claimDm", token, code: (linked && bestCodeFor(linked.id, "codm")) || undefined });
+          } else if (hostCode) {
+            client.sendApp({ t: "claimDm", code: hostCode, link: true });
+          }
+        }
         if (remoteState) {
           const js = JSON.stringify(remoteState);
           remoteEchoRef.current = js;
@@ -185,14 +233,52 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
         return { ...o, peers, you };
       }),
       onAppMessage: (msg) => {
-        if (msg.t === "stateRejected") {
-          const mb = (n: unknown) => (Number(n) / 1_000_000).toFixed(1);
-          setSyncWarning(`The board is too large to sync (${mb(msg.bytes)} MB of ${mb(msg.max)} MB) — your last change didn't reach the table. Try a smaller map image or fewer token icons.`);
+        const code = roomRef.current?.code ?? "";
+        switch (msg.t) {
+          case "stateRejected": {
+            const mb = (n: unknown) => (Number(n) / 1_000_000).toFixed(1);
+            setSyncWarning(`The board is too large to sync (${mb(msg.bytes)} MB of ${mb(msg.max)} MB) — your last change didn't reach the table. Try a smaller map image or fewer token icons.`);
+            break;
+          }
+          case "dmGranted":
+            if (typeof msg.token === "string") writeSeatToken(code, msg.token);
+            setDmNotice(null);
+            break;
+          case "dmRevoked":
+            clearSeatToken(code);
+            if (msg.reason === "moved") setDmNotice({ kind: "err", text: "The DM seat moved to your other tab or device." });
+            break;
+          case "opDenied":
+            setDmNotice({ kind: "err", text: deniedText(String(msg.op), String(msg.reason), typeof msg.retryAfterMs === "number" ? msg.retryAfterMs : undefined) });
+            break;
+          case "campaign":
+            setLinkedCampaign(msg.campaign && typeof msg.campaign === "object" ? msg.campaign as LinkedCampaign : null);
+            break;
+          case "inviteSent":
+            setDmNotice({ kind: "ok", text: `Invited ${Number(msg.count) || 0} player${Number(msg.count) === 1 ? "" : "s"} to the campaign.` });
+            break;
+          case "rollRequest": {
+            const req = msg.req as RollRequest | undefined;
+            if (!req || typeof req.id !== "string") break;
+            const incoming: IncomingRollRequest = { ...req, from: String(msg.from ?? ""), fromName: String(msg.fromName ?? "DM"), receivedAt: Date.now() };
+            setRollRequests((rs) => (rs.some((r) => r.id === req.id) ? rs : [incoming, ...rs].slice(0, 8)));
+            break;
+          }
+          case "campaignInvite": {
+            const inv = msg.invite as Omit<CampaignInvite, "from"> | undefined;
+            if (!inv || typeof inv.code !== "string" || !inv.code) break;
+            const full: CampaignInvite = { ...inv, from: String(msg.from ?? "DM") };
+            setCampaignInvites((list) => [full, ...list.filter((x) => x.campaignId !== full.campaignId)]);
+            break;
+          }
         }
       },
-      onDice: (_id, _color, entry) => {
+      onDice: (id, _color, entry, vis) => {
         const r = entry as SharedRoll;
-        if (r && r.id) setRollFeed((f) => [r, ...f].slice(0, 60));
+        if (!r || !r.id) return;
+        // Trust the server's delivery (vis), not the sender's payload.
+        const roll: SharedRoll = { ...r, fromId: id, vis: vis === "dm" ? "dm" : undefined };
+        setRollFeed((f) => [roll, ...f].slice(0, 60));
       },
     };
   }
@@ -217,9 +303,10 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     setOnline({ status: "connecting", code: client.code, you: null, peers: [] });
     client.connect();
   }
-  function hostRoom(opts?: { blankBoard?: boolean }) {
+  function hostRoom(opts?: { blankBoard?: boolean; campaignCode?: string }) {
     if (!playerName.trim()) return;
     hostBlankRef.current = !!opts?.blankBoard;
+    hostCampaignRef.current = opts?.campaignCode ?? null;
     startRoom(generateRoomCode());
   }
   function joinRoom() { const c = joinCode.trim().toUpperCase(); if (c.length >= 4 && playerName.trim()) startRoom(c); }
@@ -230,6 +317,17 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     roomRef.current?.setColor(spec ? "spectator" : color);
   }
   function leaveRoom() {
+    const client = roomRef.current;
+    if (client) {
+      if (online?.you?.dm) client.sendApp({ t: "releaseDm" });
+      clearSeatToken(client.code);
+    }
+    setProto(1);
+    setLinkedCampaign(null);
+    setRollRequests([]);
+    setOutgoingRequests([]);
+    setCampaignInvites([]);
+    setDmNotice(null);
     roomRef.current?.close();
     roomRef.current = null;
     remoteEchoRef.current = null;
@@ -253,12 +351,77 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     setStateRaw(update);
   }
 
-  // Add a roll to the shared feed and broadcast it if connected.
-  function sendRoll(payload: RollPayload) {
-    const roll: SharedRoll = { ...payload, id: rollId(), ts: Date.now(), actor: { name: actor.name, color: actor.color } };
+  const connected = online?.status === "open";
+  const isDm = connected && !!online?.you?.dm;
+  const dmPeer = connected ? online?.peers.find((p) => p.dm) ?? null : null;
+
+  // Add a roll to my feed and share it as appropriate:
+  //  - DM rolls are hidden by default: kept in the DM's own feed, never sent.
+  //  - A player's secret roll (vis "dm") goes to the DM's socket only.
+  //  - Everything else is broadcast to the table, as before.
+  function sendRoll(payload: RollPayload, opts?: SendRollOpts) {
+    const client = roomRef.current;
+    const live = !!client && connected;
+    const vis = live ? (opts?.vis ?? (isDm && !dmRollPublic ? "dm" : "table")) : "table";
+    const roll: SharedRoll = {
+      ...payload,
+      id: rollId(), ts: Date.now(), actor: { name: actor.name, color: actor.color },
+      ...(vis === "dm" ? { vis: "dm" as const } : {}),
+      ...(opts?.requestId ? { requestId: opts.requestId } : {}),
+      ...(opts?.dc != null ? { dc: opts.dc } : {}),
+    };
     setRollFeed((f) => [roll, ...f].slice(0, 60));
-    if (roomRef.current && online?.status === "open") roomRef.current.sendDice(roll);
+    if (!live) return;
+    if (vis === "dm") {
+      if (isDm) return;
+      if (proto >= 2 && dmPeer) client!.sendDice(roll, "dm");
+      else setDmNotice({ kind: "err", text: deniedText("roll", "no-dm") });
+      return;
+    }
+    client!.sendDice(roll);
   }
+
+  // --- DM seat & campaign ---
+  function claimDm(opts?: { code?: string }) {
+    const client = roomRef.current;
+    if (!client || !connected) return;
+    setDmNotice(null);
+    client.sendApp({
+      t: "claimDm",
+      token: readSeatToken(client.code) ?? undefined,
+      code: opts?.code ?? ((linkedCampaign && bestCodeFor(linkedCampaign.id, "codm")) || undefined),
+    });
+  }
+  function releaseDm() {
+    const client = roomRef.current;
+    if (!client) return;
+    client.sendApp({ t: "releaseDm" });
+    clearSeatToken(client.code);
+  }
+  function linkCampaign(code: string) { setDmNotice(null); roomRef.current?.sendApp({ t: "linkCampaign", code }); }
+  function unlinkCampaign() { roomRef.current?.sendApp({ t: "unlinkCampaign" }); }
+  function inviteToCampaign(playerCode: string) { setDmNotice(null); roomRef.current?.sendApp({ t: "campaignInvite", code: playerCode }); }
+
+  function sendRollRequest(to: string[], req: Omit<RollRequest, "id" | "dc">, dc?: number, revealDc?: boolean) {
+    const client = roomRef.current;
+    if (!client || !isDm || to.length === 0) return;
+    const full: RollRequest = { ...req, id: rollId(), ...(revealDc && dc != null ? { dc } : {}) };
+    client.sendApp({ t: "rollRequest", to, req: full });
+    setOutgoingRequests((list) => [{ req: full, dc, to, sentAt: Date.now() }, ...list].slice(0, 20));
+  }
+
+  function setStaged(next: DndToken[]) {
+    setStagedState(next);
+    try { localStorage.setItem(STAGED_KEY, JSON.stringify(next)); } catch { /* storage unavailable */ }
+  }
+  function stageTokens(tokens: DndToken[]) { setStaged([...staged, ...tokens]); }
+  function revealStaged(id: string | "all") {
+    const reveal = id === "all" ? staged : staged.filter((t) => t.id === id);
+    if (reveal.length === 0 || readOnlyRef.current) return;
+    setBoard((s) => ({ ...s, tokens: [...s.tokens, ...reveal.filter((t) => !s.tokens.some((x) => x.id === t.id))] }));
+    setStaged(id === "all" ? [] : staged.filter((t) => t.id !== id));
+  }
+  function discardStaged(id: string | "all") { setStaged(id === "all" ? [] : staged.filter((t) => t.id !== id)); }
   function clearRolls() { setRollFeed([]); }
 
   // Attach (or clear) my character sheet to the shared board so everyone in
@@ -322,6 +485,14 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     rollFeed, sendRoll, clearRolls,
     myId, profiles: state.profiles ?? {}, attachCharacter,
     avatars: state.avatars ?? {},
+    proto, isDm, dmPeer, claimDm, releaseDm,
+    dmNotice, clearDmNotice: () => setDmNotice(null),
+    linkedCampaign, linkCampaign, unlinkCampaign, inviteToCampaign,
+    campaignInvites, dismissInvite: (id) => setCampaignInvites((l) => l.filter((x) => x.campaignId !== id)),
+    dmRollPublic, setDmRollPublic,
+    sendRollRequest, outgoingRequests, clearOutgoingRequests: () => setOutgoingRequests([]),
+    rollRequests, dismissRollRequest: (id) => setRollRequests((l) => l.filter((x) => x.id !== id)),
+    staged, stageTokens, revealStaged, discardStaged,
   };
   return <DndRoomCtx.Provider value={value}>{children}</DndRoomCtx.Provider>;
 }

@@ -14,7 +14,13 @@
 // "spectator"; D&D uses a hex color (an editor) or "spectator". The room
 // is generic over its board-state type S so both apps can share it.
 export type PlayerColor = string;
-export type Peer = { id: string; color: PlayerColor; name: string };
+export type Peer = {
+  id: string; color: PlayerColor; name: string;
+  /** D&D: holds the DM seat. */
+  dm?: boolean;
+  /** Client protocol version (absent = 1, i.e. an older client). */
+  v?: number;
+};
 export type ConnStatus = "idle" | "connecting" | "open" | "reconnecting" | "closed" | "error";
 export type RoomApp = "legion" | "dnd";
 
@@ -24,7 +30,7 @@ export type RoomHandlers<S> = {
   onState?: (state: S, fromId: string) => void;
   onCursor?: (id: string, color: PlayerColor, x: number, y: number) => void;
   onPresence?: (peers: Peer[]) => void;
-  onDice?: (id: string, color: PlayerColor, entry: unknown) => void;
+  onDice?: (id: string, color: PlayerColor, entry: unknown, vis?: "dm") => void;
   /** The server refused a color change because another player holds it. */
   onColorDenied?: (color: PlayerColor) => void;
   /** The room belongs to a different app (Legion vs D&D). */
@@ -63,6 +69,8 @@ function roomWsUrl(code: string, name: string, color: string, app: RoomApp, isPr
   if (name) params.set("name", name);
   if (color) params.set("color", color);
   params.set("app", app);
+  // Protocol version this client speaks (DM seat, app messages).
+  params.set("v", "2");
   // Only meaningful on the connection that creates the room (the host's
   // first join) — the server stamps it once and ignores it after that.
   if (isPrivate) params.set("private", "1");
@@ -203,7 +211,7 @@ export class RoomClient<S> {
         break;
       }
       case "dice":
-        this.handlers.onDice?.(String(msg.id), msg.color as PlayerColor, msg.entry);
+        this.handlers.onDice?.(String(msg.id), msg.color as PlayerColor, msg.entry, msg.vis === "dm" ? "dm" : undefined);
         break;
       case "colorDenied":
         this.handlers.onColorDenied?.(msg.color as PlayerColor);
@@ -244,8 +252,9 @@ export class RoomClient<S> {
 
   // Broadcast a dice roll (or similar event) to the other players. The
   // server relays it without storing; the entry should carry its own actor.
-  sendDice(entry: unknown): void {
-    this.raw({ t: "dice", entry });
+  /** vis "dm": a secret roll the server delivers to the DM alone. */
+  sendDice(entry: unknown, vis?: "dm"): void {
+    this.raw(vis ? { t: "dice", entry, vis } : { t: "dice", entry });
   }
 
   /** Send an app-specific message (only meaningful when proto >= 2). */

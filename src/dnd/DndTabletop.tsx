@@ -12,6 +12,10 @@ import { RollFeed } from "./RollFeed";
 import { CharacterSheetView } from "./CharacterSheetView";
 import { useDndRoom, type OnlineState } from "./dndRoom";
 import { CampaignMapsPanel } from "./CampaignMapLibrary";
+import { RollRequestBanner } from "./RollRequestBanner";
+import { useKeyring } from "./useCampaign";
+import { canEdit } from "./campaign";
+import { bestCodeFor } from "./campaignKeyring";
 
 const U = 48; // SVG units per grid cell
 const SIDE_KEY = "dnd.ttSideCollapsed";
@@ -173,6 +177,8 @@ export function DndTabletop() {
         </div>
       </div>
 
+      <RollRequestBanner withInvites />
+
       {readOnly && (
         <div className="dnd-tt-spectating">👁 Spectating — you can watch, pan and zoom, but not change the board.</div>
       )}
@@ -209,7 +215,7 @@ export function DndTabletop() {
                       {avatar
                         ? <span className="dnd-party-avatar" style={{ backgroundImage: `url(${avatar})` }} />
                         : <span className="dnd-party-dot" style={{ background: p.color === "spectator" ? "#8b94a8" : p.color }} />}
-                      <span className="dnd-party-name">{p.name}{p.id === room.myId ? " (you)" : ""}</span>
+                      <span className="dnd-party-name">{p.name}{p.dm && <span className="dnd-badge-dm">DM</span>}{p.id === room.myId ? " (you)" : ""}</span>
                       {prof
                         ? <button className="ghost-btn small" onClick={() => setViewProfile(prof)}>View sheet</button>
                         : <span className="muted small">{p.color === "spectator" ? "spectator" : "no sheet"}</span>}
@@ -612,7 +618,7 @@ function MultiplayerPanel(props: {
   myAvatarUrl: string | null; onAvatarFile: (file: File) => void; onClearAvatar: () => void;
   onIdentityChange: (spectator: boolean, color: string) => void;
   boardHasContent: boolean;
-  onHost: (opts: { blankBoard: boolean }) => void; onJoin: () => void; onLeave: () => void;
+  onHost: (opts: { blankBoard: boolean; campaignCode?: string }) => void; onJoin: () => void; onLeave: () => void;
   onClosePanel: () => void;
 }) {
   const {
@@ -625,7 +631,12 @@ function MultiplayerPanel(props: {
   // mine has content — it may be DM prep (secret tokens) not meant for
   // players yet.
   const [startBlank, setStartBlank] = useState(boardHasContent);
-  const host = () => onHost({ blankBoard: boardHasContent && startBlank });
+  // Run one of my campaigns: claims the DM seat and links it on host.
+  const room = useDndRoom();
+  const keyring = useKeyring();
+  const dmCampaigns = keyring.filter((e) => canEdit(e.role) && !e.stale);
+  const [runCampaign, setRunCampaign] = useState("");
+  const host = () => onHost({ blankBoard: boardHasContent && startBlank, campaignCode: runCampaign || undefined });
   const connected = online?.status === "open";
   const failed = online && (online.status === "error" || online.status === "closed");
   const nameOk = playerName.trim().length > 0;
@@ -696,6 +707,17 @@ function MultiplayerPanel(props: {
                    onChange={(e) => onWantPrivateChange(e.target.checked)} />
             Private game (hide from the public Live games list)
           </label>
+          {dmCampaigns.length > 0 && (
+            <label className="dnd-tt-field">Run a campaign (you’ll be the DM)
+              <select value={runCampaign} onChange={(e) => {
+                setRunCampaign(e.target.value);
+                if (e.target.value && !wantPrivate) onWantPrivateChange(true);
+              }}>
+                <option value="">No campaign</option>
+                {dmCampaigns.map((c) => <option key={c.campaignId} value={c.code}>{c.name}</option>)}
+              </select>
+            </label>
+          )}
           {boardHasContent && (
             <div className="dnd-mp-start" role="radiogroup" aria-label="Start the game with">
               <span className="muted small">Start the game with:</span>
@@ -741,6 +763,8 @@ function MultiplayerPanel(props: {
           )}
           {connected && avatarControl}
 
+          {connected && room.proto >= 2 && <DmSeatRow amSpectator={amSpectator} />}
+
           <div className="dnd-mp-code-row">
             <div className="dnd-mp-code">{online.code}</div>
             <button onClick={() => copy(online.code)}>Copy code</button>
@@ -752,7 +776,7 @@ function MultiplayerPanel(props: {
               online.peers.map((p) => (
                 <span key={p.id} className="dnd-mp-peer">
                   <span className="dnd-mp-peer-dot" style={{ background: p.color === "spectator" ? "#8b94a8" : p.color }} />
-                  {p.name}{p.color === "spectator" && " (spectator)"}{online.you?.id === p.id && " (you)"}
+                  {p.name}{p.dm && <span className="dnd-badge-dm">DM</span>}{p.color === "spectator" && " (spectator)"}{online.you?.id === p.id && " (you)"}
                 </span>
               ))}
           </div>
@@ -765,3 +789,33 @@ function MultiplayerPanel(props: {
   );
 }
 
+
+// Who's DM, and the controls to take / give up the seat. When the game runs
+// a campaign, taking the seat needs that campaign's owner/Co-DM code (sent
+// automatically from My campaigns).
+function DmSeatRow({ amSpectator }: { amSpectator: boolean }) {
+  const room = useDndRoom();
+  const linked = room.linkedCampaign;
+  const myCode = linked ? bestCodeFor(linked.id, "codm") : null;
+  const dm = room.dmPeer;
+  const canTake = !dm && !amSpectator && (!linked || !!myCode);
+  return (
+    <div className="dnd-mp-dm">
+      <div className="dnd-camp-row">
+        <span className="small">
+          {dm ? <>DM: <b>{dm.name}</b>{room.isDm && " (you)"}</> : "DM seat is open"}
+        </span>
+        {room.isDm && <button className="ghost-btn small" onClick={room.releaseDm}>Give up DM seat</button>}
+        {canTake && <button className="ghost-btn small" onClick={() => room.claimDm()}>Become DM</button>}
+      </div>
+      {linked && (
+        <span className="muted small">Campaign: <b>{linked.name}</b>
+          {!dm && !myCode && !amSpectator && " — you need its owner or Co-DM code to be DM"}
+        </span>
+      )}
+      {room.dmNotice && (
+        <span className={"small " + (room.dmNotice.kind === "ok" ? "dnd-camp-okmsg" : "dnd-camp-error")}>{room.dmNotice.text}</span>
+      )}
+    </div>
+  );
+}

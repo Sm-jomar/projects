@@ -13,12 +13,22 @@
  * Uses the hibernatable WebSocket API so an idle room costs nothing:
  * the runtime can evict the object between messages and rehydrate it,
  * with per-socket metadata stashed via serializeAttachment().
+ *
+ * D&D rooms (protocol 2) add a single DM seat and DM-only channels:
+ *   claimDm / releaseDm, linkCampaign / unlinkCampaign, rollRequest
+ *   (DM -> chosen players), campaignInvite (DM -> players, player code
+ *   only), and `dice` with vis:"dm" (player -> DM only). Anything meant
+ *   for the DM alone is sent to the DM's socket alone — never broadcast
+ *   and filtered client-side. Campaign codes are verified against the
+ *   CampaignDO and never stored, broadcast or kept on a socket.
  */
 import { DurableObject } from "cloudflare:workers";
+import { parseCode, type CampaignDO } from "./campaign";
 
 export interface RoomEnv {
   ROOM: DurableObjectNamespace;
   LOBBY: DurableObjectNamespace;
+  CAMPAIGN: DurableObjectNamespace<CampaignDO>;
   ALLOWED_ORIGIN: string;
 }
 
@@ -27,9 +37,11 @@ export interface RoomEnv {
 //   Legion: "blue" | "red" | "spectator"
 //   D&D:    a hex like "#4a86c8" (an editor), or "spectator" (watch-only)
 // The literal "spectator" always means watch-only in either app.
-type Attachment = { id: string; color: string; name: string };
+// `v` is the client's protocol version; `dm` marks the D&D DM seat.
+// Keep this tiny (platform attachment limit ~2KB) and secret-free.
+type Attachment = { id: string; color: string; name: string; app?: "dnd" | "legion"; v?: number; dm?: true };
 
-type Peer = { id: string; color: string; name: string };
+type Peer = { id: string; color: string; name: string; dm?: true; v?: number };
 
 // Messages are small JSON objects tagged with `t`.
 type ClientMsg =
@@ -37,8 +49,14 @@ type ClientMsg =
   | { t: "cursor"; x: number; y: number }
   | { t: "name"; name: string }
   | { t: "setColor"; color: string }
-  | { t: "dice"; entry: unknown }
-  | { t: "ping" };
+  | { t: "dice"; entry: unknown; vis?: unknown }
+  | { t: "ping" }
+  | { t: "claimDm"; token?: unknown; code?: unknown; link?: unknown }
+  | { t: "releaseDm" }
+  | { t: "linkCampaign"; code?: unknown }
+  | { t: "unlinkCampaign" }
+  | { t: "rollRequest"; to?: unknown; req?: unknown }
+  | { t: "campaignInvite"; code?: unknown; to?: unknown };
 
 const STATE_KEY = "board-state";
 const APP_KEY = "room-app";
@@ -49,19 +67,65 @@ const CODE_KEY = "room-code";
 // never reports to the lobby, so it never appears in the public Live games
 // list — it's still fully joinable by code, just unlisted.
 const PRIVATE_KEY = "room-private";
+// D&D: the campaign linked to this game ({id, name}) and the DM seat
+// record ({token, peerId, name, releasedAt?}).
+const CAMPAIGN_KEY = "room-campaign";
+const DM_KEY = "room-dm";
 // Re-report an in-progress game to the lobby at most this often, so a long
 // game that isn't gaining/losing players doesn't age out of the list.
 const LOBBY_REFRESH_MS = 60_000;
 // Room state can carry a downscaled dungeon-map image (D&D), so allow more
 // than a bare board's worth.
 const MAX_STATE_BYTES = 2_000_000;
+const MAX_DICE_BYTES = 8_000;
+// After the DM's connection drops, the seat is held this long for them:
+// only their seat token (or a valid owner/Co-DM code) can take it.
+const DM_GRACE_MS = 90_000;
+const PROTOCOL = 2;
 
 // Legion's two exclusive sides; D&D has no exclusive colors.
 const LEGION_EXCLUSIVE = new Set(["blue", "red"]);
 
+type DmRecord = { token: string; peerId: string; name: string; releasedAt?: number };
+type LinkedCampaign = { id: string; name: string };
+
 function randomId(): string {
   // Short opaque id for a connection/player.
   return Math.random().toString(36).slice(2, 10);
+}
+
+function randomToken(): string {
+  const b = new Uint8Array(18);
+  crypto.getRandomValues(b);
+  return Array.from(b, (x) => x.toString(16).padStart(2, "0")).join("");
+}
+
+function peerOf(att: Attachment): Peer {
+  const p: Peer = { id: att.id, color: att.color, name: att.name };
+  if (att.dm) p.dm = true;
+  if (att.v && att.v > 1) p.v = att.v;
+  return p;
+}
+
+const str = (v: unknown, max: number): string => (typeof v === "string" ? v.slice(0, max) : "");
+const ROLL_KINDS = new Set(["skill", "save", "ability", "initiative", "custom"]);
+const ROLL_MODES = new Set(["normal", "adv", "dis"]);
+
+function sanitizeRollRequest(raw: unknown): Record<string, unknown> {
+  const r = raw && typeof raw === "object" ? (raw as Record<string, unknown>) : {};
+  const out: Record<string, unknown> = {
+    id: str(r.id, 40) || randomId(),
+    label: str(r.label, 60),
+    kind: typeof r.kind === "string" && ROLL_KINDS.has(r.kind) ? r.kind : "custom",
+    mode: typeof r.mode === "string" && ROLL_MODES.has(r.mode) ? r.mode : "normal",
+    vis: r.vis === "dm" ? "dm" : "table",
+  };
+  if (typeof r.key === "string") out.key = r.key.slice(0, 20);
+  if (typeof r.dice === "string" && /^[0-9dD+\- ]{1,20}$/.test(r.dice)) out.dice = r.dice;
+  if (typeof r.dc === "number" && Number.isFinite(r.dc)) out.dc = Math.max(0, Math.min(50, Math.round(r.dc)));
+  const note = str(r.note, 140);
+  if (note) out.note = note;
+  return out;
 }
 
 export class RoomDO extends DurableObject<RoomEnv> {
@@ -103,7 +167,8 @@ export class RoomDO extends DurableObject<RoomEnv> {
     // blue/red-then-spectator fallback; D&D takes the picked color as-is.
     const color = this.pickColor(app, url.searchParams.get("color"));
     const name = (url.searchParams.get("name") || "").slice(0, 24) || defaultName(color);
-    const att: Attachment = { id: randomId(), color, name };
+    const v = Math.max(1, Math.min(99, Number(url.searchParams.get("v")) || 1));
+    const att: Attachment = { id: randomId(), color, name, app, v };
 
     // Accept with hibernation support and stash the attachment.
     this.ctx.acceptWebSocket(server);
@@ -112,10 +177,13 @@ export class RoomDO extends DurableObject<RoomEnv> {
     // Send the welcome (current board + peer list) once the socket opens.
     const state = await this.ctx.storage.get<unknown>(STATE_KEY);
     const isPrivate = (await this.ctx.storage.get<boolean>(PRIVATE_KEY)) ?? false;
+    const campaign = app === "dnd" ? (await this.ctx.storage.get<LinkedCampaign>(CAMPAIGN_KEY)) ?? null : null;
     this.send(server, {
       t: "welcome",
-      you: { id: att.id, color: att.color, name: att.name },
+      you: peerOf(att),
       private: isPrivate,
+      proto: PROTOCOL,
+      campaign,
       state: state ?? null,
       peers: this.peers(),
     });
@@ -165,9 +233,19 @@ export class RoomDO extends DurableObject<RoomEnv> {
         // Ephemeral — never stored, just relayed.
         this.broadcast({ t: "cursor", id: att.id, color: att.color, x: msg.x, y: msg.y }, ws);
         break;
-      case "dice":
+      case "dice": {
+        if (JSON.stringify(msg.entry ?? null).length > MAX_DICE_BYTES) return;
+        if (msg.vis === "dm") {
+          // A secret roll: to the DM only. With no DM seated it is
+          // dropped — never broadcast as a fallback.
+          const dm = this.dmSocket(null);
+          if (!dm || dm === ws) { this.opDenied(ws, "dice", "no-dm"); return; }
+          this.send(dm, { t: "dice", id: att.id, color: att.color, entry: msg.entry, vis: "dm" });
+          return;
+        }
         this.broadcast({ t: "dice", id: att.id, color: att.color, entry: msg.entry }, ws);
         break;
+      }
       case "name": {
         const name = String(msg.name || "").slice(0, 24) || att.name;
         ws.serializeAttachment({ ...att, name });
@@ -190,7 +268,15 @@ export class RoomDO extends DurableObject<RoomEnv> {
             }
           }
         }
-        ws.serializeAttachment({ ...att, color: want });
+        let next: Attachment = { ...att, color: want };
+        // A spectator can't hold the DM seat: switching gives it up.
+        if (att.dm && want === "spectator") {
+          next = { ...next };
+          delete next.dm;
+          await this.ctx.storage.delete(DM_KEY);
+          this.send(ws, { t: "dmRevoked", reason: "released" });
+        }
+        ws.serializeAttachment(next);
         // The requester learns its new color from the presence roster
         // (it can match itself by id), and everyone sees the swap.
         this.broadcastPresence(null);
@@ -199,6 +285,72 @@ export class RoomDO extends DurableObject<RoomEnv> {
       case "ping":
         this.send(ws, { t: "pong" });
         break;
+
+      // --- D&D DM features (protocol 2) ---------------------------------
+      case "claimDm":
+        if (att.app !== "dnd") return this.opDenied(ws, msg.t, "not-dnd");
+        await this.claimDm(ws, msg);
+        break;
+      case "releaseDm": {
+        if (att.app !== "dnd" || !att.dm) return;
+        const next = { ...att };
+        delete next.dm;
+        ws.serializeAttachment(next);
+        await this.ctx.storage.delete(DM_KEY);
+        this.send(ws, { t: "dmRevoked", reason: "released" });
+        this.broadcastPresence(null);
+        break;
+      }
+      case "linkCampaign": {
+        if (att.app !== "dnd") return this.opDenied(ws, msg.t, "not-dnd");
+        if (!att.dm) return this.opDenied(ws, msg.t, "not-dm");
+        const v = await this.verifyCode(msg.code);
+        if (!v || v.role === "player") return this.opDenied(ws, msg.t, "bad-code");
+        const linked: LinkedCampaign = { id: v.id, name: v.name };
+        await this.ctx.storage.put(CAMPAIGN_KEY, linked);
+        this.broadcast({ t: "campaign", campaign: linked }, null);
+        break;
+      }
+      case "unlinkCampaign":
+        if (att.app !== "dnd" || !att.dm) return this.opDenied(ws, msg.t, "not-dm");
+        await this.ctx.storage.delete(CAMPAIGN_KEY);
+        this.broadcast({ t: "campaign", campaign: null }, null);
+        break;
+      case "rollRequest": {
+        if (att.app !== "dnd" || !att.dm) return this.opDenied(ws, msg.t, "not-dm");
+        const to = Array.isArray(msg.to) ? new Set(msg.to.filter((x): x is string => typeof x === "string").slice(0, 16)) : new Set<string>();
+        if (to.size === 0) return;
+        const req = sanitizeRollRequest(msg.req);
+        this.sendTo(to, { t: "rollRequest", from: att.id, fromName: att.name, req });
+        break;
+      }
+      case "campaignInvite": {
+        if (att.app !== "dnd" || !att.dm) return this.opDenied(ws, msg.t, "not-dm");
+        const linked = await this.ctx.storage.get<LinkedCampaign>(CAMPAIGN_KEY);
+        const v = await this.verifyCode(msg.code);
+        // Only ever relay the linked campaign's *player* code, so an owner
+        // or Co-DM code can't be handed out to the table by mistake.
+        if (!linked || !v || v.role !== "player" || v.id !== linked.id) {
+          return this.opDenied(ws, msg.t, "bad-code");
+        }
+        const wanted = Array.isArray(msg.to) ? new Set(msg.to.filter((x): x is string => typeof x === "string")) : null;
+        const targets = new Set<string>();
+        for (const other of this.ctx.getWebSockets()) {
+          if (other === ws) continue;
+          const a2 = other.deserializeAttachment() as Attachment | null;
+          if (!a2 || a2.dm || a2.color === "spectator") continue;
+          if (wanted && !wanted.has(a2.id)) continue;
+          targets.add(a2.id);
+        }
+        const parsed = parseCode(String(msg.code));
+        this.sendTo(targets, {
+          t: "campaignInvite",
+          from: att.name,
+          invite: { campaignId: v.id, name: v.name, code: parsed ? `${parsed.id}.${parsed.secret}` : "" },
+        });
+        this.send(ws, { t: "inviteSent", count: targets.size });
+        break;
+      }
     }
   }
 
@@ -208,11 +360,145 @@ export class RoomDO extends DurableObject<RoomEnv> {
     } catch {
       // already closing
     }
-    this.broadcastPresence(ws);
+    await this.onSocketGone(ws);
   }
 
   async webSocketError(ws: WebSocket): Promise<void> {
+    await this.onSocketGone(ws);
+  }
+
+  // --- DM seat ----------------------------------------------------------
+
+  private async onSocketGone(ws: WebSocket): Promise<void> {
+    const att = ws.deserializeAttachment() as Attachment | null;
+    if (att?.dm) {
+      // Hold the seat for the DM to come back (page reload, flaky wifi).
+      const rec = await this.ctx.storage.get<DmRecord>(DM_KEY);
+      if (rec && rec.peerId === att.id && rec.releasedAt == null) {
+        await this.ctx.storage.put(DM_KEY, { ...rec, releasedAt: Date.now() });
+      }
+    }
     this.broadcastPresence(ws);
+  }
+
+  // The seat holder's open socket, if any (half-open sockets after a drop
+  // still count until their close event, which is why a seat token can
+  // take the seat over from one).
+  private dmSocket(exclude: WebSocket | null): WebSocket | null {
+    for (const other of this.ctx.getWebSockets()) {
+      if (other === exclude || other.readyState !== 1) continue;
+      const a = other.deserializeAttachment() as Attachment | null;
+      if (a?.dm) return other;
+    }
+    return null;
+  }
+
+  private async claimDm(ws: WebSocket, msg: { token?: unknown; code?: unknown; link?: unknown }): Promise<void> {
+    const att = ws.deserializeAttachment() as Attachment;
+    if (att.color === "spectator") return this.opDenied(ws, "claimDm", "spectator");
+    const token = typeof msg.token === "string" ? msg.token : null;
+    const wantLink = msg.link === true;
+    const rec = await this.ctx.storage.get<DmRecord>(DM_KEY);
+    let linked = await this.ctx.storage.get<LinkedCampaign>(CAMPAIGN_KEY);
+    const tokenOk = !!token && !!rec && rec.token === token;
+
+    if (att.dm) {
+      // Already seated (e.g. a repeat claim): just re-issue the token.
+      if (rec) this.send(ws, { t: "dmGranted", token: rec.token });
+      return;
+    }
+
+    const holder = this.dmSocket(ws);
+    if (holder) {
+      if (!tokenOk) return this.opDenied(ws, "claimDm", "seat-taken");
+      // My token, someone else's socket: my own earlier connection (or
+      // another tab). Move the seat here.
+      const ha = holder.deserializeAttachment() as Attachment | null;
+      if (ha) {
+        const demoted = { ...ha };
+        delete demoted.dm;
+        holder.serializeAttachment(demoted);
+      }
+      this.send(holder, { t: "dmRevoked", reason: "moved" });
+      await this.grantDm(ws, null);
+      return;
+    }
+
+    const now = Date.now();
+    let releasedAt = rec?.releasedAt;
+    if (rec && releasedAt == null) {
+      // Seat record with no socket: left over from a deploy or eviction
+      // (no close event fired). Start the grace period now.
+      releasedAt = now;
+      await this.ctx.storage.put(DM_KEY, { ...rec, releasedAt });
+    }
+    const reserved = releasedAt != null && now - releasedAt < DM_GRACE_MS;
+
+    let verified: { id: string; name: string; role: string } | null = null;
+    if (!tokenOk) {
+      if (linked || wantLink) {
+        verified = await this.verifyCode(msg.code);
+        if (linked && !verified && !(await this.campaignExists(linked.id))) {
+          await this.ctx.storage.delete(CAMPAIGN_KEY);
+          this.broadcast({ t: "campaign", campaign: null }, null);
+          linked = undefined;
+        }
+      }
+      const codeOk = !!verified && verified.role !== "player" && (!linked || verified.id === linked.id);
+      if ((linked || wantLink) && !codeOk) {
+        return this.opDenied(ws, "claimDm", typeof msg.code === "string" && msg.code ? "bad-code" : "code-required");
+      }
+      if (!codeOk && reserved) {
+        return this.opDenied(ws, "claimDm", "seat-reserved", { retryAfterMs: DM_GRACE_MS - (now - releasedAt!) });
+      }
+    }
+
+    // Awaits above let other messages run; re-check before granting.
+    if (this.dmSocket(ws) || ws.readyState !== 1) return this.opDenied(ws, "claimDm", "seat-taken");
+    const link = wantLink && verified && verified.role !== "player" && (!linked || linked.id !== verified.id)
+      ? { id: verified.id, name: verified.name }
+      : null;
+    await this.grantDm(ws, link);
+  }
+
+  private async grantDm(ws: WebSocket, link: LinkedCampaign | null): Promise<void> {
+    const cur = ws.deserializeAttachment() as Attachment;
+    if (cur.color === "spectator") return this.opDenied(ws, "claimDm", "spectator");
+    // A fresh token every time, so a copied session (duplicated tab)
+    // can't keep bouncing the seat back.
+    const token = randomToken();
+    ws.serializeAttachment({ ...cur, dm: true });
+    await this.ctx.storage.put(DM_KEY, { token, peerId: cur.id, name: cur.name } satisfies DmRecord);
+    if (link) {
+      await this.ctx.storage.put(CAMPAIGN_KEY, link);
+      this.broadcast({ t: "campaign", campaign: link }, null);
+    }
+    this.send(ws, { t: "dmGranted", token });
+    this.broadcastPresence(null);
+  }
+
+  private async verifyCode(code: unknown): Promise<{ id: string; name: string; role: string } | null> {
+    if (typeof code !== "string") return null;
+    const parsed = parseCode(code);
+    if (!parsed) return null;
+    try {
+      const stub = this.env.CAMPAIGN.get(this.env.CAMPAIGN.idFromName(parsed.id));
+      return await stub.verify(`${parsed.id}.${parsed.secret}`);
+    } catch {
+      return null;
+    }
+  }
+
+  private async campaignExists(id: string): Promise<boolean> {
+    try {
+      return await this.env.CAMPAIGN.get(this.env.CAMPAIGN.idFromName(id)).exists();
+    } catch {
+      return true; // can't tell — don't unlink on a transient error
+    }
+  }
+
+  private opDenied(ws: WebSocket, op: string, reason: string, extra: Record<string, unknown> = {}): void {
+    this.send(ws, { t: "opDenied", op, reason, ...extra });
   }
 
   // --- helpers ----------------------------------------------------------
@@ -243,7 +529,7 @@ export class RoomDO extends DurableObject<RoomEnv> {
     const out: Peer[] = [];
     for (const ws of this.ctx.getWebSockets()) {
       const att = ws.deserializeAttachment() as Attachment | null;
-      if (att) out.push({ id: att.id, color: att.color, name: att.name });
+      if (att) out.push(peerOf(att));
     }
     return out;
   }
@@ -268,6 +554,20 @@ export class RoomDO extends DurableObject<RoomEnv> {
     }
   }
 
+  // Send only to the sockets whose connection id is in `ids`.
+  private sendTo(ids: Set<string>, obj: unknown): void {
+    const data = JSON.stringify(obj);
+    for (const ws of this.ctx.getWebSockets()) {
+      const att = ws.deserializeAttachment() as Attachment | null;
+      if (!att || !ids.has(att.id)) continue;
+      try {
+        ws.send(data);
+      } catch {
+        // ignore
+      }
+    }
+  }
+
   // Broadcast the current peer list to everyone except `exclude` (used
   // when a socket is mid-close and shouldn't be counted).
   private broadcastPresence(exclude: WebSocket | null): void {
@@ -275,7 +575,7 @@ export class RoomDO extends DurableObject<RoomEnv> {
     for (const ws of this.ctx.getWebSockets()) {
       if (ws === exclude) continue;
       const att = ws.deserializeAttachment() as Attachment | null;
-      if (att) peers.push({ id: att.id, color: att.color, name: att.name });
+      if (att) peers.push(peerOf(att));
     }
     const data = JSON.stringify({ t: "presence", peers });
     for (const ws of this.ctx.getWebSockets()) {
