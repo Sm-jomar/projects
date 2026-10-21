@@ -2230,3 +2230,5 @@ input, select {
   .board3d-hint { display: none; }
 }
 .board3d-host { position: relative; }
+.board3d-upload { pointer-events: auto; margin-left: 8px; }
+.tt-model-field { display: flex; flex-direction: column; gap: 4px; }

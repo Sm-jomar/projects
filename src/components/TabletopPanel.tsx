@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { TabletopCanvas, type Tool } from "./TabletopCanvas";
 import { DiceRoller } from "./DiceRoller";
 import {
-  GAME_TYPES, DEPLOYMENTS, newTabletop, terrainElevation, addToken, addTerrain, addTokenForUnit,
+  GAME_TYPES, DEPLOYMENTS, newTabletop, terrainElevation, pruneModels, addToken, addTerrain, addTokenForUnit,
   loadTabletop, saveTabletop, newId, newCommandHand, tokenSide, diffLegion,
   templateAnchor, templatePoints,
   type GameType, type TabletopState, type Terrain, type Token, type FactionColor,
@@ -105,7 +105,13 @@ export function TabletopPanel({ onClose }: Props) {
   const [snap, setSnap] = useState(1);
   const [showGrid, setShowGrid] = useState(true);
   const [view3d, setView3d] = useState(false);
+  const modelFileRef = useRef<HTMLInputElement | null>(null);
+  const [modelBusy, setModelBusy] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  // Upload result/error, tied to the piece it was for.
+  const [modelNote, setModelNote] = useState<{ id: string | null; text: string } | null>(null);
+  const modelMsg = modelNote && modelNote.id === selectedId ? modelNote.text : null;
+  const setModelMsg = (text: string | null) => setModelNote(text == null ? null : { id: selectedId, text });
   const [sidebar, setSidebar] = useState<"setup" | "dice">("setup");
   const [customW, setCustomW] = useState(72);
   const [customH, setCustomH] = useState(36);
@@ -388,11 +394,11 @@ export function TabletopPanel({ onClose }: Props) {
   function deleteSelected() {
     if (!selectedId) return;
     const gone = state.tokens.find((t) => t.id === selectedId);
-    commit({
+    commit(pruneModels({
       ...state,
       tokens: normalizeSquads(state.tokens.filter((t) => t.id !== selectedId), gone),
       terrain: state.terrain.filter((t) => t.id !== selectedId),
-    });
+    }));
     setSelectedId(null);
   }
 
@@ -421,6 +427,58 @@ export function TabletopPanel({ onClose }: Props) {
   function updateSelectedTerrain(patch: Partial<Terrain>) {
     if (!selectedId) return;
     commit({ ...state, terrain: state.terrain.map((t) => t.id === selectedId ? { ...t, ...patch } : t) });
+  }
+
+  // STL upload for the selected unit or terrain piece. The model is stored
+  // once in state.models and referenced by id, so a whole squad (or a row
+  // of identical buildings) shares one copy in the synced board.
+  async function onModelFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0];
+    if (modelFileRef.current) modelFileRef.current.value = "";
+    const id = selectedId;
+    if (!f || !id || readOnly) return;
+    if (f.size > 80 * 1024 * 1024) { setModelMsg("That STL is over 80 MB — export a lighter version."); return; }
+    setModelBusy(true);
+    setModelMsg(null);
+    try {
+      const { encodeStlFile } = await import("../lib/stlModel");
+      const m = await encodeStlFile(f);
+      const modelId = newId("md");
+      const models = { ...(state.models ?? {}), [modelId]: { name: f.name, data: m.data } };
+      const tr = state.terrain.find((t) => t.id === id);
+      let next: TabletopState;
+      if (tr) {
+        // Reshape the block to the model's proportions, keeping its width.
+        const d = tr.shape === "circle" ? tr.width : Math.max(0.25, Math.round((tr.width * m.size.z / m.size.x) * 4) / 4);
+        const elevation = Math.max(0.25, Math.round((m.size.y / Math.max(m.size.x, m.size.z)) * Math.max(tr.width, d) * 4) / 4);
+        next = { ...state, models, terrain: state.terrain.map((t) => t.id === id ? { ...t, modelId, elevation, height: t.shape === "circle" ? t.height : d } : t) };
+      } else {
+        next = { ...state, models, tokens: state.tokens.map((t) => t.id === id ? { ...t, modelId } : t) };
+      }
+      commit(pruneModels(next));
+      setModelMsg(`${f.name}: ${m.triangles.toLocaleString()} triangles, ${Math.max(1, Math.round(m.bytes / 1024))} KB`);
+      setView3d(true);
+    } catch (err) {
+      setModelMsg(err instanceof Error && err.message ? err.message : "Could not read that STL file.");
+    } finally {
+      setModelBusy(false);
+    }
+  }
+
+  function clearModel(id: string) {
+    commit(pruneModels({
+      ...state,
+      tokens: state.tokens.map((t) => t.id === id ? { ...t, modelId: undefined } : t),
+      terrain: state.terrain.map((t) => t.id === id ? { ...t, modelId: undefined } : t),
+    }));
+  }
+
+  // Give every token of the same catalog unit (or the same label, for
+  // generic tokens) the selected token's model.
+  function shareModelWithUnit(tk: Token) {
+    if (!tk.modelId) return;
+    const same = (t: Token) => t.id !== tk.id && (tk.unitId ? t.unitId === tk.unitId : t.label === tk.label);
+    commit(pruneModels({ ...state, tokens: state.tokens.map((t) => same(t) ? { ...t, modelId: tk.modelId } : t) }));
   }
 
   function toggleActivated(tokenId: string) {
@@ -547,6 +605,11 @@ export function TabletopPanel({ onClose }: Props) {
 
   const selectedToken = state.tokens.find((t) => t.id === selectedId);
   const selectedTerrain = state.terrain.find((t) => t.id === selectedId);
+  // Other tokens of the selected unit that don't share its model yet.
+  const sameUnitWithoutModel = selectedToken?.modelId
+    ? state.tokens.filter((t) => t.id !== selectedToken.id && t.modelId !== selectedToken.modelId &&
+        (selectedToken.unitId ? t.unitId === selectedToken.unitId : t.label === selectedToken.label)).length
+    : 0;
 
   // Per-side order tallies for the status bar — only counts unit tokens
   // that belong to that side.
@@ -621,6 +684,7 @@ export function TabletopPanel({ onClose }: Props) {
         </header>
 
         <div className="tabletop-body">
+          <input ref={modelFileRef} type="file" accept=".stl,model/stl,application/sla" hidden onChange={onModelFile} />
           <div className="tt-canvas-col">
             {readOnly && (
               <div className="tt-spectating-bar">
@@ -659,7 +723,8 @@ export function TabletopPanel({ onClose }: Props) {
               {view3d ? (
                 <div className="tt-canvas-wrap board3d-host">
                   <Suspense fallback={<div className="board3d board3d-loading">Loading 3D view…</div>}>
-                    <Legion3D state={state} selectedId={selectedId} onSelect={setSelectedId} showGrid={showGrid} />
+                    <Legion3D state={state} selectedId={selectedId} onSelect={setSelectedId} showGrid={showGrid}
+                              onUploadModel={readOnly ? undefined : () => modelFileRef.current?.click()} />
                   </Suspense>
                 </div>
               ) : (
@@ -934,6 +999,19 @@ export function TabletopPanel({ onClose }: Props) {
                       <input type="number" min={0} max={24} step={0.5} value={selectedToken.elevation ?? 0}
                              onChange={(e) => updateSelectedToken({ elevation: Math.max(0, Number(e.target.value) || 0) || undefined })} />
                     </label>
+                    <ModelField
+                      model={selectedToken.modelId ? state.models?.[selectedToken.modelId] : undefined}
+                      busy={modelBusy} msg={modelMsg} disabled={readOnly}
+                      onUpload={() => modelFileRef.current?.click()}
+                      onClear={() => clearModel(selectedToken.id)}
+                      hint="Shown in the 3D view in place of the faction figure."
+                    >
+                      {sameUnitWithoutModel > 0 && !readOnly && (
+                        <button className="ghost-btn" onClick={() => shareModelWithUnit(selectedToken)}>
+                          Use on {sameUnitWithoutModel} more “{selectedToken.label}”
+                        </button>
+                      )}
+                    </ModelField>
                     <label>Badge <input value={selectedToken.badge ?? ""} placeholder="e.g. ion" onChange={(e) => updateSelectedToken({ badge: e.target.value || undefined })} /></label>
 
                     {/* Movement templates appear here when a token is
@@ -984,6 +1062,13 @@ export function TabletopPanel({ onClose }: Props) {
                       <input type="number" min={0} max={24} step={0.25} value={terrainElevation(selectedTerrain)}
                              onChange={(e) => updateSelectedTerrain({ elevation: Math.max(0, Number(e.target.value) || 0) })} />
                     </label>
+                    <ModelField
+                      model={selectedTerrain.modelId ? state.models?.[selectedTerrain.modelId] : undefined}
+                      busy={modelBusy} msg={modelMsg} disabled={readOnly}
+                      onUpload={() => modelFileRef.current?.click()}
+                      onClear={() => clearModel(selectedTerrain.id)}
+                      hint="Replaces the block in the 3D view, stretched to fill its width, depth and height."
+                    />
                     <div className="tt-edit-actions">
                       <button onClick={duplicateSelected}>Duplicate</button>
                       <button className="danger" onClick={deleteSelected}>Delete</button>
@@ -1352,6 +1437,34 @@ function OnlinePanel(props: {
           <button className="danger" onClick={onLeave}>Leave game</button>
         </>
       )}
+    </div>
+  );
+}
+
+// STL upload row shared by the unit and terrain inspectors.
+function ModelField({ model, busy, msg, disabled, onUpload, onClear, hint, children }: {
+  model: { name: string; data: string } | undefined;
+  busy: boolean;
+  msg: string | null;
+  disabled: boolean;
+  onUpload: () => void;
+  onClear: () => void;
+  hint: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <div className="tt-model-field">
+      <span className="tt-counter-label">3D model (STL)</span>
+      <div className="tt-edit-actions">
+        <button onClick={onUpload} disabled={busy || disabled}>
+          {busy ? "Processing…" : model ? "Replace STL" : "Upload STL"}
+        </button>
+        {model && !disabled && <button className="ghost-btn" onClick={onClear}>Clear</button>}
+        {children}
+      </div>
+      <span className="muted small">
+        {msg ?? (model ? `${model.name} · ${Math.max(1, Math.round(model.data.length / 1024))} KB synced` : hint)}
+      </span>
     </div>
   );
 }

@@ -47,13 +47,17 @@ function modelFor(tk: Token): { model: PieceModel; height: number } {
   return { model: { kind: "figure", style }, height: tk.size * 1.3 };
 }
 
-export default function Legion3D({ state, selectedId, onSelect, showGrid }: {
+export default function Legion3D({ state, selectedId, onSelect, showGrid, onUploadModel }: {
   state: TabletopState;
   selectedId: string | null;
   onSelect: (id: string | null) => void;
   showGrid: boolean;
+  /** Opens the STL picker for the selected unit/terrain (absent = read-only). */
+  onUploadModel?: () => void;
 }) {
+  const model = (id?: string) => (id ? state.models?.[id]?.data : undefined);
   const selected = state.tokens.find((t) => t.id === selectedId);
+  const selTerrain = state.terrain.find((t) => t.id === selectedId);
   const flyHeight = selected?.elevation ?? 0;
 
   const blocks: Block3D[] = state.terrain.map((t) => {
@@ -67,21 +71,23 @@ export default function Legion3D({ state, selectedId, onSelect, showGrid }: {
       // With a hovering/flying unit selected, show what it can pass over.
       tint: flyHeight > 0 && t.kind !== "objective" ? (h <= flyHeight ? "clear" : "block") : null,
       selected: t.id === selectedId,
+      stl: model(t.modelId),
     };
   });
 
   const pieces: Piece3D[] = state.tokens.map((tk) => {
-    const { model, height } = modelFor(tk);
+    const shape = modelFor(tk);
+    const stl = model(tk.modelId);
     return {
       id: tk.id,
       x: tk.x + tk.size / 2,
       y: tk.y + tk.size / 2,
       footprint: tk.size,
-      modelHeight: height,
+      modelHeight: shape.height,
       lift: tk.elevation ?? 0,
       color: FACTION_BODY[tk.color],
       accent: FACTION_STROKE[tk.color],
-      model,
+      model: stl ? { kind: "stl", data: stl } : shape.model,
       iconUrl: tk.portraitUrl,
       iconCropTop: true,
       facing: tk.rotation,
@@ -111,12 +117,21 @@ export default function Legion3D({ state, selectedId, onSelect, showGrid }: {
         selectedId={selectedId}
         onSelect={onSelect}
       />
-      {selected && (
+      {(selected || selTerrain) && (
         <div className="board3d-info small">
-          <b>{selected.label}</b>
-          {flyHeight > 0
-            ? <> · flying at {flyHeight}" — <span className="board3d-clear">green</span> terrain it can pass over, <span className="board3d-block">red</span> blocks it</>
-            : <> · on the ground</>}
+          {selected ? <>
+            <b>{selected.label}</b>
+            {flyHeight > 0
+              ? <> · flying at {flyHeight}" — <span className="board3d-clear">green</span> terrain it can pass over, <span className="board3d-block">red</span> blocks it</>
+              : <> · on the ground</>}
+          </> : selTerrain && <>
+            <b>{selTerrain.label || selTerrain.kind}</b> · {terrainElevation(selTerrain)}" tall
+          </>}
+          {onUploadModel && (
+            <button className="ghost-btn small board3d-upload" onClick={onUploadModel}>
+              {(selected?.modelId ?? selTerrain?.modelId) ? "Replace STL" : "Upload STL"}
+            </button>
+          )}
         </div>
       )}
     </>
