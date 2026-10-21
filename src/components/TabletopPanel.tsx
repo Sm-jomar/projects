@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { TabletopCanvas, type Tool } from "./TabletopCanvas";
 import { DiceRoller } from "./DiceRoller";
 import {
-  GAME_TYPES, DEPLOYMENTS, newTabletop, addToken, addTerrain, addTokenForUnit,
+  GAME_TYPES, DEPLOYMENTS, newTabletop, terrainElevation, addToken, addTerrain, addTokenForUnit,
   loadTabletop, saveTabletop, newId, newCommandHand, tokenSide, diffLegion,
   templateAnchor, templatePoints,
   type GameType, type TabletopState, type Terrain, type Token, type FactionColor,
@@ -37,6 +37,9 @@ type OnlineState = {
   /** Whether this room is hidden from the public Live games list. */
   isPrivate?: boolean;
 };
+
+// three.js is only fetched once someone switches the board into 3D.
+const Legion3D = lazy(() => import("./Legion3D"));
 
 const TERRAIN_PRESETS: Array<{ kind: Terrain["kind"]; label: string; width: number; height: number; shape: Terrain["shape"] }> = [
   { kind: "rock",      label: "Rock",      width: 3, height: 2, shape: "circle" },
@@ -101,6 +104,7 @@ export function TabletopPanel({ onClose }: Props) {
   const [tool, setTool] = useState<Tool>("move");
   const [snap, setSnap] = useState(1);
   const [showGrid, setShowGrid] = useState(true);
+  const [view3d, setView3d] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [sidebar, setSidebar] = useState<"setup" | "dice">("setup");
   const [customW, setCustomW] = useState(72);
@@ -575,6 +579,10 @@ export function TabletopPanel({ onClose }: Props) {
             <label className="tt-snap">
               <input type="checkbox" checked={showGrid} onChange={(e) => setShowGrid(e.target.checked)} /> grid
             </label>
+            <button className={"cb-tab tt-3d-btn" + (view3d ? " active" : "")} onClick={() => setView3d((v) => !v)}
+                    title={view3d ? "Back to the flat board" : "See terrain height and depth in 3D"}>
+              {view3d ? "2D view" : "3D view"}
+            </button>
           </div>
           <div className="tt-online-wrap">
             <button
@@ -648,6 +656,13 @@ export function TabletopPanel({ onClose }: Props) {
               <button className="tt-undo" onClick={undo} disabled={histLen === 0} title="Undo (Ctrl+Z)">↶ Undo</button>
             </div>
             <div className="tt-canvas-host">
+              {view3d ? (
+                <div className="tt-canvas-wrap board3d-host">
+                  <Suspense fallback={<div className="board3d board3d-loading">Loading 3D view…</div>}>
+                    <Legion3D state={state} selectedId={selectedId} onSelect={setSelectedId} showGrid={showGrid} />
+                  </Suspense>
+                </div>
+              ) : (
               <TabletopCanvas
                 state={state}
                 onState={setState}
@@ -663,6 +678,7 @@ export function TabletopPanel({ onClose }: Props) {
                 readOnly={readOnly}
                 ghost={ghost}
               />
+              )}
 
               {/* Command card hands docked beneath the canvas — one row
                   per side. Click a pip to mark it played; click again to
@@ -913,6 +929,11 @@ export function TabletopPanel({ onClose }: Props) {
                         <option value="red">Red</option>
                       </select>
                     </label>
+                    <label title="How high the unit hovers or flies, in inches. It clears terrain this tall or shorter (see the 3D view).">
+                      Hover / fly height (in)
+                      <input type="number" min={0} max={24} step={0.5} value={selectedToken.elevation ?? 0}
+                             onChange={(e) => updateSelectedToken({ elevation: Math.max(0, Number(e.target.value) || 0) || undefined })} />
+                    </label>
                     <label>Badge <input value={selectedToken.badge ?? ""} placeholder="e.g. ion" onChange={(e) => updateSelectedToken({ badge: e.target.value || undefined })} /></label>
 
                     {/* Movement templates appear here when a token is
@@ -958,6 +979,11 @@ export function TabletopPanel({ onClose }: Props) {
                       <label>H <input type="number" min={0.5} max={48} step={0.5} value={selectedTerrain.height} onChange={(e) => updateSelectedTerrain({ height: Number(e.target.value) || 1 })} disabled={selectedTerrain.shape === "circle"} /></label>
                       <label>Rot <input type="number" min={-180} max={180} step={5} value={selectedTerrain.rotation} onChange={(e) => updateSelectedTerrain({ rotation: Number(e.target.value) || 0 })} /></label>
                     </div>
+                    <label title="How tall the terrain stands, in inches. Hovering/flying units at or above this height pass over it.">
+                      Height (in)
+                      <input type="number" min={0} max={24} step={0.25} value={terrainElevation(selectedTerrain)}
+                             onChange={(e) => updateSelectedTerrain({ elevation: Math.max(0, Number(e.target.value) || 0) })} />
+                    </label>
                     <div className="tt-edit-actions">
                       <button onClick={duplicateSelected}>Duplicate</button>
                       <button className="danger" onClick={deleteSelected}>Delete</button>

@@ -865,3 +865,6 @@
 .dnd-dm-tracker { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--border); padding-top: 8px; }
 .dnd-dm-req ul { margin: 2px 0 4px; padding-left: 18px; }
 .dnd-dm-staged { display: flex; flex-direction: column; gap: 6px; }
+
+.dnd-tt-terrain-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.dnd-tt-terrain-row button { white-space: nowrap; }

@@ -33,7 +33,55 @@ export type DndToken = {
   avatarUrl?: string;
   /** Campaign NPC this token was placed from (DM screen). */
   npcId?: string;
+  /** Flying height in feet (3D view). 0 / undefined = on the ground. */
+  elevation?: number;
+  /** Uploaded STL miniature, simplified + encoded (see lib/stlModel). */
+  modelStl?: string;
+  /** Original file name of the uploaded model, for the editor. */
+  modelName?: string;
 };
+
+// A terrain block on the board: walls, buildings, pillars, platforms,
+// trees. Drawn flat in 2D and extruded to its height in the 3D view, or
+// replaced there by an uploaded STL model stretched to fill the block.
+export type DndTerrainKind = "wall" | "building" | "pillar" | "platform" | "tree" | "rock";
+
+export type DndTerrain = {
+  id: string;
+  kind: DndTerrainKind;
+  shape: "rect" | "circle";
+  label: string;
+  /** Top-left in GRID CELLS; for circles w is the diameter. */
+  x: number;
+  y: number;
+  w: number;
+  d: number;
+  rotation: number; // degrees
+  /** Height in feet. */
+  height: number;
+  color: string;
+  /** Uploaded STL (lib/stlModel encoding) shown instead of the block. */
+  modelStl?: string;
+  modelName?: string;
+};
+
+export const DND_TERRAIN_PRESETS: Array<Omit<DndTerrain, "id" | "x" | "y">> = [
+  { kind: "wall",     shape: "rect",   label: "Wall",     w: 4, d: 0.5, rotation: 0, height: 10, color: "#6b6f7a" },
+  { kind: "building", shape: "rect",   label: "Building", w: 3, d: 3,   rotation: 0, height: 15, color: "#7a6448" },
+  { kind: "pillar",   shape: "circle", label: "Pillar",   w: 1, d: 1,   rotation: 0, height: 10, color: "#8a8e98" },
+  { kind: "platform", shape: "rect",   label: "Platform", w: 3, d: 2,   rotation: 0, height: 5,  color: "#5e5a52" },
+  { kind: "rock",     shape: "circle", label: "Boulder",  w: 2, d: 2,   rotation: 0, height: 5,  color: "#5d6878" },
+  { kind: "tree",     shape: "circle", label: "Trees",    w: 3, d: 3,   rotation: 0, height: 25, color: "#2f5237" },
+];
+
+export function makeTerrain(s: DndTabletopState, preset: Omit<DndTerrain, "id" | "x" | "y">): DndTerrain {
+  return {
+    ...preset,
+    id: newId("tr"),
+    x: Math.round(s.map.cols / 2 - preset.w / 2),
+    y: Math.round(s.map.rows / 2 - preset.d / 2),
+  };
+}
 
 export type DndMap = {
   /** Data URL or remote URL of the dungeon map image. */
@@ -48,6 +96,7 @@ export type DndMap = {
 export type DndTabletopState = {
   map: DndMap;
   tokens: DndToken[];
+  terrain?: DndTerrain[];
   round: number;
   /** Id of the token whose turn it is (initiative order), or null. */
   activeTokenId: string | null;
@@ -64,6 +113,7 @@ export function newDndTabletop(): DndTabletopState {
   return {
     map: { imageUrl: null, cols: 24, rows: 16, showGrid: true, gridOpacity: 0.35 },
     tokens: [],
+    terrain: [],
     round: 1,
     activeTokenId: null,
     log: [],

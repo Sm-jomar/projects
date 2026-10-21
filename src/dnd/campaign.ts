@@ -2,7 +2,7 @@
 // server decides what a code can see; nothing here is trusted for access.
 
 import type { DndCharacter } from "./dndTypes";
-import type { DndMap, DndToken } from "./dndTabletop";
+import type { DndMap, DndTerrain, DndToken } from "./dndTabletop";
 
 export type CampaignRole = "owner" | "codm" | "player";
 export const ROLE_RANK: Record<CampaignRole, number> = { player: 1, codm: 2, owner: 3 };
@@ -16,7 +16,7 @@ export type CampaignMapSummary = {
   id: string; name: string; cols: number; rows: number;
   tokenCount: number; hasImage: boolean; bytes: number; updatedAt: number;
 };
-export type CampaignMapData = { map: DndMap; tokens: DndToken[] };
+export type CampaignMapData = { map: DndMap; tokens: DndToken[]; terrain?: DndTerrain[] };
 export type CampaignView = {
   role: CampaignRole;
   campaign: { id: string; name: string; description: string; updatedAt: number };
