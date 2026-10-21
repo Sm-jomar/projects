@@ -36,11 +36,13 @@ function fogCanvas(fog: FogView, cols: number, rows: number): HTMLCanvasElement 
   return c;
 }
 
-export default function Dnd3D({ state, selectedId, onSelect, fog }: {
+export default function Dnd3D({ state, selectedId, onSelect, fog, onUploadModel }: {
   state: DndTabletopState;
   selectedId: string | null;
   onSelect: (id: string | null) => void;
   fog?: FogView | null;
+  /** Opens the STL picker for the selected token/terrain (absent = read-only). */
+  onUploadModel?: () => void;
 }) {
   const { cols, rows } = state.map;
   const overlay = useMemo(() => (fog ? fogCanvas(fog, cols, rows) : null), [fog, cols, rows]);
@@ -92,16 +94,25 @@ export default function Dnd3D({ state, selectedId, onSelect, fog }: {
         selectedId={selectedId}
         onSelect={onSelect}
       />
-      {selected && (
+      {(selected || selTerrain) && (
         <div className="board3d-info small">
-          <b>{selected.name}</b>
-          {flyFt > 0
-            ? <> · flying {flyFt} ft up — <span className="board3d-clear">green</span> terrain it clears, <span className="board3d-block">red</span> blocks it</>
-            : <> · on the ground</>}
+          {selected ? <>
+            <b>{selected.name}</b>
+            {flyFt > 0
+              ? <> · flying {flyFt} ft up — <span className="board3d-clear">green</span> terrain it clears, <span className="board3d-block">red</span> blocks it</>
+              : <> · on the ground</>}
+          </> : selTerrain && <>
+            <b>{selTerrain.label || selTerrain.kind}</b> · {selTerrain.height} ft tall
+          </>}
+          {onUploadModel && (
+            <button className="ghost-btn small board3d-upload" onClick={onUploadModel}>
+              {(selected?.modelStl ?? selTerrain?.modelStl) ? "Replace STL" : "Upload STL"}
+            </button>
+          )}
         </div>
       )}
-      {selTerrain && (
-        <div className="board3d-info small"><b>{selTerrain.label || selTerrain.kind}</b> · {selTerrain.height} ft tall</div>
+      {!selected && !selTerrain && (
+        <div className="board3d-info small">Click a token or terrain piece to give it an STL model.</div>
       )}
     </>
   );

@@ -31,7 +31,13 @@ export type Terrain = {
   /** How tall the piece stands, in inches (3D view + hover clearance).
    * Undefined = the default for its kind (TERRAIN_ELEVATION). */
   elevation?: number;
+  /** Uploaded STL in TabletopState.models, shown in 3D instead of the block. */
+  modelId?: string;
 };
+
+/** An uploaded STL (lib/stlModel encoding). Stored once per board and
+ * referenced by id, so a squad of identical minis costs one model. */
+export type BoardModel = { name: string; data: string };
 
 // Default terrain heights in inches. A hovering or flying unit (Speeder,
 // Hover: Air, repulsor craft) clears terrain whose height is at or below
@@ -91,6 +97,9 @@ export type Token = {
   /** Height the unit flies/hovers above the surface it's over, in inches.
    * 0 / undefined = on the ground. Repulsor vehicles get a default. */
   elevation?: number;
+  /** Uploaded STL in TabletopState.models, shown in 3D instead of the
+   * faction shape. */
+  modelId?: string;
   /** Squad this token is bundled into (see lib/squads). Squads are base
    * locked: every member must link back to the leader by base contact. */
   squadId?: string;
@@ -154,7 +163,19 @@ export type TabletopState = {
   hands: { blue: CommandHand; red: CommandHand };
   /** Shared audit log (synced + persisted with the board). */
   log?: LogEntry[];
+  /** Uploaded 3D models, keyed by id (see Token/Terrain.modelId). */
+  models?: Record<string, BoardModel>;
 };
+
+/** Drop models no token or terrain refers to any more. */
+export function pruneModels(s: TabletopState): TabletopState {
+  if (!s.models) return s;
+  const used = new Set<string>();
+  for (const t of s.tokens) if (t.modelId) used.add(t.modelId);
+  for (const t of s.terrain) if (t.modelId) used.add(t.modelId);
+  const kept = Object.fromEntries(Object.entries(s.models).filter(([id]) => used.has(id)));
+  return Object.keys(kept).length === Object.keys(s.models).length ? s : { ...s, models: kept };
+}
 
 export type CommandCard = {
   /** 1..4 — the activation pip count. */

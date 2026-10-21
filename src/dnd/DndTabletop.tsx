@@ -285,7 +285,8 @@ export function DndTabletop() {
         {view3d ? (
           <div className="dnd-tt-canvas">
             <Suspense fallback={<div className="board3d board3d-loading">Loading 3D view…</div>}>
-              <Dnd3D state={boardView} selectedId={selectedId} onSelect={setSelectedId} fog={fogView} />
+              <Dnd3D state={boardView} selectedId={selectedId} onSelect={setSelectedId} fog={fogView}
+                     onUploadModel={readOnly ? undefined : () => modelFileRef.current?.click()} />
             </Suspense>
           </div>
         ) : (
