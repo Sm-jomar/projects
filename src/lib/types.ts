@@ -49,7 +49,12 @@ export type UpgradeSlotKey =
   | "ordnance"
   | "personnel"
   | "pilot"
-  | "training";
+  | "training"
+  | "counterpart"
+  | "doctrine"
+  | "helmet"
+  | "protocol"
+  | "squad-leader";
 
 export type UpgradeSlots = Partial<Record<UpgradeSlotKey, number>>;
 
@@ -68,6 +73,18 @@ export type Upgrade = {
   keywords_for_unit?: Record<string, string | number>;
   weapon?: Weapon;
   waves?: string[];
+  /** Faction-only upgrade (e.g. Clone Captain Rex is Republic only). */
+  faction?: FactionId;
+  restricted_to_rank?: Rank[];
+  /** Light/dark side Force upgrades only fit units of that alignment. */
+  force_alignment?: "light" | "dark";
+  /** Detailed unit types (see Unit.unit_subtype) this upgrade fits. */
+  restricted_to_unit_type?: string[];
+  points_v2_6?: number;
+  points_revamp?: number;
+  /** Card only exists in Tabletop Admiral's Revamp mode. */
+  revamp_only?: boolean;
+  tta_id?: string;
 };
 
 export type Unit = {
@@ -97,6 +114,13 @@ export type Unit = {
   keywords?: Record<string, string | number>;
   waves?: string[];
   force_alignment?: "light" | "dark";
+  /** Detailed trooper type from Tabletop Admiral: clone-trooper,
+   * droid-trooper, creature-trooper, wookiee-trooper, ... */
+  unit_subtype?: string;
+  /** Classic tournament (2.6) and Revamp costs, from Tabletop Admiral. */
+  points_v2_6?: number;
+  points_revamp?: number;
+  tta_id?: string;
 };
 
 export type Catalog = {
@@ -118,7 +142,7 @@ export type SavedArmy = {
   faction: FactionId;
   battleForce?: string;
   pointsCap: number;
-  pointsMode?: "printed" | "v2_6";
+  pointsMode?: "printed" | "v2_6" | "revamp";
   entries: ArmyEntry[];
   updatedAt: number;
 };

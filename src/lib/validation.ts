@@ -232,16 +232,39 @@ export function canAdd(state: ArmyState, candidate: Unit): AddCheck {
   return { ok: true };
 }
 
+/** Whether an upgrade's card restrictions (unit, faction, rank, unit
+ * type) allow it on this unit. Slot space is checked separately. */
+export function upgradeFitsUnit(upgrade: Upgrade, unit: Unit): boolean {
+  if (upgrade.restricted_to_unit && upgrade.restricted_to_unit.length > 0) {
+    if (!upgrade.restricted_to_unit.some((r) => r.id === unit.id)) return false;
+  }
+  if (upgrade.faction && upgrade.faction !== unit.faction) {
+    if (!(unit.also_factions ?? []).includes(upgrade.faction)) return false;
+  }
+  if (upgrade.force_alignment && unit.force_alignment && upgrade.force_alignment !== unit.force_alignment) {
+    return false;
+  }
+  if (upgrade.restricted_to_rank && upgrade.restricted_to_rank.length > 0) {
+    if (!upgrade.restricted_to_rank.includes(unit.rank)) return false;
+  }
+  const types = upgrade.restricted_to_unit_type;
+  if (types && types.length > 0) {
+    // "trooper" on a card means any kind of trooper (clone, droid, ...).
+    const isTrooper = unit.type === "trooper" || unit.type === "emplacement-trooper";
+    const subtype = unit.unit_subtype ?? unit.type;
+    if (!types.includes(subtype) && !(isTrooper && types.includes("trooper"))) return false;
+  }
+  return true;
+}
+
 export function canAddUpgrade(
   state: ArmyState,
   entry: ArmyEntry,
   upgrade: Upgrade,
 ): AddCheck {
-  // Restricted whitelist
-  if (upgrade.restricted_to_unit && upgrade.restricted_to_unit.length > 0) {
-    if (!upgrade.restricted_to_unit.some((r) => r.id === entry.unitId)) {
-      return { ok: false, reason: "Not allowed on this unit." };
-    }
+  const unit = unitById(entry.unitId);
+  if (unit && !upgradeFitsUnit(upgrade, unit)) {
+    return { ok: false, reason: "Not allowed on this unit." };
   }
   // Slot available
   const usage = slotUsage(entry);
@@ -266,7 +289,6 @@ export function canAddUpgrade(
     }
   }
   // Points cap
-  const unit = unitById(entry.unitId);
   const upgradeFaction = unit?.faction;
   const upgradeCost = effectiveUpgradePoints(
     { ...upgrade, faction: upgradeFaction },

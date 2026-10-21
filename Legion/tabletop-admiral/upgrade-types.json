@@ -1,0 +1,158 @@
+[
+ {
+  "name": "Command",
+  "id": "9",
+  "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1607221915/upgrade_type_symbols/full%20transparency/command_nrqv44.png",
+  "sort_priority": 10
+ },
+ {
+  "name": "Training",
+  "id": "10",
+  "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1607221915/upgrade_type_symbols/training_dxgzrd.png",
+  "sort_priority": 11
+ },
+ {
+  "name": "Generator",
+  "id": "11",
+  "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1607221915/upgrade_type_symbols/generator_azodtn.png",
+  "sort_priority": 14
+ },
+ {
+  "name": "Armament",
+  "id": "12",
+  "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1607221915/upgrade_type_symbols/armament_mtvwh0.png",
+  "sort_priority": 15
+ },
+ {
+  "name": "Crew",
+  "id": "13",
+  "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1607221915/upgrade_type_symbols/crew_rftjds.png",
+  "sort_priority": 74
+ },
+ {
+  "name": "Ordnance",
+  "id": "14",
+  "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1607221915/upgrade_type_symbols/ordnance_luxc1y.png",
+  "sort_priority": 16
+ },
+ {
+  "name": "Counterpart",
+  "id": "15",
+  "image_url": null,
+  "sort_priority": 18
+ },
+ {
+  "name": "Electrobinoculars",
+  "id": "16",
+  "image_url": null,
+  "sort_priority": 19
+ },
+ {
+  "name": "Portable Scanner",
+  "id": "17",
+  "image_url": null,
+  "sort_priority": 20
+ },
+ {
+  "name": "Protocol",
+  "id": "18",
+  "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1672972194/upgrade_type_symbols/protocol_nmxgei.png",
+  "sort_priority": 3
+ },
+ {
+  "name": "Squad Leader",
+  "id": "19",
+  "image_url": "a",
+  "sort_priority": 2
+ },
+ {
+  "name": "Strike and Fade",
+  "id": "20",
+  "image_url": null,
+  "sort_priority": 21
+ },
+ {
+  "name": "Door Gunner",
+  "id": "21",
+  "image_url": null,
+  "sort_priority": 22
+ },
+ {
+  "name": "Imperial March",
+  "id": "22",
+  "image_url": null,
+  "sort_priority": 23
+ },
+ {
+  "name": "Personnel",
+  "id": "1",
+  "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1607221915/upgrade_type_symbols/personnel_qv6msc.png",
+  "sort_priority": 5
+ },
+ {
+  "name": "Gear",
+  "id": "2",
+  "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1607221915/upgrade_type_symbols/full%20transparency/gear_ixi2ml.png",
+  "sort_priority": 13
+ },
+ {
+  "name": "Dug In",
+  "id": "23",
+  "image_url": null,
+  "sort_priority": 24
+ },
+ {
+  "name": "Hit the Dirt",
+  "id": "26",
+  "image_url": null,
+  "sort_priority": 26
+ },
+ {
+  "name": "Grenades",
+  "id": "3",
+  "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1607221915/upgrade_type_symbols/grenades_uirjcc.png",
+  "sort_priority": 17
+ },
+ {
+  "name": "Heavy Weapon",
+  "id": "4",
+  "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1607221915/upgrade_type_symbols/heavy_n7wjbi.png",
+  "sort_priority": 4
+ },
+ {
+  "name": "Force",
+  "id": "5",
+  "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1607221915/upgrade_type_symbols/force_sma5ap.png",
+  "sort_priority": 6
+ },
+ {
+  "name": "Comms",
+  "id": "6",
+  "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1607221915/upgrade_type_symbols/full%20transparency/comms_sr4nym.png",
+  "sort_priority": 12
+ },
+ {
+  "name": "Pilot",
+  "id": "7",
+  "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1607221915/upgrade_type_symbols/pilot_njykyi.png",
+  "sort_priority": 8
+ },
+ {
+  "name": "Hardpoint",
+  "id": "8",
+  "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1607221915/upgrade_type_symbols/hardpoint_xppyrk.png",
+  "sort_priority": 9
+ },
+ {
+  "name": "Doctrine",
+  "id": "24",
+  "image_url": "a",
+  "sort_priority": 1
+ },
+ {
+  "name": "Helmet",
+  "id": "25",
+  "image_url": "a",
+  "sort_priority": null
+ }
+]

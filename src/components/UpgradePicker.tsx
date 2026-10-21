@@ -3,7 +3,7 @@ import { CATALOG } from "../data/catalog";
 import { cardForUpgrade } from "../lib/cardLookup";
 import { effectiveUpgradePoints } from "../lib/points";
 import type { ArmyEntry, Unit, Upgrade } from "../lib/types";
-import { canAddUpgrade, slotUsage, type ArmyState } from "../lib/validation";
+import { canAddUpgrade, slotUsage, upgradeFitsUnit, type ArmyState } from "../lib/validation";
 import { addOrUpdateFlag, flagFor, isFlagged, removeFlag } from "../lib/flags";
 
 const SLOT_LABEL: Record<string, string> = {
@@ -23,6 +23,11 @@ const SLOT_LABEL: Record<string, string> = {
   personnel: "Personnel",
   pilot: "Pilot",
   training: "Training",
+  counterpart: "Counterpart",
+  doctrine: "Doctrine",
+  helmet: "Helmet",
+  protocol: "Protocol",
+  "squad-leader": "Squad Leader",
 };
 
 type Props = {
@@ -48,17 +53,13 @@ export function UpgradePicker({ army, entry, unit, onAttach, onClose }: Props) {
     return upgrades
       .filter((u) => (slotFilter === "all" ? true : u.type === slotFilter))
       .filter((u) => (usage.available[u.type] ?? 0) > 0)
-      .filter((u) =>
-        u.restricted_to_unit && u.restricted_to_unit.length > 0
-          ? u.restricted_to_unit.some((r) => r.id === unit.id)
-          : true,
-      )
+      .filter((u) => upgradeFitsUnit(u, unit))
       .filter((u) => (q ? u.name.toLowerCase().includes(q) : true))
       .sort((a, b) => {
         if (a.type !== b.type) return a.type.localeCompare(b.type);
         return a.name.localeCompare(b.name);
       });
-  }, [search, slotFilter, unit.id, usage.available]);
+  }, [search, slotFilter, unit, usage.available]);
 
   const previewCard = preview ? cardForUpgrade({ id: preview.id, name: preview.name, faction: unit.faction }) : null;
 
@@ -136,10 +137,10 @@ export function UpgradePicker({ army, entry, unit, onAttach, onClose }: Props) {
                           army.pointsMode,
                         )}{" "}
                         pts
-                        {army.pointsMode === "v2_6" &&
+                        {army.pointsMode !== "printed" &&
                           effectiveUpgradePoints(
                             { ...up, faction: unit.faction },
-                            "v2_6",
+                            army.pointsMode,
                           ) !== up.points && (
                             <span className="adj-hint"> (was {up.points})</span>
                           )}

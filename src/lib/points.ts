@@ -21,12 +21,20 @@ type AdjustmentsFile = {
 
 const ADJ = adjustmentsRaw as AdjustmentsFile;
 
-export type PointsMode = "printed" | "v2_6";
+export type PointsMode = "printed" | "v2_6" | "revamp";
 
 export const POINTS_MODE_LABEL: Record<PointsMode, string> = {
   printed: "Printed (cards)",
   v2_6: "Tournament 2.6",
+  revamp: "Revamp",
 };
+
+/** Order the points-mode pill cycles through. */
+export const POINTS_MODES: PointsMode[] = ["printed", "v2_6", "revamp"];
+
+export function nextPointsMode(mode: PointsMode): PointsMode {
+  return POINTS_MODES[(POINTS_MODES.indexOf(mode) + 1) % POINTS_MODES.length];
+}
 
 function _norm(s: string): string {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, "");
@@ -63,27 +71,33 @@ function upgradeAdjustment(upgrade: Pick<Upgrade, "name"> & { faction?: string }
 }
 
 export function effectiveUnitPoints(
-  unit: Pick<Unit, "name" | "faction" | "points">,
+  unit: Pick<Unit, "name" | "faction" | "points" | "points_v2_6" | "points_revamp">,
   mode: PointsMode,
 ): number {
   if (mode === "printed") return unit.points;
+  // Per-unit costs imported from Tabletop Admiral win over the name-keyed
+  // table, which can't tell variants (Strike Teams etc.) apart.
+  if (mode === "revamp") return unit.points_revamp ?? unit.points_v2_6 ?? unit.points;
+  if (unit.points_v2_6 !== undefined) return unit.points_v2_6;
   const adj = unitAdjustment(unit);
   if (adj && adj.v2_6 !== undefined) return adj.v2_6;
   return unit.points;
 }
 
 export function effectiveUpgradePoints(
-  upgrade: Pick<Upgrade, "name" | "points"> & { faction?: string },
+  upgrade: Pick<Upgrade, "name" | "points" | "points_v2_6" | "points_revamp"> & { faction?: string },
   mode: PointsMode,
 ): number {
   if (mode === "printed") return upgrade.points;
+  if (mode === "revamp") return upgrade.points_revamp ?? upgrade.points_v2_6 ?? upgrade.points;
+  if (upgrade.points_v2_6 !== undefined) return upgrade.points_v2_6;
   const adj = upgradeAdjustment(upgrade);
   if (adj && adj.v2_6 !== undefined) return adj.v2_6;
   return upgrade.points;
 }
 
 /** Returns the diff between printed and effective cost (positive = costs
- * more under 2.6). Used for the small "(was X)" hint in the UI. */
+ * more under the selected mode). Used for the small "(was X)" hint in the UI. */
 export function pointsDelta(
   printed: number,
   effective: number,

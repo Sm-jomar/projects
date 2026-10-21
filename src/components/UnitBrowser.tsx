@@ -95,7 +95,7 @@ export function UnitBrowser({
         {units.map((u) => {
           const check = canAdd(army, u);
           const cost = effectiveUnitPoints(u, army.pointsMode);
-          const adjusted = army.pointsMode === "v2_6" && cost !== u.points;
+          const adjusted = army.pointsMode !== "printed" && cost !== u.points;
           const cardUrl = cardForUnit(u);
           // Layered backgrounds: gradient on top fades the panel color to
           // transparent moving right; the card image sits underneath,
