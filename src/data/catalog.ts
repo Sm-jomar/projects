@@ -2,6 +2,7 @@ import type { Catalog, Unit, Upgrade } from "../lib/types";
 import baseRaw from "./catalog.base.json";
 import { SEED_UNITS } from "./catalog.seed";
 import overridesRaw from "./catalog-overrides.json";
+import ttaRaw from "./tabletop-admiral.json";
 
 const base = baseRaw as unknown as Catalog;
 
@@ -28,13 +29,29 @@ function applyOverrides<T extends { id: string }>(
   return items.map((item) => (table[item.id] ? { ...item, ...table[item.id] } : item));
 }
 
+// Points, stats, upgrade slots and the full upgrade list imported from
+// Tabletop Admiral's Legion builder by scripts/import_tabletop_admiral.py.
+// Applied on top of the seed, under the hand-maintained overrides above.
+type TtaLayer = {
+  units: Record<string, Partial<Unit>>;
+  new_units: Unit[];
+  upgrades: Record<string, Partial<Upgrade>>;
+  new_upgrades: Upgrade[];
+};
+const TTA = ttaRaw as unknown as TtaLayer;
+
+const units = applyOverrides(SEED_UNITS, TTA.units).concat(TTA.new_units);
+const upgrades = applyOverrides((base.upgrades ?? []) as Upgrade[], TTA.upgrades).concat(
+  TTA.new_upgrades,
+);
+
 export const CATALOG: Catalog = {
   version: base.version,
   // SEED_UNITS is the single source of truth for units (regenerated from
   // the fandom Unit_List wiki page); base.json keeps upgrades and command
   // cards.
-  units: applyOverrides(SEED_UNITS, OVERRIDES.units),
-  upgrades: applyOverrides((base.upgrades ?? []) as Upgrade[], OVERRIDES.upgrades),
+  units: applyOverrides(units, OVERRIDES.units),
+  upgrades: applyOverrides(upgrades, OVERRIDES.upgrades),
   commandCards: base.commandCards,
 };
 

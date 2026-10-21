@@ -188,7 +188,9 @@ const UNIT_CARD_OVERRIDES: Record<string, string | null> = {
   "separatists-bossk-trandoshan-terror": "cards/mercenary/unit/bossk.jpg",
   // Cards rebuilt from the Star Wars: Legion wiki:
   "separatists-droidekas": "cards/separatists/unit/droidekas.jpg",
-  "separatists-super-tactical-command-droid": "cards/separatists/unit/super-tactical-droid.jpg",
+  // super-tactical-droid.jpg is the Super Tactical Droid (Commanding
+  // Controller) card, not the Command Droid.
+  "separatists-super-tactical-command-droid": null,
   "separatists-bx-series-droid-commandos-strike-team": "cards/separatists/unit/bx-series-droid-commandos-strike-team.jpg",
   // Separatists with no source card:
   "separatists-aqua-droids": null,
@@ -241,6 +243,28 @@ const UNIT_CARD_OVERRIDES: Record<string, string | null> = {
   "mercenary-weequay-pirates": null,
   "mercenary-wlo-5-speeder-tank": null,
 };
+
+// Units added from Tabletop Admiral (see src/data/tabletop-admiral.json).
+// Fuzzy matching would pair most of them with a different printing of the
+// same character, so only hand-checked scans are listed; the rest stay
+// card-less until their images are imported.
+Object.assign(UNIT_CARD_OVERRIDES, {
+  "separatists-maul-impatient-apprentice": "cards/separatists/unit/maul.jpg",
+  "separatists-super-tactical-droid": "cards/separatists/unit/super-tactical-droid.jpg",
+  "separatists-admiral-trench-fleet-commander": null,
+  "separatists-b2-super-rocket-battle-droids": null,
+  "mercenary-gar-saxon-head-of-clan-saxon": null,
+  "mercenary-mandalorian-warriors-fire-support": null,
+  "mercenary-mandalorian-warriors": null,
+  "republic-obi-wan-kenobi-mounted-jedi-general": null,
+  "republic-r2-d2-independent-astromech": null,
+  "mercenary-rook-kast-devoted-to-the-cause": null,
+  "mercenary-sabine-wren-back-in-the-fold": null,
+  "republic-shaak-ti-jedi-council": null,
+  "mercenary-super-commandos": null,
+  "mercenary-the-armorer-forging-the-future": null,
+  "mercenary-ursa-wren-leader-of-clan-wren": null,
+} satisfies Record<string, string | null>);
 
 export function cardForUnit(unit: Pick<Unit, "id" | "name" | "faction"> & { also_factions?: string[] }): string | null {
   // Hand-curated override wins.

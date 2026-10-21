@@ -9,6 +9,7 @@ import {
 } from "../lib/factions";
 import {
   POINTS_MODE_LABEL,
+  nextPointsMode,
   effectiveUnitPoints,
   effectiveUpgradePoints,
   type PointsMode,
@@ -112,12 +113,12 @@ export function ArmyRoster({
           type="button"
           className={
             "points-mode-pill" +
-            (pointsMode === "v2_6" ? " active" : "")
+            (pointsMode !== "printed" ? " active" : "")
           }
           onClick={() =>
-            onPointsModeChange(pointsMode === "v2_6" ? "printed" : "v2_6")
+            onPointsModeChange(nextPointsMode(pointsMode))
           }
-          title="Toggle 2.6 tournament point adjustments"
+          title="Cycle printed, tournament 2.6 and Revamp points"
         >
           {POINTS_MODE_LABEL[pointsMode]}
         </button>
@@ -190,7 +191,7 @@ export function ArmyRoster({
                               {upgrades.length > 0 ? (
                                 <span> ({unitCost} base)</span>
                               ) : null}
-                              {pointsMode === "v2_6" && unitCost !== u.points && (
+                              {pointsMode !== "printed" && unitCost !== u.points && (
                                 <span className="adj-hint" title="2.6 adjusted">
                                   {" "}
                                   (printed {u.points})
@@ -248,7 +249,7 @@ export function ArmyRoster({
                                   <span className="muted small">
                                     {" "}
                                     · {upCost} pts
-                                    {pointsMode === "v2_6" && upCost !== up.points && (
+                                    {pointsMode !== "printed" && upCost !== up.points && (
                                       <span className="adj-hint">
                                         {" "}
                                         (printed {up.points})

@@ -156,8 +156,8 @@ export function csvToArmies(text: string): ImportResult {
         : undefined;
     const modeRaw =
       idx("pointsMode") >= 0 ? (cols[idx("pointsMode")] || "").trim() : "";
-    const pointsMode: "printed" | "v2_6" =
-      modeRaw === "v2_6" ? "v2_6" : "printed";
+    const pointsMode: "printed" | "v2_6" | "revamp" =
+      modeRaw === "v2_6" || modeRaw === "revamp" ? modeRaw : "printed";
     let army = byList.get(listId);
     if (!army) {
       army = {

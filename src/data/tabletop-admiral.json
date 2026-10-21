@@ -1,0 +1,9089 @@
+{
+ "source": "https://tabletopadmiral.com/api",
+ "generated_by": "scripts/import_tabletop_admiral.py",
+ "units": {
+  "rebels-c-3po-golden-god": {
+   "tta_id": "15016",
+   "points": 40,
+   "points_v2_6": 40,
+   "points_revamp": 40,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "wounds": 3,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "rebels-han-solo": {
+   "tta_id": "15",
+   "points": 120,
+   "points_v2_6": 100,
+   "points_revamp": 100,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 1,
+    "gear": 1,
+    "training": 1
+   },
+   "wounds": 6,
+   "courage": 2,
+   "speed": 2
+  },
+  "rebels-lando-calrissian": {
+   "tta_id": "80",
+   "points": 105,
+   "points_v2_6": 95,
+   "points_revamp": 105,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 1,
+    "gear": 1,
+    "training": 1
+   },
+   "wounds": 6,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "rebels-leia-organa": {
+   "tta_id": "11",
+   "points": 90,
+   "points_v2_6": 75,
+   "points_revamp": 75,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 2,
+    "gear": 1
+   },
+   "wounds": 6,
+   "courage": 2,
+   "speed": 2
+  },
+  "rebels-logray-superstitious-shaman": {
+   "tta_id": "16687",
+   "points": 45,
+   "points_v2_6": 45,
+   "points_revamp": 45,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 1,
+    "training": 3
+   },
+   "wounds": 4,
+   "courage": 3,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "rebels-luke-skywalker-hero-of-the-rebellion": {
+   "tta_id": "4",
+   "points": 160,
+   "points_v2_6": 150,
+   "points_revamp": 120,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "force": 2,
+    "gear": 1
+   },
+   "wounds": 6,
+   "courage": 3,
+   "speed": 2
+  },
+  "rebels-rebel-officer": {
+   "tta_id": "22",
+   "points": 50,
+   "points_v2_6": 45,
+   "points_revamp": 50,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "command": 1,
+    "gear": 1
+   },
+   "wounds": 4,
+   "courage": 2,
+   "speed": 2
+  },
+  "rebels-wicket-hero-of-bright-tree": {
+   "tta_id": "15015",
+   "points": 70,
+   "points_v2_6": 64,
+   "points_revamp": 64,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "training": 3
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "rebels-cassian-andor": {
+   "tta_id": "29930",
+   "points": 90,
+   "points_v2_6": 90,
+   "points_revamp": 90,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "armament": 1,
+    "command": 1,
+    "gear": 1,
+    "training": 2
+   },
+   "wounds": 6,
+   "courage": 2,
+   "speed": 2
+  },
+  "rebels-jyn-erso": {
+   "tta_id": "29928",
+   "points": 75,
+   "points_v2_6": 75,
+   "points_revamp": 75,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 1,
+    "gear": 1,
+    "training": 1
+   },
+   "wounds": 5,
+   "courage": 3,
+   "speed": 2
+  },
+  "rebels-k-2so": {
+   "tta_id": "68",
+   "points": 70,
+   "points_v2_6": 70,
+   "points_revamp": 70,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "armament": 1,
+    "comms": 1
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2
+  },
+  "rebels-luke-skywalker-jedi-knight": {
+   "tta_id": "46",
+   "points": 200,
+   "points_v2_6": 195,
+   "points_revamp": 165,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "force": 3,
+    "training": 1
+   },
+   "wounds": 7,
+   "courage": 4,
+   "speed": 2
+  },
+  "rebels-rebel-agent": {
+   "tta_id": "31670",
+   "points": 50,
+   "points_v2_6": 50,
+   "points_revamp": 50,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "armament": 1,
+    "command": 1,
+    "doctrine": 1,
+    "gear": 1,
+    "grenades": 1,
+    "training": 1
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2
+  },
+  "rebels-sabine-wren": {
+   "tta_id": "33",
+   "points": 125,
+   "points_v2_6": 105,
+   "points_revamp": 105,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "mandalorian-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "armament": 1,
+    "gear": 2,
+    "training": 1
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2
+  },
+  "rebels-fleet-troopers": {
+   "tta_id": "12",
+   "points": 44,
+   "points_v2_6": 40,
+   "points_revamp": 40,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "personnel": 1
+   },
+   "wounds": 1,
+   "courage": 1,
+   "speed": 2,
+   "miniatures": 4
+  },
+  "rebels-rebel-troopers": {
+   "tta_id": "6",
+   "points": 40,
+   "points_v2_6": 40,
+   "points_revamp": 40,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "personnel": 1
+   },
+   "wounds": 1,
+   "courage": 0,
+   "speed": 2
+  },
+  "rebels-rebel-veterans": {
+   "tta_id": "36",
+   "points": 48,
+   "points_v2_6": 48,
+   "points_revamp": 48,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "personnel": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 1,
+   "speed": 2,
+   "miniatures": 4
+  },
+  "rebels-mark-ii-medium-blaster-trooper": {
+   "tta_id": "42",
+   "points": 38,
+   "points_v2_6": 38,
+   "points_revamp": 40,
+   "rank": "corps",
+   "type": "emplacement-trooper",
+   "unit_subtype": "emplacement-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1
+   },
+   "wounds": 3,
+   "courage": 2,
+   "speed": 2
+  },
+  "rebels-ewok-skirmishers": {
+   "tta_id": "15784",
+   "points": 40,
+   "points_v2_6": 40,
+   "points_revamp": 40,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "heavy-weapon": 1,
+    "personnel": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 1,
+   "speed": 2,
+   "miniatures": 6
+  },
+  "rebels-ewok-slingers": {
+   "tta_id": "16377",
+   "points": 35,
+   "points_v2_6": 35,
+   "points_revamp": 38,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "heavy-weapon": 1,
+    "personnel": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 1,
+   "speed": 2,
+   "miniatures": 6
+  },
+  "rebels-mandalorian-resistance": {
+   "tta_id": "71",
+   "points": 72,
+   "points_v2_6": 62,
+   "points_revamp": 62,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "armament": 1,
+    "comms": 1,
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 2,
+   "speed": 2
+  },
+  "rebels-mandalorian-resistance-clan-wren": {
+   "tta_id": "72",
+   "points": 34,
+   "points_v2_6": 30,
+   "points_revamp": 30,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "armament": 1,
+    "comms": 1,
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 2,
+    "training": 1
+   },
+   "wounds": 2,
+   "courage": 2,
+   "speed": 2
+  },
+  "rebels-rebel-commandos": {
+   "tta_id": "13",
+   "points": 60,
+   "points_v2_6": 42,
+   "points_revamp": 42,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 2,
+   "speed": 2
+  },
+  "rebels-rebel-commandos-strike-team": {
+   "tta_id": "14",
+   "points": 16,
+   "points_v2_6": 20,
+   "points_revamp": 20,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 2,
+   "speed": 2
+  },
+  "rebels-rebel-sleeper-cell": {
+   "tta_id": "25968",
+   "points": 70,
+   "points_v2_6": 77,
+   "points_revamp": 77,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "gear": 1,
+    "heavy-weapon": 1,
+    "personnel": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 6
+  },
+  "rebels-wookiee-warriors-freedom-fighters": {
+   "tta_id": "24",
+   "points": 75,
+   "points_v2_6": 62,
+   "points_revamp": 62,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "training": 2
+   },
+   "wounds": 3,
+   "courage": 2,
+   "speed": 2
+  },
+  "rebels-wookiee-warriors-kashyyyk-resistance": {
+   "tta_id": "1529",
+   "points": 72,
+   "points_v2_6": 62,
+   "points_revamp": 62,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "training": 1
+   },
+   "wounds": 3,
+   "speed": 2,
+   "miniatures": 3
+  },
+  "rebels-1-4-fd-laser-cannon-team": {
+   "tta_id": "18",
+   "points": 70,
+   "points_v2_6": 65,
+   "points_revamp": 65,
+   "rank": "support",
+   "type": "emplacement-trooper",
+   "unit_subtype": "emplacement-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "generator": 1
+   },
+   "wounds": 6,
+   "courage": 2,
+   "speed": 2
+  },
+  "rebels-at-rt": {
+   "tta_id": "1",
+   "points": 55,
+   "points_v2_6": 55,
+   "points_revamp": 54,
+   "rank": "support",
+   "type": "ground-vehicle",
+   "unit_subtype": "ground-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "hard-point": 1
+   },
+   "wounds": 6,
+   "courage": 4,
+   "speed": 2
+  },
+  "rebels-tauntaun-riders": {
+   "tta_id": "35",
+   "points": 90,
+   "points_v2_6": 90,
+   "points_revamp": 95,
+   "rank": "support",
+   "type": "trooper",
+   "unit_subtype": "creature-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "training": 1
+   },
+   "wounds": 4,
+   "courage": 2,
+   "speed": 2
+  },
+  "rebels-chewbacca-let-the-wookiee-win": {
+   "tta_id": "15969",
+   "points": 190,
+   "points_v2_6": 190,
+   "points_revamp": 180,
+   "rank": "heavy",
+   "type": "repulsor-vehicle",
+   "unit_subtype": "repulsor-vehicle",
+   "is_unique": true,
+   "wounds": 11,
+   "courage": 8,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "rebels-t-47-airspeeder": {
+   "tta_id": "10",
+   "points": 175,
+   "points_v2_6": 130,
+   "points_revamp": 125,
+   "rank": "heavy",
+   "type": "repulsor-vehicle",
+   "unit_subtype": "repulsor-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "hard-point": 1,
+    "pilot": 1
+   },
+   "wounds": 7,
+   "courage": 5,
+   "speed": 2
+  },
+  "rebels-x-34-landspeeder": {
+   "tta_id": "32",
+   "points": 75,
+   "points_v2_6": 60,
+   "points_revamp": 55,
+   "rank": "heavy",
+   "type": "repulsor-vehicle",
+   "unit_subtype": "repulsor-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "crew": 2,
+    "hard-point": 1,
+    "pilot": 1
+   },
+   "wounds": 6,
+   "courage": 4,
+   "speed": 2
+  },
+  "imperials-darth-vader-dark-lord-of-the-sith": {
+   "tta_id": "3",
+   "points": 200,
+   "points_v2_6": 190,
+   "points_revamp": 170,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 1,
+    "force": 3
+   },
+   "wounds": 8,
+   "courage": 0,
+   "speed": 2
+  },
+  "imperials-director-orson-krennic": {
+   "tta_id": "29",
+   "points": 90,
+   "points_v2_6": 75,
+   "points_revamp": 65,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 2,
+    "gear": 1
+   },
+   "wounds": 6,
+   "courage": 2,
+   "speed": 2
+  },
+  "imperials-general-veers": {
+   "tta_id": "8",
+   "points": 80,
+   "points_v2_6": 70,
+   "points_revamp": 75,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 2,
+    "gear": 1
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2
+  },
+  "imperials-iden-versio": {
+   "tta_id": "58",
+   "points": 100,
+   "points_v2_6": 100,
+   "points_revamp": 115,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "armament": 1,
+    "counterpart": 1,
+    "gear": 1,
+    "training": 2
+   },
+   "wounds": 6,
+   "courage": 3,
+   "speed": 2
+  },
+  "imperials-imperial-officer": {
+   "tta_id": "23",
+   "points": 50,
+   "points_v2_6": 50,
+   "points_revamp": 55,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "command": 1,
+    "gear": 1
+   },
+   "wounds": 4,
+   "courage": 2,
+   "speed": 2
+  },
+  "imperials-moff-gideon": {
+   "tta_id": "11258",
+   "points": 100,
+   "points_v2_6": 80,
+   "points_revamp": 80,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "armament": 1,
+    "command": 2,
+    "gear": 1,
+    "training": 1
+   },
+   "wounds": 5,
+   "courage": 3,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "imperials-agent-kallus": {
+   "tta_id": "29931",
+   "points": 70,
+   "points_v2_6": 70,
+   "points_revamp": 70,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 1,
+    "gear": 1,
+    "training": 1
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "imperials-darth-vader-the-emperor-s-apprentice": {
+   "tta_id": "47",
+   "points": 155,
+   "points_v2_6": 175,
+   "points_revamp": 155,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "force": 2,
+    "training": 2
+   },
+   "wounds": 6,
+   "courage": 3,
+   "speed": 2
+  },
+  "imperials-fifth-brother": {
+   "tta_id": "19108",
+   "points": 105,
+   "points_v2_6": 105,
+   "points_revamp": 97,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "force": 1,
+    "training": 2
+   },
+   "wounds": 6,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "imperials-imperial-agent": {
+   "tta_id": "31667",
+   "points": 50,
+   "points_v2_6": 50,
+   "points_revamp": 50,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "armament": 1,
+    "command": 1,
+    "gear": 2,
+    "training": 1
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "imperials-seventh-sister": {
+   "tta_id": "19109",
+   "points": 110,
+   "points_v2_6": 110,
+   "points_revamp": 102,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "force": 1,
+    "training": 2
+   },
+   "wounds": 5,
+   "courage": 3,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "imperials-shoretroopers": {
+   "tta_id": "39",
+   "points": 52,
+   "points_v2_6": 46,
+   "points_revamp": 46,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "personnel": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 1,
+   "speed": 2,
+   "miniatures": 4
+  },
+  "imperials-df-90-mortar-trooper": {
+   "tta_id": "48",
+   "points": 36,
+   "points_v2_6": 40,
+   "points_revamp": 40,
+   "rank": "corps",
+   "type": "emplacement-trooper",
+   "unit_subtype": "emplacement-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1
+   },
+   "wounds": 3,
+   "courage": 2,
+   "speed": 2
+  },
+  "imperials-snowtroopers": {
+   "tta_id": "7",
+   "points": 48,
+   "points_v2_6": 44,
+   "points_revamp": 42,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "personnel": 1
+   },
+   "wounds": 1,
+   "courage": 1,
+   "speed": 2,
+   "miniatures": 4
+  },
+  "imperials-stormtroopers": {
+   "tta_id": "5",
+   "points": 44,
+   "points_v2_6": 42,
+   "points_revamp": 42,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "personnel": 1
+   },
+   "wounds": 1,
+   "courage": 0,
+   "speed": 2
+  },
+  "imperials-stormtroopers-heavy-response-unit": {
+   "tta_id": "5880",
+   "points": 30,
+   "points_v2_6": 40,
+   "points_revamp": 36,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "heavy-weapon": 2
+   },
+   "wounds": 1,
+   "courage": 1,
+   "speed": 2,
+   "miniatures": 3
+  },
+  "imperials-stormtrooper-riot-squad": {
+   "tta_id": "25967",
+   "points": 50,
+   "points_v2_6": 44,
+   "points_revamp": 44,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "heavy-weapon": 2,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 1,
+   "speed": 2,
+   "miniatures": 4
+  },
+  "imperials-imperial-death-troopers": {
+   "tta_id": "30",
+   "points": 76,
+   "points_v2_6": 66,
+   "points_revamp": 66,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "armament": 1,
+    "comms": 1,
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 2,
+   "speed": 2
+  },
+  "imperials-imperial-special-forces": {
+   "tta_id": "78",
+   "points": 68,
+   "points_v2_6": 68,
+   "points_revamp": 54,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "training": 2
+   },
+   "wounds": 1,
+   "courage": 2,
+   "speed": 2
+  },
+  "imperials-imperial-special-forces-inferno-squad": {
+   "tta_id": "79",
+   "points": 34,
+   "points_v2_6": 34,
+   "points_revamp": 34,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 2,
+    "training": 2
+   },
+   "wounds": 2,
+   "courage": 2,
+   "speed": 2
+  },
+  "imperials-scout-troopers": {
+   "tta_id": "17",
+   "points": 60,
+   "points_v2_6": 48,
+   "points_revamp": 48,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 2,
+   "speed": 2
+  },
+  "imperials-scout-troopers-strike-team": {
+   "tta_id": "26",
+   "points": 16,
+   "points_v2_6": 20,
+   "points_revamp": 22,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 2,
+   "speed": 2
+  },
+  "imperials-74-z-speeder-bikes": {
+   "tta_id": "2",
+   "points": 90,
+   "points_v2_6": 70,
+   "points_revamp": 70,
+   "rank": "support",
+   "type": "repulsor-vehicle",
+   "unit_subtype": "repulsor-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1
+   },
+   "wounds": 3,
+   "courage": 0,
+   "speed": 2
+  },
+  "imperials-dewback-rider": {
+   "tta_id": "40",
+   "points": 90,
+   "points_v2_6": 70,
+   "points_revamp": 70,
+   "rank": "support",
+   "type": "trooper",
+   "unit_subtype": "creature-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "armament": 1,
+    "comms": 1,
+    "training": 1
+   },
+   "wounds": 6,
+   "courage": 2,
+   "speed": 2
+  },
+  "imperials-e-web-heavy-blaster-team": {
+   "tta_id": "19",
+   "points": 55,
+   "points_v2_6": 50,
+   "points_revamp": 60,
+   "rank": "support",
+   "type": "emplacement-trooper",
+   "unit_subtype": "emplacement-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "generator": 1
+   },
+   "wounds": 4,
+   "courage": 2,
+   "speed": 2
+  },
+  "imperials-range-troopers": {
+   "tta_id": "23657",
+   "points": 60,
+   "points_v2_6": 60,
+   "points_revamp": 60,
+   "rank": "support",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "personnel": 1
+   },
+   "wounds": 1,
+   "courage": 2,
+   "speed": 1,
+   "miniatures": 4
+  },
+  "imperials-at-st": {
+   "tta_id": "9",
+   "points": 195,
+   "points_v2_6": 155,
+   "points_revamp": 145,
+   "rank": "heavy",
+   "type": "ground-vehicle",
+   "unit_subtype": "ground-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "hard-point": 3,
+    "pilot": 1
+   },
+   "wounds": 11,
+   "courage": 8,
+   "speed": 2
+  },
+  "imperials-imperial-dark-troopers": {
+   "tta_id": "6180",
+   "points": 95,
+   "points_v2_6": 95,
+   "points_revamp": 95,
+   "rank": "heavy",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "heavy-weapon": 2,
+    "personnel": 1,
+    "protocol": 1
+   },
+   "wounds": 2,
+   "courage": 0,
+   "speed": 2,
+   "miniatures": 3
+  },
+  "imperials-laat-le-patrol-transport": {
+   "tta_id": "773",
+   "points": 120,
+   "points_v2_6": 105,
+   "points_revamp": 90,
+   "rank": "heavy",
+   "type": "repulsor-vehicle",
+   "unit_subtype": "repulsor-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "ordnance": 1,
+    "pilot": 1
+   },
+   "wounds": 1,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "imperials-major-marquand": {
+   "tta_id": "17348",
+   "points": 190,
+   "points_v2_6": 190,
+   "points_revamp": 180,
+   "rank": "heavy",
+   "type": "repulsor-vehicle",
+   "unit_subtype": "repulsor-vehicle",
+   "is_unique": true,
+   "wounds": 11,
+   "courage": 8,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "imperials-tx-225-gavw-occupier-tank": {
+   "tta_id": "31",
+   "points": 155,
+   "points_v2_6": 140,
+   "points_revamp": 125,
+   "rank": "heavy",
+   "type": "ground-vehicle",
+   "unit_subtype": "ground-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "hard-point": 1,
+    "pilot": 1
+   },
+   "wounds": 8,
+   "courage": 6,
+   "speed": 2
+  },
+  "republic-ahsoka-tano-padawan-commander": {
+   "tta_id": "29671",
+   "points": 110,
+   "points_v2_6": 110,
+   "points_revamp": 110,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 1,
+    "force": 1,
+    "training": 1
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 3,
+   "miniatures": 1
+  },
+  "republic-anakin-skywalker-hero-without-fear": {
+   "tta_id": "73",
+   "points": 160,
+   "points_v2_6": 155,
+   "points_revamp": 170,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "force": 2,
+    "training": 2
+   },
+   "wounds": 6,
+   "courage": 3,
+   "speed": 2
+  },
+  "republic-chewbacca-republic": {
+   "tta_id": "1565",
+   "points": 90,
+   "points_v2_6": 90,
+   "points_revamp": 90,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "gear": 1,
+    "training": 2
+   },
+   "wounds": 9,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "republic-clone-captain-rex": {
+   "tta_id": "50",
+   "points": 90,
+   "points_v2_6": 95,
+   "points_revamp": 95,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "clone-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 1,
+    "gear": 2,
+    "grenades": 1,
+    "training": 1
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2
+  },
+  "republic-clone-commander": {
+   "tta_id": "75",
+   "points": 55,
+   "points_v2_6": 60,
+   "points_revamp": 60,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "command": 1,
+    "gear": 1,
+    "training": 1
+   },
+   "wounds": 4,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "republic-clone-commander-cody": {
+   "tta_id": "6376",
+   "points": 105,
+   "points_v2_6": 95,
+   "points_revamp": 95,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "clone-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 1,
+    "gear": 1,
+    "training": 1
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "republic-jedi-knight-general": {
+   "tta_id": "31842",
+   "points": 105,
+   "points_v2_6": 105,
+   "points_revamp": 105,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "armament": 1,
+    "doctrine": 1,
+    "force": 2,
+    "training": 2
+   },
+   "wounds": 6,
+   "courage": 3,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "republic-obi-wan-kenobi-civilized-warrior": {
+   "tta_id": "41",
+   "points": 175,
+   "points_v2_6": 170,
+   "points_revamp": 150,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 1,
+    "force": 2,
+    "training": 1
+   },
+   "wounds": 6,
+   "courage": 3,
+   "speed": 2
+  },
+  "republic-wookiee-chieftain": {
+   "tta_id": "1528",
+   "points": 100,
+   "points_v2_6": 100,
+   "points_revamp": 100,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "command": 1,
+    "gear": 1,
+    "training": 2
+   },
+   "wounds": 7,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "republic-yoda-grand-master-of-the-jedi-order": {
+   "tta_id": "764",
+   "points": 200,
+   "points_v2_6": 200,
+   "points_revamp": 150,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 1,
+    "force": 3
+   },
+   "wounds": 5,
+   "courage": 4,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "republic-jedi-knight": {
+   "tta_id": "31843",
+   "points": 85,
+   "points_v2_6": 85,
+   "points_revamp": 85,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "armament": 1,
+    "doctrine": 1,
+    "force": 1,
+    "training": 1
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "republic-padm-amidala-spirited-senator": {
+   "tta_id": "60",
+   "points": 90,
+   "points_v2_6": 85,
+   "points_revamp": 52,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "armament": 1,
+    "command": 1,
+    "gear": 1,
+    "training": 1
+   },
+   "wounds": 6,
+   "courage": 3,
+   "speed": 2
+  },
+  "republic-clone-trooper-infantry": {
+   "tta_id": "25964",
+   "points": 56,
+   "points_v2_6": 56,
+   "points_revamp": 56,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "clone-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "personnel": 1,
+    "squad-leader": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 4
+  },
+  "republic-clone-trooper-marksmen": {
+   "tta_id": "32248",
+   "points": 50,
+   "points_v2_6": 50,
+   "points_revamp": 50,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "clone-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "heavy-weapon": 1,
+    "personnel": 1,
+    "squad-leader": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 2,
+   "speed": 2
+  },
+  "republic-arc-troopers": {
+   "tta_id": "62",
+   "points": 72,
+   "points_v2_6": 66,
+   "points_revamp": 70,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "clone-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "gear": 2,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "squad-leader": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 2,
+   "speed": 2
+  },
+  "republic-arc-troopers-strike-team": {
+   "tta_id": "61",
+   "points": 21,
+   "points_v2_6": 24,
+   "points_revamp": 23,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "clone-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "gear": 2,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 1,
+   "speed": 2
+  },
+  "republic-arf-troopers": {
+   "tta_id": "28861",
+   "points": 66,
+   "points_v2_6": 66,
+   "points_revamp": 66,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "clone-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "personnel": 1,
+    "squad-leader": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 4
+  },
+  "republic-wookiee-warriors-kashyyyk-defenders": {
+   "tta_id": "1527",
+   "points": 72,
+   "points_v2_6": 62,
+   "points_revamp": 62,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "training": 1
+   },
+   "wounds": 3,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 3
+  },
+  "republic-wookiee-warriors-noble-fighters": {
+   "tta_id": "1563",
+   "points": 69,
+   "points_v2_6": 62,
+   "points_revamp": 62,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "training": 2
+   },
+   "wounds": 3,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 3
+  },
+  "republic-at-rt-galactic-republic": {
+   "tta_id": "70",
+   "points": 65,
+   "points_v2_6": 60,
+   "points_revamp": 60,
+   "rank": "support",
+   "type": "ground-vehicle",
+   "unit_subtype": "ground-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "hard-point": 1
+   },
+   "wounds": 6,
+   "courage": 4,
+   "speed": 2
+  },
+  "republic-barc-speeder": {
+   "tta_id": "44",
+   "points": 75,
+   "points_v2_6": 55,
+   "points_revamp": 59,
+   "rank": "support",
+   "type": "ground-vehicle",
+   "unit_subtype": "ground-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "crew": 1
+   },
+   "wounds": 5,
+   "courage": 3,
+   "speed": 2
+  },
+  "republic-clone-commandos": {
+   "tta_id": "23656",
+   "points": 75,
+   "points_v2_6": 90,
+   "points_revamp": 90,
+   "rank": "support",
+   "type": "trooper",
+   "unit_subtype": "clone-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "armament": 1,
+    "comms": 1,
+    "gear": 1,
+    "grenades": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 4
+  },
+  "republic-clone-commandos-delta-squad": {
+   "tta_id": "24084",
+   "points": 100,
+   "points_v2_6": 105,
+   "points_revamp": 105,
+   "rank": "support",
+   "type": "trooper",
+   "unit_subtype": "clone-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "armament": 1,
+    "comms": 1,
+    "gear": 1,
+    "grenades": 1,
+    "training": 2
+   },
+   "wounds": 1,
+   "courage": 0,
+   "speed": 2,
+   "miniatures": 4
+  },
+  "republic-raddaugh-gnasp-fluttercraft": {
+   "tta_id": "1984",
+   "points": 55,
+   "points_v2_6": 55,
+   "points_revamp": 55,
+   "rank": "support",
+   "type": "repulsor-vehicle",
+   "unit_subtype": "repulsor-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "crew": 1
+   },
+   "wounds": 6,
+   "courage": 3,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "republic-raddaugh-gnasp-fluttercraft-attack-craft": {
+   "tta_id": "19078",
+   "points": 57,
+   "points_v2_6": 57,
+   "points_revamp": 57,
+   "rank": "support",
+   "type": "repulsor-vehicle",
+   "unit_subtype": "repulsor-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "crew": 1
+   },
+   "wounds": 6,
+   "courage": 3,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "republic-infantry-support-platform": {
+   "tta_id": "2108",
+   "points": 65,
+   "points_v2_6": 65,
+   "points_revamp": 65,
+   "rank": "heavy",
+   "type": "repulsor-vehicle",
+   "unit_subtype": "repulsor-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "hard-point": 1,
+    "pilot": 1
+   },
+   "wounds": 7,
+   "courage": 5,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "republic-laat-le-patrol-transport-republic": {
+   "tta_id": "771",
+   "points": 120,
+   "points_v2_6": 100,
+   "points_revamp": 90,
+   "rank": "heavy",
+   "type": "repulsor-vehicle",
+   "unit_subtype": "repulsor-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "ordnance": 1,
+    "pilot": 1
+   },
+   "wounds": 6,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "republic-tx-130-saber-class-fighter-tank": {
+   "tta_id": "53",
+   "points": 170,
+   "points_v2_6": 160,
+   "points_revamp": 145,
+   "rank": "heavy",
+   "type": "ground-vehicle",
+   "unit_subtype": "ground-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "hard-point": 1,
+    "ordnance": 1,
+    "pilot": 1
+   },
+   "wounds": 9,
+   "courage": 6,
+   "speed": 2
+  },
+  "separatists-count-dooku-darth-tyranus": {
+   "tta_id": "49",
+   "points": 205,
+   "points_v2_6": 185,
+   "points_revamp": 165,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 1,
+    "force": 3
+   },
+   "wounds": 6,
+   "courage": 3,
+   "speed": 2
+  },
+  "separatists-general-grievous-sinister-cyborg": {
+   "tta_id": "45",
+   "points": 175,
+   "points_v2_6": 150,
+   "points_revamp": 130,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "armament": 1,
+    "command": 2,
+    "training": 1
+   },
+   "wounds": 8,
+   "courage": 2,
+   "speed": 2
+  },
+  "separatists-kalani": {
+   "tta_id": "1854",
+   "points": 100,
+   "points_v2_6": 100,
+   "points_revamp": 85,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 3,
+    "comms": 1,
+    "gear": 1
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "separatists-kraken": {
+   "tta_id": "1852",
+   "points": 100,
+   "points_v2_6": 100,
+   "points_revamp": 80,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 2,
+    "comms": 1,
+    "gear": 1,
+    "training": 1
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "separatists-poggle-the-lesser": {
+   "tta_id": "19106",
+   "points": 85,
+   "points_v2_6": 85,
+   "points_revamp": 55,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 2,
+    "comms": 1,
+    "gear": 1
+   },
+   "wounds": 4,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "separatists-super-tactical-command-droid": {
+   "tta_id": "31844",
+   "points": 70,
+   "points_v2_6": 70,
+   "points_revamp": 70,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "armament": 1,
+    "command": 1,
+    "comms": 1,
+    "doctrine": 1,
+    "gear": 1,
+    "protocol": 3
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "separatists-t-series-tactical-droid": {
+   "tta_id": "76",
+   "points": 55,
+   "points_v2_6": 55,
+   "points_revamp": 60,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "command": 1,
+    "comms": 1,
+    "gear": 1
+   },
+   "wounds": 4,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "separatists-asajj-ventress-sith-assassin": {
+   "tta_id": "13582",
+   "points": 150,
+   "points_v2_6": 150,
+   "points_revamp": 115,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "force": 2,
+    "training": 2
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "separatists-sun-fac": {
+   "tta_id": "19105",
+   "points": 90,
+   "points_v2_6": 90,
+   "points_revamp": 55,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "comms": 1,
+    "gear": 1,
+    "training": 1
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "separatists-super-tactical-command-droid-operative": {
+   "tta_id": "31845",
+   "points": 60,
+   "points_v2_6": 60,
+   "points_revamp": 60,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "armament": 2,
+    "comms": 1,
+    "doctrine": 1,
+    "gear": 1,
+    "protocol": 2
+   },
+   "wounds": 5,
+   "courage": 3,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "separatists-b1-battle-droids": {
+   "tta_id": "38",
+   "points": 36,
+   "points_v2_6": 38,
+   "points_revamp": 38,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "heavy-weapon": 1,
+    "personnel": 1
+   },
+   "wounds": 1,
+   "courage": 1,
+   "speed": 2,
+   "miniatures": 6
+  },
+  "separatists-b2-super-battle-droids": {
+   "tta_id": "52",
+   "points": 48,
+   "points_v2_6": 45,
+   "points_revamp": 64,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "heavy-weapon": 1,
+    "personnel": 1
+   },
+   "wounds": 2,
+   "courage": 2,
+   "speed": 2
+  },
+  "separatists-geonosian-warriors": {
+   "tta_id": "19103",
+   "points": 45,
+   "points_v2_6": 45,
+   "points_revamp": 45,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "heavy-weapon": 1,
+    "personnel": 1
+   },
+   "wounds": 1,
+   "courage": 1,
+   "speed": 2,
+   "miniatures": 4
+  },
+  "separatists-bx-series-droid-commandos": {
+   "tta_id": "64",
+   "points": 68,
+   "points_v2_6": 64,
+   "points_revamp": 60,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "armament": 1,
+    "comms": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 2,
+   "speed": 2
+  },
+  "separatists-bx-series-droid-commandos-strike-team": {
+   "tta_id": "63",
+   "points": 20,
+   "points_v2_6": 20,
+   "points_revamp": 20,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "armament": 1,
+    "comms": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 1,
+   "speed": 2
+  },
+  "separatists-drk-1-sith-probe-droids": {
+   "tta_id": "77",
+   "points": 35,
+   "points_v2_6": 35,
+   "points_revamp": 35,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1
+   },
+   "wounds": 1,
+   "courage": 1,
+   "speed": 2,
+   "miniatures": 3
+  },
+  "separatists-ig-100-magnaguards": {
+   "tta_id": "1809",
+   "points": 72,
+   "points_v2_6": 72,
+   "points_revamp": 72,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "training": 2
+   },
+   "wounds": 2,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 3
+  },
+  "separatists-ig-100-magnaguards-prototype-assassin-droids": {
+   "tta_id": "19077",
+   "points": 60,
+   "points_v2_6": 60,
+   "points_revamp": 56,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 1,
+   "speed": 2,
+   "miniatures": 4
+  },
+  "separatists-droidekas": {
+   "tta_id": "43",
+   "points": 100,
+   "points_v2_6": 70,
+   "points_revamp": 67,
+   "rank": "support",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1
+   },
+   "wounds": 3,
+   "courage": 0,
+   "speed": 2
+  },
+  "separatists-dsd1-dwarf-spider-droid": {
+   "tta_id": "2019",
+   "points": 55,
+   "points_v2_6": 55,
+   "points_revamp": 50,
+   "rank": "support",
+   "type": "repulsor-vehicle",
+   "unit_subtype": "repulsor-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "hard-point": 1,
+    "protocol": 1
+   },
+   "wounds": 6,
+   "courage": 4,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "separatists-lm-432-crab-droid": {
+   "tta_id": "25966",
+   "points": 70,
+   "points_v2_6": 70,
+   "points_revamp": 70,
+   "rank": "support",
+   "type": "ground-vehicle",
+   "unit_subtype": "ground-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "hard-point": 1,
+    "protocol": 1
+   },
+   "wounds": 5,
+   "courage": 3,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "separatists-stap-riders": {
+   "tta_id": "69",
+   "points": 73,
+   "points_v2_6": 75,
+   "points_revamp": 70,
+   "rank": "support",
+   "type": "repulsor-vehicle",
+   "unit_subtype": "repulsor-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1
+   },
+   "wounds": 3,
+   "courage": 0,
+   "speed": 2
+  },
+  "separatists-aat-battle-tank": {
+   "tta_id": "54",
+   "points": 170,
+   "points_v2_6": 175,
+   "points_revamp": 150,
+   "rank": "heavy",
+   "type": "ground-vehicle",
+   "unit_subtype": "ground-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "ordnance": 2,
+    "pilot": 1
+   },
+   "wounds": 9,
+   "courage": 6,
+   "speed": 2
+  },
+  "separatists-nr-n99-persuader-class-tank-droid": {
+   "tta_id": "2109",
+   "points": 145,
+   "points_v2_6": 145,
+   "points_revamp": 130,
+   "rank": "heavy",
+   "type": "ground-vehicle",
+   "unit_subtype": "ground-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "ordnance": 1,
+    "protocol": 1
+   },
+   "wounds": 11,
+   "courage": 7,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "separatists-nr-n99-persuader-class-tank-droid-prototype-tank-droid": {
+   "tta_id": "19076",
+   "points": 145,
+   "points_v2_6": 145,
+   "points_revamp": 130,
+   "rank": "heavy",
+   "type": "ground-vehicle",
+   "unit_subtype": "ground-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "ordnance": 1,
+    "protocol": 1
+   },
+   "wounds": 11,
+   "courage": 7,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "separatists-aqua-droids": {
+   "tta_id": "28382",
+   "points": 65,
+   "points_v2_6": 65,
+   "points_revamp": 78,
+   "rank": "heavy",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "heavy-weapon": 1
+   },
+   "wounds": 3,
+   "courage": 0,
+   "speed": 1,
+   "miniatures": 3
+  },
+  "mercenary-gar-saxon-militant-commando": {
+   "tta_id": "4891",
+   "points": 105,
+   "points_v2_6": 100,
+   "points_revamp": 90,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "mandalorian-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "armament": 2,
+    "comms": 1,
+    "gear": 2,
+    "training": 2
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "mercenary-maul-a-rival": {
+   "tta_id": "4551",
+   "points": 170,
+   "points_v2_6": 170,
+   "points_revamp": 130,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "armament": 1,
+    "command": 1,
+    "force": 2,
+    "training": 1
+   },
+   "wounds": 6,
+   "courage": 3,
+   "speed": 2
+  },
+  "mercenary-mandalorian-super-commandos": {
+   "tta_id": "4767",
+   "points": 75,
+   "points_v2_6": 66,
+   "points_revamp": 66,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "mandalorian-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "armament": 1,
+    "comms": 1,
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 3
+  },
+  "mercenary-pyke-syndicate-capo": {
+   "tta_id": "4216",
+   "points": 45,
+   "points_v2_6": 42,
+   "points_revamp": 42,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "command": 1,
+    "gear": 1
+   },
+   "wounds": 4,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "mercenary-pyke-syndicate-foot-soldiers": {
+   "tta_id": "4215",
+   "points": 40,
+   "points_v2_6": 42,
+   "points_revamp": 42,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "personnel": 1
+   },
+   "wounds": 1,
+   "speed": 2,
+   "miniatures": 4
+  },
+  "mercenary-black-sun-vigo": {
+   "tta_id": "4717",
+   "points": 50,
+   "points_v2_6": 50,
+   "points_revamp": 50,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "command": 1,
+    "gear": 1
+   },
+   "wounds": 4,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "mercenary-black-sun-enforcers": {
+   "tta_id": "4417",
+   "points": 48,
+   "points_v2_6": 50,
+   "points_revamp": 50,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "personnel": 1
+   },
+   "wounds": 1,
+   "courage": 1,
+   "speed": 2,
+   "miniatures": 4
+  },
+  "imperials-bossk-trandoshan-terror": {
+   "tta_id": "4999",
+   "points": 105,
+   "points_v2_6": 105,
+   "points_revamp": 105,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "gear": 1,
+    "training": 2
+   },
+   "wounds": 7,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "mercenary-cad-bane-needs-no-introduction": {
+   "tta_id": "5001",
+   "points": 105,
+   "points_v2_6": 105,
+   "points_revamp": 105,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "armament": 1,
+    "comms": 1,
+    "gear": 1,
+    "grenades": 1,
+    "training": 2
+   },
+   "wounds": 6,
+   "courage": 3,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "mercenary-hondo-ohnaka": {
+   "tta_id": "29681",
+   "points": 85,
+   "points_v2_6": 85,
+   "points_revamp": 85,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "comms": 1,
+    "gear": 1,
+    "grenades": 2
+   },
+   "wounds": 5,
+   "courage": 0,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "rebels-boba-fett-daimyo-of-mos-espa": {
+   "tta_id": "6176",
+   "points": 120,
+   "points_v2_6": 120,
+   "points_revamp": 120,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "mandalorian-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "gear": 2,
+    "training": 2
+   },
+   "wounds": 5,
+   "courage": 3,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "imperials-boba-fett-infamous-bounty-hunter": {
+   "tta_id": "5000",
+   "points": 120,
+   "points_v2_6": 130,
+   "points_revamp": 130,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "mandalorian-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "comms": 1,
+    "gear": 2,
+    "training": 2
+   },
+   "wounds": 5,
+   "courage": 3,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "imperials-ig-11-nurse-droid": {
+   "tta_id": "6178",
+   "points": 105,
+   "points_v2_6": 105,
+   "points_revamp": 105,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "comms": 1,
+    "gear": 1,
+    "protocol": 1,
+    "training": 1
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "imperials-ig-88-assassin-droid": {
+   "tta_id": "6177",
+   "points": 110,
+   "points_v2_6": 110,
+   "points_revamp": 110,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "comms": 1,
+    "gear": 1,
+    "training": 1
+   },
+   "wounds": 5,
+   "courage": 2,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "rebels-din-djarin-the-mandalorian": {
+   "tta_id": "6179",
+   "points": 105,
+   "points_v2_6": 105,
+   "points_revamp": 95,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "mandalorian-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "armament": 1,
+    "comms": 1,
+    "counterpart": 1,
+    "gear": 2,
+    "training": 2
+   },
+   "wounds": 5,
+   "courage": 3,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "rebels-the-bad-batch": {
+   "tta_id": "25086",
+   "points": 140,
+   "points_v2_6": 150,
+   "points_revamp": 150,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "clone-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "counterpart": 1,
+    "heavy-weapon": 4
+   },
+   "wounds": 2,
+   "courage": 3,
+   "speed": 2
+  },
+  "rebels-r2-d2": {
+   "tta_id": "55",
+   "points": 35,
+   "points_v2_6": 55,
+   "points_revamp": 55,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "comms": 1,
+    "counterpart": 1
+   },
+   "wounds": 4,
+   "courage": 2,
+   "speed": 2
+  },
+  "rebels-ahsoka-tano-fulcrum": {
+   "tta_id": "15014",
+   "points": 165,
+   "points_v2_6": 165,
+   "points_revamp": 115,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "force": 2,
+    "training": 2
+   },
+   "wounds": 6,
+   "courage": 3,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "rebels-chewbacca": {
+   "tta_id": "25",
+   "points": 110,
+   "points_v2_6": 90,
+   "points_revamp": 90,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "gear": 1,
+    "training": 2
+   },
+   "wounds": 9,
+   "courage": 2,
+   "speed": 2
+  },
+  "mercenary-swoop-bike-riders": {
+   "tta_id": "5406",
+   "points": 70,
+   "points_v2_6": 65,
+   "points_revamp": 70,
+   "rank": "support",
+   "type": "repulsor-vehicle",
+   "unit_subtype": "repulsor-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1
+   },
+   "wounds": 3,
+   "courage": 0,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "mercenary-a-a5-speeder-truck": {
+   "tta_id": "4919",
+   "points": 75,
+   "points_v2_6": 75,
+   "points_revamp": 75,
+   "rank": "heavy",
+   "type": "repulsor-vehicle",
+   "unit_subtype": "repulsor-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "crew": 2,
+    "hard-point": 1,
+    "pilot": 1
+   },
+   "wounds": 8,
+   "courage": 6,
+   "speed": 2,
+   "miniatures": 1
+  },
+  "mercenary-weequay-pirates": {
+   "tta_id": "32591",
+   "points": 40,
+   "points_v2_6": 40,
+   "points_revamp": 40,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "personnel": 2,
+    "training": 1
+   },
+   "wounds": 1,
+   "courage": 1,
+   "speed": 2,
+   "miniatures": 4
+  },
+  "mercenary-wlo-5-speeder-tank": {
+   "tta_id": "32592",
+   "points": 100,
+   "points_v2_6": 100,
+   "points_revamp": 100,
+   "rank": "heavy",
+   "type": "repulsor-vehicle",
+   "unit_subtype": "repulsor-vehicle",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "crew": 1,
+    "pilot": 1
+   },
+   "wounds": 10,
+   "courage": 6,
+   "speed": 1
+  }
+ },
+ "new_units": [
+  {
+   "id": "separatists-admiral-trench-fleet-commander",
+   "name": "Admiral Trench",
+   "sub_title": "Fleet Commander",
+   "faction": "separatists",
+   "miniatures": 1,
+   "wounds": 5,
+   "defense": "red",
+   "has_defense_surge": false,
+   "tta_id": "35770",
+   "points": 85,
+   "points_v2_6": 85,
+   "points_revamp": 85,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 3,
+    "comms": 1,
+    "gear": 1
+   },
+   "courage": 2,
+   "speed": 2
+  },
+  {
+   "id": "separatists-b2-super-rocket-battle-droids",
+   "name": "B2 Super Rocket Battle Droids",
+   "faction": "separatists",
+   "miniatures": 4,
+   "wounds": 2,
+   "defense": "red",
+   "has_defense_surge": false,
+   "tta_id": "35769",
+   "points": 94,
+   "points_v2_6": 94,
+   "points_revamp": 94,
+   "rank": "heavy",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "comms": 1,
+    "gear": 1,
+    "heavy-weapon": 1,
+    "personnel": 1
+   },
+   "courage": 2,
+   "speed": 3
+  },
+  {
+   "id": "mercenary-gar-saxon-head-of-clan-saxon",
+   "name": "Gar Saxon",
+   "sub_title": "Head of Clan Saxon",
+   "faction": "mercenary",
+   "miniatures": 1,
+   "wounds": 5,
+   "defense": "red",
+   "has_defense_surge": false,
+   "tta_id": "34888",
+   "points": 115,
+   "points_v2_6": 115,
+   "points_revamp": 115,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "mandalorian-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "armament": 1,
+    "command": 1,
+    "gear": 2,
+    "grenades": 1,
+    "training": 2
+   },
+   "courage": 2,
+   "speed": 2
+  },
+  {
+   "id": "mercenary-mandalorian-warriors-fire-support",
+   "name": "Mandalorian Warriors",
+   "sub_title": "Fire Support",
+   "faction": "mercenary",
+   "miniatures": 4,
+   "wounds": 1,
+   "defense": "white",
+   "has_defense_surge": false,
+   "tta_id": "33796",
+   "points": 55,
+   "points_v2_6": 55,
+   "points_revamp": 55,
+   "rank": "support",
+   "type": "trooper",
+   "unit_subtype": "mandalorian-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "helmet": 1,
+    "personnel": 1,
+    "training": 1
+   },
+   "courage": 2,
+   "speed": 2
+  },
+  {
+   "id": "mercenary-mandalorian-warriors",
+   "name": "Mandalorian Warriors",
+   "faction": "mercenary",
+   "miniatures": 5,
+   "wounds": 1,
+   "defense": "red",
+   "has_defense_surge": false,
+   "tta_id": "33797",
+   "points": 64,
+   "points_v2_6": 64,
+   "points_revamp": 64,
+   "rank": "corps",
+   "type": "trooper",
+   "unit_subtype": "mandalorian-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "armament": 1,
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "helmet": 1,
+    "personnel": 1,
+    "training": 1
+   },
+   "courage": 2,
+   "speed": 2
+  },
+  {
+   "id": "separatists-maul-impatient-apprentice",
+   "name": "Maul",
+   "sub_title": "Impatient Apprentice",
+   "faction": "separatists",
+   "miniatures": 1,
+   "wounds": 6,
+   "defense": "red",
+   "has_defense_surge": false,
+   "tta_id": "74",
+   "points": 160,
+   "points_v2_6": 160,
+   "points_revamp": 115,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "force": 2,
+    "training": 2
+   },
+   "courage": 3,
+   "speed": 2,
+   "force_alignment": "dark"
+  },
+  {
+   "id": "republic-obi-wan-kenobi-mounted-jedi-general",
+   "name": "Obi-Wan Kenobi",
+   "sub_title": "Mounted Jedi General",
+   "faction": "republic",
+   "miniatures": 1,
+   "wounds": 6,
+   "defense": "red",
+   "has_defense_surge": true,
+   "tta_id": "36283",
+   "points": 140,
+   "points_v2_6": 140,
+   "points_revamp": 140,
+   "rank": "commander",
+   "type": "repulsor-vehicle",
+   "unit_subtype": "repulsor-vehicle",
+   "is_unique": true,
+   "upgrades": {
+    "command": 1,
+    "comms": 1,
+    "force": 2,
+    "training": 1
+   },
+   "courage": 0,
+   "speed": 3,
+   "force_alignment": "light"
+  },
+  {
+   "id": "republic-r2-d2-independent-astromech",
+   "name": "R2-D2",
+   "sub_title": "Independent Astromech",
+   "faction": "republic",
+   "miniatures": 1,
+   "wounds": 4,
+   "defense": "white",
+   "has_defense_surge": false,
+   "tta_id": "56",
+   "points": 35,
+   "points_v2_6": 55,
+   "points_revamp": 55,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "comms": 1,
+    "counterpart": 1
+   },
+   "courage": 2,
+   "speed": 2
+  },
+  {
+   "id": "mercenary-rook-kast-devoted-to-the-cause",
+   "name": "Rook Kast",
+   "sub_title": "Devoted to the Cause",
+   "faction": "mercenary",
+   "miniatures": 1,
+   "wounds": 5,
+   "defense": "red",
+   "has_defense_surge": false,
+   "tta_id": "34886",
+   "points": 85,
+   "points_v2_6": 85,
+   "points_revamp": 85,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "mandalorian-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 1,
+    "comms": 1,
+    "gear": 1,
+    "grenades": 1,
+    "training": 1
+   },
+   "courage": 2,
+   "speed": 3
+  },
+  {
+   "id": "mercenary-sabine-wren-back-in-the-fold",
+   "name": "Sabine Wren",
+   "sub_title": "Back in the Fold",
+   "faction": "mercenary",
+   "miniatures": 1,
+   "wounds": 5,
+   "defense": "red",
+   "has_defense_surge": false,
+   "tta_id": "34887",
+   "points": 110,
+   "points_v2_6": 110,
+   "points_revamp": 110,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "mandalorian-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "armament": 1,
+    "gear": 2,
+    "grenades": 1,
+    "training": 1
+   },
+   "courage": 2,
+   "speed": 2
+  },
+  {
+   "id": "republic-shaak-ti-jedi-council",
+   "name": "Shaak Ti",
+   "sub_title": "Jedi Council",
+   "faction": "republic",
+   "miniatures": 1,
+   "wounds": 6,
+   "defense": "red",
+   "has_defense_surge": false,
+   "tta_id": "33794",
+   "points": 120,
+   "points_v2_6": 120,
+   "points_revamp": 120,
+   "rank": "operative",
+   "type": "trooper",
+   "unit_subtype": "trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 1,
+    "force": 2,
+    "training": 1
+   },
+   "courage": 3,
+   "speed": 2,
+   "force_alignment": "light"
+  },
+  {
+   "id": "mercenary-super-commandos",
+   "name": "Super Commandos",
+   "faction": "mercenary",
+   "miniatures": 4,
+   "wounds": 1,
+   "defense": "red",
+   "has_defense_surge": false,
+   "tta_id": "34890",
+   "points": 92,
+   "points_v2_6": 92,
+   "points_revamp": 92,
+   "rank": "special-forces",
+   "type": "trooper",
+   "unit_subtype": "mandalorian-trooper",
+   "is_unique": false,
+   "upgrades": {
+    "gear": 1,
+    "grenades": 1,
+    "heavy-weapon": 1,
+    "personnel": 1,
+    "training": 1
+   },
+   "courage": 2,
+   "speed": 2
+  },
+  {
+   "id": "separatists-super-tactical-droid",
+   "name": "Super Tactical Droid",
+   "faction": "separatists",
+   "miniatures": 1,
+   "wounds": 5,
+   "defense": "red",
+   "has_defense_surge": false,
+   "tta_id": "1853",
+   "points": 90,
+   "points_v2_6": 90,
+   "points_revamp": 75,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "droid-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 2,
+    "comms": 1,
+    "gear": 1
+   },
+   "courage": 2,
+   "speed": 2
+  },
+  {
+   "id": "mercenary-the-armorer-forging-the-future",
+   "name": "The Armorer",
+   "sub_title": "Forging the Future",
+   "faction": "mercenary",
+   "miniatures": 1,
+   "wounds": 6,
+   "defense": "red",
+   "has_defense_surge": false,
+   "tta_id": "33795",
+   "points": 120,
+   "points_v2_6": 120,
+   "points_revamp": 120,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "mandalorian-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 2,
+    "gear": 2,
+    "training": 1
+   },
+   "courage": 3,
+   "speed": 2
+  },
+  {
+   "id": "mercenary-ursa-wren-leader-of-clan-wren",
+   "name": "Ursa Wren",
+   "sub_title": "Leader of Clan Wren",
+   "faction": "mercenary",
+   "miniatures": 1,
+   "wounds": 5,
+   "defense": "red",
+   "has_defense_surge": false,
+   "tta_id": "34889",
+   "points": 75,
+   "points_v2_6": 75,
+   "points_revamp": 75,
+   "rank": "commander",
+   "type": "trooper",
+   "unit_subtype": "mandalorian-trooper",
+   "is_unique": true,
+   "upgrades": {
+    "command": 1,
+    "gear": 2,
+    "grenades": 1,
+    "training": 2
+   },
+   "courage": 2,
+   "speed": 2
+  }
+ ],
+ "upgrades": {
+  "2-1-b-medical-droid": {
+   "tta_id": "64",
+   "points": 18,
+   "points_v2_6": 20,
+   "points_revamp": 20,
+   "is_unique": false,
+   "restricted_to_rank": [
+    "corps"
+   ],
+   "faction": "rebels"
+  },
+  "a-300-rifle-gunner": {
+   "tta_id": "80",
+   "points": 9,
+   "points_v2_6": 1,
+   "points_revamp": 1,
+   "is_unique": false
+  },
+  "at-rt-flamethrower": {
+   "tta_id": "20",
+   "points": 25,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": false
+  },
+  "at-rt-laser-cannon": {
+   "tta_id": "3",
+   "points": 35,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": false
+  },
+  "at-rt-rotary-blaster": {
+   "tta_id": "4",
+   "points": 30,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": false
+  },
+  "at-st-mortar-launcher": {
+   "tta_id": "23",
+   "points": 10,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  "anger": {
+   "tta_id": "45",
+   "points": 5,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false,
+   "force_alignment": "dark"
+  },
+  "ax-108-ground-buzzer": {
+   "tta_id": "27",
+   "points": 20,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false
+  },
+  "barrage-generator": {
+   "tta_id": "40",
+   "points": 10,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false
+  },
+  "battle-meditation": {
+   "tta_id": "5",
+   "points": 10,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  "bowcaster-wookiee": {
+   "tta_id": "51",
+   "points": 35,
+   "points_v2_6": 31,
+   "points_revamp": 31,
+   "is_unique": false
+  },
+  "commanding-presence": {
+   "tta_id": "17",
+   "points": 10,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  "comms-jammer": {
+   "tta_id": "1",
+   "points": 15,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  "comms-relay": {
+   "tta_id": "65",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  "concussion-grenades": {
+   "tta_id": "6",
+   "points": 5,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false
+  },
+  "dh-447-sniper": {
+   "tta_id": "47",
+   "points": 28,
+   "points_v2_6": 28,
+   "points_revamp": 20,
+   "is_unique": false
+  },
+  "dlt-19-stormtrooper": {
+   "tta_id": "7",
+   "points": 24,
+   "points_v2_6": 20,
+   "points_revamp": 20,
+   "is_unique": false
+  },
+  "dlt-19-d-trooper": {
+   "tta_id": "84",
+   "points": 34,
+   "points_v2_6": 30,
+   "points_revamp": 28,
+   "is_unique": false
+  },
+  "dlt-19-x-sniper": {
+   "tta_id": "52",
+   "points": 28,
+   "points_v2_6": 28,
+   "points_revamp": 20,
+   "is_unique": false
+  },
+  "dt-f-16": {
+   "tta_id": "77",
+   "points": 22,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": true
+  },
+  "dw-3-concussion-grenade-launcher": {
+   "tta_id": "24",
+   "points": 15,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false
+  },
+  "duck-and-cover": {
+   "tta_id": "33",
+   "points": 8,
+   "points_v2_6": 2,
+   "points_revamp": 2,
+   "is_unique": false
+  },
+  "emergency-stims": {
+   "tta_id": "43",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false
+  },
+  "environmental-gear": {
+   "tta_id": "37",
+   "points": 3,
+   "points_v2_6": 2,
+   "points_revamp": 2,
+   "is_unique": false
+  },
+  "esteemed-leader": {
+   "tta_id": "26",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  "fx-9-medical-droid": {
+   "tta_id": "66",
+   "points": 19,
+   "points_v2_6": 22,
+   "points_revamp": 22,
+   "is_unique": false,
+   "faction": "imperials"
+  },
+  "first-seargant-arbmab": {
+   "tta_id": "87",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": true,
+   "restricted_to_unit_type": [
+    "ground-vehicle"
+   ],
+   "faction": "imperials"
+  },
+  "flametrooper": {
+   "tta_id": "36",
+   "points": 20,
+   "points_v2_6": 20,
+   "points_revamp": 20,
+   "is_unique": false
+  },
+  "fleet-trooper": {
+   "tta_id": "35",
+   "points": 11,
+   "points_v2_6": 7,
+   "points_revamp": 7,
+   "is_unique": false
+  },
+  "force-choke": {
+   "tta_id": "8",
+   "points": 5,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "force_alignment": "dark"
+  },
+  "force-push": {
+   "tta_id": "9",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 40,
+   "is_unique": false
+  },
+  "force-reflexes": {
+   "tta_id": "10",
+   "points": 15,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  "fragmentation-grenades": {
+   "tta_id": "57",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  "general-weiss": {
+   "tta_id": "25",
+   "points": 10,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": true,
+   "restricted_to_unit_type": [
+    "ground-vehicle"
+   ],
+   "faction": "imperials"
+  },
+  "grappling-hooks": {
+   "tta_id": "18",
+   "points": 3,
+   "points_v2_6": 2,
+   "points_revamp": 2,
+   "is_unique": false
+  },
+  "hh-12-stormtrooper": {
+   "tta_id": "19",
+   "points": 34,
+   "points_v2_6": 16,
+   "points_revamp": 22,
+   "is_unique": false
+  },
+  "hq-uplink": {
+   "tta_id": "41",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false
+  },
+  "hunter": {
+   "tta_id": "38",
+   "points": 6,
+   "points_v2_6": 6,
+   "points_revamp": 6,
+   "is_unique": false
+  },
+  "impact-grenades": {
+   "tta_id": "30",
+   "points": 5,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false
+  },
+  "imperial-comms-technician": {
+   "tta_id": "67",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "faction": "imperials"
+  },
+  "imperial-hammers-elite-armor-pilot": {
+   "tta_id": "83",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "ground-vehicle"
+   ],
+   "faction": "imperials"
+  },
+  "improvised-orders": {
+   "tta_id": "44",
+   "points": 10,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": true
+  },
+  "jedi-mind-trick": {
+   "tta_id": "32",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "force_alignment": "light"
+  },
+  "long-range-comlink": {
+   "tta_id": "2",
+   "points": 10,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  "m-45-ion-blaster": {
+   "tta_id": "92",
+   "points": 38,
+   "points_v2_6": 25,
+   "points_revamp": 28,
+   "is_unique": false
+  },
+  "mpl-57-barrage-trooper": {
+   "tta_id": "39",
+   "points": 33,
+   "points_v2_6": 19,
+   "points_revamp": 22,
+   "is_unique": false
+  },
+  "mpl-57-ion-trooper": {
+   "tta_id": "11",
+   "points": 32,
+   "points_v2_6": 17,
+   "points_revamp": 27,
+   "is_unique": false
+  },
+  "mark-ii-medium-blaster": {
+   "tta_id": "91",
+   "points": 34,
+   "points_v2_6": 21,
+   "points_revamp": 21,
+   "is_unique": false
+  },
+  "mo-dk-power-harpoon": {
+   "tta_id": "28",
+   "points": 8,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": false
+  },
+  "outer-rim-speeder-jockey": {
+   "tta_id": "82",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "repulsor-vehicle"
+   ],
+   "faction": "rebels"
+  },
+  "overcharged-generator": {
+   "tta_id": "42",
+   "points": 10,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false
+  },
+  "overwatch": {
+   "tta_id": "72",
+   "points": 4,
+   "points_v2_6": 4,
+   "points_revamp": 4,
+   "is_unique": false
+  },
+  "personal-combat-shield": {
+   "tta_id": "22604",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "mandalorian-trooper"
+   ]
+  },
+  "proton-charge-saboteur": {
+   "tta_id": "48",
+   "points": 26,
+   "points_v2_6": 23,
+   "points_revamp": 14,
+   "is_unique": false
+  },
+  "rps-6-rocket-gunner": {
+   "tta_id": "81",
+   "points": 36,
+   "points_v2_6": 21,
+   "points_revamp": 21,
+   "is_unique": false
+  },
+  "rebel-comms-technician": {
+   "tta_id": "55",
+   "points": 9,
+   "points_v2_6": 9,
+   "points_revamp": 9,
+   "is_unique": false,
+   "restricted_to_rank": [
+    "corps"
+   ],
+   "faction": "rebels"
+  },
+  "rebel-officer": {
+   "tta_id": "49",
+   "points": 19,
+   "points_v2_6": 16,
+   "points_revamp": 16,
+   "is_unique": false,
+   "restricted_to_rank": [
+    "corps"
+   ],
+   "faction": "rebels"
+  },
+  "rebel-trooper": {
+   "tta_id": "12",
+   "points": 10,
+   "points_v2_6": 7,
+   "points_revamp": 7,
+   "is_unique": false
+  },
+  "recon-intel": {
+   "tta_id": "58",
+   "points": 2,
+   "points_v2_6": 2,
+   "points_revamp": 8,
+   "is_unique": false
+  },
+  "ryder-azadi": {
+   "tta_id": "90",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": true,
+   "restricted_to_unit_type": [
+    "repulsor-vehicle"
+   ],
+   "faction": "rebels"
+  },
+  "saber-throw": {
+   "tta_id": "13",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false
+  },
+  "scatter-gun-trooper": {
+   "tta_id": "31",
+   "points": 23,
+   "points_v2_6": 23,
+   "points_revamp": 22,
+   "is_unique": false
+  },
+  "snowtrooper": {
+   "tta_id": "34",
+   "points": 12,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false
+  },
+  "sonic-charge-saboteur": {
+   "tta_id": "53",
+   "points": 26,
+   "points_v2_6": 26,
+   "points_revamp": 17,
+   "is_unique": false
+  },
+  "stormtrooper": {
+   "tta_id": "14",
+   "points": 11,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false
+  },
+  "t-7-ion-snowtrooper": {
+   "tta_id": "21",
+   "points": 34,
+   "points_v2_6": 18,
+   "points_revamp": 24,
+   "is_unique": false
+  },
+  "targeting-scopes": {
+   "tta_id": "15",
+   "points": 6,
+   "points_v2_6": 4,
+   "points_revamp": 4,
+   "is_unique": false
+  },
+  "tenacity": {
+   "tta_id": "54",
+   "points": 4,
+   "points_v2_6": 6,
+   "points_revamp": 6,
+   "is_unique": false
+  },
+  "the-darksaber": {
+   "tta_id": "71",
+   "points": 25,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": true
+  },
+  "wedge-antilles": {
+   "tta_id": "29",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": true,
+   "restricted_to_unit_type": [
+    "repulsor-vehicle"
+   ],
+   "faction": "rebels"
+  },
+  "z-6-trooper": {
+   "tta_id": "16",
+   "points": 22,
+   "points_v2_6": 20,
+   "points_revamp": 20,
+   "is_unique": false
+  }
+ },
+ "new_upgrades": [
+  {
+   "id": "bounty-programming",
+   "name": "\"Bounty\" Programming",
+   "type": "protocol",
+   "tta_id": "4441",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-ig-11-nurse-droid"
+    }
+   ]
+  },
+  {
+   "id": "nanny-programming",
+   "name": "\"Nanny\" Programming",
+   "type": "protocol",
+   "tta_id": "3648",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-ig-11-nurse-droid"
+    }
+   ]
+  },
+  {
+   "id": "327th-star-corps-elite-armor-pilots",
+   "name": "327th Star Corps Elite Armor Pilots",
+   "type": "pilot",
+   "tta_id": "960",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-infantry-support-platform"
+    }
+   ]
+  },
+  {
+   "id": "88i-twin-light-blaster",
+   "name": "88i Twin Light Blaster",
+   "type": "hard-point",
+   "tta_id": "22",
+   "points": 20,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-at-st"
+    }
+   ]
+  },
+  {
+   "id": "a-180",
+   "name": "A-180",
+   "type": "armament",
+   "tta_id": "59",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-jyn-erso"
+    }
+   ]
+  },
+  {
+   "id": "a280-rifle-config",
+   "name": "A280, Rifle Config",
+   "type": "armament",
+   "tta_id": "142",
+   "points": 10,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-cassian-andor"
+    }
+   ]
+  },
+  {
+   "id": "ag-2g-quad-laser",
+   "name": "AG-2G Quad Laser",
+   "type": "hard-point",
+   "tta_id": "206",
+   "points": 36,
+   "points_v2_6": 25,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-a-a5-speeder-truck"
+    }
+   ]
+  },
+  {
+   "id": "arf-trooper-duo",
+   "name": "ARF Trooper Duo",
+   "type": "personnel",
+   "tta_id": "18476",
+   "points": 26,
+   "points_v2_6": 26,
+   "points_revamp": 20,
+   "is_unique": false,
+   "revamp_only": true,
+   "restricted_to_unit": [
+    {
+     "id": "republic-arf-troopers"
+    }
+   ]
+  },
+  {
+   "id": "aayla-secura",
+   "name": "Aayla Secura",
+   "type": "pilot",
+   "tta_id": "119",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "republic-tx-130-saber-class-fighter-tank"
+    }
+   ]
+  },
+  {
+   "id": "adaptive-combat-network",
+   "name": "Adaptive Combat Network",
+   "type": "comms",
+   "tta_id": "22901",
+   "points": 4,
+   "points_v2_6": 4,
+   "points_revamp": 4,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "droid-trooper"
+   ]
+  },
+  {
+   "id": "agent-kallus",
+   "name": "Agent Kallus",
+   "type": "heavy-weapon",
+   "tta_id": "20801",
+   "points": 28,
+   "points_v2_6": 28,
+   "points_revamp": 28,
+   "is_unique": true,
+   "restricted_to_rank": [
+    "corps",
+    "special-forces"
+   ],
+   "faction": "imperials"
+  },
+  {
+   "id": "aggressive-tactics",
+   "name": "Aggressive Tactics",
+   "type": "command",
+   "tta_id": "104",
+   "points": 10,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": false
+  },
+  {
+   "id": "agile-climber",
+   "name": "Agile Climber",
+   "type": "training",
+   "tta_id": "22902",
+   "points": 3,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "trooper"
+   ]
+  },
+  {
+   "id": "ahsoka-tano-jedi-padawan",
+   "name": "Ahsoka Tano, Jedi Padawan",
+   "type": "squad-leader",
+   "tta_id": "18909",
+   "points": 35,
+   "points_v2_6": 35,
+   "points_revamp": 35,
+   "is_unique": true,
+   "revamp_only": true,
+   "restricted_to_unit_type": [
+    "clone-trooper"
+   ]
+  },
+  {
+   "id": "annul",
+   "name": "Annul",
+   "type": "force",
+   "tta_id": "22903",
+   "points": 12,
+   "points_v2_6": 12,
+   "points_revamp": 12,
+   "is_unique": false
+  },
+  {
+   "id": "armor-piercing-shells",
+   "name": "Armor-Piercing Shells",
+   "type": "ordnance",
+   "tta_id": "147",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false
+  },
+  {
+   "id": "asajj-ventress",
+   "name": "Asajj Ventress",
+   "type": "heavy-weapon",
+   "tta_id": "21911",
+   "points": 26,
+   "points_v2_6": 26,
+   "points_revamp": 26,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-b1-battle-droids"
+    },
+    {
+     "id": "separatists-bx-series-droid-commandos"
+    }
+   ]
+  },
+  {
+   "id": "ascension-cables",
+   "name": "Ascension Cables",
+   "type": "gear",
+   "tta_id": "173",
+   "points": 4,
+   "points_v2_6": 4,
+   "points_revamp": 4,
+   "is_unique": false
+  },
+  {
+   "id": "astromech",
+   "name": "Astromech",
+   "type": "personnel",
+   "tta_id": "16581",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-sleeper-cell"
+    }
+   ]
+  },
+  {
+   "id": "astromech-droid",
+   "name": "Astromech Droid",
+   "type": "personnel",
+   "tta_id": "63",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_rank": [
+    "corps"
+   ],
+   "faction": "rebels"
+  },
+  {
+   "id": "attack-protocols",
+   "name": "Attack Protocols",
+   "type": "protocol",
+   "tta_id": "947",
+   "points": 3,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "ground-vehicle",
+    "repulsor-vehicle"
+   ]
+  },
+  {
+   "id": "axe-ewok",
+   "name": "Axe Ewok",
+   "type": "heavy-weapon",
+   "tta_id": "9398",
+   "points": 15,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-ewok-skirmishers"
+    },
+    {
+     "id": "rebels-ewok-slingers"
+    }
+   ]
+  },
+  {
+   "id": "axe-woves",
+   "name": "Axe Woves",
+   "type": "personnel",
+   "tta_id": "22512",
+   "points": 30,
+   "points_v2_6": 30,
+   "points_revamp": 30,
+   "is_unique": true
+  },
+  {
+   "id": "b1-battle-droid",
+   "name": "B1 Battle Droid",
+   "type": "personnel",
+   "tta_id": "94",
+   "points": 6,
+   "points_v2_6": 4,
+   "points_revamp": 4,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-b1-battle-droids"
+    }
+   ]
+  },
+  {
+   "id": "b1-battle-droid-squad",
+   "name": "B1 Battle Droid Squad",
+   "type": "personnel",
+   "tta_id": "16573",
+   "points": 38,
+   "points_v2_6": 38,
+   "points_revamp": 38,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-b1-battle-droids"
+    }
+   ]
+  },
+  {
+   "id": "b1-security-droid",
+   "name": "B1 Security Droid",
+   "type": "personnel",
+   "tta_id": "125",
+   "points": 9,
+   "points_v2_6": 6,
+   "points_revamp": 6,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-b1-battle-droids"
+    }
+   ]
+  },
+  {
+   "id": "b2-super-battle-droid",
+   "name": "B2 Super Battle Droid",
+   "type": "personnel",
+   "tta_id": "118",
+   "points": 16,
+   "points_v2_6": 13,
+   "points_revamp": 18,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-b2-super-battle-droids"
+    }
+   ]
+  },
+  {
+   "id": "b2-super-battle-droid-squad",
+   "name": "B2 Super Battle Droid Squad",
+   "type": "personnel",
+   "tta_id": "16563",
+   "points": 77,
+   "points_v2_6": 77,
+   "points_revamp": 77,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-b2-super-battle-droids"
+    }
+   ]
+  },
+  {
+   "id": "b2-super-rocket-battle-droid",
+   "name": "B2 Super Rocket Battle Droid",
+   "type": "personnel",
+   "tta_id": "23144",
+   "points": 21,
+   "points_v2_6": 21,
+   "points_revamp": 21,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-b2-super-rocket-battle-droids"
+    }
+   ]
+  },
+  {
+   "id": "b2-acm-battle-droid",
+   "name": "B2-ACM Battle Droid",
+   "type": "heavy-weapon",
+   "tta_id": "141",
+   "points": 26,
+   "points_v2_6": 24,
+   "points_revamp": 24,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-b2-super-battle-droids"
+    }
+   ]
+  },
+  {
+   "id": "b2-ha-battle-droid",
+   "name": "B2-HA Battle Droid",
+   "type": "heavy-weapon",
+   "tta_id": "148",
+   "points": 32,
+   "points_v2_6": 32,
+   "points_revamp": 32,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-b2-super-battle-droids"
+    }
+   ]
+  },
+  {
+   "id": "b2-ha-rocket-droid",
+   "name": "B2-HA Rocket Droid",
+   "type": "heavy-weapon",
+   "tta_id": "23146",
+   "points": 30,
+   "points_v2_6": 30,
+   "points_revamp": 30,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-b2-super-rocket-battle-droids"
+    }
+   ]
+  },
+  {
+   "id": "barc-ion-gunner",
+   "name": "BARC Ion Gunner",
+   "type": "crew",
+   "tta_id": "112",
+   "points": 28,
+   "points_v2_6": 24,
+   "points_revamp": 21,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-barc-speeder"
+    }
+   ]
+  },
+  {
+   "id": "barc-rps-6-gunner",
+   "name": "BARC RPS-6 Gunner",
+   "type": "crew",
+   "tta_id": "113",
+   "points": 24,
+   "points_v2_6": 14,
+   "points_revamp": 14,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-barc-speeder"
+    }
+   ]
+  },
+  {
+   "id": "barc-twin-laser-gunner",
+   "name": "BARC Twin Laser Gunner",
+   "type": "crew",
+   "tta_id": "100",
+   "points": 18,
+   "points_v2_6": 12,
+   "points_revamp": 12,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-barc-speeder"
+    }
+   ]
+  },
+  {
+   "id": "bx-deflector-shields",
+   "name": "BX Deflector Shields",
+   "type": "armament",
+   "tta_id": "160",
+   "points": 18,
+   "points_v2_6": 10,
+   "points_revamp": 18,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-bx-series-droid-commandos"
+    },
+    {
+     "id": "separatists-bx-series-droid-commandos-strike-team"
+    }
+   ]
+  },
+  {
+   "id": "bx-vibroswords",
+   "name": "BX Vibroswords",
+   "type": "armament",
+   "tta_id": "161",
+   "points": 6,
+   "points_v2_6": 6,
+   "points_revamp": 6,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-bx-series-droid-commandos"
+    },
+    {
+     "id": "separatists-bx-series-droid-commandos-strike-team"
+    }
+   ]
+  },
+  {
+   "id": "bx-series-droid-sniper",
+   "name": "BX-Series Droid Sniper",
+   "type": "heavy-weapon",
+   "tta_id": "159",
+   "points": 30,
+   "points_v2_6": 30,
+   "points_revamp": 20,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-bx-series-droid-commandos-strike-team"
+    }
+   ]
+  },
+  {
+   "id": "backworld-medic",
+   "name": "Backworld Medic",
+   "type": "crew",
+   "tta_id": "212",
+   "points": 12,
+   "points_v2_6": 12,
+   "points_revamp": 12,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-a-a5-speeder-truck"
+    }
+   ]
+  },
+  {
+   "id": "baron-rudor",
+   "name": "Baron Rudor",
+   "type": "pilot",
+   "tta_id": "205",
+   "points": 12,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": true,
+   "restricted_to_unit_type": [
+    "repulsor-vehicle"
+   ],
+   "faction": "imperials"
+  },
+  {
+   "id": "battle-shield-wookiee",
+   "name": "Battle Shield Wookiee",
+   "type": "heavy-weapon",
+   "tta_id": "413",
+   "points": 26,
+   "points_v2_6": 26,
+   "points_revamp": 26,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-wookiee-warriors-freedom-fighters"
+    },
+    {
+     "id": "rebels-wookiee-warriors-kashyyyk-resistance"
+    },
+    {
+     "id": "republic-wookiee-warriors-kashyyyk-defenders"
+    },
+    {
+     "id": "republic-wookiee-warriors-noble-fighters"
+    }
+   ]
+  },
+  {
+   "id": "battlemind",
+   "name": "Battlemind",
+   "type": "force",
+   "tta_id": "22904",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false
+  },
+  {
+   "id": "beam-turret",
+   "name": "Beam Turret",
+   "type": "hard-point",
+   "tta_id": "145",
+   "points": 30,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-tx-130-saber-class-fighter-tank"
+    }
+   ]
+  },
+  {
+   "id": "beskar-spear",
+   "name": "Beskar Spear",
+   "type": "armament",
+   "tta_id": "4413",
+   "points": 15,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-din-djarin-the-mandalorian"
+    }
+   ]
+  },
+  {
+   "id": "black-sun-crew",
+   "name": "Black Sun Crew",
+   "type": "crew",
+   "tta_id": "21341",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-wlo-5-speeder-tank"
+    }
+   ]
+  },
+  {
+   "id": "black-sun-enforcer",
+   "name": "Black Sun Enforcer",
+   "type": "personnel",
+   "tta_id": "2566",
+   "points": 11,
+   "points_v2_6": 11,
+   "points_revamp": 11,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-black-sun-enforcers"
+    }
+   ]
+  },
+  {
+   "id": "black-sun-vigo",
+   "name": "Black Sun Vigo",
+   "type": "personnel",
+   "tta_id": "2567",
+   "points": 18,
+   "points_v2_6": 20,
+   "points_revamp": 20,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-black-sun-enforcers"
+    }
+   ]
+  },
+  {
+   "id": "bo-katan-kryze",
+   "name": "Bo-Katan Kryze",
+   "type": "personnel",
+   "tta_id": "22513",
+   "points": 30,
+   "points_v2_6": 30,
+   "points_revamp": 30,
+   "is_unique": true
+  },
+  {
+   "id": "boba-s-flame-projector",
+   "name": "Boba's Flame Projector",
+   "type": "gear",
+   "tta_id": "5569",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-boba-fett-infamous-bounty-hunter"
+    },
+    {
+     "id": "rebels-boba-fett-daimyo-of-mos-espa"
+    }
+   ]
+  },
+  {
+   "id": "boil",
+   "name": "Boil",
+   "type": "squad-leader",
+   "tta_id": "16554",
+   "points": 20,
+   "points_v2_6": 20,
+   "points_revamp": 20,
+   "is_unique": true,
+   "revamp_only": true,
+   "restricted_to_rank": [
+    "corps"
+   ]
+  },
+  {
+   "id": "boil-personnel",
+   "name": "Boil",
+   "type": "personnel",
+   "tta_id": "3749",
+   "points": 15,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": true,
+   "restricted_to_rank": [
+    "corps"
+   ],
+   "restricted_to_unit_type": [
+    "clone-trooper"
+   ]
+  },
+  {
+   "id": "bunker-buster-shells",
+   "name": "Bunker Buster Shells",
+   "type": "ordnance",
+   "tta_id": "152",
+   "points": 12,
+   "points_v2_6": 12,
+   "points_revamp": 12,
+   "is_unique": false
+  },
+  {
+   "id": "burst-of-speed",
+   "name": "Burst of Speed",
+   "type": "force",
+   "tta_id": "626",
+   "points": 3,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false
+  },
+  {
+   "id": "c-3po",
+   "name": "C-3PO",
+   "type": "counterpart",
+   "tta_id": "131",
+   "points": 15,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-r2-d2"
+    },
+    {
+     "id": "republic-r2-d2-independent-astromech"
+    }
+   ]
+  },
+  {
+   "id": "cm-0-93-trooper",
+   "name": "CM-0/93 Trooper",
+   "type": "heavy-weapon",
+   "tta_id": "98",
+   "points": 31,
+   "points_v2_6": 22,
+   "points_revamp": 22,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-veterans"
+    }
+   ]
+  },
+  {
+   "id": "cr-24-flame-rifle",
+   "name": "CR-24 Flame Rifle",
+   "type": "armament",
+   "tta_id": "115",
+   "points": 20,
+   "points_v2_6": 10,
+   "points_revamp": 14,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-dewback-rider"
+    }
+   ]
+  },
+  {
+   "id": "call-to-arms",
+   "name": "Call to Arms",
+   "type": "training",
+   "tta_id": "9399",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "trooper"
+   ]
+  },
+  {
+   "id": "cassian-andor",
+   "name": "Cassian Andor",
+   "type": "heavy-weapon",
+   "tta_id": "20800",
+   "points": 25,
+   "points_v2_6": 25,
+   "points_revamp": 25,
+   "is_unique": true,
+   "restricted_to_rank": [
+    "corps"
+   ],
+   "faction": "rebels"
+  },
+  {
+   "id": "caught-in-a-web",
+   "name": "Caught in a Web",
+   "type": "command",
+   "tta_id": "23148",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-admiral-trench-fleet-commander"
+    }
+   ]
+  },
+  {
+   "id": "champion-of-the-watch",
+   "name": "Champion of the Watch",
+   "type": "helmet",
+   "tta_id": "22599",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "mandalorian-trooper"
+   ]
+  },
+  {
+   "id": "chewbacca",
+   "name": "Chewbacca",
+   "type": "heavy-weapon",
+   "tta_id": "21913",
+   "points": 40,
+   "points_v2_6": 40,
+   "points_revamp": 40,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-wookiee-warriors-freedom-fighters"
+    },
+    {
+     "id": "rebels-wookiee-warriors-kashyyyk-resistance"
+    },
+    {
+     "id": "republic-wookiee-warriors-kashyyyk-defenders"
+    },
+    {
+     "id": "republic-wookiee-warriors-noble-fighters"
+    }
+   ]
+  },
+  {
+   "id": "children-of-the-watch",
+   "name": "Children of the Watch",
+   "type": "helmet",
+   "tta_id": "22597",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "mandalorian-trooper"
+   ]
+  },
+  {
+   "id": "clairvoyance",
+   "name": "Clairvoyance",
+   "type": "force",
+   "tta_id": "19833",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "revamp_only": true
+  },
+  {
+   "id": "clan-kryze",
+   "name": "Clan Kryze",
+   "type": "helmet",
+   "tta_id": "22595",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "mandalorian-trooper"
+   ]
+  },
+  {
+   "id": "clan-saxon",
+   "name": "Clan Saxon",
+   "type": "helmet",
+   "tta_id": "22598",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "mandalorian-trooper"
+   ]
+  },
+  {
+   "id": "clan-wren",
+   "name": "Clan Wren",
+   "type": "helmet",
+   "tta_id": "22596",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "mandalorian-trooper"
+   ]
+  },
+  {
+   "id": "clone-captain",
+   "name": "Clone Captain",
+   "type": "squad-leader",
+   "tta_id": "16556",
+   "points": 22,
+   "points_v2_6": 22,
+   "points_revamp": 22,
+   "is_unique": false
+  },
+  {
+   "id": "clone-captain-rex",
+   "name": "Clone Captain Rex",
+   "type": "squad-leader",
+   "tta_id": "20802",
+   "points": 38,
+   "points_v2_6": 38,
+   "points_revamp": 38,
+   "is_unique": true,
+   "restricted_to_rank": [
+    "corps"
+   ],
+   "faction": "republic"
+  },
+  {
+   "id": "clone-commander",
+   "name": "Clone Commander",
+   "type": "squad-leader",
+   "tta_id": "16555",
+   "points": 22,
+   "points_v2_6": 22,
+   "points_revamp": 30,
+   "is_unique": false,
+   "revamp_only": true
+  },
+  {
+   "id": "clone-commander-personnel",
+   "name": "Clone Commander",
+   "type": "personnel",
+   "tta_id": "193",
+   "points": 20,
+   "points_v2_6": 18,
+   "points_revamp": 18,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "clone-trooper"
+   ]
+  },
+  {
+   "id": "clone-commander-cody",
+   "name": "Clone Commander Cody",
+   "type": "squad-leader",
+   "tta_id": "21910",
+   "points": 28,
+   "points_v2_6": 28,
+   "points_revamp": 28,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "republic-arf-troopers"
+    },
+    {
+     "id": "republic-clone-trooper-marksmen"
+    }
+   ]
+  },
+  {
+   "id": "clone-commander-fox",
+   "name": "Clone Commander Fox",
+   "type": "pilot",
+   "tta_id": "200",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "republic-laat-le-patrol-transport-republic"
+    }
+   ]
+  },
+  {
+   "id": "clone-comms-technician",
+   "name": "Clone Comms Technician",
+   "type": "personnel",
+   "tta_id": "194",
+   "points": 12,
+   "points_v2_6": 11,
+   "points_revamp": 30,
+   "is_unique": false,
+   "restricted_to_rank": [
+    "corps"
+   ],
+   "restricted_to_unit_type": [
+    "clone-trooper"
+   ]
+  },
+  {
+   "id": "clone-engineer",
+   "name": "Clone Engineer",
+   "type": "personnel",
+   "tta_id": "195",
+   "points": 18,
+   "points_v2_6": 14,
+   "points_revamp": 17,
+   "is_unique": false,
+   "restricted_to_rank": [
+    "corps"
+   ],
+   "restricted_to_unit_type": [
+    "clone-trooper"
+   ]
+  },
+  {
+   "id": "clone-marksman",
+   "name": "Clone Marksman",
+   "type": "personnel",
+   "tta_id": "20770",
+   "points": 14,
+   "points_v2_6": 14,
+   "points_revamp": 14,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-clone-trooper-marksmen"
+    }
+   ]
+  },
+  {
+   "id": "clone-medic",
+   "name": "Clone Medic",
+   "type": "squad-leader",
+   "tta_id": "19065",
+   "points": 20,
+   "points_v2_6": 15,
+   "points_revamp": 20,
+   "is_unique": false,
+   "revamp_only": true,
+   "restricted_to_unit_type": [
+    "clone-trooper"
+   ]
+  },
+  {
+   "id": "clone-medic-personnel",
+   "name": "Clone Medic",
+   "type": "personnel",
+   "tta_id": "196",
+   "points": 20,
+   "points_v2_6": 15,
+   "points_revamp": 20,
+   "is_unique": false,
+   "restricted_to_rank": [
+    "corps"
+   ],
+   "restricted_to_unit_type": [
+    "clone-trooper"
+   ]
+  },
+  {
+   "id": "clone-shock-trooper-pilot",
+   "name": "Clone Shock Trooper Pilot",
+   "type": "pilot",
+   "tta_id": "202",
+   "points": 4,
+   "points_v2_6": 4,
+   "points_revamp": 4,
+   "is_unique": false,
+   "restricted_to_rank": [
+    "heavy"
+   ],
+   "faction": "republic"
+  },
+  {
+   "id": "clone-specialist",
+   "name": "Clone Specialist",
+   "type": "personnel",
+   "tta_id": "16567",
+   "points": 17,
+   "points_v2_6": 17,
+   "points_revamp": 17,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-clone-trooper-infantry"
+    },
+    {
+     "id": "republic-clone-trooper-marksmen"
+    }
+   ]
+  },
+  {
+   "id": "clone-trooper-infantry",
+   "name": "Clone Trooper Infantry",
+   "type": "personnel",
+   "tta_id": "16559",
+   "points": 13,
+   "points_v2_6": 13,
+   "points_revamp": 13,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-clone-trooper-infantry"
+    }
+   ]
+  },
+  {
+   "id": "clone-trooper-infantry-squad",
+   "name": "Clone Trooper Infantry Squad",
+   "type": "personnel",
+   "tta_id": "16571",
+   "points": 56,
+   "points_v2_6": 56,
+   "points_revamp": 53,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-clone-trooper-infantry"
+    }
+   ]
+  },
+  {
+   "id": "clone-trooper-marksmen-squad",
+   "name": "Clone Trooper Marksmen Squad",
+   "type": "personnel",
+   "tta_id": "20718",
+   "points": 53,
+   "points_v2_6": 53,
+   "points_revamp": 53,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-clone-trooper-marksmen"
+    }
+   ]
+  },
+  {
+   "id": "combat-armor",
+   "name": "Combat Armor",
+   "type": "gear",
+   "tta_id": "20282",
+   "points": 15,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-agent"
+    }
+   ]
+  },
+  {
+   "id": "combat-shields",
+   "name": "Combat Shields",
+   "type": "gear",
+   "tta_id": "22603",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "mandalorian-trooper"
+   ]
+  },
+  {
+   "id": "command-control-array",
+   "name": "Command Control Array",
+   "type": "comms",
+   "tta_id": "169",
+   "points": 2,
+   "points_v2_6": 2,
+   "points_revamp": 2,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "ground-vehicle",
+    "repulsor-vehicle"
+   ]
+  },
+  {
+   "id": "command-and-control-uplink",
+   "name": "Command and Control Uplink",
+   "type": "gear",
+   "tta_id": "20274",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-agent"
+    }
+   ]
+  },
+  {
+   "id": "crosshair",
+   "name": "Crosshair",
+   "type": "heavy-weapon",
+   "tta_id": "15989",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-the-bad-batch"
+    }
+   ]
+  },
+  {
+   "id": "dc-15x-arc-trooper-gunner",
+   "name": "DC-15x ARC Trooper Gunner",
+   "type": "heavy-weapon",
+   "tta_id": "21916",
+   "points": 26,
+   "points_v2_6": 26,
+   "points_revamp": 26,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-arc-troopers"
+    }
+   ]
+  },
+  {
+   "id": "dc-15x-arc-trooper-sniper",
+   "name": "DC-15x ARC Trooper Sniper",
+   "type": "heavy-weapon",
+   "tta_id": "158",
+   "points": 31,
+   "points_v2_6": 31,
+   "points_revamp": 26,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-arc-troopers-strike-team"
+    }
+   ]
+  },
+  {
+   "id": "dc-17m-icws-config",
+   "name": "DC-17m ICWS Config",
+   "type": "armament",
+   "tta_id": "15114",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-clone-commandos"
+    },
+    {
+     "id": "republic-clone-commandos-delta-squad"
+    }
+   ]
+  },
+  {
+   "id": "dlt-20a-range-trooper",
+   "name": "DLT-20A Range Trooper",
+   "type": "heavy-weapon",
+   "tta_id": "15010",
+   "points": 25,
+   "points_v2_6": 25,
+   "points_revamp": 25,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-range-troopers"
+    }
+   ]
+  },
+  {
+   "id": "dlt-20a-trooper",
+   "name": "DLT-20A Trooper",
+   "type": "heavy-weapon",
+   "tta_id": "123",
+   "points": 26,
+   "points_v2_6": 26,
+   "points_revamp": 26,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-troopers"
+    }
+   ]
+  },
+  {
+   "id": "dp-23-clone-trooper",
+   "name": "DP-23 Clone Trooper",
+   "type": "heavy-weapon",
+   "tta_id": "16572",
+   "points": 22,
+   "points_v2_6": 22,
+   "points_revamp": 22,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-clone-trooper-infantry"
+    }
+   ]
+  },
+  {
+   "id": "dt-57-annihilator",
+   "name": "DT-57 \"Annihilator\"",
+   "type": "armament",
+   "tta_id": "110",
+   "points": 12,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-general-grievous-sinister-cyborg"
+    }
+   ]
+  },
+  {
+   "id": "defend-in-depth",
+   "name": "Defend in Depth",
+   "type": "doctrine",
+   "tta_id": "20270",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": true,
+   "revamp_only": true,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-agent"
+    }
+   ]
+  },
+  {
+   "id": "defense-protocols",
+   "name": "Defense Protocols",
+   "type": "protocol",
+   "tta_id": "961",
+   "points": 3,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "ground-vehicle",
+    "repulsor-vehicle"
+   ]
+  },
+  {
+   "id": "del-meeko",
+   "name": "Del Meeko",
+   "type": "heavy-weapon",
+   "tta_id": "170",
+   "points": 38,
+   "points_v2_6": 25,
+   "points_revamp": 35,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-special-forces"
+    },
+    {
+     "id": "imperials-imperial-special-forces-inferno-squad"
+    }
+   ],
+   "restricted_to_rank": [
+    "corps"
+   ],
+   "faction": "imperials"
+  },
+  {
+   "id": "despair",
+   "name": "Despair",
+   "type": "force",
+   "tta_id": "22905",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "force_alignment": "dark"
+  },
+  {
+   "id": "din-djarin",
+   "name": "Din Djarin",
+   "type": "personnel",
+   "tta_id": "22594",
+   "points": 30,
+   "points_v2_6": 30,
+   "points_revamp": 30,
+   "is_unique": true
+  },
+  {
+   "id": "din-s-amban-rifle",
+   "name": "Din's Amban Rifle",
+   "type": "armament",
+   "tta_id": "3650",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-din-djarin-the-mandalorian"
+    }
+   ]
+  },
+  {
+   "id": "din-s-flame-projector",
+   "name": "Din's Flame Projector",
+   "type": "gear",
+   "tta_id": "3667",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 5,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-din-djarin-the-mandalorian"
+    }
+   ]
+  },
+  {
+   "id": "din-s-jetpack",
+   "name": "Din's Jetpack",
+   "type": "gear",
+   "tta_id": "19062",
+   "points": 15,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": true,
+   "revamp_only": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-din-djarin-the-mandalorian"
+    }
+   ]
+  },
+  {
+   "id": "dioxis-mine-saboteur",
+   "name": "Dioxis Mine Saboteur",
+   "type": "heavy-weapon",
+   "tta_id": "174",
+   "points": 28,
+   "points_v2_6": 28,
+   "points_revamp": 20,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-bx-series-droid-commandos"
+    },
+    {
+     "id": "separatists-bx-series-droid-commandos-strike-team"
+    }
+   ]
+  },
+  {
+   "id": "door-gunners",
+   "name": "Door Gunners",
+   "type": "crew",
+   "tta_id": "19835",
+   "points": 12,
+   "points_v2_6": 12,
+   "points_revamp": 12,
+   "is_unique": false,
+   "revamp_only": true
+  },
+  {
+   "id": "double-bladed-lightsaber",
+   "name": "Double-Bladed Lightsaber",
+   "type": "armament",
+   "tta_id": "20434",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-jedi-knight"
+    },
+    {
+     "id": "republic-jedi-knight-general"
+    }
+   ]
+  },
+  {
+   "id": "dug-in",
+   "name": "Dug In",
+   "type": "training",
+   "tta_id": "20319",
+   "points": 6,
+   "points_v2_6": 6,
+   "points_revamp": 6,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-agent"
+    }
+   ]
+  },
+  {
+   "id": "e-11d",
+   "name": "E-11D",
+   "type": "armament",
+   "tta_id": "85",
+   "points": 8,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-death-troopers"
+    }
+   ]
+  },
+  {
+   "id": "e-5c-b1-battle-droid",
+   "name": "E-5C B1 Battle Droid",
+   "type": "heavy-weapon",
+   "tta_id": "105",
+   "points": 18,
+   "points_v2_6": 16,
+   "points_revamp": 16,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-b1-battle-droids"
+    }
+   ]
+  },
+  {
+   "id": "e-5s-b1-battle-droid",
+   "name": "E-5s B1 Battle Droid",
+   "type": "heavy-weapon",
+   "tta_id": "126",
+   "points": 20,
+   "points_v2_6": 18,
+   "points_revamp": 18,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-b1-battle-droids"
+    }
+   ]
+  },
+  {
+   "id": "e-60r-b1-battle-droid",
+   "name": "E-60R B1 Battle Droid",
+   "type": "heavy-weapon",
+   "tta_id": "106",
+   "points": 20,
+   "points_v2_6": 18,
+   "points_revamp": 18,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-b1-battle-droids"
+    }
+   ]
+  },
+  {
+   "id": "emp-droid-poppers",
+   "name": "EMP \"Droid Poppers\"",
+   "type": "grenades",
+   "tta_id": "162",
+   "points": 3,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false
+  },
+  {
+   "id": "ev-series-medical-droid",
+   "name": "EV-series Medical Droid",
+   "type": "personnel",
+   "tta_id": "189",
+   "points": 14,
+   "points_v2_6": 14,
+   "points_revamp": 14,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "droid-trooper"
+   ]
+  },
+  {
+   "id": "echo",
+   "name": "Echo",
+   "type": "heavy-weapon",
+   "tta_id": "164",
+   "points": 40,
+   "points_v2_6": 42,
+   "points_revamp": 42,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "republic-arc-troopers"
+    },
+    {
+     "id": "republic-arc-troopers-strike-team"
+    }
+   ],
+   "restricted_to_rank": [
+    "corps"
+   ],
+   "restricted_to_unit_type": [
+    "clone-trooper"
+   ]
+  },
+  {
+   "id": "echo-arc-marksman",
+   "name": "Echo, ARC Marksman",
+   "type": "heavy-weapon",
+   "tta_id": "16569",
+   "points": 52,
+   "points_v2_6": 52,
+   "points_revamp": 46,
+   "is_unique": true,
+   "restricted_to_rank": [
+    "corps",
+    "special-forces"
+   ],
+   "restricted_to_unit_type": [
+    "clone-trooper"
+   ]
+  },
+  {
+   "id": "echo-clone-force-99",
+   "name": "Echo, Clone Force 99",
+   "type": "heavy-weapon",
+   "tta_id": "19063",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": true,
+   "revamp_only": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-the-bad-batch"
+    }
+   ]
+  },
+  {
+   "id": "electro-gauntlets",
+   "name": "Electro Gauntlets",
+   "type": "armament",
+   "tta_id": "155",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 3,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-cad-bane-needs-no-introduction"
+    }
+   ]
+  },
+  {
+   "id": "electro-grappling-line",
+   "name": "Electro Grappling Line",
+   "type": "gear",
+   "tta_id": "97",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-sabine-wren-back-in-the-fold"
+    },
+    {
+     "id": "rebels-sabine-wren"
+    }
+   ],
+   "faction": "rebels"
+  },
+  {
+   "id": "electro-whip-soldier",
+   "name": "Electro-Whip Soldier",
+   "type": "heavy-weapon",
+   "tta_id": "2426",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-pyke-syndicate-foot-soldiers"
+    }
+   ]
+  },
+  {
+   "id": "electro-whip-magnaguard",
+   "name": "Electro-whip MagnaGuard",
+   "type": "heavy-weapon",
+   "tta_id": "885",
+   "points": 28,
+   "points_v2_6": 28,
+   "points_revamp": 28,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-ig-100-magnaguards"
+    },
+    {
+     "id": "separatists-ig-100-magnaguards-prototype-assassin-droids"
+    }
+   ]
+  },
+  {
+   "id": "electrobinoculars",
+   "name": "Electrobinoculars",
+   "type": "gear",
+   "tta_id": "101",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false
+  },
+  {
+   "id": "electrostaff",
+   "name": "Electrostaff",
+   "type": "armament",
+   "tta_id": "20461",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-super-tactical-command-droid"
+    },
+    {
+     "id": "separatists-super-tactical-command-droid-operative"
+    }
+   ]
+  },
+  {
+   "id": "electrostaff-pirate",
+   "name": "Electrostaff Pirate",
+   "type": "heavy-weapon",
+   "tta_id": "21641",
+   "points": 15,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": false,
+   "revamp_only": true,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-weequay-pirates"
+    }
+   ]
+  },
+  {
+   "id": "emergency-transponder",
+   "name": "Emergency Transponder",
+   "type": "comms",
+   "tta_id": "2713",
+   "points": 4,
+   "points_v2_6": 4,
+   "points_revamp": 4,
+   "is_unique": false
+  },
+  {
+   "id": "endurance",
+   "name": "Endurance",
+   "type": "training",
+   "tta_id": "70",
+   "points": 6,
+   "points_v2_6": 6,
+   "points_revamp": 6,
+   "is_unique": false
+  },
+  {
+   "id": "engagement-protocols",
+   "name": "Engagement Protocols",
+   "type": "protocol",
+   "tta_id": "962",
+   "points": 5,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "ground-vehicle",
+    "repulsor-vehicle"
+   ]
+  },
+  {
+   "id": "enhanced-combat-subroutines",
+   "name": "Enhanced Combat Subroutines",
+   "type": "protocol",
+   "tta_id": "20457",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-super-tactical-command-droid"
+    },
+    {
+     "id": "separatists-super-tactical-command-droid-operative"
+    }
+   ]
+  },
+  {
+   "id": "ewok-skirmisher-squad",
+   "name": "Ewok Skirmisher Squad",
+   "type": "personnel",
+   "tta_id": "16564",
+   "points": 28,
+   "points_v2_6": 28,
+   "points_revamp": 28,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-ewok-skirmishers"
+    }
+   ]
+  },
+  {
+   "id": "ewok-slinger-squad",
+   "name": "Ewok Slinger Squad",
+   "type": "personnel",
+   "tta_id": "16575",
+   "points": 23,
+   "points_v2_6": 23,
+   "points_revamp": 27,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-ewok-slingers"
+    }
+   ]
+  },
+  {
+   "id": "ewok-trapper",
+   "name": "Ewok Trapper",
+   "type": "personnel",
+   "tta_id": "9402",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-ewok-skirmishers"
+    },
+    {
+     "id": "rebels-ewok-slingers"
+    }
+   ]
+  },
+  {
+   "id": "expanded-databanks",
+   "name": "Expanded Databanks",
+   "type": "gear",
+   "tta_id": "20458",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-super-tactical-command-droid"
+    },
+    {
+     "id": "separatists-super-tactical-command-droid-operative"
+    }
+   ]
+  },
+  {
+   "id": "extra-supplies",
+   "name": "Extra Supplies",
+   "type": "gear",
+   "tta_id": "19832",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "revamp_only": true
+  },
+  {
+   "id": "fear",
+   "name": "Fear",
+   "type": "force",
+   "tta_id": "111",
+   "points": 3,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false,
+   "force_alignment": "dark"
+  },
+  {
+   "id": "fifth-brother",
+   "name": "Fifth Brother",
+   "type": "heavy-weapon",
+   "tta_id": "21914",
+   "points": 32,
+   "points_v2_6": 32,
+   "points_revamp": 32,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-stormtrooper-riot-squad"
+    }
+   ]
+  },
+  {
+   "id": "fire-control",
+   "name": "Fire Control",
+   "type": "command",
+   "tta_id": "22906",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": true
+  },
+  {
+   "id": "fives",
+   "name": "Fives",
+   "type": "heavy-weapon",
+   "tta_id": "163",
+   "points": 36,
+   "points_v2_6": 40,
+   "points_revamp": 40,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "republic-arc-troopers"
+    },
+    {
+     "id": "republic-arc-troopers-strike-team"
+    }
+   ],
+   "restricted_to_rank": [
+    "corps"
+   ],
+   "restricted_to_unit_type": [
+    "clone-trooper"
+   ],
+   "faction": "republic"
+  },
+  {
+   "id": "fives-squad-leader",
+   "name": "Fives",
+   "type": "squad-leader",
+   "tta_id": "16552",
+   "points": 40,
+   "points_v2_6": 40,
+   "points_revamp": 40,
+   "is_unique": true,
+   "revamp_only": true
+  },
+  {
+   "id": "flame-projector",
+   "name": "Flame Projector",
+   "type": "gear",
+   "tta_id": "22607",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "mandalorian-trooper"
+   ]
+  },
+  {
+   "id": "fleet-trooper-squad",
+   "name": "Fleet Trooper Squad",
+   "type": "personnel",
+   "tta_id": "16558",
+   "points": 45,
+   "points_v2_6": 45,
+   "points_revamp": 40,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-fleet-troopers"
+    }
+   ]
+  },
+  {
+   "id": "force-absorb",
+   "name": "Force Absorb",
+   "type": "force",
+   "tta_id": "22909",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "force_alignment": "light"
+  },
+  {
+   "id": "force-agility",
+   "name": "Force Agility",
+   "type": "force",
+   "tta_id": "22910",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false
+  },
+  {
+   "id": "force-barrier",
+   "name": "Force Barrier",
+   "type": "force",
+   "tta_id": "184",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false
+  },
+  {
+   "id": "force-drain",
+   "name": "Force Drain",
+   "type": "force",
+   "tta_id": "22911",
+   "points": 14,
+   "points_v2_6": 14,
+   "points_revamp": 14,
+   "is_unique": false,
+   "force_alignment": "dark"
+  },
+  {
+   "id": "force-enhanced-defense",
+   "name": "Force Enhanced Defense",
+   "type": "force",
+   "tta_id": "22912",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  {
+   "id": "force-guidance",
+   "name": "Force Guidance",
+   "type": "force",
+   "tta_id": "102",
+   "points": 10,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  {
+   "id": "force-lift",
+   "name": "Force Lift",
+   "type": "force",
+   "tta_id": "625",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  {
+   "id": "force-pike-warrior",
+   "name": "Force Pike Warrior",
+   "type": "heavy-weapon",
+   "tta_id": "11865",
+   "points": 15,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-geonosian-warriors"
+    }
+   ]
+  },
+  {
+   "id": "forest-dwellers",
+   "name": "Forest Dwellers",
+   "type": "training",
+   "tta_id": "9317",
+   "points": 3,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "trooper"
+   ]
+  },
+  {
+   "id": "frenzied-gunner",
+   "name": "Frenzied Gunner",
+   "type": "pilot",
+   "tta_id": "2799",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_rank": [
+    "heavy"
+   ]
+  },
+  {
+   "id": "galaar-15-carbines",
+   "name": "GALAAR-15 Carbines",
+   "type": "armament",
+   "tta_id": "22418",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-mandalorian-warriors"
+    },
+    {
+     "id": "mercenary-mandalorian-warriors-fire-support"
+    }
+   ]
+  },
+  {
+   "id": "galaar-90-sniper-rifle",
+   "name": "GALAAR-90 Sniper Rifle",
+   "type": "heavy-weapon",
+   "tta_id": "22419",
+   "points": 35,
+   "points_v2_6": 35,
+   "points_revamp": 35,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-mandalorian-super-commandos"
+    },
+    {
+     "id": "mercenary-mandalorian-warriors-fire-support"
+    },
+    {
+     "id": "mercenary-super-commandos"
+    }
+   ]
+  },
+  {
+   "id": "gang-boss",
+   "name": "Gang Boss",
+   "type": "pilot",
+   "tta_id": "21339",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": true,
+   "restricted_to_rank": [
+    "heavy"
+   ]
+  },
+  {
+   "id": "gar-saxon",
+   "name": "Gar Saxon",
+   "type": "personnel",
+   "tta_id": "22613",
+   "points": 45,
+   "points_v2_6": 45,
+   "points_revamp": 45,
+   "is_unique": true
+  },
+  {
+   "id": "general-grievous",
+   "name": "General Grievous",
+   "type": "heavy-weapon",
+   "tta_id": "21912",
+   "points": 36,
+   "points_v2_6": 36,
+   "points_revamp": 36,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-b1-battle-droids"
+    },
+    {
+     "id": "separatists-ig-100-magnaguards"
+    }
+   ]
+  },
+  {
+   "id": "general-of-the-republic",
+   "name": "General of the Republic",
+   "type": "doctrine",
+   "tta_id": "20428",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "republic-jedi-knight-general"
+    }
+   ]
+  },
+  {
+   "id": "geonosian-warrior",
+   "name": "Geonosian Warrior",
+   "type": "personnel",
+   "tta_id": "11864",
+   "points": 11,
+   "points_v2_6": 11,
+   "points_revamp": 11,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-geonosian-warriors"
+    }
+   ]
+  },
+  {
+   "id": "geonosian-warrior-squad",
+   "name": "Geonosian Warrior Squad",
+   "type": "personnel",
+   "tta_id": "16561",
+   "points": 51,
+   "points_v2_6": 51,
+   "points_revamp": 51,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-geonosian-warriors"
+    }
+   ]
+  },
+  {
+   "id": "gideon-hask",
+   "name": "Gideon Hask",
+   "type": "heavy-weapon",
+   "tta_id": "171",
+   "points": 38,
+   "points_v2_6": 29,
+   "points_revamp": 29,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-special-forces"
+    },
+    {
+     "id": "imperials-imperial-special-forces-inferno-squad"
+    }
+   ],
+   "restricted_to_rank": [
+    "corps"
+   ],
+   "faction": "imperials"
+  },
+  {
+   "id": "gnasp-bombardier",
+   "name": "Gnasp Bombardier",
+   "type": "crew",
+   "tta_id": "932",
+   "points": 20,
+   "points_v2_6": 20,
+   "points_revamp": 20,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-raddaugh-gnasp-fluttercraft"
+    },
+    {
+     "id": "republic-raddaugh-gnasp-fluttercraft-attack-craft"
+    }
+   ]
+  },
+  {
+   "id": "gnasp-gunner",
+   "name": "Gnasp Gunner",
+   "type": "crew",
+   "tta_id": "919",
+   "points": 25,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-raddaugh-gnasp-fluttercraft"
+    },
+    {
+     "id": "republic-raddaugh-gnasp-fluttercraft-attack-craft"
+    }
+   ]
+  },
+  {
+   "id": "go-for-broke",
+   "name": "Go For Broke",
+   "type": "training",
+   "tta_id": "22913",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  {
+   "id": "governor-pryce",
+   "name": "Governor Pryce",
+   "type": "pilot",
+   "tta_id": "199",
+   "points": 10,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": true,
+   "restricted_to_rank": [
+    "heavy"
+   ],
+   "faction": "imperials"
+  },
+  {
+   "id": "grogu",
+   "name": "Grogu",
+   "type": "counterpart",
+   "tta_id": "3649",
+   "points": 17,
+   "points_v2_6": 17,
+   "points_revamp": 17,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-ig-11-nurse-droid"
+    },
+    {
+     "id": "rebels-din-djarin-the-mandalorian"
+    }
+   ],
+   "faction": "rebels"
+  },
+  {
+   "id": "hacked-comms-unit",
+   "name": "Hacked Comms Unit",
+   "type": "comms",
+   "tta_id": "918",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  {
+   "id": "hatred",
+   "name": "Hatred",
+   "type": "force",
+   "tta_id": "22914",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "force_alignment": "dark"
+  },
+  {
+   "id": "heavy-aqua-droid",
+   "name": "Heavy Aqua Droid",
+   "type": "heavy-weapon",
+   "tta_id": "18179",
+   "points": 28,
+   "points_v2_6": 28,
+   "points_revamp": 28,
+   "is_unique": false,
+   "revamp_only": true,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-aqua-droids"
+    }
+   ]
+  },
+  {
+   "id": "heavy-arm-cannon",
+   "name": "Heavy Arm Cannon",
+   "type": "armament",
+   "tta_id": "20460",
+   "points": 20,
+   "points_v2_6": 20,
+   "points_revamp": 20,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-super-tactical-command-droid"
+    },
+    {
+     "id": "separatists-super-tactical-command-droid-operative"
+    }
+   ]
+  },
+  {
+   "id": "heavy-blaster-pistol",
+   "name": "Heavy Blaster Pistol",
+   "type": "armament",
+   "tta_id": "20275",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-agent"
+    }
+   ]
+  },
+  {
+   "id": "heavy-laser-cannon",
+   "name": "Heavy Laser Cannon",
+   "type": "hard-point",
+   "tta_id": "16580",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-lm-432-crab-droid"
+    }
+   ]
+  },
+  {
+   "id": "heavy-laser-retrofit",
+   "name": "Heavy Laser Retrofit",
+   "type": "hard-point",
+   "tta_id": "197",
+   "points": 16,
+   "points_v2_6": 16,
+   "points_revamp": 7,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-a-a5-speeder-truck"
+    }
+   ]
+  },
+  {
+   "id": "helping-hand",
+   "name": "Helping Hand",
+   "type": "force",
+   "tta_id": "22915",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "force_alignment": "light"
+  },
+  {
+   "id": "herbal-medicine",
+   "name": "Herbal Medicine",
+   "type": "training",
+   "tta_id": "9625",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-logray-superstitious-shaman"
+    }
+   ]
+  },
+  {
+   "id": "high-energy-shells",
+   "name": "High-Energy Shells",
+   "type": "ordnance",
+   "tta_id": "153",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false
+  },
+  {
+   "id": "high-speed-tracking",
+   "name": "High-Speed Tracking",
+   "type": "gear",
+   "tta_id": "22916",
+   "points": 3,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false
+  },
+  {
+   "id": "hit-the-dirt",
+   "name": "Hit the Dirt",
+   "type": "training",
+   "tta_id": "22917",
+   "points": 3,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "clone-trooper",
+    "creature-trooper",
+    "emplacement-trooper",
+    "mandalorian-trooper",
+    "trooper",
+    "wookiee-trooper"
+   ]
+  },
+  {
+   "id": "hope",
+   "name": "Hope",
+   "type": "force",
+   "tta_id": "107",
+   "points": 3,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false,
+   "force_alignment": "light"
+  },
+  {
+   "id": "hotshot-pilot",
+   "name": "Hotshot Pilot",
+   "type": "pilot",
+   "tta_id": "207",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "repulsor-vehicle"
+   ],
+   "faction": "rebels"
+  },
+  {
+   "id": "hound-grizzer",
+   "name": "Hound & Grizzer",
+   "type": "pilot",
+   "tta_id": "203",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "republic-laat-le-patrol-transport-republic"
+    }
+   ]
+  },
+  {
+   "id": "hunter-heavy-weapon",
+   "name": "Hunter",
+   "type": "heavy-weapon",
+   "tta_id": "15011",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-the-bad-batch"
+    }
+   ]
+  },
+  {
+   "id": "ig-100-magnaguard",
+   "name": "IG-100 MagnaGuard",
+   "type": "heavy-weapon",
+   "tta_id": "883",
+   "points": 22,
+   "points_v2_6": 22,
+   "points_revamp": 22,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-ig-100-magnaguards"
+    },
+    {
+     "id": "separatists-ig-100-magnaguards-prototype-assassin-droids"
+    }
+   ]
+  },
+  {
+   "id": "iden-s-dlt-20a-rifle",
+   "name": "Iden's DLT-20A Rifle",
+   "type": "armament",
+   "tta_id": "143",
+   "points": 15,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-iden-versio"
+    }
+   ]
+  },
+  {
+   "id": "iden-s-id10-seeker-droid",
+   "name": "Iden's ID10 Seeker Droid",
+   "type": "counterpart",
+   "tta_id": "167",
+   "points": 15,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-iden-versio"
+    }
+   ]
+  },
+  {
+   "id": "iden-s-tl-50-repeater",
+   "name": "Iden's TL-50 Repeater",
+   "type": "armament",
+   "tta_id": "168",
+   "points": 15,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-iden-versio"
+    }
+   ]
+  },
+  {
+   "id": "imperial-dark-trooper",
+   "name": "Imperial Dark Trooper",
+   "type": "personnel",
+   "tta_id": "6321",
+   "points": 32,
+   "points_v2_6": 32,
+   "points_revamp": 28,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-dark-troopers"
+    }
+   ]
+  },
+  {
+   "id": "imperial-march",
+   "name": "Imperial March",
+   "type": "training",
+   "tta_id": "19828",
+   "points": 6,
+   "points_v2_6": 6,
+   "points_revamp": 6,
+   "is_unique": false,
+   "revamp_only": true,
+   "restricted_to_rank": [
+    "corps"
+   ],
+   "faction": "imperials"
+  },
+  {
+   "id": "imperial-officer",
+   "name": "Imperial Officer",
+   "type": "personnel",
+   "tta_id": "50",
+   "points": 20,
+   "points_v2_6": 17,
+   "points_revamp": 17,
+   "is_unique": false,
+   "faction": "imperials"
+  },
+  {
+   "id": "imperial-probe-droid",
+   "name": "Imperial Probe Droid",
+   "type": "heavy-weapon",
+   "tta_id": "21906",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "faction": "imperials"
+  },
+  {
+   "id": "imperial-tie-pilot",
+   "name": "Imperial Tie Pilot",
+   "type": "pilot",
+   "tta_id": "204",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "repulsor-vehicle"
+   ],
+   "faction": "imperials"
+  },
+  {
+   "id": "infantry-support",
+   "name": "Infantry Support",
+   "type": "comms",
+   "tta_id": "22918",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "ground-vehicle",
+    "repulsor-vehicle"
+   ]
+  },
+  {
+   "id": "inquisitorius-training",
+   "name": "Inquisitorius Training",
+   "type": "training",
+   "tta_id": "11867",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-fifth-brother"
+    },
+    {
+     "id": "imperials-seventh-sister"
+    }
+   ]
+  },
+  {
+   "id": "insatiable-curiosity",
+   "name": "Insatiable Curiosity",
+   "type": "training",
+   "tta_id": "9400",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-ewok-skirmishers"
+    },
+    {
+     "id": "rebels-ewok-slingers"
+    }
+   ]
+  },
+  {
+   "id": "inspiring-presence",
+   "name": "Inspiring Presence",
+   "type": "command",
+   "tta_id": "188",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  {
+   "id": "integrated-comms-antenna",
+   "name": "Integrated Comms Antenna",
+   "type": "comms",
+   "tta_id": "130",
+   "points": 3,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "droid-trooper"
+   ]
+  },
+  {
+   "id": "into-the-fray",
+   "name": "Into the Fray",
+   "type": "training",
+   "tta_id": "628",
+   "points": 4,
+   "points_v2_6": 4,
+   "points_revamp": 4,
+   "is_unique": false
+  },
+  {
+   "id": "j-19-bo-rifle",
+   "name": "J-19 Bo-rifle",
+   "type": "armament",
+   "tta_id": "186",
+   "points": 25,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-agent-kallus"
+    }
+   ]
+  },
+  {
+   "id": "jt-12-jetpacks",
+   "name": "JT-12 Jetpacks",
+   "type": "gear",
+   "tta_id": "157",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-arc-troopers"
+    },
+    {
+     "id": "republic-arc-troopers-strike-team"
+    },
+    {
+     "id": "republic-clone-captain-rex"
+    }
+   ],
+   "faction": "republic"
+  },
+  {
+   "id": "jedi-consular",
+   "name": "Jedi Consular",
+   "type": "doctrine",
+   "tta_id": "20429",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "republic-jedi-knight"
+    },
+    {
+     "id": "republic-jedi-knight-general"
+    }
+   ]
+  },
+  {
+   "id": "jedi-guardian",
+   "name": "Jedi Guardian",
+   "type": "squad-leader",
+   "tta_id": "18478",
+   "points": 22,
+   "points_v2_6": 22,
+   "points_revamp": 22,
+   "is_unique": false,
+   "revamp_only": true,
+   "restricted_to_rank": [
+    "special-forces"
+   ]
+  },
+  {
+   "id": "jedi-guardian-doctrine",
+   "name": "Jedi Guardian",
+   "type": "doctrine",
+   "tta_id": "20431",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "republic-jedi-knight"
+    },
+    {
+     "id": "republic-jedi-knight-general"
+    }
+   ]
+  },
+  {
+   "id": "jedi-negotiator",
+   "name": "Jedi Negotiator",
+   "type": "doctrine",
+   "tta_id": "20430",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "republic-jedi-knight"
+    },
+    {
+     "id": "republic-jedi-knight-general"
+    }
+   ]
+  },
+  {
+   "id": "jedi-training-force-adept",
+   "name": "Jedi Training, Force Adept",
+   "type": "training",
+   "tta_id": "20438",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-jedi-knight"
+    },
+    {
+     "id": "republic-jedi-knight-general"
+    }
+   ]
+  },
+  {
+   "id": "jedi-training-master-duelist",
+   "name": "Jedi Training, Master Duelist",
+   "type": "training",
+   "tta_id": "20435",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-jedi-knight"
+    },
+    {
+     "id": "republic-jedi-knight-general"
+    }
+   ]
+  },
+  {
+   "id": "jedi-training-peacekeeping-mission",
+   "name": "Jedi Training, Peacekeeping Mission",
+   "type": "training",
+   "tta_id": "20436",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-jedi-knight"
+    },
+    {
+     "id": "republic-jedi-knight-general"
+    }
+   ]
+  },
+  {
+   "id": "jedi-training-tactical-acumen",
+   "name": "Jedi Training, Tactical Acumen",
+   "type": "training",
+   "tta_id": "20437",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-jedi-knight"
+    },
+    {
+     "id": "republic-jedi-knight-general"
+    }
+   ]
+  },
+  {
+   "id": "jetpack-rockets",
+   "name": "Jetpack Rockets",
+   "type": "armament",
+   "tta_id": "176",
+   "points": 8,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-mandalorian-resistance"
+    },
+    {
+     "id": "rebels-mandalorian-resistance-clan-wren"
+    }
+   ],
+   "faction": "rebels"
+  },
+  {
+   "id": "jetpack-rockets-grenades",
+   "name": "Jetpack Rockets",
+   "type": "grenades",
+   "tta_id": "22605",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "mandalorian-trooper"
+   ]
+  },
+  {
+   "id": "jyn-erso",
+   "name": "Jyn Erso",
+   "type": "heavy-weapon",
+   "tta_id": "21907",
+   "points": 22,
+   "points_v2_6": 22,
+   "points_revamp": 22,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-commandos"
+    },
+    {
+     "id": "rebels-rebel-troopers"
+    }
+   ]
+  },
+  {
+   "id": "jyn-s-se-14-blaster",
+   "name": "Jyn's SE-14 Blaster",
+   "type": "armament",
+   "tta_id": "166",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-jyn-erso"
+    },
+    {
+     "id": "rebels-k-2so"
+    }
+   ]
+  },
+  {
+   "id": "kx-series-security-droids",
+   "name": "KX-Series Security Droids",
+   "type": "heavy-weapon",
+   "tta_id": "16579",
+   "points": 30,
+   "points_v2_6": 30,
+   "points_revamp": 18,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-stormtrooper-riot-squad"
+    }
+   ]
+  },
+  {
+   "id": "katarn-pattern-armor",
+   "name": "Katarn Pattern Armor",
+   "type": "gear",
+   "tta_id": "15012",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-clone-commandos"
+    },
+    {
+     "id": "republic-clone-commandos-delta-squad"
+    }
+   ]
+  },
+  {
+   "id": "ki-adi-mundi",
+   "name": "Ki-Adi-Mundi",
+   "type": "squad-leader",
+   "tta_id": "22963",
+   "points": 25,
+   "points_v2_6": 25,
+   "points_revamp": 25,
+   "is_unique": true,
+   "restricted_to_unit_type": [
+    "clone-trooper"
+   ]
+  },
+  {
+   "id": "kraken",
+   "name": "Kraken",
+   "type": "heavy-weapon",
+   "tta_id": "20803",
+   "points": 30,
+   "points_v2_6": 30,
+   "points_revamp": 30,
+   "is_unique": true,
+   "restricted_to_rank": [
+    "corps"
+   ],
+   "faction": "separatists"
+  },
+  {
+   "id": "lead-by-example",
+   "name": "Lead by Example",
+   "type": "command",
+   "tta_id": "2697",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false
+  },
+  {
+   "id": "lightsaber",
+   "name": "Lightsaber",
+   "type": "armament",
+   "tta_id": "20432",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-jedi-knight"
+    },
+    {
+     "id": "republic-jedi-knight-general"
+    }
+   ]
+  },
+  {
+   "id": "limiter-override",
+   "name": "Limiter Override",
+   "type": "protocol",
+   "tta_id": "20454",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-super-tactical-command-droid"
+    },
+    {
+     "id": "separatists-super-tactical-command-droid-operative"
+    }
+   ]
+  },
+  {
+   "id": "linked-targeting-array",
+   "name": "Linked Targeting Array",
+   "type": "comms",
+   "tta_id": "99",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "emplacement-trooper",
+    "ground-vehicle",
+    "repulsor-vehicle"
+   ]
+  },
+  {
+   "id": "lok-durd",
+   "name": "Lok Durd",
+   "type": "pilot",
+   "tta_id": "149",
+   "points": 9,
+   "points_v2_6": 9,
+   "points_revamp": 9,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-aat-battle-tank"
+    }
+   ]
+  },
+  {
+   "id": "long-gun-wookiee",
+   "name": "Long Gun Wookiee",
+   "type": "heavy-weapon",
+   "tta_id": "618",
+   "points": 26,
+   "points_v2_6": 26,
+   "points_revamp": 26,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-wookiee-warriors-freedom-fighters"
+    },
+    {
+     "id": "rebels-wookiee-warriors-kashyyyk-resistance"
+    },
+    {
+     "id": "republic-wookiee-warriors-kashyyyk-defenders"
+    },
+    {
+     "id": "republic-wookiee-warriors-noble-fighters"
+    }
+   ]
+  },
+  {
+   "id": "long-rifle-pirate",
+   "name": "Long Rifle Pirate",
+   "type": "heavy-weapon",
+   "tta_id": "21644",
+   "points": 20,
+   "points_v2_6": 20,
+   "points_revamp": 20,
+   "is_unique": false,
+   "revamp_only": true,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-weequay-pirates"
+    }
+   ]
+  },
+  {
+   "id": "looted-e-5-blaster",
+   "name": "Looted E-5 Blaster",
+   "type": "armament",
+   "tta_id": "156",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-padm-amidala-spirited-senator"
+    }
+   ]
+  },
+  {
+   "id": "luke-skywalker",
+   "name": "Luke Skywalker",
+   "type": "heavy-weapon",
+   "tta_id": "21908",
+   "points": 25,
+   "points_v2_6": 25,
+   "points_revamp": 25,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-troopers"
+    },
+    {
+     "id": "rebels-rebel-veterans"
+    }
+   ]
+  },
+  {
+   "id": "lying-in-wait",
+   "name": "Lying in Wait",
+   "type": "training",
+   "tta_id": "22919",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "clone-trooper",
+    "creature-trooper",
+    "droid-trooper",
+    "emplacement-trooper",
+    "mandalorian-trooper",
+    "trooper",
+    "wookiee-trooper"
+   ]
+  },
+  {
+   "id": "mace-windu",
+   "name": "Mace Windu",
+   "type": "squad-leader",
+   "tta_id": "22965",
+   "points": 35,
+   "points_v2_6": 35,
+   "points_revamp": 35,
+   "is_unique": true,
+   "restricted_to_unit_type": [
+    "clone-trooper"
+   ]
+  },
+  {
+   "id": "mag-det-enforcer",
+   "name": "Mag-Det Enforcer",
+   "type": "heavy-weapon",
+   "tta_id": "2568",
+   "points": 14,
+   "points_v2_6": 16,
+   "points_revamp": 16,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-black-sun-enforcers"
+    }
+   ]
+  },
+  {
+   "id": "mandalorian-combat-shields",
+   "name": "Mandalorian Combat Shields",
+   "type": "gear",
+   "tta_id": "19064",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "revamp_only": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-mandalorian-resistance"
+    },
+    {
+     "id": "rebels-mandalorian-resistance-clan-wren"
+    }
+   ]
+  },
+  {
+   "id": "mandalorian-super-commando",
+   "name": "Mandalorian Super Commando",
+   "type": "heavy-weapon",
+   "tta_id": "2716",
+   "points": 24,
+   "points_v2_6": 24,
+   "points_revamp": 24,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-mandalorian-super-commandos"
+    }
+   ]
+  },
+  {
+   "id": "mertalizer-dark-trooper",
+   "name": "Mertalizer Dark Trooper",
+   "type": "heavy-weapon",
+   "tta_id": "6320",
+   "points": 36,
+   "points_v2_6": 36,
+   "points_revamp": 30,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-dark-troopers"
+    }
+   ]
+  },
+  {
+   "id": "micro-grenade-launcher",
+   "name": "Micro-Grenade Launcher",
+   "type": "heavy-weapon",
+   "tta_id": "22421",
+   "points": 22,
+   "points_v2_6": 22,
+   "points_revamp": 22,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "mandalorian-trooper"
+   ]
+  },
+  {
+   "id": "missile-pod-rocket-droid",
+   "name": "Missile Pod Rocket Droid",
+   "type": "heavy-weapon",
+   "tta_id": "23145",
+   "points": 24,
+   "points_v2_6": 24,
+   "points_revamp": 24,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-b2-super-rocket-battle-droids"
+    }
+   ]
+  },
+  {
+   "id": "mission-objective",
+   "name": "Mission Objective",
+   "type": "training",
+   "tta_id": "19826",
+   "points": 6,
+   "points_v2_6": 6,
+   "points_revamp": 6,
+   "is_unique": false,
+   "revamp_only": true
+  },
+  {
+   "id": "mobility-upgrade",
+   "name": "Mobility Upgrade",
+   "type": "gear",
+   "tta_id": "20459",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-super-tactical-command-droid"
+    },
+    {
+     "id": "separatists-super-tactical-command-droid-operative"
+    }
+   ]
+  },
+  {
+   "id": "mortar-clone-trooper",
+   "name": "Mortar Clone Trooper",
+   "type": "heavy-weapon",
+   "tta_id": "16568",
+   "points": 20,
+   "points_v2_6": 20,
+   "points_revamp": 20,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-clone-trooper-infantry"
+    },
+    {
+     "id": "republic-clone-trooper-marksmen"
+    }
+   ]
+  },
+  {
+   "id": "nose-mounted-flamethrower",
+   "name": "Nose-Mounted Flamethrower",
+   "type": "hard-point",
+   "tta_id": "948",
+   "points": 15,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-dsd1-dwarf-spider-droid"
+    }
+   ]
+  },
+  {
+   "id": "nose-mounted-ion-blaster",
+   "name": "Nose-Mounted Ion Blaster",
+   "type": "hard-point",
+   "tta_id": "949",
+   "points": 10,
+   "points_v2_6": 25,
+   "points_revamp": 30,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-dsd1-dwarf-spider-droid"
+    }
+   ]
+  },
+  {
+   "id": "nose-mounted-laser-cannon",
+   "name": "Nose-Mounted Laser Cannon",
+   "type": "hard-point",
+   "tta_id": "950",
+   "points": 15,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-dsd1-dwarf-spider-droid"
+    }
+   ]
+  },
+  {
+   "id": "oom-series-battle-droid",
+   "name": "OOM-Series Battle Droid",
+   "type": "personnel",
+   "tta_id": "136",
+   "points": 12,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-b1-battle-droids"
+    }
+   ]
+  },
+  {
+   "id": "oom-series-droid-pilot",
+   "name": "OOM-Series Droid Pilot",
+   "type": "pilot",
+   "tta_id": "154",
+   "points": 7,
+   "points_v2_6": 7,
+   "points_revamp": 7,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-aat-battle-tank"
+    }
+   ]
+  },
+  {
+   "id": "obi-wan-kenobi",
+   "name": "Obi-Wan Kenobi",
+   "type": "squad-leader",
+   "tta_id": "21909",
+   "points": 25,
+   "points_v2_6": 25,
+   "points_revamp": 25,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "republic-arf-troopers"
+    }
+   ]
+  },
+  {
+   "id": "offensive-push",
+   "name": "Offensive Push",
+   "type": "training",
+   "tta_id": "129",
+   "points": 4,
+   "points_v2_6": 6,
+   "points_revamp": 6,
+   "is_unique": false
+  },
+  {
+   "id": "offensive-defensive-stance",
+   "name": "Offensive/Defensive Stance",
+   "type": "training",
+   "tta_id": "179",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  {
+   "id": "omega",
+   "name": "Omega",
+   "type": "counterpart",
+   "tta_id": "15628",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-the-bad-batch"
+    }
+   ]
+  },
+  {
+   "id": "on-the-hunt",
+   "name": "On the Hunt",
+   "type": "training",
+   "tta_id": "19061",
+   "points": 6,
+   "points_v2_6": 6,
+   "points_revamp": 6,
+   "is_unique": false,
+   "revamp_only": true
+  },
+  {
+   "id": "onboard-comms-channel",
+   "name": "Onboard Comms Channel",
+   "type": "comms",
+   "tta_id": "201",
+   "points": 3,
+   "points_v2_6": 3,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "ground-vehicle",
+    "repulsor-vehicle"
+   ]
+  },
+  {
+   "id": "onward-to-victory",
+   "name": "Onward to Victory",
+   "type": "training",
+   "tta_id": "9626",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-logray-superstitious-shaman"
+    }
+   ]
+  },
+  {
+   "id": "optimized-task-flow",
+   "name": "Optimized Task Flow",
+   "type": "protocol",
+   "tta_id": "20455",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-super-tactical-command-droid"
+    },
+    {
+     "id": "separatists-super-tactical-command-droid-operative"
+    }
+   ]
+  },
+  {
+   "id": "overcharged-blaster-packs",
+   "name": "Overcharged Blaster Packs",
+   "type": "gear",
+   "tta_id": "22920",
+   "points": 3,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false
+  },
+  {
+   "id": "overclock",
+   "name": "Overclock",
+   "type": "protocol",
+   "tta_id": "20452",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-super-tactical-command-droid"
+    },
+    {
+     "id": "separatists-super-tactical-command-droid-operative"
+    }
+   ]
+  },
+  {
+   "id": "p13-m-disruptor-soldier",
+   "name": "P13-M Disruptor Soldier",
+   "type": "heavy-weapon",
+   "tta_id": "2425",
+   "points": 24,
+   "points_v2_6": 22,
+   "points_revamp": 22,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-pyke-syndicate-foot-soldiers"
+    }
+   ]
+  },
+  {
+   "id": "pk-series-worker-droid",
+   "name": "PK-series Worker Droid",
+   "type": "personnel",
+   "tta_id": "190",
+   "points": 12,
+   "points_v2_6": 12,
+   "points_revamp": 22,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "droid-trooper"
+   ]
+  },
+  {
+   "id": "paz-vizsla",
+   "name": "Paz Vizsla",
+   "type": "personnel",
+   "tta_id": "22510",
+   "points": 40,
+   "points_v2_6": 40,
+   "points_revamp": 40,
+   "is_unique": true
+  },
+  {
+   "id": "pintle-mounted-dlt-19",
+   "name": "Pintle-Mounted DLT-19",
+   "type": "hard-point",
+   "tta_id": "88",
+   "points": 18,
+   "points_v2_6": 18,
+   "points_revamp": 14,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-tx-225-gavw-occupier-tank"
+    }
+   ]
+  },
+  {
+   "id": "pintle-mounted-rt-97c",
+   "name": "Pintle-Mounted RT-97C",
+   "type": "hard-point",
+   "tta_id": "89",
+   "points": 14,
+   "points_v2_6": 14,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-tx-225-gavw-occupier-tank"
+    }
+   ]
+  },
+  {
+   "id": "pirate-captain",
+   "name": "Pirate Captain",
+   "type": "pilot",
+   "tta_id": "21342",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-wlo-5-speeder-tank"
+    }
+   ]
+  },
+  {
+   "id": "platoon-commander",
+   "name": "Platoon Commander",
+   "type": "doctrine",
+   "tta_id": "20271",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": true,
+   "revamp_only": true,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-agent"
+    }
+   ]
+  },
+  {
+   "id": "plo-koon",
+   "name": "Plo Koon",
+   "type": "pilot",
+   "tta_id": "150",
+   "points": 9,
+   "points_v2_6": 9,
+   "points_revamp": 9,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "republic-tx-130-saber-class-fighter-tank"
+    }
+   ]
+  },
+  {
+   "id": "plo-koon-squad-leader",
+   "name": "Plo Koon",
+   "type": "squad-leader",
+   "tta_id": "22964",
+   "points": 22,
+   "points_v2_6": 22,
+   "points_revamp": 22,
+   "is_unique": true,
+   "restricted_to_unit_type": [
+    "clone-trooper"
+   ]
+  },
+  {
+   "id": "portable-scanner",
+   "name": "Portable Scanner",
+   "type": "gear",
+   "tta_id": "180",
+   "points": 6,
+   "points_v2_6": 6,
+   "points_revamp": 6,
+   "is_unique": false
+  },
+  {
+   "id": "prepared-supplies",
+   "name": "Prepared Supplies",
+   "type": "gear",
+   "tta_id": "2609",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  {
+   "id": "programmed-loyalty",
+   "name": "Programmed Loyalty",
+   "type": "protocol",
+   "tta_id": "6322",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-dark-troopers"
+    }
+   ]
+  },
+  {
+   "id": "protector",
+   "name": "Protector",
+   "type": "training",
+   "tta_id": "627",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  {
+   "id": "pyke-syndicate-capo",
+   "name": "Pyke Syndicate Capo",
+   "type": "personnel",
+   "tta_id": "2428",
+   "points": 16,
+   "points_v2_6": 18,
+   "points_revamp": 18,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-pyke-syndicate-foot-soldiers"
+    }
+   ]
+  },
+  {
+   "id": "pyke-syndicate-crew",
+   "name": "Pyke Syndicate Crew",
+   "type": "crew",
+   "tta_id": "21338",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-wlo-5-speeder-tank"
+    }
+   ]
+  },
+  {
+   "id": "pyke-syndicate-foot-soldier",
+   "name": "Pyke Syndicate Foot Soldier",
+   "type": "personnel",
+   "tta_id": "2427",
+   "points": 9,
+   "points_v2_6": 9,
+   "points_revamp": 9,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-pyke-syndicate-foot-soldiers"
+    }
+   ]
+  },
+  {
+   "id": "pyke-syndicate-foot-soldier-squad",
+   "name": "Pyke Syndicate Foot Soldier Squad",
+   "type": "personnel",
+   "tta_id": "21905",
+   "points": 38,
+   "points_v2_6": 38,
+   "points_revamp": 38,
+   "is_unique": false,
+   "revamp_only": true,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-pyke-syndicate-foot-soldiers"
+    }
+   ]
+  },
+  {
+   "id": "r4-astromech",
+   "name": "R4 Astromech",
+   "type": "personnel",
+   "tta_id": "68",
+   "points": 9,
+   "points_v2_6": 9,
+   "points_revamp": 9,
+   "is_unique": false,
+   "faction": "imperials"
+  },
+  {
+   "id": "rps-6-arf-trooper",
+   "name": "RPS-6 ARF Trooper",
+   "type": "heavy-weapon",
+   "tta_id": "18477",
+   "points": 24,
+   "points_v2_6": 24,
+   "points_revamp": 24,
+   "is_unique": false,
+   "revamp_only": true,
+   "restricted_to_unit": [
+    {
+     "id": "republic-arf-troopers"
+    }
+   ]
+  },
+  {
+   "id": "rps-6-clone-trooper",
+   "name": "RPS-6 Clone Trooper",
+   "type": "heavy-weapon",
+   "tta_id": "16560",
+   "points": 23,
+   "points_v2_6": 23,
+   "points_revamp": 23,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-clone-trooper-infantry"
+    },
+    {
+     "id": "republic-clone-trooper-marksmen"
+    }
+   ]
+  },
+  {
+   "id": "rps-6-magnaguard",
+   "name": "RPS-6 MagnaGuard",
+   "type": "heavy-weapon",
+   "tta_id": "884",
+   "points": 28,
+   "points_v2_6": 34,
+   "points_revamp": 32,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-ig-100-magnaguards"
+    },
+    {
+     "id": "separatists-ig-100-magnaguards-prototype-assassin-droids"
+    }
+   ]
+  },
+  {
+   "id": "rt-97c-blaster-rifle",
+   "name": "RT-97C Blaster Rifle",
+   "type": "armament",
+   "tta_id": "116",
+   "points": 15,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-dewback-rider"
+    }
+   ]
+  },
+  {
+   "id": "rt-97c-stormtrooper",
+   "name": "RT-97C Stormtrooper",
+   "type": "heavy-weapon",
+   "tta_id": "121",
+   "points": 26,
+   "points_v2_6": 24,
+   "points_revamp": 22,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-stormtroopers"
+    },
+    {
+     "id": "imperials-stormtroopers-heavy-response-unit"
+    }
+   ]
+  },
+  {
+   "id": "radiation-cannon-b1-battle-droid",
+   "name": "Radiation Cannon B1 Battle Droid",
+   "type": "heavy-weapon",
+   "tta_id": "137",
+   "points": 22,
+   "points_v2_6": 16,
+   "points_revamp": 16,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-b1-battle-droids"
+    }
+   ]
+  },
+  {
+   "id": "raiding-party-leader",
+   "name": "Raiding Party Leader",
+   "type": "pilot",
+   "tta_id": "2800",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": true,
+   "restricted_to_rank": [
+    "heavy"
+   ],
+   "faction": "mercenary"
+  },
+  {
+   "id": "range-trooper",
+   "name": "Range Trooper",
+   "type": "personnel",
+   "tta_id": "15014",
+   "points": 15,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-range-troopers"
+    }
+   ]
+  },
+  {
+   "id": "rebel-marksman",
+   "name": "Rebel Marksman",
+   "type": "heavy-weapon",
+   "tta_id": "16576",
+   "points": 28,
+   "points_v2_6": 16,
+   "points_revamp": 16,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-sleeper-cell"
+    }
+   ]
+  },
+  {
+   "id": "rebel-trooper-captain",
+   "name": "Rebel Trooper Captain",
+   "type": "personnel",
+   "tta_id": "132",
+   "points": 14,
+   "points_v2_6": 9,
+   "points_revamp": 9,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-troopers"
+    }
+   ]
+  },
+  {
+   "id": "rebel-trooper-specialist",
+   "name": "Rebel Trooper Specialist",
+   "type": "personnel",
+   "tta_id": "133",
+   "points": 14,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-troopers"
+    }
+   ]
+  },
+  {
+   "id": "rebel-trooper-squad",
+   "name": "Rebel Trooper Squad",
+   "type": "personnel",
+   "tta_id": "16562",
+   "points": 45,
+   "points_v2_6": 45,
+   "points_revamp": 40,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-troopers"
+    }
+   ]
+  },
+  {
+   "id": "rebel-veteran",
+   "name": "Rebel Veteran",
+   "type": "personnel",
+   "tta_id": "76",
+   "points": 12,
+   "points_v2_6": 9,
+   "points_revamp": 9,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-veterans"
+    }
+   ]
+  },
+  {
+   "id": "rebel-veteran-squad",
+   "name": "Rebel Veteran Squad",
+   "type": "personnel",
+   "tta_id": "16574",
+   "points": 63,
+   "points_v2_6": 63,
+   "points_revamp": 50,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-veterans"
+    }
+   ]
+  },
+  {
+   "id": "reckless-driver",
+   "name": "Reckless Driver",
+   "type": "pilot",
+   "tta_id": "208",
+   "points": 6,
+   "points_v2_6": 12,
+   "points_revamp": 12,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-a-a5-speeder-truck"
+    }
+   ]
+  },
+  {
+   "id": "refurbished-gonk-droid",
+   "name": "Refurbished \"Gonk\" Droid",
+   "type": "crew",
+   "tta_id": "211",
+   "points": 10,
+   "points_v2_6": 14,
+   "points_revamp": 20,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-a-a5-speeder-truck"
+    },
+    {
+     "id": "rebels-x-34-landspeeder"
+    }
+   ]
+  },
+  {
+   "id": "reluctant-hero",
+   "name": "Reluctant Hero",
+   "type": "doctrine",
+   "tta_id": "20281",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-agent"
+    }
+   ]
+  },
+  {
+   "id": "repeating-blaster",
+   "name": "Repeating Blaster",
+   "type": "armament",
+   "tta_id": "20283",
+   "points": 25,
+   "points_v2_6": 25,
+   "points_revamp": 25,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-agent"
+    }
+   ]
+  },
+  {
+   "id": "rook-kast",
+   "name": "Rook Kast",
+   "type": "personnel",
+   "tta_id": "22593",
+   "points": 25,
+   "points_v2_6": 25,
+   "points_revamp": 25,
+   "is_unique": true
+  },
+  {
+   "id": "rook-kast-heavy-weapon",
+   "name": "Rook Kast",
+   "type": "heavy-weapon",
+   "tta_id": "2718",
+   "points": 35,
+   "points_v2_6": 35,
+   "points_revamp": 35,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-mandalorian-super-commandos"
+    }
+   ]
+  },
+  {
+   "id": "shukur-05-repeater",
+   "name": "SHUKUR-05 Repeater",
+   "type": "heavy-weapon",
+   "tta_id": "22420",
+   "points": 28,
+   "points_v2_6": 28,
+   "points_revamp": 28,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "mandalorian-trooper"
+   ]
+  },
+  {
+   "id": "sm-9-frag-launcher",
+   "name": "SM-9 Frag Launcher",
+   "type": "heavy-weapon",
+   "tta_id": "6319",
+   "points": 40,
+   "points_v2_6": 45,
+   "points_revamp": 40,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-dark-troopers"
+    }
+   ]
+  },
+  {
+   "id": "sx-21-trooper",
+   "name": "SX-21 Trooper",
+   "type": "heavy-weapon",
+   "tta_id": "124",
+   "points": 20,
+   "points_v2_6": 13,
+   "points_revamp": 13,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-troopers"
+    }
+   ]
+  },
+  {
+   "id": "sabine-wren",
+   "name": "Sabine Wren",
+   "type": "personnel",
+   "tta_id": "22609",
+   "points": 25,
+   "points_v2_6": 25,
+   "points_revamp": 25,
+   "is_unique": true
+  },
+  {
+   "id": "sabine-s-combat-shield",
+   "name": "Sabine's Combat Shield",
+   "type": "gear",
+   "tta_id": "79",
+   "points": 10,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-sabine-wren-back-in-the-fold"
+    },
+    {
+     "id": "rebels-sabine-wren"
+    }
+   ],
+   "faction": "rebels"
+  },
+  {
+   "id": "saxon-s-combat-shield",
+   "name": "Saxon's Combat Shield",
+   "type": "gear",
+   "tta_id": "3006",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-gar-saxon-head-of-clan-saxon"
+    },
+    {
+     "id": "mercenary-gar-saxon-militant-commando"
+    }
+   ]
+  },
+  {
+   "id": "saxon-s-galar-90-rifle",
+   "name": "Saxon's Galar-90 Rifle",
+   "type": "armament",
+   "tta_id": "2773",
+   "points": 15,
+   "points_v2_6": 15,
+   "points_revamp": 10,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-gar-saxon-head-of-clan-saxon"
+    },
+    {
+     "id": "mercenary-gar-saxon-militant-commando"
+    }
+   ]
+  },
+  {
+   "id": "saxon-s-jetpack-rockets",
+   "name": "Saxon's Jetpack Rockets",
+   "type": "armament",
+   "tta_id": "2774",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-gar-saxon-head-of-clan-saxon"
+    },
+    {
+     "id": "mercenary-gar-saxon-militant-commando"
+    }
+   ]
+  },
+  {
+   "id": "saxon-s-zx-flame-projector",
+   "name": "Saxon's ZX Flame Projector",
+   "type": "armament",
+   "tta_id": "2775",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-gar-saxon-head-of-clan-saxon"
+    },
+    {
+     "id": "mercenary-gar-saxon-militant-commando"
+    }
+   ]
+  },
+  {
+   "id": "scatter-gun-enforcer",
+   "name": "Scatter Gun Enforcer",
+   "type": "heavy-weapon",
+   "tta_id": "2565",
+   "points": 28,
+   "points_v2_6": 28,
+   "points_revamp": 28,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-black-sun-enforcers"
+    }
+   ]
+  },
+  {
+   "id": "secret-ingredients",
+   "name": "Secret Ingredients",
+   "type": "training",
+   "tta_id": "9624",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-logray-superstitious-shaman"
+    }
+   ]
+  },
+  {
+   "id": "security-detail",
+   "name": "Security Detail",
+   "type": "training",
+   "tta_id": "21595",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "revamp_only": true,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-death-troopers"
+    }
+   ]
+  },
+  {
+   "id": "seek-and-destroy",
+   "name": "Seek and Destroy",
+   "type": "doctrine",
+   "tta_id": "20450",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-super-tactical-command-droid"
+    },
+    {
+     "id": "separatists-super-tactical-command-droid-operative"
+    }
+   ]
+  },
+  {
+   "id": "seeker-droid",
+   "name": "Seeker Droid",
+   "type": "gear",
+   "tta_id": "20273",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-agent"
+    }
+   ]
+  },
+  {
+   "id": "seize-the-initiative",
+   "name": "Seize the Initiative",
+   "type": "training",
+   "tta_id": "185",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_rank": [
+    "commander",
+    "operative"
+   ]
+  },
+  {
+   "id": "seventh-sister",
+   "name": "Seventh Sister",
+   "type": "heavy-weapon",
+   "tta_id": "21915",
+   "points": 30,
+   "points_v2_6": 30,
+   "points_revamp": 30,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-special-forces"
+    },
+    {
+     "id": "imperials-imperial-special-forces-inferno-squad"
+    }
+   ]
+  },
+  {
+   "id": "shaak-ti",
+   "name": "Shaak Ti",
+   "type": "personnel",
+   "tta_id": "21727",
+   "points": 22,
+   "points_v2_6": 22,
+   "points_revamp": 22,
+   "is_unique": true
+  },
+  {
+   "id": "shoretrooper",
+   "name": "Shoretrooper",
+   "type": "personnel",
+   "tta_id": "95",
+   "points": 13,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-shoretroopers"
+    }
+   ]
+  },
+  {
+   "id": "shoretrooper-squad",
+   "name": "Shoretrooper Squad",
+   "type": "personnel",
+   "tta_id": "16570",
+   "points": 70,
+   "points_v2_6": 70,
+   "points_revamp": 52,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-shoretroopers"
+    }
+   ]
+  },
+  {
+   "id": "shriv-suurgav",
+   "name": "Shriv Suurgav",
+   "type": "pilot",
+   "tta_id": "198",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": true,
+   "restricted_to_rank": [
+    "heavy"
+   ],
+   "faction": "rebels"
+  },
+  {
+   "id": "situational-awareness",
+   "name": "Situational Awareness",
+   "type": "training",
+   "tta_id": "172",
+   "points": 2,
+   "points_v2_6": 4,
+   "points_revamp": 4,
+   "is_unique": false
+  },
+  {
+   "id": "sliced-comms",
+   "name": "Sliced Comms",
+   "type": "protocol",
+   "tta_id": "20451",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-super-tactical-command-droid"
+    },
+    {
+     "id": "separatists-super-tactical-command-droid-operative"
+    }
+   ]
+  },
+  {
+   "id": "smoke-grenades",
+   "name": "Smoke Grenades",
+   "type": "grenades",
+   "tta_id": "103",
+   "points": 6,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false
+  },
+  {
+   "id": "snowtrooper-squad",
+   "name": "Snowtrooper Squad",
+   "type": "personnel",
+   "tta_id": "16565",
+   "points": 46,
+   "points_v2_6": 46,
+   "points_revamp": 40,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-snowtroopers"
+    }
+   ]
+  },
+  {
+   "id": "sonic-cannon-warrior",
+   "name": "Sonic Cannon Warrior",
+   "type": "heavy-weapon",
+   "tta_id": "11866",
+   "points": 25,
+   "points_v2_6": 25,
+   "points_revamp": 25,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-geonosian-warriors"
+    }
+   ]
+  },
+  {
+   "id": "sonic-imploders",
+   "name": "Sonic Imploders",
+   "type": "grenades",
+   "tta_id": "2610",
+   "points": 3,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false
+  },
+  {
+   "id": "spotter-uplink",
+   "name": "Spotter Uplink",
+   "type": "comms",
+   "tta_id": "19834",
+   "points": 3,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false,
+   "revamp_only": true
+  },
+  {
+   "id": "squadron-leader",
+   "name": "Squadron Leader",
+   "type": "comms",
+   "tta_id": "22921",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": true,
+   "restricted_to_unit_type": [
+    "ground-vehicle",
+    "repulsor-vehicle"
+   ]
+  },
+  {
+   "id": "stormtrooper-captain",
+   "name": "Stormtrooper Captain",
+   "type": "personnel",
+   "tta_id": "134",
+   "points": 15,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-stormtroopers"
+    },
+    {
+     "id": "imperials-stormtroopers-heavy-response-unit"
+    }
+   ]
+  },
+  {
+   "id": "stormtrooper-marksman",
+   "name": "Stormtrooper Marksman",
+   "type": "heavy-weapon",
+   "tta_id": "16577",
+   "points": 30,
+   "points_v2_6": 30,
+   "points_revamp": 11,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-stormtrooper-riot-squad"
+    }
+   ]
+  },
+  {
+   "id": "stormtrooper-specialist",
+   "name": "Stormtrooper Specialist",
+   "type": "personnel",
+   "tta_id": "135",
+   "points": 15,
+   "points_v2_6": 9,
+   "points_revamp": 9,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-stormtroopers"
+    },
+    {
+     "id": "imperials-stormtroopers-heavy-response-unit"
+    }
+   ]
+  },
+  {
+   "id": "stormtrooper-squad",
+   "name": "Stormtrooper Squad",
+   "type": "personnel",
+   "tta_id": "16566",
+   "points": 46,
+   "points_v2_6": 46,
+   "points_revamp": 40,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-stormtroopers"
+    },
+    {
+     "id": "imperials-stormtroopers-heavy-response-unit"
+    }
+   ]
+  },
+  {
+   "id": "strategic-programming",
+   "name": "Strategic Programming",
+   "type": "protocol",
+   "tta_id": "20456",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-super-tactical-command-droid"
+    },
+    {
+     "id": "separatists-super-tactical-command-droid-operative"
+    }
+   ]
+  },
+  {
+   "id": "strict-orders",
+   "name": "Strict Orders",
+   "type": "command",
+   "tta_id": "62",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  {
+   "id": "strike-team-leader",
+   "name": "Strike Team Leader",
+   "type": "training",
+   "tta_id": "19825",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": true,
+   "revamp_only": true,
+   "restricted_to_rank": [
+    "operative"
+   ]
+  },
+  {
+   "id": "strike-and-fade",
+   "name": "Strike and Fade",
+   "type": "training",
+   "tta_id": "19824",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "revamp_only": true
+  },
+  {
+   "id": "strong-in-the-force",
+   "name": "Strong in the Force",
+   "type": "training",
+   "tta_id": "22922",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  {
+   "id": "stuck-in",
+   "name": "Stuck In",
+   "type": "training",
+   "tta_id": "22924",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false
+  },
+  {
+   "id": "stun-baton",
+   "name": "Stun Baton",
+   "type": "armament",
+   "tta_id": "20276",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-agent"
+    }
+   ]
+  },
+  {
+   "id": "super-commando-combat-shields",
+   "name": "Super Commando Combat Shields",
+   "type": "gear",
+   "tta_id": "2714",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-mandalorian-super-commandos"
+    }
+   ]
+  },
+  {
+   "id": "super-commando-gunslinger",
+   "name": "Super Commando Gunslinger",
+   "type": "heavy-weapon",
+   "tta_id": "2719",
+   "points": 30,
+   "points_v2_6": 30,
+   "points_revamp": 30,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-mandalorian-super-commandos"
+    }
+   ]
+  },
+  {
+   "id": "super-commando-jetpack-rockets",
+   "name": "Super Commando Jetpack Rockets",
+   "type": "armament",
+   "tta_id": "2715",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-mandalorian-super-commandos"
+    }
+   ]
+  },
+  {
+   "id": "super-commando-marksman",
+   "name": "Super Commando Marksman",
+   "type": "heavy-weapon",
+   "tta_id": "2717",
+   "points": 30,
+   "points_v2_6": 30,
+   "points_revamp": 30,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-mandalorian-super-commandos"
+    }
+   ]
+  },
+  {
+   "id": "superior-equipment",
+   "name": "Superior Equipment",
+   "type": "gear",
+   "tta_id": "22854",
+   "points": 15,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": false
+  },
+  {
+   "id": "t-21-blaster-rifle",
+   "name": "T-21 Blaster Rifle",
+   "type": "armament",
+   "tta_id": "96",
+   "points": 10,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-dewback-rider"
+    }
+   ]
+  },
+  {
+   "id": "t-21-special-forces-trooper",
+   "name": "T-21 Special Forces Trooper",
+   "type": "heavy-weapon",
+   "tta_id": "182",
+   "points": 29,
+   "points_v2_6": 27,
+   "points_revamp": 20,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-special-forces"
+    },
+    {
+     "id": "imperials-imperial-special-forces-inferno-squad"
+    }
+   ]
+  },
+  {
+   "id": "t-21-stormtrooper",
+   "name": "T-21 Stormtrooper",
+   "type": "heavy-weapon",
+   "tta_id": "122",
+   "points": 27,
+   "points_v2_6": 22,
+   "points_revamp": 20,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-stormtroopers"
+    },
+    {
+     "id": "imperials-stormtroopers-heavy-response-unit"
+    }
+   ]
+  },
+  {
+   "id": "t-21a-range-trooper",
+   "name": "T-21A Range Trooper",
+   "type": "heavy-weapon",
+   "tta_id": "15015",
+   "points": 28,
+   "points_v2_6": 28,
+   "points_revamp": 28,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-range-troopers"
+    }
+   ]
+  },
+  {
+   "id": "t-21b-shoretrooper",
+   "name": "T-21B Shoretrooper",
+   "type": "heavy-weapon",
+   "tta_id": "114",
+   "points": 32,
+   "points_v2_6": 28,
+   "points_revamp": 28,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-shoretroopers"
+    }
+   ]
+  },
+  {
+   "id": "t-series-tactical-droid-pilot",
+   "name": "T-Series Tactical Droid Pilot",
+   "type": "pilot",
+   "tta_id": "120",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-aat-battle-tank"
+    }
+   ]
+  },
+  {
+   "id": "t-series-tactical-droid",
+   "name": "T-series Tactical Droid",
+   "type": "personnel",
+   "tta_id": "181",
+   "points": 18,
+   "points_v2_6": 18,
+   "points_revamp": 18,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "droid-trooper"
+   ],
+   "faction": "separatists"
+  },
+  {
+   "id": "tank-hunting-munitions",
+   "name": "Tank Hunting Munitions",
+   "type": "gear",
+   "tta_id": "22923",
+   "points": 3,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false
+  },
+  {
+   "id": "targeting-relay",
+   "name": "Targeting Relay",
+   "type": "protocol",
+   "tta_id": "20453",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-super-tactical-command-droid"
+    },
+    {
+     "id": "separatists-super-tactical-command-droid-operative"
+    }
+   ]
+  },
+  {
+   "id": "tech",
+   "name": "Tech",
+   "type": "heavy-weapon",
+   "tta_id": "15988",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-the-bad-batch"
+    }
+   ]
+  },
+  {
+   "id": "terror",
+   "name": "Terror",
+   "type": "force",
+   "tta_id": "19829",
+   "points": 6,
+   "points_v2_6": 6,
+   "points_revamp": 6,
+   "is_unique": false,
+   "revamp_only": true,
+   "force_alignment": "dark"
+  },
+  {
+   "id": "the-armorer",
+   "name": "The Armorer",
+   "type": "personnel",
+   "tta_id": "21729",
+   "points": 40,
+   "points_v2_6": 40,
+   "points_revamp": 40,
+   "is_unique": true
+  },
+  {
+   "id": "the-darksaber-maul",
+   "name": "The Darksaber (Maul)",
+   "type": "armament",
+   "tta_id": "2632",
+   "points": 10,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-maul-a-rival"
+    }
+   ]
+  },
+  {
+   "id": "the-mando-s-jetpack",
+   "name": "The Mando's Jetpack",
+   "type": "gear",
+   "tta_id": "3668",
+   "points": 15,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-din-djarin-the-mandalorian"
+    }
+   ]
+  },
+  {
+   "id": "thermal-detonator",
+   "name": "Thermal Detonator",
+   "type": "grenades",
+   "tta_id": "20314",
+   "points": 3,
+   "points_v2_6": 3,
+   "points_revamp": 3,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-agent"
+    }
+   ]
+  },
+  {
+   "id": "tip-of-the-spear",
+   "name": "Tip of the Spear",
+   "type": "doctrine",
+   "tta_id": "20269",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": true,
+   "revamp_only": true,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-agent"
+    }
+   ]
+  },
+  {
+   "id": "tranquility",
+   "name": "Tranquility",
+   "type": "force",
+   "tta_id": "19831",
+   "points": 10,
+   "points_v2_6": 10,
+   "points_revamp": 10,
+   "is_unique": false,
+   "revamp_only": true,
+   "force_alignment": "light"
+  },
+  {
+   "id": "tristan-wren",
+   "name": "Tristan Wren",
+   "type": "heavy-weapon",
+   "tta_id": "177",
+   "points": 38,
+   "points_v2_6": 34,
+   "points_revamp": 34,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-mandalorian-resistance"
+    },
+    {
+     "id": "rebels-mandalorian-resistance-clan-wren"
+    }
+   ]
+  },
+  {
+   "id": "tristan-wren-personnel",
+   "name": "Tristan Wren",
+   "type": "personnel",
+   "tta_id": "22608",
+   "points": 25,
+   "points_v2_6": 25,
+   "points_revamp": 25,
+   "is_unique": true,
+   "restricted_to_unit_type": [
+    "mandalorian-trooper"
+   ]
+  },
+  {
+   "id": "trusted-agent",
+   "name": "Trusted Agent",
+   "type": "command",
+   "tta_id": "19827",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": true,
+   "revamp_only": true
+  },
+  {
+   "id": "twin-beam-cannons",
+   "name": "Twin Beam Cannons",
+   "type": "hard-point",
+   "tta_id": "963",
+   "points": 40,
+   "points_v2_6": 25,
+   "points_revamp": 30,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-infantry-support-platform"
+    }
+   ]
+  },
+  {
+   "id": "twin-blaster-cannons",
+   "name": "Twin Blaster Cannons",
+   "type": "hard-point",
+   "tta_id": "964",
+   "points": 40,
+   "points_v2_6": 25,
+   "points_revamp": 25,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-infantry-support-platform"
+    }
+   ]
+  },
+  {
+   "id": "twin-laser-turret",
+   "name": "Twin Laser Turret",
+   "type": "hard-point",
+   "tta_id": "151",
+   "points": 14,
+   "points_v2_6": 14,
+   "points_revamp": 14,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-tx-130-saber-class-fighter-tank"
+    }
+   ]
+  },
+  {
+   "id": "twin-lightsabers",
+   "name": "Twin Lightsabers",
+   "type": "armament",
+   "tta_id": "20433",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-jedi-knight"
+    },
+    {
+     "id": "republic-jedi-knight-general"
+    }
+   ]
+  },
+  {
+   "id": "twin-missile-pods",
+   "name": "Twin Missile Pods",
+   "type": "hard-point",
+   "tta_id": "965",
+   "points": 40,
+   "points_v2_6": 25,
+   "points_revamp": 25,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-infantry-support-platform"
+    }
+   ]
+  },
+  {
+   "id": "tyrannical-taskmaster",
+   "name": "Tyrannical Taskmaster",
+   "type": "doctrine",
+   "tta_id": "20449",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "separatists-super-tactical-command-droid"
+    },
+    {
+     "id": "separatists-super-tactical-command-droid-operative"
+    }
+   ]
+  },
+  {
+   "id": "underworld-connections",
+   "name": "Underworld Connections",
+   "type": "command",
+   "tta_id": "2429",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false
+  },
+  {
+   "id": "unorthodox-tactician",
+   "name": "Unorthodox Tactician",
+   "type": "crew",
+   "tta_id": "210",
+   "points": 10,
+   "points_v2_6": 16,
+   "points_revamp": 16,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-a-a5-speeder-truck"
+    }
+   ]
+  },
+  {
+   "id": "unseen-saboteur",
+   "name": "Unseen Saboteur",
+   "type": "doctrine",
+   "tta_id": "20279",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-agent"
+    }
+   ]
+  },
+  {
+   "id": "unstable-astromech",
+   "name": "Unstable Astromech",
+   "type": "crew",
+   "tta_id": "209",
+   "points": 6,
+   "points_v2_6": 6,
+   "points_revamp": 16,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-a-a5-speeder-truck"
+    },
+    {
+     "id": "rebels-x-34-landspeeder"
+    }
+   ]
+  },
+  {
+   "id": "up-close-and-personal",
+   "name": "Up Close and Personal",
+   "type": "training",
+   "tta_id": "2631",
+   "points": 5,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false
+  },
+  {
+   "id": "ursa-wren",
+   "name": "Ursa Wren",
+   "type": "heavy-weapon",
+   "tta_id": "178",
+   "points": 38,
+   "points_v2_6": 34,
+   "points_revamp": 34,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-mandalorian-resistance"
+    },
+    {
+     "id": "rebels-mandalorian-resistance-clan-wren"
+    }
+   ]
+  },
+  {
+   "id": "ursa-wren-personnel",
+   "name": "Ursa Wren",
+   "type": "personnel",
+   "tta_id": "22650",
+   "points": 25,
+   "points_v2_6": 25,
+   "points_revamp": 25,
+   "is_unique": true
+  },
+  {
+   "id": "veteran-clone-pilot",
+   "name": "Veteran Clone Pilot",
+   "type": "pilot",
+   "tta_id": "146",
+   "points": 7,
+   "points_v2_6": 7,
+   "points_revamp": 7,
+   "is_unique": false,
+   "restricted_to_rank": [
+    "heavy"
+   ],
+   "faction": "republic"
+  },
+  {
+   "id": "vibro-axe",
+   "name": "Vibro Axe",
+   "type": "armament",
+   "tta_id": "20285",
+   "points": 8,
+   "points_v2_6": 8,
+   "points_revamp": 8,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-rebel-agent"
+    }
+   ]
+  },
+  {
+   "id": "vigilance",
+   "name": "Vigilance",
+   "type": "command",
+   "tta_id": "191",
+   "points": 5,
+   "points_v2_6": 9,
+   "points_revamp": 9,
+   "is_unique": false
+  },
+  {
+   "id": "viper-recon-droid",
+   "name": "Viper Recon Droid",
+   "type": "personnel",
+   "tta_id": "192",
+   "points": 8,
+   "points_v2_6": 9,
+   "points_revamp": 9,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "droid-trooper"
+   ]
+  },
+  {
+   "id": "waxer",
+   "name": "Waxer",
+   "type": "squad-leader",
+   "tta_id": "16553",
+   "points": 20,
+   "points_v2_6": 20,
+   "points_revamp": 20,
+   "is_unique": true,
+   "revamp_only": true,
+   "restricted_to_rank": [
+    "corps"
+   ]
+  },
+  {
+   "id": "waxer-personnel",
+   "name": "Waxer",
+   "type": "personnel",
+   "tta_id": "3748",
+   "points": 15,
+   "points_v2_6": 15,
+   "points_revamp": 15,
+   "is_unique": true,
+   "restricted_to_rank": [
+    "corps"
+   ],
+   "restricted_to_unit_type": [
+    "clone-trooper"
+   ]
+  },
+  {
+   "id": "weequay-captain",
+   "name": "Weequay Captain",
+   "type": "personnel",
+   "tta_id": "21643",
+   "points": 18,
+   "points_v2_6": 18,
+   "points_revamp": 18,
+   "is_unique": false,
+   "revamp_only": true,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-weequay-pirates"
+    }
+   ]
+  },
+  {
+   "id": "weequay-crew",
+   "name": "Weequay Crew",
+   "type": "crew",
+   "tta_id": "21340",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-wlo-5-speeder-tank"
+    }
+   ]
+  },
+  {
+   "id": "weequay-pirate-squad",
+   "name": "Weequay Pirate Squad",
+   "type": "personnel",
+   "tta_id": "21642",
+   "points": 30,
+   "points_v2_6": 30,
+   "points_revamp": 30,
+   "is_unique": false,
+   "revamp_only": true,
+   "restricted_to_unit": [
+    {
+     "id": "mercenary-weequay-pirates"
+    }
+   ]
+  },
+  {
+   "id": "whipcord-launcher",
+   "name": "Whipcord Launcher",
+   "type": "gear",
+   "tta_id": "22606",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit_type": [
+    "mandalorian-trooper"
+   ]
+  },
+  {
+   "id": "wrecker",
+   "name": "Wrecker",
+   "type": "heavy-weapon",
+   "tta_id": "15986",
+   "points": 0,
+   "points_v2_6": 0,
+   "points_revamp": 0,
+   "is_unique": true,
+   "restricted_to_unit": [
+    {
+     "id": "rebels-the-bad-batch"
+    }
+   ]
+  },
+  {
+   "id": "xs-iv-assault-cannon",
+   "name": "XS-IV Assault Cannon",
+   "type": "heavy-weapon",
+   "tta_id": "6318",
+   "points": 48,
+   "points_v2_6": 55,
+   "points_revamp": 49,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-dark-troopers"
+    }
+   ]
+  },
+  {
+   "id": "z-6-clone-trooper",
+   "name": "Z-6 Clone Trooper",
+   "type": "heavy-weapon",
+   "tta_id": "16557",
+   "points": 22,
+   "points_v2_6": 22,
+   "points_revamp": 22,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "republic-clone-trooper-infantry"
+    }
+   ]
+  },
+  {
+   "id": "z-6-riot-baton",
+   "name": "Z-6 Riot Baton",
+   "type": "armament",
+   "tta_id": "20277",
+   "points": 5,
+   "points_v2_6": 5,
+   "points_revamp": 5,
+   "is_unique": false,
+   "restricted_to_unit": [
+    {
+     "id": "imperials-imperial-agent"
+    }
+   ]
+  }
+ ]
+}

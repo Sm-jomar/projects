@@ -41,6 +41,24 @@ Once a flag's fix is applied, delete its `flags/incoming/*.json` file (or
 leave it as a record and just make sure it doesn't get re-processed) and
 push to `main` — the Worker redeploys automatically.
 
+## Tabletop Admiral layer
+
+Printed, tournament 2.6 and Revamp points, ranks, wounds, courage, speed,
+upgrade slots and most upgrades come from Tabletop Admiral's Legion
+builder (https://tabletopadmiral.com/api), imported by
+`scripts/import_tabletop_admiral.py` into `src/data/tabletop-admiral.json`.
+`catalog.ts` applies it on top of the seed and under
+`catalog-overrides.json`, so a hand override still wins. To refresh it:
+
+```
+npx esbuild scripts/dump_catalog.ts --bundle --platform=node | node > /tmp/ours.json
+python3 scripts/import_tabletop_admiral.py --ours /tmp/ours.json --fetch
+```
+
+When a unit is paired with the wrong Tabletop Admiral printing (it keeps
+classic and Revamp versions side by side), add it to `MANUAL` in the
+script rather than overriding each field.
+
 ## Why a separate overrides file (not hand-editing the generated data)?
 
 `catalog.seed.ts` is regenerated wholesale from a wiki scrape, so a
