@@ -81,6 +81,9 @@ type Props = {
   gridColor?: string;
   gridOpacity?: number;
   zones?: Zone3D[];
+  /** Drawn over the ground, under terrain and pieces, stretched to the
+   * board (e.g. D&D fog of war). Transparent where the ground shows. */
+  overlay?: HTMLCanvasElement | null;
   blocks: Block3D[];
   pieces: Piece3D[];
   selectedId: string | null;
@@ -286,6 +289,17 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
         new THREE.MeshBasicMaterial({ color: z.color, transparent: true, opacity: 0.16, depthWrite: false }));
       m.rotation.x = -Math.PI / 2;
       m.position.set(wx(z.x + z.w / 2), 0.015, wz(z.y + z.d / 2));
+      content.add(m);
+    }
+
+    if (p.overlay) {
+      const t = new THREE.CanvasTexture(p.overlay);
+      t.colorSpace = THREE.SRGBColorSpace;
+      t.userData.owned = true;
+      const m = new THREE.Mesh(new THREE.PlaneGeometry(p.width, p.depth),
+        new THREE.MeshBasicMaterial({ map: t, transparent: true, depthWrite: false }));
+      m.rotation.x = -Math.PI / 2;
+      m.position.y = 0.02;
       content.add(m);
     }
 

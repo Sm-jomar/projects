@@ -39,6 +39,9 @@ export type DndToken = {
   modelStl?: string;
   /** Original file name of the uploaded model, for the editor. */
   modelName?: string;
+  /** Fog of war: how far this token sees, in feet. Undefined = no limit
+   * (a lit map); set it for darkness, darkvision or a torch's radius. */
+  sight?: number;
 };
 
 // A terrain block on the board: walls, buildings, pillars, platforms,
@@ -93,8 +96,17 @@ export type DndMap = {
   gridOpacity: number;
 };
 
+// Fog of war. The DM sees the whole map; each player sees only what their
+// own PC tokens have line of sight to (see dndFog).
+export type DndFog = {
+  on: boolean;
+  /** Players see through every PC on the board, not just their own. */
+  sharedVision?: boolean;
+};
+
 export type DndTabletopState = {
   map: DndMap;
+  fog?: DndFog;
   tokens: DndToken[];
   terrain?: DndTerrain[];
   round: number;
