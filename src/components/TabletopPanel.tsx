@@ -11,6 +11,10 @@ import {
 import { appendLog, type LogActor, type LogEntry } from "../lib/auditLog";
 import { legionPlayUrl, roomsAvailableHere } from "../lib/appRouting";
 import { AuditLogView } from "./AuditLogView";
+import {
+  moveToken, startSquad, joinSquad, leaveSquad, makeLeader, disbandSquad, regroupSquad,
+  normalizeSquads, listSquads, squadMembers, unlockedIds,
+} from "../lib/squads";
 import { listArmies } from "../lib/storage";
 import { unitById } from "../data/catalog";
 import { cardForUnit } from "../lib/cardLookup";
@@ -383,9 +387,10 @@ export function TabletopPanel({ onClose }: Props) {
 
   function deleteSelected() {
     if (!selectedId) return;
+    const gone = state.tokens.find((t) => t.id === selectedId);
     commit({
       ...state,
-      tokens: state.tokens.filter((t) => t.id !== selectedId),
+      tokens: normalizeSquads(state.tokens.filter((t) => t.id !== selectedId), gone),
       terrain: state.terrain.filter((t) => t.id !== selectedId),
     });
     setSelectedId(null);
@@ -395,7 +400,7 @@ export function TabletopPanel({ onClose }: Props) {
     if (!selectedId) return;
     const tk = state.tokens.find((t) => t.id === selectedId);
     if (tk) {
-      const copy: Token = { ...tk, id: newId("tk"), x: tk.x + 1, y: tk.y + 1, activated: false };
+      const copy: Token = { ...tk, id: newId("tk"), x: tk.x + 1, y: tk.y + 1, activated: false, squadId: undefined, squadLead: undefined };
       commit({ ...state, tokens: [...state.tokens, copy] });
       setSelectedId(copy.id);
       return;
@@ -456,12 +461,13 @@ export function TabletopPanel({ onClose }: Props) {
     const r = tk.size / 2;
     const newCx = endPt.x - Math.sin(rad) * r;
     const newCy = endPt.y + Math.cos(rad) * r;
+    // Squads stay base locked: a leader's move carries the squad, and a
+    // member lands at the nearest spot still in contact.
+    const moved = moveToken(state, tk.id, newCx - r, newCy - r);
     commit({
-      ...state,
+      ...moved,
       moveTemplate: null,
-      tokens: state.tokens.map((x) => x.id === tk.id
-        ? { ...x, x: newCx - r, y: newCy - r, rotation: finalHeading }
-        : x),
+      tokens: moved.tokens.map((x) => x.id === tk.id ? { ...x, rotation: finalHeading } : x),
     });
   }
 
@@ -955,6 +961,8 @@ export function TabletopPanel({ onClose }: Props) {
                       </div>
                     )}
 
+                    <SquadControls state={state} token={selectedToken} onCommit={commit} />
+
                     <div className="tt-edit-actions">
                       <button onClick={duplicateSelected}>Duplicate</button>
                       <button className="danger" onClick={deleteSelected}>Delete</button>
@@ -1003,7 +1011,7 @@ export function TabletopPanel({ onClose }: Props) {
 
                 <p className="muted small tt-hint">
                   Drag pieces with mouse or finger; pinch or scroll to zoom; shift-drag or <b>Pan</b> to move the view.
-                  Double-click a token to mark it activated. Pick a Move template <b>1/2/3</b> while a token is selected; drag joint dots to bend, then <b>Apply</b>.
+                  Double-click a token to mark it activated. Pick a Move template <b>1/2/3</b> while a token is selected; drag joint dots to bend, then <b>Apply</b>. Use <b>Start squad</b> / <b>Join squad</b> to base lock units to a leader: the leader drags the squad, members stay in contact.
                   <b>Delete</b> removes the selection, <b>Ctrl+Z</b> undoes. The board auto-saves.
                 </p>
               </div>
@@ -1012,6 +1020,58 @@ export function TabletopPanel({ onClose }: Props) {
             )}
           </aside>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// Squad section of the token inspector: start a squad, join one, or manage
+// the squad this token is in. Squads are base locked (see lib/squads).
+function SquadControls({ state, token, onCommit }: {
+  state: TabletopState;
+  token: Token;
+  onCommit: (s: TabletopState) => void;
+}) {
+  const squads = listSquads(state.tokens);
+  if (!token.squadId) {
+    return (
+      <div className="tt-squad">
+        <span className="tt-counter-label">Squad</span>
+        <div className="tt-edit-actions">
+          <button onClick={() => onCommit(startSquad(state, token.id))}>Start squad</button>
+          {squads.length > 0 && (
+            <select value="" aria-label="Join squad"
+                    onChange={(e) => { if (e.target.value) onCommit(joinSquad(state, token.id, e.target.value)); }}>
+              <option value="">Join squad…</option>
+              {squads.map((sq) => (
+                <option key={sq.id} value={sq.id}>{sq.leader.label || "Squad"} ({sq.members.length})</option>
+              ))}
+            </select>
+          )}
+        </div>
+      </div>
+    );
+  }
+  const members = squadMembers(state.tokens, token.squadId);
+  const leader = members.find((m) => m.squadLead) ?? members[0]!;
+  const loose = unlockedIds(members);
+  return (
+    <div className="tt-squad">
+      <span className="tt-counter-label">Squad</span>
+      <p className="tt-squad-status">
+        {token.squadLead
+          ? <>★ Leader of {members.length}</>
+          : <>Member of {leader.label || "the leader"}'s squad ({members.length})</>}
+        {" · "}
+        {loose.size === 0
+          ? <span className="tt-squad-ok">Base locked</span>
+          : <span className="tt-squad-bad">{loose.size} out of contact</span>}
+      </p>
+      <div className="tt-edit-actions">
+        {!token.squadLead && <button onClick={() => onCommit(makeLeader(state, token.id))}>Make leader</button>}
+        {loose.size > 0 && <button onClick={() => onCommit(regroupSquad(state, token.squadId!))}>Regroup</button>}
+        <button onClick={() => onCommit(leaveSquad(state, token.id))}>Leave</button>
+        <button onClick={() => onCommit(disbandSquad(state, token.squadId!))}>Disband</button>
       </div>
     </div>
   );

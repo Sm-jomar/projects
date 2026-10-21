@@ -91,6 +91,11 @@ export type Token = {
   /** Height the unit flies/hovers above the surface it's over, in inches.
    * 0 / undefined = on the ground. Repulsor vehicles get a default. */
   elevation?: number;
+  /** Squad this token is bundled into (see lib/squads). Squads are base
+   * locked: every member must link back to the leader by base contact. */
+  squadId?: string;
+  /** True on the squad leader; moving the leader carries the squad. */
+  squadLead?: boolean;
 };
 
 // --- Movement templates ---------------------------------------------------

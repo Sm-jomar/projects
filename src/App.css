@@ -1485,6 +1485,14 @@ input, select {
 .tt-edit-actions button { flex: 1; }
 .tt-hint { line-height: 1.4; }
 
+/* ----- Squads (base locked groups) ----- */
+.tt-squad { margin: 8px 0; }
+.tt-squad .tt-edit-actions { flex-wrap: wrap; }
+.tt-squad select { flex: 1; min-width: 0; }
+.tt-squad-status { margin: 4px 0; font-size: 12px; color: var(--muted); }
+.tt-squad-ok { color: #9be29b; }
+.tt-squad-bad { color: #ff8a8a; }
+
 /* ----- Movement template controls ----- */
 .tt-move-row {
   display: flex;
