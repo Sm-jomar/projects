@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import {
   downscaleImage, initiativeOrder, makeToken,
   type DndTabletopState, type DndToken,
@@ -16,6 +16,9 @@ import { RollRequestBanner } from "./RollRequestBanner";
 import { useKeyring } from "./useCampaign";
 import { canEdit } from "./campaign";
 import { bestCodeFor } from "./campaignKeyring";
+
+// three.js is only fetched once someone switches the board into 3D.
+const Dnd3D = lazy(() => import("./Dnd3D"));
 
 const U = 48; // SVG units per grid cell
 const SIDE_KEY = "dnd.ttSideCollapsed";
@@ -40,6 +43,9 @@ export function DndTabletop() {
   const [viewProfile, setViewProfile] = useState<PlayerProfile | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const tokenIconFileRef = useRef<HTMLInputElement>(null);
+  const modelFileRef = useRef<HTMLInputElement>(null);
+  const [view3d, setView3d] = useState(false);
+  const [modelBusy, setModelBusy] = useState(false);
 
   const connected = online?.status === "open";
   const myProfile = room.myId ? room.profiles[room.myId] : undefined;
@@ -129,6 +135,28 @@ export function DndTabletop() {
     }
   }
 
+  // STL minis are simplified to a few thousand triangles and stored on the
+  // token, so they sync to everyone in the game like icons do.
+  async function onModelFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0];
+    const id = selected?.id;
+    if (!f || !id) return;
+    if (f.size > 80 * 1024 * 1024) { setWarn("That STL is over 80 MB — export a lighter version."); return; }
+    setModelBusy(true);
+    try {
+      const { encodeStlFile } = await import("../lib/stlModel");
+      const m = await encodeStlFile(f);
+      updateToken(id, { modelStl: m.data, modelName: f.name });
+      setWarn(null);
+      setView3d(true);
+    } catch (err) {
+      setWarn(err instanceof Error && err.message ? err.message : "Could not read that STL file.");
+    } finally {
+      setModelBusy(false);
+      if (modelFileRef.current) modelFileRef.current.value = "";
+    }
+  }
+
   function nextTurn() {
     if (order.length === 0) return;
     const i = order.findIndex((t) => t.id === state.activeTokenId);
@@ -150,6 +178,11 @@ export function DndTabletop() {
             {room.syncWarning} <button className="ghost-btn small" onClick={room.clearSyncWarning}>×</button>
           </span>
         )}
+        <button className={"ghost-btn small dnd-tt-3d-toggle" + (view3d ? " active" : "")}
+                onClick={() => setView3d((v) => !v)}
+                title={view3d ? "Back to the flat board" : "See height and depth in 3D"}>
+          {view3d ? "2D view" : "3D view"}
+        </button>
         <button className="ghost-btn small dnd-tt-side-toggle"
                 onClick={() => { const v = !sideCollapsed; setSideCollapsed(v); writeSideCollapsed(v); }}
                 title={sideCollapsed ? "Show the board tools" : "Hide the board tools for a bigger board"}>
@@ -184,13 +217,21 @@ export function DndTabletop() {
       )}
 
       <div className={"dnd-tt-body" + (sideCollapsed ? " side-collapsed" : "")}>
-        <DungeonCanvas
-          state={state}
-          selectedId={selectedId}
-          onSelect={setSelectedId}
-          onMoveToken={(id, x, y) => updateToken(id, { x, y })}
-          ghost={ghost}
-        />
+        {view3d ? (
+          <div className="dnd-tt-canvas">
+            <Suspense fallback={<div className="board3d board3d-loading">Loading 3D view…</div>}>
+              <Dnd3D state={state} selectedId={selectedId} onSelect={setSelectedId} />
+            </Suspense>
+          </div>
+        ) : (
+          <DungeonCanvas
+            state={state}
+            selectedId={selectedId}
+            onSelect={setSelectedId}
+            onMoveToken={(id, x, y) => updateToken(id, { x, y })}
+            ghost={ghost}
+          />
+        )}
 
         <aside className="dnd-tt-side" hidden={sideCollapsed}>
           {connected && (
@@ -312,9 +353,31 @@ export function DndTabletop() {
                   <input type="number" value={selected.hpMax ?? ""} onChange={(e) => updateToken(selected.id, { hpMax: e.target.value === "" ? undefined : Number(e.target.value) })} />
                 </label>
               </div>
-              <label className="dnd-tt-field">Initiative
-                <input type="number" value={selected.initiative ?? ""} onChange={(e) => updateToken(selected.id, { initiative: e.target.value === "" ? undefined : Number(e.target.value) })} />
-              </label>
+              <div className="dnd-tt-grid2">
+                <label className="dnd-tt-field">Initiative
+                  <input type="number" value={selected.initiative ?? ""} onChange={(e) => updateToken(selected.id, { initiative: e.target.value === "" ? undefined : Number(e.target.value) })} />
+                </label>
+                <label className="dnd-tt-field" title="Flying height in feet — the 3D view lifts the token this high">Flying (ft)
+                  <input type="number" min={0} step={5} value={selected.elevation ?? 0}
+                         onChange={(e) => updateToken(selected.id, { elevation: Math.max(0, Number(e.target.value) || 0) || undefined })} />
+                </label>
+              </div>
+              <div className="dnd-tt-field">3D model (STL)
+                <div className="dnd-tt-row">
+                  <button onClick={() => modelFileRef.current?.click()} disabled={modelBusy}>
+                    {modelBusy ? "Processing…" : selected.modelStl ? "Replace STL" : "Upload STL"}
+                  </button>
+                  {selected.modelStl && (
+                    <button className="ghost-btn" onClick={() => updateToken(selected.id, { modelStl: undefined, modelName: undefined })}>Clear</button>
+                  )}
+                  <input ref={modelFileRef} type="file" accept=".stl,model/stl,application/sla" hidden onChange={onModelFile} />
+                </div>
+                <span className="muted small">
+                  {selected.modelStl
+                    ? `${selected.modelName ?? "Model"} · ${Math.round(selected.modelStl.length / 1024)} KB synced`
+                    : "Shown in the 3D view. Big files are simplified to keep the game in sync."}
+                </span>
+              </div>
               <button className="danger" onClick={() => removeToken(selected.id)}>Remove token</button>
             </section>
           )}

@@ -33,6 +33,12 @@ export type DndToken = {
   avatarUrl?: string;
   /** Campaign NPC this token was placed from (DM screen). */
   npcId?: string;
+  /** Flying height in feet (3D view). 0 / undefined = on the ground. */
+  elevation?: number;
+  /** Uploaded STL miniature, simplified + encoded (see lib/stlModel). */
+  modelStl?: string;
+  /** Original file name of the uploaded model, for the editor. */
+  modelName?: string;
 };
 
 export type DndMap = {

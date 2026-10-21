@@ -28,7 +28,26 @@ export type Terrain = {
   label: string;
   // Visual style — informational; rules treatment is up to players.
   kind: "rock" | "wall" | "building" | "forest" | "barricade" | "objective";
+  /** How tall the piece stands, in inches (3D view + hover clearance).
+   * Undefined = the default for its kind (TERRAIN_ELEVATION). */
+  elevation?: number;
 };
+
+// Default terrain heights in inches. A hovering or flying unit (Speeder,
+// Hover: Air, repulsor craft) clears terrain whose height is at or below
+// its own elevation; anything taller blocks it.
+export const TERRAIN_ELEVATION: Record<Terrain["kind"], number> = {
+  barricade: 1,
+  wall: 2,
+  rock: 1.5,
+  forest: 4,
+  building: 5,
+  objective: 0.25,
+};
+
+export function terrainElevation(t: Terrain): number {
+  return t.elevation ?? TERRAIN_ELEVATION[t.kind];
+}
 
 export type FactionColor = "rebels" | "imperials" | "republic" | "separatists" | "mercenary" | "neutral";
 
@@ -69,6 +88,9 @@ export type Token = {
    * from color (rebels/republic = blue, imperials/separatists = red, etc.)
    * if not set explicitly. */
   side?: "blue" | "red";
+  /** Height the unit flies/hovers above the surface it's over, in inches.
+   * 0 / undefined = on the ground. Repulsor vehicles get a default. */
+  elevation?: number;
 };
 
 // --- Movement templates ---------------------------------------------------
@@ -201,8 +223,8 @@ export function diffLegion(prev: TabletopState, next: TabletopState, actor: LogA
   return out;
 }
 
-// Faction ring colors, reused for ghost-replay tinting.
-const FACTION_STROKE: Record<FactionColor, string> = {
+// Faction ring colors, reused for ghost-replay tinting and the 3D view.
+export const FACTION_STROKE: Record<FactionColor, string> = {
   rebels: "#f6c14a", imperials: "#9bc1ec", republic: "#f6c14a",
   separatists: "#c19be0", mercenary: "#e0c477", neutral: "#888",
 };
@@ -374,6 +396,17 @@ export function unitBaseSize(unit: UnitLike): number {
   return BASE_SIZE.trooper ?? 1;
 }
 
+// Repulsor craft and speeder bikes hover; airspeeders fly well above the table. Values are
+// inches and line up with TERRAIN_ELEVATION: a speeder bike (1.5") skims
+// over barricades and rocks but not walls or buildings.
+export function defaultUnitElevation(unit: UnitLike): number {
+  if (unit.type !== "repulsor-vehicle" && unit.type !== "ground-vehicle") return 0;
+  if (/airspeeder|gunship/i.test(unit.name)) return 4;
+  // Some speeders are catalogued as ground vehicles; catch them by name.
+  if (unit.type === "repulsor-vehicle" || /speeder|swoop|stap|barc/i.test(unit.name)) return 1.5;
+  return 0;
+}
+
 export function addTokenForUnit(
   state: TabletopState,
   unit: UnitLike,
@@ -392,6 +425,8 @@ export function addTokenForUnit(
   if (unit.type === "ground-vehicle" || unit.type === "repulsor-vehicle") {
     partial.rotation = 0;
   }
+  const lift = defaultUnitElevation(unit);
+  if (lift) partial.elevation = lift;
   if (position) { partial.x = position.x - size / 2; partial.y = position.y - size / 2; }
   return addToken(state, partial);
 }

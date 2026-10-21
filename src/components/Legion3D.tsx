@@ -1,0 +1,123 @@
+// Legion board → 3D scene. Lazy-loaded so three.js stays out of the main
+// bundle until someone flips the board into 3D.
+
+import Board3D, { type Block3D, type FigureStyle, type Piece3D, type PieceModel } from "./Board3D";
+import {
+  deploymentZones, terrainElevation, FACTION_STROKE,
+  type FactionColor, type TabletopState, type Terrain, type Token,
+} from "../lib/tabletop";
+import { unitById } from "../data/catalog";
+
+// Each faction's pieces take the shape of that faction's iconic trooper.
+const FACTION_STYLE: Record<FactionColor, FigureStyle> = {
+  rebels: "rebel",
+  imperials: "imperial",
+  republic: "clone",
+  separatists: "droid",
+  mercenary: "merc",
+  neutral: "pawn",
+};
+
+const FACTION_BODY: Record<FactionColor, string> = {
+  rebels: "#a14026",
+  imperials: "#3c5f86",
+  republic: "#b45a22",
+  separatists: "#6a4a86",
+  mercenary: "#8a6a1f",
+  neutral: "#666c78",
+};
+
+const TERRAIN_COLOR: Record<Terrain["kind"], { fill: string; edge: string }> = {
+  rock:      { fill: "#5d6878", edge: "#8a96aa" },
+  wall:      { fill: "#4a5060", edge: "#7a8296" },
+  building:  { fill: "#6e6048", edge: "#a08c68" },
+  forest:    { fill: "#2f5237", edge: "#4a7a55" },
+  barricade: { fill: "#7a5a32", edge: "#a88250" },
+  objective: { fill: "#a37a16", edge: "#ffd24a" },
+};
+
+function modelFor(tk: Token): { model: PieceModel; height: number } {
+  const style = FACTION_STYLE[tk.color];
+  if (tk.kind !== "unit") return { model: { kind: "marker" }, height: tk.size * 0.15 };
+  const u = tk.unitId ? unitById(tk.unitId) : undefined;
+  if (u?.type === "ground-vehicle") return { model: { kind: "vehicle", style, repulsor: false }, height: tk.size * 0.6 };
+  if (u?.type === "repulsor-vehicle") return { model: { kind: "vehicle", style, repulsor: true }, height: tk.size * 0.45 };
+  if (u?.type === "emplacement-trooper") return { model: { kind: "emplacement", style }, height: tk.size * 0.6 };
+  if (u?.type === "creature-trooper") return { model: { kind: "figure", style }, height: tk.size * 1.4 };
+  return { model: { kind: "figure", style }, height: tk.size * 1.3 };
+}
+
+export default function Legion3D({ state, selectedId, onSelect, showGrid }: {
+  state: TabletopState;
+  selectedId: string | null;
+  onSelect: (id: string | null) => void;
+  showGrid: boolean;
+}) {
+  const selected = state.tokens.find((t) => t.id === selectedId);
+  const flyHeight = selected?.elevation ?? 0;
+
+  const blocks: Block3D[] = state.terrain.map((t) => {
+    const h = terrainElevation(t);
+    const c = TERRAIN_COLOR[t.kind];
+    return {
+      id: t.id, shape: t.shape, x: t.x, y: t.y, w: t.width, d: t.shape === "circle" ? t.width : t.height,
+      rotation: t.rotation, height: h, color: c.fill, edge: c.edge,
+      style: t.kind === "forest" ? "forest" : "solid",
+      standable: t.kind === "building" || t.kind === "rock",
+      // With a hovering/flying unit selected, show what it can pass over.
+      tint: flyHeight > 0 && t.kind !== "objective" ? (h <= flyHeight ? "clear" : "block") : null,
+    };
+  });
+
+  const pieces: Piece3D[] = state.tokens.map((tk) => {
+    const { model, height } = modelFor(tk);
+    return {
+      id: tk.id,
+      x: tk.x + tk.size / 2,
+      y: tk.y + tk.size / 2,
+      footprint: tk.size,
+      modelHeight: height,
+      lift: tk.elevation ?? 0,
+      color: FACTION_BODY[tk.color],
+      accent: FACTION_STROKE[tk.color],
+      model,
+      iconUrl: tk.portraitUrl,
+      iconCropTop: true,
+      facing: tk.rotation,
+      dim: tk.activated,
+    };
+  });
+
+  const zones = state.deployment ? (() => {
+    const z = deploymentZones(state.deployment, state.map);
+    return [
+      { x: z.blue.x, y: z.blue.y, w: z.blue.w, d: z.blue.h, color: "#3a78c2" },
+      { x: z.red.x, y: z.red.y, w: z.red.w, d: z.red.h, color: "#c24a3a" },
+    ];
+  })() : [];
+
+  return (
+    <>
+      <Board3D
+        width={state.map.widthInches}
+        depth={state.map.heightInches}
+        groundColor="#2a3a46"
+        gridStep={showGrid ? 6 : 0}
+        gridColor="#4a5f72"
+        zones={zones}
+        blocks={blocks}
+        pieces={pieces}
+        selectedId={selectedId}
+        onSelect={onSelect}
+      />
+      {selected && (
+        <div className="board3d-info small">
+          <b>{selected.label}</b>
+          {flyHeight > 0
+            ? <> · flying at {flyHeight}" — <span className="board3d-clear">green</span> terrain it can pass over, <span className="board3d-block">red</span> blocks it</>
+            : <> · on the ground</>}
+        </div>
+      )}
+    </>
+  );
+}
