@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import "./dnd.css";
 import { CharacterSheets } from "./CharacterSheets";
-import { DmNotes } from "./DmNotes";
+import { Campaigns } from "./Campaigns";
 import { DndTabletop } from "./DndTabletop";
 import { DiceRoller } from "./DiceRoller";
 import { Rulebooks } from "./Rulebooks";
@@ -9,13 +9,13 @@ import { MyCharacterPanel } from "./MyCharacterPanel";
 import { DndRoomProvider } from "./DndRoomContext";
 import { legionUrl, homeUrl } from "../lib/appRouting";
 
-type PageSection = "characters" | "notes" | "dice" | "rulebooks";
+type PageSection = "characters" | "campaigns" | "dice" | "rulebooks";
 type Section = PageSection | "tabletop";
 type DrawerKey = PageSection;
 
 const NAV: { key: Section; label: string }[] = [
   { key: "characters", label: "Character Sheets" },
-  { key: "notes", label: "DM Notes" },
+  { key: "campaigns", label: "Campaigns" },
   { key: "dice", label: "Dice" },
   { key: "rulebooks", label: "Rulebooks" },
   { key: "tabletop", label: "Tabletop" },
@@ -23,7 +23,7 @@ const NAV: { key: Section; label: string }[] = [
 
 const DRAWER_LABEL: Record<DrawerKey, string> = {
   characters: "My character",
-  notes: "DM Notes",
+  campaigns: "Campaigns",
   dice: "Dice",
   rulebooks: "Rulebooks",
 };
@@ -54,7 +54,8 @@ export function DndApp() {
 function DndAppInner() {
   // An invite link (?room=CODE) lands straight on the Tabletop.
   const [section, setSection] = useState<Section>(
-    () => new URLSearchParams(window.location.search).has("room") ? "tabletop" : "characters",
+    () => new URLSearchParams(window.location.search).has("room") ? "tabletop"
+      : window.location.hash.includes("campaign=") ? "campaigns" : "characters",
   );
   // Table mode: while on the Tabletop, the other tabs open in a left drawer
   // beside the board instead of replacing it.
@@ -161,7 +162,7 @@ function DndAppInner() {
         ) : (
           <>
             {section === "characters" && <CharacterSheets />}
-            {section === "notes" && <DmNotes />}
+            {section === "campaigns" && <Campaigns />}
             {section === "dice" && <DiceRoller />}
             {section === "rulebooks" && <Rulebooks />}
           </>
@@ -174,7 +175,7 @@ function DndAppInner() {
 function DrawerPanel({ k }: { k: DrawerKey }) {
   switch (k) {
     case "characters": return <MyCharacterPanel />;
-    case "notes": return <DmNotes />;
+    case "campaigns": return <Campaigns />;
     case "dice": return <DiceRoller />;
     case "rulebooks": return <Rulebooks />;
   }

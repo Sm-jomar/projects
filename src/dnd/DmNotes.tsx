@@ -2,7 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { listNotes, saveNote, deleteNote, type DmNote } from "./dndStorage";
 import { newId } from "./dndTypes";
 
-export function DmNotes() {
+// Notes kept only in this browser (the original DM Notes). Campaign notes
+// live on the server; onImport copies a personal note into a campaign.
+export function DmNotes({ importTargets, onImport }: {
+  importTargets?: { id: string; name: string }[];
+  onImport?: (note: DmNote, campaignId: string) => void;
+} = {}) {
   const [notes, setNotes] = useState<DmNote[]>(() => listNotes());
   const [activeId, setActiveId] = useState<string | null>(() => listNotes()[0]?.id ?? null);
 
@@ -54,7 +59,7 @@ export function DmNotes() {
   return (
     <div className="dnd-section dnd-notes">
       <div className="dnd-section-head">
-        <h2>DM Notes</h2>
+        <h2>Personal notes</h2>
         <button className="dnd-primary" onClick={addNote}>+ New note</button>
       </div>
       <div className="dnd-notes-body">
@@ -77,7 +82,16 @@ export function DmNotes() {
               <textarea className="dnd-notes-text" value={active.body}
                         onChange={(e) => update({ body: e.target.value })}
                         placeholder="Session notes, NPCs, plot threads, secret DM info…" />
-              <div className="muted small">Auto-saved · last edited {new Date(active.updatedAt).toLocaleString()}</div>
+              <div className="dnd-notes-foot">
+                <span className="muted small">Saved on this device · last edited {new Date(active.updatedAt).toLocaleString()}</span>
+                {onImport && importTargets && importTargets.length > 0 && (
+                  <select value="" aria-label="Copy into a campaign"
+                          onChange={(e) => { if (e.target.value) { flush(); onImport(active, e.target.value); } }}>
+                    <option value="">Copy into campaign…</option>
+                    {importTargets.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
+                  </select>
+                )}
+              </div>
             </>
           ) : (
             <p className="muted">Select a note or create a new one.</p>

@@ -31,6 +31,8 @@ export type DndToken = {
   charId?: string;
   /** User-uploaded icon (data URL), rendered in place of the color disc. */
   avatarUrl?: string;
+  /** Campaign NPC this token was placed from (DM screen). */
+  npcId?: string;
 };
 
 export type DndMap = {
@@ -193,3 +195,35 @@ export function downscaleImage(file: File, maxDim = 1600, quality = 0.82): Promi
     img.src = url;
   });
 }
+
+// Re-encode an existing data-URL image smaller (e.g. before saving a board
+// into a campaign). Remote http(s) images are left as-is — they can't be
+// read back from a tainted canvas, and they don't count against storage.
+export function downscaleDataUrl(src: string, maxDim: number, quality: number): Promise<string> {
+  if (!src.startsWith("data:")) return Promise.resolve(src);
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const long = Math.max(img.width, img.height);
+      const scale = long > maxDim ? maxDim / long : 1;
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      const ctx = canvas.getContext("2d");
+      if (!ctx) { reject(new Error("no 2d context")); return; }
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const out = canvas.toDataURL("image/jpeg", quality);
+      resolve(out.length < src.length ? out : src);
+    };
+    img.onerror = () => reject(new Error("could not load image"));
+    img.src = src;
+  });
+}
+
+// Serialized size, measured the same way the room server enforces its
+// MAX_STATE_BYTES cap (JSON string length).
+export function boardBytes(s: DndTabletopState): number {
+  return JSON.stringify(s).length;
+}
+// Leave headroom under the server's 2,000,000 cap for log growth etc.
+export const BOARD_BYTES_SAFE = 1_850_000;

@@ -27,7 +27,13 @@ export type DndRoomValue = {
   // Board
   state: DndTabletopState;
   setBoard: React.Dispatch<React.SetStateAction<DndTabletopState>>;
+  /** Wholesale board change (e.g. loading a saved map): logged as one
+   * summary entry instead of a burst of per-token adds/removes. */
+  replaceBoard: (update: (s: DndTabletopState) => DndTabletopState, summary: string) => void;
   readOnly: boolean;
+  /** Set when the room server refused our last board change (too large). */
+  syncWarning: string | null;
+  clearSyncWarning: () => void;
   actor: LogActor;
   // Connection
   online: OnlineState | null;
@@ -45,7 +51,9 @@ export type DndRoomValue = {
   /** My uploaded avatar image (data URL), or null if none set. */
   myAvatarUrl: string | null;
   setMyAvatar: (dataUrl: string | null) => void;
-  hostRoom: () => void;
+  /** blankBoard: start the new room from an empty board instead of
+   * pushing whatever is on my local board (which may hold DM prep). */
+  hostRoom: (opts?: { blankBoard?: boolean }) => void;
   joinRoom: () => void;
   leaveRoom: () => void;
   changeIdentity: (spectator: boolean, color: string) => void;

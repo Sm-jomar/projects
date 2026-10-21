@@ -85,6 +85,9 @@ export class UploadSessionDO extends DurableObject<UploadSessionEnv> {
       const key = `${RATE_KEY_PREFIX}${bucket}`;
       const count = ((await this.ctx.storage.get<number>(key)) ?? 0) + 1;
       await this.ctx.storage.put(key, count);
+      // Limiter instances (one per caller for some limits) wipe themselves
+      // via the same alarm once their windows have passed.
+      if ((await this.ctx.storage.getAlarm()) == null) await this.ctx.storage.setAlarm(Date.now() + windowMs * 2);
       // Opportunistically drop old buckets so this doesn't grow forever.
       const all = await this.ctx.storage.list<number>({ prefix: RATE_KEY_PREFIX });
       const stale = [...all.keys()].filter((k) => k !== key).slice(0, -1);
