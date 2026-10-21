@@ -7052,5 +7052,86 @@
     "file": "cards/separatists/upgrade/viper-recon-droid.jpg",
     "source": "DOC51_SeparatistAlliance_Upgrades.pdf",
     "points": 9
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Officer",
+    "slug": "imperial-officer",
+    "file": "cards/imperials/unit/imperial-officer.jpg",
+    "source": "starwarslegion.fandom.com (ImperialOfficer-SWQ-front.png, ImperialOfficer-SWQ-back.png)",
+    "points": 55
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "Rebel Officer",
+    "slug": "rebel-officer",
+    "file": "cards/rebels/unit/rebel-officer.jpg",
+    "source": "starwarslegion.fandom.com (RebelOfficer-SWQ-front.png, RebelOfficer-SWQ-back.png)",
+    "points": 50
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "Rebel Commandos Strike Team",
+    "slug": "rebel-commandos-strike-team",
+    "file": "cards/rebels/unit/rebel-commandos-strike-team.jpg",
+    "source": "starwarslegion.fandom.com (RebelCommandosStrikeTeam-SWQ-front.png, RebelCommandosStrikeTeam-SWQ-back.png)",
+    "points": 20
+  },
+  {
+    "faction": "rebels",
+    "kind": "unit",
+    "title": "Chewbacca, Let the Wookiee Win",
+    "slug": "chewbacca-let-the-wookiee-win",
+    "file": "cards/rebels/unit/chewbacca-let-the-wookiee-win.jpg",
+    "source": "starwarslegion.fandom.com (ChewbaccaLtWW-SWQ-front.png, ChewbaccaLtWW-SWQ-back.png)",
+    "points": 190
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Imperial Special Forces",
+    "slug": "imperial-special-forces",
+    "file": "cards/imperials/unit/imperial-special-forces.jpg",
+    "source": "starwarslegion.fandom.com (ImperialSpecialForces-SWQ-front.png, ImperialSpecialForces-SWQ-back.png)",
+    "points": 68
+  },
+  {
+    "faction": "imperials",
+    "kind": "unit",
+    "title": "Scout Troopers Strike Team",
+    "slug": "scout-troopers-strike-team",
+    "file": "cards/imperials/unit/scout-troopers-strike-team.jpg",
+    "source": "starwarslegion.fandom.com (ScoutTroopersStrikeTeam-SWQ-front.png, ScoutTroopersStrikeTeam-SWQ-back.png)",
+    "points": 20
+  },
+  {
+    "faction": "republic",
+    "kind": "unit",
+    "title": "ARC Troopers Strike Team",
+    "slug": "arc-troopers-strike-team",
+    "file": "cards/republic/unit/arc-troopers-strike-team.jpg",
+    "source": "starwarslegion.fandom.com (ARCTroopersStrikeTeam-SWQ-front.png, ARCTroopersStrikeTeam-SWQ-back.png)",
+    "points": 26
+  },
+  {
+    "faction": "separatists",
+    "kind": "unit",
+    "title": "BX-series Droid Commandos Strike Team",
+    "slug": "bx-series-droid-commandos-strike-team",
+    "file": "cards/separatists/unit/bx-series-droid-commandos-strike-team.jpg",
+    "source": "starwarslegion.fandom.com (BXseriesDroidCommandosStrikeTeam-SWQ-front.png, BXseriesDroidCommandosStrikeTeam-SWQ-back.png)",
+    "points": 20
+  },
+  {
+    "faction": "separatists",
+    "kind": "unit",
+    "title": "Droidekas",
+    "slug": "droidekas",
+    "file": "cards/separatists/unit/droidekas.jpg",
+    "source": "starwarslegion.fandom.com (Droidekas-SWQ-front.png, Droidekas-SWQ-back.png)",
+    "points": 60
   }
 ]

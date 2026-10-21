@@ -114,9 +114,10 @@ const UNIT_CARD_OVERRIDES: Record<string, string | null> = {
   "imperials-ig-11-nurse-droid": "cards/mercenary/unit/ig-11.jpg",
   "imperials-boba-fett-infamous-bounty-hunter": "cards/mercenary/unit/boba-fett-bounty-hunter.jpg",
   "imperials-bossk-trandoshan-terror": "cards/mercenary/unit/bossk.jpg",
-  // Imperials still without a paired card:
-  "imperials-imperial-special-forces": null,  // regular Special Forces front not detected
-  "imperials-scout-troopers-strike-team": null,
+  // Cards rebuilt from the Star Wars: Legion wiki (no usable card in the PDFs):
+  "imperials-imperial-officer": "cards/imperials/unit/imperial-officer.jpg",
+  "imperials-imperial-special-forces": "cards/imperials/unit/imperial-special-forces.jpg",
+  "imperials-scout-troopers-strike-team": "cards/imperials/unit/scout-troopers-strike-team.jpg",
 
   // ============= REBELS (re-paired by repair_faction_pairings.py) =============
   "rebels-mark-ii-medium-blaster-trooper": "cards/rebels/unit/mark-ii-medium-blaster-trooper.jpg",
@@ -134,7 +135,7 @@ const UNIT_CARD_OVERRIDES: Record<string, string | null> = {
   "rebels-tauntaun-riders": "cards/rebels/unit/tauntaun-riders.jpg",
   "rebels-t-47-airspeeder": "cards/rebels/unit/t-47-airspeeder.jpg",
   "rebels-x-34-landspeeder": "cards/rebels/unit/x-34-landspeeder.jpg",
-  "rebels-c-3po-golden-god": "cards/rebels/unit/c-3po.jpg",
+  "rebels-c-3po-golden-god": "cards/mercenary/unit/e-c-3po.jpg",
   "rebels-leia-organa": "cards/rebels/unit/leia-organa.jpg",
   "rebels-han-solo": "cards/rebels/unit/han-solo.jpg",
   "rebels-luke-skywalker-hero-of-the-rebellion": "cards/rebels/unit/luke-skywalker-hero.jpg",
@@ -155,11 +156,12 @@ const UNIT_CARD_OVERRIDES: Record<string, string | null> = {
   "rebels-wicket-hero-of-bright-tree": "cards/mercenary/unit/wicket.jpg",
   "rebels-boba-fett-daimyo-of-mos-espa": "cards/mercenary/unit/boba-fett.jpg",
   "rebels-ig-11-nurse-droid": "cards/mercenary/unit/ig-11.jpg",
+  // Cards rebuilt from the Star Wars: Legion wiki:
+  "rebels-chewbacca-let-the-wookiee-win": "cards/rebels/unit/chewbacca-let-the-wookiee-win.jpg",
+  "rebels-rebel-commandos-strike-team": "cards/rebels/unit/rebel-commandos-strike-team.jpg",
+  "rebels-rebel-officer": "cards/rebels/unit/rebel-officer.jpg",
   // Rebels with no source card:
-  "rebels-chewbacca-let-the-wookiee-win": null,
-  "rebels-rebel-commandos-strike-team": null,
   "rebels-rebel-agent": null,
-  "rebels-rebel-officer": null,
 
   // ============= SEPARATISTS (re-paired by repair_faction_pairings.py) =============
   "separatists-b1-battle-droids": "cards/separatists/unit/b1-battle-droids.jpg",
@@ -184,11 +186,12 @@ const UNIT_CARD_OVERRIDES: Record<string, string | null> = {
   "separatists-asajj-ventress-sith-assassin": "cards/separatists/unit/asajj-ventress.jpg",
   "separatists-sun-fac": "cards/separatists/unit/sun-fac.jpg",
   "separatists-bossk-trandoshan-terror": "cards/mercenary/unit/bossk.jpg",
+  // Cards rebuilt from the Star Wars: Legion wiki:
+  "separatists-droidekas": "cards/separatists/unit/droidekas.jpg",
+  "separatists-bx-series-droid-commandos-strike-team": "cards/separatists/unit/bx-series-droid-commandos-strike-team.jpg",
   // Separatists with no source card:
   "separatists-aqua-droids": null,
   "separatists-lm-432-crab-droid": null,
-  "separatists-droidekas": null,
-  "separatists-bx-series-droid-commandos-strike-team": null,
   "separatists-super-tactical-command-droid": null,
   "separatists-super-tactical-command-droid-operative": null,
 
@@ -215,9 +218,10 @@ const UNIT_CARD_OVERRIDES: Record<string, string | null> = {
   "republic-clone-commander-cody": "cards/republic/unit/clone-commander-cody.jpg",
   "republic-chewbacca-republic": "cards/republic/unit/chewbacca.jpg",
   "republic-padme-amidala-spirited-senator": "cards/republic/unit/padme-amidala.jpg",
+  // Cards rebuilt from the Star Wars: Legion wiki:
+  "republic-arc-troopers-strike-team": "cards/republic/unit/arc-troopers-strike-team.jpg",
   // Republic with no source card:
   "republic-arf-troopers": null,
-  "republic-arc-troopers-strike-team": null,
   "republic-clone-trooper-marksmen": null,
   "republic-jedi-knight": null,
   "republic-jedi-knight-general": null,
