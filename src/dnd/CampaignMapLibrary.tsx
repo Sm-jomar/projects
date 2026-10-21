@@ -25,6 +25,9 @@ export function CampaignMapLibrary({ code, maps, mutate }: {
   const [includePcs, setIncludePcs] = useState(false);
   const [clearInit, setClearInit] = useState(true);
   const [keepPcs, setKeepPcs] = useState(true);
+  // In a live game the DM can hold a map's tokens back ("staged") and
+  // reveal them later — anything on the board is visible to everyone.
+  const [loadMode, setLoadMode] = useState<"all" | "stage" | "map">("all");
   const live = room.online?.status === "open";
 
   async function saveBoard() {
@@ -63,12 +66,17 @@ export function CampaignMapLibrary({ code, maps, mutate }: {
       const kept = keepPcs ? s.tokens.filter((t) => t.kind === "pc") : [];
       // Fresh ids so a map loaded twice (or alongside kept tokens) never collides.
       const incoming = data.tokens.map((t) => ({ ...t, id: newId() }));
-      const next = { ...s, map: data.map, tokens: [...kept, ...incoming], activeTokenId: null, round: 1 };
+      const mode = live ? loadMode : "all";
+      const onBoard = mode === "all" ? incoming : [];
+      const next = { ...s, map: data.map, tokens: [...kept, ...onBoard], activeTokenId: null, round: 1 };
       if (boardBytes(next) > BOARD_BYTES_SAFE) {
         throw new Error("That map plus what's already on the board is too large to sync. Clear some token icons and try again.");
       }
       room.replaceBoard((cur) => ({ ...cur, map: next.map, tokens: next.tokens, activeTokenId: null, round: 1 }), `loaded map “${m.name}”`);
-      setMsg({ kind: "ok", text: `Loaded “${m.name}”.` });
+      if (mode === "stage" && incoming.length) room.stageTokens(incoming);
+      setMsg({ kind: "ok", text: mode === "stage" && incoming.length
+        ? `Loaded “${m.name}” — ${incoming.length} token${incoming.length === 1 ? "" : "s"} staged (hidden) until you reveal them.`
+        : `Loaded “${m.name}”.` });
     } catch (e) {
       setMsg({ kind: "err", text: (e as Error).message });
     } finally {
@@ -123,6 +131,16 @@ export function CampaignMapLibrary({ code, maps, mutate }: {
       ) : (
         <>
           <label className="dnd-tt-check"><input type="checkbox" checked={keepPcs} onChange={(e) => setKeepPcs(e.target.checked)} /> Keep player tokens when loading</label>
+          {live && (
+            <label className="dnd-tt-field">When loading into the game
+              <select value={loadMode} onChange={(e) => setLoadMode(e.target.value as "all" | "stage" | "map")}>
+                <option value="all">Map + all its tokens</option>
+                <option value="stage">Map only — stage its tokens (hidden until revealed)</option>
+                <option value="map">Map only — drop its tokens</option>
+              </select>
+              <span className="muted small">Everything on the board — the map image and every token — is visible to players.</span>
+            </label>
+          )}
           <ul className="dnd-camp-map-list">
             {maps.map((m) => (
               <li key={m.id} className="dnd-camp-map">

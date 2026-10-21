@@ -1,25 +1,8 @@
 import { useState } from "react";
 import { useDndRoom, type RollPayload } from "./dndRoom";
 import { RollFeed } from "./RollFeed";
-
-// Standard D&D polyhedral set (d100 = percentile). d12 included since it's
-// part of a normal dice set.
-const DICE = [4, 6, 8, 10, 12, 20, 100] as const;
-type Sides = (typeof DICE)[number];
-
-// Fair single-die roll using the crypto RNG.
-function rollDie(sides: number): number {
-  const a = new Uint32Array(1);
-  crypto.getRandomValues(a);
-  return (a[0]! % sides) + 1;
-}
-
-function poolLabel(pool: Record<number, number>, modifier: number): string {
-  const parts = DICE.filter((s) => (pool[s] ?? 0) > 0).map((s) => `${pool[s]}d${s}`);
-  let label = parts.join(" + ") || "—";
-  if (modifier) label += ` ${modifier >= 0 ? "+" : "−"} ${Math.abs(modifier)}`;
-  return label;
-}
+import { RollRequestBanner } from "./RollRequestBanner";
+import { DICE, poolLabel, rollD20 as rollD20Payload, rollDie, type Sides } from "./dndDice";
 
 export function DiceRoller() {
   const room = useDndRoom();
@@ -28,6 +11,9 @@ export function DiceRoller() {
 
   const poolCount = DICE.reduce((n, s) => n + (pool[s] ?? 0), 0);
   const connected = room.online?.status === "open";
+  // A player can roll secretly to the DM once a DM is seated.
+  const [secret, setSecret] = useState(false);
+  const canSecret = connected && room.proto >= 2 && !!room.dmPeer && !room.isDm;
 
   function addDie(s: Sides) { setPool((p) => ({ ...p, [s]: (p[s] ?? 0) + 1 })); }
   function removeDie(s: Sides) { setPool((p) => ({ ...p, [s]: Math.max(0, (p[s] ?? 0) - 1) })); }
@@ -35,7 +21,7 @@ export function DiceRoller() {
 
   // All rolls flow through the room context: added to the shared feed and
   // broadcast to the other players when connected.
-  function roll(payload: RollPayload) { room.sendRoll(payload); }
+  function roll(payload: RollPayload) { room.sendRoll(payload, canSecret && secret ? { vis: "dm" } : undefined); }
 
   function rollPool() {
     if (poolCount === 0) return;
@@ -52,17 +38,8 @@ export function DiceRoller() {
 
   function rollD20(mode: "normal" | "adv" | "dis") {
     const modLabel = modifier ? ` ${modifier >= 0 ? "+" : "−"} ${Math.abs(modifier)}` : "";
-    if (mode === "normal") {
-      const v = rollDie(20);
-      const note = v === 20 ? "Natural 20!" : v === 1 ? "Natural 1…" : undefined;
-      roll({ label: `d20${modLabel}`, rolls: [{ sides: 20, value: v }], modifier, total: v + modifier, note });
-      return;
-    }
-    const a = rollDie(20), b = rollDie(20);
-    const chosen = mode === "adv" ? Math.max(a, b) : Math.min(a, b);
-    const note = `${mode === "adv" ? "Advantage" : "Disadvantage"} — rolled ${a} & ${b}`
-      + (chosen === 20 ? " · Natural 20!" : chosen === 1 ? " · Natural 1…" : "");
-    roll({ label: `d20 (${mode === "adv" ? "adv" : "dis"})${modLabel}`, rolls: [{ sides: 20, value: chosen }], modifier, total: chosen + modifier, note });
+    const label = mode === "normal" ? `d20${modLabel}` : `d20 (${mode})${modLabel}`;
+    roll(rollD20Payload(mode, modifier, label));
   }
 
   function flipCoin() {
@@ -78,6 +55,24 @@ export function DiceRoller() {
         </span>
         {room.rollFeed.length > 0 && <button className="ghost-btn small" onClick={room.clearRolls}>Clear feed</button>}
       </div>
+
+      <RollRequestBanner />
+
+      {room.isDm && (
+        <div className="dnd-dm-rollmode">
+          <span>{room.dmRollPublic ? "👁 Your rolls are shown to the table." : "🔒 Your rolls are hidden from players."}</span>
+          <label className="dnd-tt-check">
+            <input type="checkbox" checked={room.dmRollPublic} onChange={(e) => room.setDmRollPublic(e.target.checked)} />
+            Show my rolls to the table
+          </label>
+        </div>
+      )}
+      {canSecret && (
+        <label className="dnd-tt-check dnd-secret-roll">
+          <input type="checkbox" checked={secret} onChange={(e) => setSecret(e.target.checked)} />
+          Secret roll — only the DM ({room.dmPeer!.name}) sees it
+        </label>
+      )}
 
       <div className="dnd-dice-body">
         <div className="dnd-dice-left">

@@ -1,6 +1,10 @@
 import { createContext, useContext } from "react";
 import type { ConnStatus, Peer } from "../lib/roomClient";
-import type { DndTabletopState, PlayerProfile } from "./dndTabletop";
+export type { Peer };
+import type { DndTabletopState, DndToken, PlayerProfile } from "./dndTabletop";
+import type {
+  CampaignInvite, DmNotice, IncomingRollRequest, LinkedCampaign, OutgoingRollRequest, RollRequest, RollVis,
+} from "./dndProtocol";
 import type { DndCharacter } from "./dndTypes";
 import type { LogActor } from "../lib/auditLog";
 
@@ -20,8 +24,17 @@ export type SharedRoll = {
   modifier: number;
   total: number;
   note?: string;
+  /** "dm": a hidden DM roll, or a player's secret roll seen only by the DM. */
+  vis?: "dm";
+  /** Answer to a DM roll request. */
+  requestId?: string;
+  /** The request's DC, when the DM revealed it. */
+  dc?: number;
+  /** Set on receipt: the sender's connection id (absent = my own roll). */
+  fromId?: string;
 };
-export type RollPayload = Omit<SharedRoll, "id" | "ts" | "actor">;
+export type RollPayload = Omit<SharedRoll, "id" | "ts" | "actor" | "vis" | "requestId" | "dc" | "fromId">;
+export type SendRollOpts = { vis?: RollVis; requestId?: string; dc?: number };
 
 export type DndRoomValue = {
   // Board
@@ -53,13 +66,15 @@ export type DndRoomValue = {
   setMyAvatar: (dataUrl: string | null) => void;
   /** blankBoard: start the new room from an empty board instead of
    * pushing whatever is on my local board (which may hold DM prep). */
-  hostRoom: (opts?: { blankBoard?: boolean }) => void;
+  hostRoom: (opts?: { blankBoard?: boolean; campaignCode?: string }) => void;
   joinRoom: () => void;
   leaveRoom: () => void;
   changeIdentity: (spectator: boolean, color: string) => void;
   // Dice
   rollFeed: SharedRoll[];
-  sendRoll: (payload: RollPayload) => void;
+  /** As DM, rolls default to hidden (see dmRollPublic). vis "dm" from a
+   * player is a secret roll only the DM sees. */
+  sendRoll: (payload: RollPayload, opts?: SendRollOpts) => void;
   clearRolls: () => void;
   // Shared character profiles
   myId: string | null;
@@ -67,6 +82,38 @@ export type DndRoomValue = {
   attachCharacter: (character: DndCharacter | null) => void;
   /** Shared player avatar images (data URLs), keyed by connection id. */
   avatars: Record<string, string>;
+
+  // --- DM seat & campaign (protocol 2) ---
+  /** Server protocol version (DM features need >= 2). */
+  proto: number;
+  isDm: boolean;
+  dmPeer: Peer | null;
+  claimDm: (opts?: { code?: string }) => void;
+  releaseDm: () => void;
+  dmNotice: DmNotice | null;
+  clearDmNotice: () => void;
+  linkedCampaign: LinkedCampaign | null;
+  linkCampaign: (code: string) => void;
+  unlinkCampaign: () => void;
+  /** DM: invite the table to the linked campaign (player code only). */
+  inviteToCampaign: (playerCode: string) => void;
+  campaignInvites: CampaignInvite[];
+  dismissInvite: (campaignId: string) => void;
+  /** DM: show my rolls to the table (default: hidden). */
+  dmRollPublic: boolean;
+  setDmRollPublic: (v: boolean) => void;
+  /** DM: ask chosen players for a roll. `dc` stays local unless revealed. */
+  sendRollRequest: (to: string[], req: Omit<RollRequest, "id" | "dc">, dc?: number, revealDc?: boolean) => void;
+  outgoingRequests: OutgoingRollRequest[];
+  clearOutgoingRequests: () => void;
+  /** Roll requests the DM sent me. */
+  rollRequests: IncomingRollRequest[];
+  dismissRollRequest: (id: string) => void;
+  /** DM: tokens set aside off-board (e.g. a loaded map's monsters) until revealed. */
+  staged: DndToken[];
+  stageTokens: (tokens: DndToken[]) => void;
+  revealStaged: (id: string | "all") => void;
+  discardStaged: (id: string | "all") => void;
 };
 
 export const DndRoomCtx = createContext<DndRoomValue | null>(null);

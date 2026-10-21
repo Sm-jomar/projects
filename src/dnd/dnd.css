@@ -804,3 +804,64 @@
 @container dnd-drawer (max-width: 560px) {
   .dnd-camp-tab { padding: 6px 8px; font-size: 12px; }
 }
+
+/* ----- DM seat, roll requests, hidden rolls ----- */
+.dnd-badge-dm {
+  display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 8px;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.06em;
+  color: var(--bg); background: var(--dnd-accent-2); vertical-align: middle;
+}
+.dnd-nav-dm { border-color: var(--dnd-accent-2); color: var(--dnd-accent-2); font-weight: 700; }
+.dnd-mp-dm {
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 8px 10px; border: 1px dashed var(--border); border-radius: 6px;
+}
+
+.dnd-req-banners { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+.dnd-req-banner {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+  padding: 8px 12px; border-radius: 8px;
+  background: var(--panel-2); border: 1px solid var(--dnd-accent-2);
+  box-shadow: 0 0 0 3px rgba(224, 72, 63, 0.12);
+}
+.dnd-req-banner.invite { border-color: var(--accent); box-shadow: none; }
+.dnd-req-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dnd-req-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.dnd-req-mod { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--muted); }
+.dnd-req-mod input { width: 56px; }
+
+.dnd-dm-rollmode {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+  padding: 8px 12px; margin-bottom: 12px; border-radius: 8px;
+  border: 1px solid var(--dnd-accent); background: var(--panel-2); font-size: 13px;
+}
+.dnd-secret-roll { margin-bottom: 12px; }
+
+.dnd-roll.hidden { border-style: dashed; border-color: var(--dnd-accent); }
+.dnd-roll-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+.dnd-roll-badge {
+  font-size: 11px; padding: 1px 7px; border-radius: 10px;
+  border: 1px solid var(--border); color: var(--muted);
+}
+.dnd-roll-badge.hidden { color: var(--dnd-accent-2); border-color: var(--dnd-accent); }
+.dnd-roll-badge.pass, .dnd-pass { color: var(--ok); border-color: var(--ok); }
+.dnd-roll-badge.fail, .dnd-fail { color: var(--danger); border-color: var(--danger); }
+
+.dnd-dm-screen { display: flex; flex-direction: column; gap: 10px; }
+.dnd-dm-sec {
+  border: 1px solid var(--border); border-radius: 8px; background: var(--bg);
+  padding: 0 10px;
+}
+.dnd-dm-sec[open] { padding-bottom: 10px; }
+.dnd-dm-sec > summary {
+  cursor: pointer; padding: 8px 0; font-size: 12px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em; color: var(--dnd-accent-2);
+}
+.dnd-dm-sec > :not(summary) + :not(summary) { margin-top: 8px; }
+.dnd-dm-campaign, .dnd-dm-call, .dnd-dm-dice { display: flex; flex-direction: column; gap: 8px; }
+.dnd-dm-targets { display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.dnd-dm-targets .dnd-party-dot { display: inline-block; vertical-align: middle; }
+.dnd-dm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 6px; }
+.dnd-dm-tracker { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--border); padding-top: 8px; }
+.dnd-dm-req ul { margin: 2px 0 4px; padding-left: 18px; }
+.dnd-dm-staged { display: flex; flex-direction: column; gap: 6px; }

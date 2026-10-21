@@ -7,11 +7,13 @@ import { DiceRoller } from "./DiceRoller";
 import { Rulebooks } from "./Rulebooks";
 import { MyCharacterPanel } from "./MyCharacterPanel";
 import { DndRoomProvider } from "./DndRoomContext";
+import { DmScreen } from "./DmScreen";
+import { useDndRoom } from "./dndRoom";
 import { legionUrl, homeUrl } from "../lib/appRouting";
 
 type PageSection = "characters" | "campaigns" | "dice" | "rulebooks";
 type Section = PageSection | "tabletop";
-type DrawerKey = PageSection;
+type DrawerKey = PageSection | "dm";
 
 const NAV: { key: Section; label: string }[] = [
   { key: "characters", label: "Character Sheets" },
@@ -26,6 +28,7 @@ const DRAWER_LABEL: Record<DrawerKey, string> = {
   campaigns: "Campaigns",
   dice: "Dice",
   rulebooks: "Rulebooks",
+  dm: "DM Screen",
 };
 
 const WIDTH_KEY = "dnd.drawerWidth";
@@ -52,6 +55,7 @@ export function DndApp() {
 }
 
 function DndAppInner() {
+  const room = useDndRoom();
   // An invite link (?room=CODE) lands straight on the Tabletop.
   const [section, setSection] = useState<Section>(
     () => new URLSearchParams(window.location.search).has("room") ? "tabletop"
@@ -64,6 +68,8 @@ function DndAppInner() {
   const [drawerW, setDrawerW] = useState(readDrawerWidth);
   const drawerRef = useRef<HTMLElement>(null);
   const tableMode = section === "tabletop";
+  // The DM Screen only exists while you hold the DM seat.
+  const openDrawer = drawer === "dm" && !room.isDm ? null : drawer;
 
   function onNav(key: Section) {
     if (tableMode) {
@@ -77,7 +83,7 @@ function DndAppInner() {
 
   // Leaving the table expands whatever panel was open to its full page.
   function exitTable() {
-    const next = drawer ?? lastPage;
+    const next = openDrawer && openDrawer !== "dm" ? openDrawer : lastPage;
     setSection(next);
     setLastPage(next);
     setDrawer(null);
@@ -122,7 +128,7 @@ function DndAppInner() {
         <nav className="dnd-nav">
           {NAV.map((n) => {
             const active = tableMode ? n.key === "tabletop" : section === n.key;
-            const open = tableMode && drawer === n.key;
+            const open = tableMode && openDrawer === n.key;
             return (
               <button key={n.key}
                       className={"dnd-nav-btn" + (active ? " active" : "") + (open ? " open" : "")}
@@ -132,6 +138,13 @@ function DndAppInner() {
               </button>
             );
           })}
+          {tableMode && room.isDm && (
+            <button className={"dnd-nav-btn dnd-nav-dm" + (openDrawer === "dm" ? " open" : "")}
+                    title="Your DM tools — only you see this"
+                    onClick={() => setDrawer((d) => (d === "dm" ? null : "dm"))}>
+              DM Screen
+            </button>
+          )}
         </nav>
         {tableMode
           ? <button className="dnd-exit-table" onClick={exitTable} title="Back to full-page tabs">Exit table ✕</button>
@@ -141,15 +154,15 @@ function DndAppInner() {
       <main className="dnd-main">
         {tableMode ? (
           <div className="dnd-table-shell">
-            {drawer && (
+            {openDrawer && (
               <aside className="dnd-drawer" ref={drawerRef}
                      style={{ "--dnd-drawer-w": `${drawerW}px` } as React.CSSProperties}>
                 <div className="dnd-drawer-head">
-                  <b>{DRAWER_LABEL[drawer]}</b>
+                  <b>{DRAWER_LABEL[openDrawer]}</b>
                   <button className="ghost-btn small" onClick={() => setDrawer(null)} aria-label="Close panel">✕</button>
                 </div>
                 <div className="dnd-drawer-body">
-                  <DrawerPanel k={drawer} />
+                  <DrawerPanel k={openDrawer} />
                 </div>
                 <div className="dnd-drawer-resize" role="separator" aria-orientation="vertical"
                      title="Drag to resize" onPointerDown={onResizeStart} />
@@ -178,5 +191,6 @@ function DrawerPanel({ k }: { k: DrawerKey }) {
     case "campaigns": return <Campaigns />;
     case "dice": return <DiceRoller />;
     case "rulebooks": return <Rulebooks />;
+    case "dm": return <DmScreen />;
   }
 }

@@ -205,6 +205,11 @@ export class CampaignDO extends DurableObject<CampaignEnv> {
     return ok(await this.buildView(a.role, a.meta));
   }
 
+  /** Whether this campaign still exists (room server: unlink deleted ones). */
+  async exists(): Promise<boolean> {
+    return !!(await this.meta());
+  }
+
   /** Used by the room server to check a code without exposing anything else. */
   async verify(code: string): Promise<{ id: string; name: string; role: CampaignRole } | null> {
     const a = await this.auth(code);
