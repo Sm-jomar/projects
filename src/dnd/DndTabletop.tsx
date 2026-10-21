@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import {
   downscaleImage, initiativeOrder, makeToken, makeTerrain, DND_TERRAIN_PRESETS,
   type DndTabletopState, type DndTerrain, type DndToken,
@@ -16,6 +16,7 @@ import { RollRequestBanner } from "./RollRequestBanner";
 import { useKeyring } from "./useCampaign";
 import { canEdit } from "./campaign";
 import { bestCodeFor } from "./campaignKeyring";
+import { computeFog, isMyToken, pointInPolygon, polysPath, terrainSeen, type FogMode, type FogView, type Pt } from "./dndFog";
 
 // three.js is only fetched once someone switches the board into 3D.
 const Dnd3D = lazy(() => import("./Dnd3D"));
@@ -59,7 +60,47 @@ export function DndTabletop() {
     ghostTimer.current = setTimeout(() => setGhost(null), 5000);
   }
 
-  const selected = state.tokens.find((t) => t.id === selectedId) ?? null;
+  // --- Fog of war ---------------------------------------------------------
+  // The DM (or anyone playing solo) sees everything, with the parts the
+  // party can't see shaded. Players see only through their own PCs (or
+  // every PC with shared vision); spectators see what the party sees.
+  const fogOn = !!state.fog?.on;
+  const [previewFog, setPreviewFog] = useState(false);
+  const seesAll = !connected || room.isDm;
+  const amSpectator = connected && online?.you?.color === "spectator";
+  const myColor = connected && online?.you && !amSpectator ? online.you.color : null;
+  const fogMode: FogMode = !fogOn ? "off" : seesAll && !previewFog ? "dm" : "player";
+  const pcs = state.tokens.filter((t) => t.kind === "pc");
+  const viewerTokens = seesAll || amSpectator || state.fog?.sharedVision
+    ? pcs
+    : pcs.filter((t) => isMyToken(t, myColor, myProfile?.charId ?? null));
+  const viewerKey = viewerTokens.map((t) => `${t.id}:${t.x},${t.y},${t.elevation ?? 0},${t.sight ?? ""}`).join("|");
+  const fog = useMemo(
+    () => (fogOn ? computeFog(state, viewerTokens) : null),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [fogOn, viewerKey, state.tokens, state.terrain, state.map.cols, state.map.rows],
+  );
+  // Ground a player has seen stays dimly visible once they move on (this
+  // device only; tokens there stay hidden). Forgotten on a new map.
+  const exploreScope = `${state.map.imageUrl?.slice(-64) ?? ""}|${state.map.cols}x${state.map.rows}|${fogMode}`;
+  const [explored, setExplored] = useState<{ scope: string; key: string; polys: Pt[][] }>({ scope: "", key: "", polys: [] });
+  const exploreKey = viewerKey + "|" + (state.terrain ?? []).length;
+  if (fog && fogMode === "player" && (explored.scope !== exploreScope || explored.key !== exploreKey)) {
+    const prev = explored.scope === exploreScope ? explored.polys : [];
+    setExplored({ scope: exploreScope, key: exploreKey, polys: [...prev, ...fog.vision].slice(-120) });
+  }
+  const hiddenFromMe = (t: DndToken) => fogMode === "player" && !!fog && !fog.seen.has(t.id);
+  const boardView: DndTabletopState = fogMode === "player" ? { ...state, tokens: state.tokens.filter((t) => !hiddenFromMe(t)) } : state;
+  const exploredPolys = fogMode === "player" && explored.scope === exploreScope ? explored.polys : null;
+  const fogView = useMemo<FogView | null>(
+    () => (fog && fogMode !== "off"
+      ? { mode: fogMode, vision: fog.vision, explored: exploredPolys ?? [], noViewers: fog.viewers.length === 0 }
+      : null),
+    [fog, fogMode, exploredPolys],
+  );
+  const canSetFog = seesAll || (connected && !room.dmPeer);
+
+  const selected = boardView.tokens.find((t) => t.id === selectedId) ?? null;
   const selectedTerrain = (state.terrain ?? []).find((t) => t.id === selectedId) ?? null;
   const order = initiativeOrder(state.tokens);
 
@@ -244,17 +285,18 @@ export function DndTabletop() {
         {view3d ? (
           <div className="dnd-tt-canvas">
             <Suspense fallback={<div className="board3d board3d-loading">Loading 3D view…</div>}>
-              <Dnd3D state={state} selectedId={selectedId} onSelect={setSelectedId} />
+              <Dnd3D state={boardView} selectedId={selectedId} onSelect={setSelectedId} fog={fogView} />
             </Suspense>
           </div>
         ) : (
           <DungeonCanvas
-            state={state}
+            state={boardView}
+            fog={fogView}
             selectedId={selectedId}
             onSelect={setSelectedId}
             onMoveToken={(id, x, y) => updateToken(id, { x, y })}
             onMoveTerrain={(id, x, y) => updateTerrain(id, { x, y })}
-            ghost={ghost}
+            ghost={ghost && fogView?.mode === "player" && !fogView.vision.some((p) => pointInPolygon({ x: ghost.to.x + (ghost.size ?? 1) / 2, y: ghost.to.y + (ghost.size ?? 1) / 2 }, p)) ? null : ghost}
           />
         )}
 
@@ -293,6 +335,40 @@ export function DndTabletop() {
           )}
 
           <input ref={modelFileRef} type="file" accept=".stl,model/stl,application/sla" hidden onChange={onModelFile} />
+          {(canSetFog || fogOn) && (
+            <section className="dnd-tt-fog">
+              <h3>Fog of war</h3>
+              {canSetFog ? (
+                <>
+                  <label className="dnd-tt-check">
+                    <input type="checkbox" checked={fogOn}
+                           onChange={(e) => patch({ fog: { ...(state.fog ?? {}), on: e.target.checked } })} />
+                    Fog of war
+                  </label>
+                  <label className="dnd-tt-check">
+                    <input type="checkbox" checked={!!state.fog?.sharedVision} disabled={!fogOn}
+                           onChange={(e) => patch({ fog: { on: fogOn, sharedVision: e.target.checked } })} />
+                    Party shares vision
+                  </label>
+                  {seesAll && (
+                    <label className="dnd-tt-check">
+                      <input type="checkbox" checked={previewFog} disabled={!fogOn}
+                             onChange={(e) => setPreviewFog(e.target.checked)} />
+                      Preview what the party sees
+                    </label>
+                  )}
+                  <p className="muted small">
+                    {connected && !room.isDm
+                      ? "Take the DM seat to see the whole map while the players are fogged."
+                      : "You see the whole map; shaded areas are hidden from the players. Each player sees what their own PC tokens can see. Walls and terrain taller than a token’s eyes block sight; flying tokens see over them."}
+                  </p>
+                </>
+              ) : (
+                <p className="muted small">The DM has fog of war on: you see what {state.fog?.sharedVision ? "the party’s" : "your"} PC tokens can see.
+                  {viewerTokens.length === 0 && " Add your token (+ My token, or from your character sheet) to see the map."}</p>
+              )}
+            </section>
+          )}
           <section>
             <h3>Map</h3>
             <div className="dnd-tt-row">
@@ -448,6 +524,12 @@ export function DndTabletop() {
                          onChange={(e) => updateToken(selected.id, { elevation: Math.max(0, Number(e.target.value) || 0) || undefined })} />
                 </label>
               </div>
+              {fogOn && (
+                <label className="dnd-tt-field" title="Fog of war: how far this token can see. Leave blank on a lit map; set it for darkvision or a torch.">Sight (ft, blank = unlimited)
+                  <input type="number" min={0} step={5} value={selected.sight ?? ""} placeholder="unlimited"
+                         onChange={(e) => updateToken(selected.id, { sight: e.target.value === "" ? undefined : Math.max(0, Number(e.target.value) || 0) || undefined })} />
+                </label>
+              )}
               <div className="dnd-tt-field">3D model (STL)
                 <div className="dnd-tt-row">
                   <button onClick={() => modelFileRef.current?.click()} disabled={modelBusy}>
@@ -482,7 +564,13 @@ export function DndTabletop() {
             ) : (
               <>
                 <ol className="dnd-tt-init">
-                  {order.map((t) => (
+                  {order.map((t) => hiddenFromMe(t) ? (
+                    <li key={t.id} className={"dnd-tt-init-row unseen" + (t.id === state.activeTokenId ? " active" : "")}>
+                      <span className="dnd-tt-init-num">{t.initiative}</span>
+                      <span className="dnd-tt-init-dot" style={{ background: "#555b66" }} />
+                      <span className="dnd-tt-init-name muted">Unseen</span>
+                    </li>
+                  ) : (
                     <li key={t.id}
                         className={"dnd-tt-init-row" + (t.id === state.activeTokenId ? " active" : "") + (t.id === selectedId ? " sel" : "")}
                         onClick={() => setSelectedId(t.id)}>
@@ -558,8 +646,9 @@ type DragState =
   | { kind: "terrain"; id: string; offX: number; offY: number }
   | { kind: "pan"; sx: number; sy: number; tx: number; ty: number };
 
-function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, onMoveTerrain, ghost }: {
+function DungeonCanvas({ state, fog, selectedId, onSelect, onMoveToken, onMoveTerrain, ghost }: {
   state: DndTabletopState;
+  fog: FogView | null;
   selectedId: string | null;
   onSelect: (id: string | null) => void;
   onMoveToken: (id: string, x: number, y: number) => void;
@@ -673,6 +762,35 @@ function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, onMoveTerrain
     setView({ scale: ns, tx: cx - (cx - view.tx) * k, ty: cy - (cy - view.ty) * k });
   }
 
+  // Fogged players see the terrain they've laid eyes on; the rest stays
+  // under the fog with the map.
+  const terrainSeenIds = useMemo(() => {
+    if (fog?.mode !== "player") return null;
+    const polys = [...fog.vision, ...fog.explored];
+    return new Set((state.terrain ?? []).filter((t) => terrainSeen(t, polys)).map((t) => t.id));
+  }, [fog, state.terrain]);
+  const terrainUnder = (state.terrain ?? []).filter((t) => !terrainSeenIds?.has(t.id));
+  const terrainOver = terrainSeenIds ? (state.terrain ?? []).filter((t) => terrainSeenIds.has(t.id)) : [];
+  function renderTerrain(t: DndTerrain) {
+    const w = t.w * U, d = (t.shape === "circle" ? t.w : t.d) * U;
+    const cx = t.x * U + w / 2, cy = t.y * U + d / 2;
+    const sel = t.id === selectedId;
+    return (
+      <g key={t.id} data-terrain={t.id} style={{ cursor: "grab" }}
+         transform={`rotate(${t.rotation} ${cx} ${cy})`}>
+        {t.shape === "circle"
+          ? <circle cx={cx} cy={cy} r={w / 2} fill={t.color} fillOpacity={0.7}
+                    stroke={sel ? "#ffd24a" : "#0009"} strokeWidth={(sel ? 3 : 1.5) / view.scale} />
+          : <rect x={t.x * U} y={t.y * U} width={w} height={d} fill={t.color} fillOpacity={0.7}
+                  stroke={sel ? "#ffd24a" : "#0009"} strokeWidth={(sel ? 3 : 1.5) / view.scale} />}
+        <text x={cx} y={cy + 4} textAnchor="middle" fontSize={11} fill="#fff" fillOpacity={0.85}
+              pointerEvents="none" paintOrder="stroke" stroke="#000" strokeWidth={2}>
+          {(t.modelStl ? "▲ " : "") + (t.label || t.kind)} · {t.height}ft
+        </text>
+      </g>
+    );
+  }
+
   return (
     <div className="dnd-tt-canvas" ref={wrapRef}
          onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
@@ -694,26 +812,32 @@ function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, onMoveTerrain
               ))}
             </g>
           )}
-          {/* Terrain blocks, under the tokens. */}
-          {(state.terrain ?? []).map((t) => {
-            const w = t.w * U, d = (t.shape === "circle" ? t.w : t.d) * U;
-            const cx = t.x * U + w / 2, cy = t.y * U + d / 2;
-            const sel = t.id === selectedId;
-            return (
-              <g key={t.id} data-terrain={t.id} style={{ cursor: "grab" }}
-                 transform={`rotate(${t.rotation} ${cx} ${cy})`}>
-                {t.shape === "circle"
-                  ? <circle cx={cx} cy={cy} r={w / 2} fill={t.color} fillOpacity={0.7}
-                            stroke={sel ? "#ffd24a" : "#0009"} strokeWidth={(sel ? 3 : 1.5) / view.scale} />
-                  : <rect x={t.x * U} y={t.y * U} width={w} height={d} fill={t.color} fillOpacity={0.7}
-                          stroke={sel ? "#ffd24a" : "#0009"} strokeWidth={(sel ? 3 : 1.5) / view.scale} />}
-                <text x={cx} y={cy + 4} textAnchor="middle" fontSize={11} fill="#fff" fillOpacity={0.85}
-                      pointerEvents="none" paintOrder="stroke" stroke="#000" strokeWidth={2}>
-                  {(t.modelStl ? "▲ " : "") + (t.label || t.kind)} · {t.height}ft
-                </text>
-              </g>
-            );
-          })}
+          {/* Terrain blocks, under the tokens (and under the fog, unless a
+              fogged player has seen them: then they stand above it). */}
+          {terrainUnder.map(renderTerrain)}
+          {/* Fog of war, over the map and terrain, under the tokens. The DM
+              gets a light shade; players get black for ground they've never
+              seen and a dim veil over ground seen before. */}
+          {fog && (
+            <g className="dnd-fog" pointerEvents={fog.mode === "player" ? "all" : "none"}>
+              <defs>
+                <mask id="dnd-fog-vis" maskUnits="userSpaceOnUse" x={0} y={0} width={W} height={H}>
+                  <rect x={0} y={0} width={W} height={H} fill="#fff" />
+                  <path d={polysPath(fog.vision, U)} fill="#000" />
+                </mask>
+                {fog.mode === "player" && (
+                  <mask id="dnd-fog-seen" maskUnits="userSpaceOnUse" x={0} y={0} width={W} height={H}>
+                    <rect x={0} y={0} width={W} height={H} fill="#fff" />
+                    <path d={polysPath(fog.explored, U)} fill="#000" />
+                    <path d={polysPath(fog.vision, U)} fill="#000" />
+                  </mask>
+                )}
+              </defs>
+              <rect x={0} y={0} width={W} height={H} fill="#05060a" fillOpacity={fog.mode === "dm" ? 0.45 : 0.6} mask="url(#dnd-fog-vis)" />
+              {fog.mode === "player" && <rect x={0} y={0} width={W} height={H} fill="#05060a" mask="url(#dnd-fog-seen)" />}
+            </g>
+          )}
+          {terrainOver.map(renderTerrain)}
           {/* Token icon clip paths — one per token with an avatar image. */}
           <defs>
             {state.tokens.filter((t) => t.avatarUrl).map((t) => {
@@ -780,6 +904,9 @@ function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, onMoveTerrain
           })()}
         </g>
       </svg>
+      {fog?.mode === "player" && fog.noViewers && (
+        <div className="dnd-fog-note">Fog of war is on. Place your PC token to see the map.</div>
+      )}
       <div className="dnd-tt-overlay small muted">
         {cols}×{rows} · {state.tokens.length} tokens · zoom {(view.scale * 100).toFixed(0)}%
         <button className="ghost-btn small" onClick={() => { userAdjustedRef.current = false; fit(); }} title="Fit to view">⤢</button>
