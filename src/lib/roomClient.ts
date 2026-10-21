@@ -80,6 +80,11 @@ export class RoomClient<S> {
 
   // Outbound throttling state.
   private pendingState: S | null = null;
+  // Board pushes are only valid once the server's welcome has delivered the
+  // authoritative room state. The socket reports "open" a moment earlier;
+  // a push in that gap would overwrite the room with this client's stale
+  // local board.
+  private welcomed = false;
   private stateTimer: ReturnType<typeof setTimeout> | null = null;
   private lastCursorAt = 0;
 
@@ -107,6 +112,8 @@ export class RoomClient<S> {
   }
 
   private openSocket(): void {
+    this.welcomed = false;
+    this.pendingState = null;
     this.handlers.onStatus?.(this.reconnectAttempts > 0 ? "reconnecting" : "connecting");
     let ws: WebSocket;
     try {
@@ -154,6 +161,7 @@ export class RoomClient<S> {
       case "welcome": {
         this.you = msg.you as Peer;
         this.isPrivate = msg.private === true;
+        this.welcomed = true;
         this.handlers.onWelcome?.(
           msg.you as Peer,
           (msg.state ?? null) as S | null,
@@ -206,6 +214,7 @@ export class RoomClient<S> {
   // Throttled full-state push. Coalesces rapid updates (e.g. dragging) to
   // one send per STATE_THROTTLE_MS.
   sendState(state: S): void {
+    if (!this.welcomed) return;
     this.pendingState = state;
     if (this.stateTimer) return;
     this.stateTimer = setTimeout(() => {

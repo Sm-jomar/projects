@@ -1,3 +1,4 @@
+import { memo } from "react";
 import {
   ABILITIES, SKILLS, abilityModifier, formatModifier, spellLevelLabel, SPELL_LEVELS,
   type DndCharacter, type AbilityKey,
@@ -5,7 +6,7 @@ import {
 
 // Read-only rendering of a character sheet — used to view another player's
 // shared sheet in a multiplayer game.
-export function CharacterSheetView({ c }: { c: DndCharacter }) {
+export const CharacterSheetView = memo(function CharacterSheetView({ c }: { c: DndCharacter }) {
   const mods = {} as Record<AbilityKey, number>;
   for (const a of ABILITIES) mods[a.key] = abilityModifier(c.abilities[a.key]);
   const perception = mods.wis + (c.skillProf.perception ? c.proficiencyBonus : 0);
@@ -104,7 +105,7 @@ export function CharacterSheetView({ c }: { c: DndCharacter }) {
       {c.otherProficiencies.trim() && <ViewText label="Proficiencies & Languages" text={c.otherProficiencies} />}
     </div>
   );
-}
+});
 
 function Stat({ label, value }: { label: string; value: string | number }) {
   return (

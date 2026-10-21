@@ -166,7 +166,7 @@ export async function handleBridge(request: Request, env: BridgeEnv, url: URL): 
         const fetched = await Promise.all(urls.map((u) => fetchImageBytes(u)));
         const tokens = await Promise.all(fetched.map((f) => tripoUpload(env, f.bytes, f.ext)));
         const taskId = await tripoCreateMultiviewToModel(
-          env, tokens as [string, string, string, string], fetched[0]!.ext, pickOptions(body),
+          env, tokens as [string, string, string, string], fetched[0]!.ext, pickOptions(body ?? {}),
         );
         return ok({ task_id: taskId, status: "queued" });
       } catch (e) {
@@ -233,7 +233,9 @@ export async function handleBridge(request: Request, env: BridgeEnv, url: URL): 
       const form = await request.formData();
       let taskId: string;
       if (rec.mode === "single") {
-        const file = form.get("image");
+        // Workers types FormData.get() as string-only; at runtime it yields
+        // File for file fields.
+        const file = form.get("image") as unknown;
         if (!(file instanceof File)) throw new Error("expected a file field named \"image\"");
         const { bytes, ext } = await bytesFromFile(file);
         const fileToken = await tripoUpload(env, bytes, ext);
@@ -242,7 +244,7 @@ export async function handleBridge(request: Request, env: BridgeEnv, url: URL): 
         const slots = ["front", "left", "back", "right"] as const;
         const files: File[] = [];
         for (const slot of slots) {
-          const f = form.get(slot);
+          const f = form.get(slot) as unknown;
           if (!(f instanceof File)) throw new Error(`missing file for the "${slot}" slot`);
           files.push(f);
         }
