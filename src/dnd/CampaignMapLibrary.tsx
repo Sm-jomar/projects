@@ -39,7 +39,7 @@ export function CampaignMapLibrary({ code, maps, mutate }: {
       const tokens = s.tokens
         .filter((t) => includePcs || t.kind !== "pc")
         .map((t) => (clearInit ? { ...t, initiative: undefined } : t));
-      const data: CampaignMapData = { map: { ...s.map, imageUrl }, tokens };
+      const data: CampaignMapData = { map: { ...s.map, imageUrl }, tokens, terrain: s.terrain ?? [] };
       if (JSON.stringify(data).length > MAP_BYTES_MAX) {
         throw new Error("This board is too large to save (map image plus token icons). Try a smaller image.");
       }
@@ -68,11 +68,12 @@ export function CampaignMapLibrary({ code, maps, mutate }: {
       const incoming = data.tokens.map((t) => ({ ...t, id: newId() }));
       const mode = live ? loadMode : "all";
       const onBoard = mode === "all" ? incoming : [];
-      const next = { ...s, map: data.map, tokens: [...kept, ...onBoard], activeTokenId: null, round: 1 };
+      const terrain = data.terrain ?? [];
+      const next = { ...s, map: data.map, tokens: [...kept, ...onBoard], terrain, activeTokenId: null, round: 1 };
       if (boardBytes(next) > BOARD_BYTES_SAFE) {
         throw new Error("That map plus what's already on the board is too large to sync. Clear some token icons and try again.");
       }
-      room.replaceBoard((cur) => ({ ...cur, map: next.map, tokens: next.tokens, activeTokenId: null, round: 1 }), `loaded map “${m.name}”`);
+      room.replaceBoard((cur) => ({ ...cur, map: next.map, tokens: next.tokens, terrain, activeTokenId: null, round: 1 }), `loaded map “${m.name}”`);
       if (mode === "stage" && incoming.length) room.stageTokens(incoming);
       setMsg({ kind: "ok", text: mode === "stage" && incoming.length
         ? `Loaded “${m.name}” — ${incoming.length} token${incoming.length === 1 ? "" : "s"} staged (hidden) until you reveal them.`

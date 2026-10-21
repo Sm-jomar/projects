@@ -20,7 +20,8 @@ import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 export const STL_PREFIX = "stl1:";
 export const STL_DEFAULT_MAX_TRIS = 8000;
 
-export type EncodedModel = { data: string; triangles: number; bytes: number };
+/** size: the model's normalized extents (largest footprint side = 1). */
+export type EncodedModel = { data: string; triangles: number; bytes: number; size: { x: number; y: number; z: number } };
 
 export async function encodeStlFile(file: File, maxTris = STL_DEFAULT_MAX_TRIS): Promise<EncodedModel> {
   const buf = await file.arrayBuffer();
@@ -83,7 +84,10 @@ export function encodeSoup(soup: Float32Array, maxTris = STL_DEFAULT_MAX_TRIS): 
   }
   new Uint16Array(out, 12 + vCount * 6, tCount * 3).set(mesh.tris);
   const data = STL_PREFIX + toBase64(new Uint8Array(out));
-  return { data, triangles: tCount, bytes: data.length };
+  return {
+    data, triangles: tCount, bytes: data.length,
+    size: { x: (maxX - minX) / foot, y: height, z: (maxZ - minZ) / foot },
+  };
 }
 
 export type DecodedModel = { positions: Float32Array; indices: Uint16Array; height: number };

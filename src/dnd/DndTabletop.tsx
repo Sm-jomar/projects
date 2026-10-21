@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import {
-  downscaleImage, initiativeOrder, makeToken,
-  type DndTabletopState, type DndToken,
+  downscaleImage, initiativeOrder, makeToken, makeTerrain, DND_TERRAIN_PRESETS,
+  type DndTabletopState, type DndTerrain, type DndToken,
 } from "./dndTabletop";
 import { useCharacters } from "./useCharacters";
 import type { PlayerProfile } from "./dndTabletop";
@@ -60,6 +60,7 @@ export function DndTabletop() {
   }
 
   const selected = state.tokens.find((t) => t.id === selectedId) ?? null;
+  const selectedTerrain = (state.terrain ?? []).find((t) => t.id === selectedId) ?? null;
   const order = initiativeOrder(state.tokens);
 
   // setBoard is guarded by the context (no-ops for spectators).
@@ -71,6 +72,20 @@ export function DndTabletop() {
   function removeToken(id: string) {
     setBoard((s) => ({ ...s, tokens: s.tokens.filter((t) => t.id !== id) }));
     if (selectedId === id) setSelectedId(null);
+  }
+
+  function updateTerrain(id: string, p: Partial<DndTerrain>) {
+    setBoard((s) => ({ ...s, terrain: (s.terrain ?? []).map((t) => (t.id === id ? { ...t, ...p } : t)) }));
+  }
+  function removeTerrain(id: string) {
+    setBoard((s) => ({ ...s, terrain: (s.terrain ?? []).filter((t) => t.id !== id) }));
+    if (selectedId === id) setSelectedId(null);
+  }
+  function addTerrain(preset: typeof DND_TERRAIN_PRESETS[number]) {
+    if (readOnly) return;
+    const tr = makeTerrain(state, preset);
+    setBoard((s) => ({ ...s, terrain: [...(s.terrain ?? []), tr] }));
+    setSelectedId(tr.id);
   }
 
   function addToken(partial: Partial<DndToken>) {
@@ -139,14 +154,23 @@ export function DndTabletop() {
   // token, so they sync to everyone in the game like icons do.
   async function onModelFile(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];
-    const id = selected?.id;
+    const id = selected?.id ?? selectedTerrain?.id;
     if (!f || !id) return;
     if (f.size > 80 * 1024 * 1024) { setWarn("That STL is over 80 MB — export a lighter version."); return; }
     setModelBusy(true);
     try {
       const { encodeStlFile } = await import("../lib/stlModel");
       const m = await encodeStlFile(f);
-      updateToken(id, { modelStl: m.data, modelName: f.name });
+      if (selectedTerrain && selectedTerrain.id === id) {
+        // Reshape the block to the model's proportions, keeping its width:
+        // depth follows the model's footprint, height its height (5 ft/cell).
+        const w = selectedTerrain.w;
+        const d = selectedTerrain.shape === "circle" ? w : Math.max(0.25, Math.round((w * m.size.z / m.size.x) * 4) / 4);
+        const height = Math.max(1, Math.round((m.size.y / Math.max(m.size.x, m.size.z)) * Math.max(w, d) * 5));
+        updateTerrain(id, { modelStl: m.data, modelName: f.name, d, height });
+      } else {
+        updateToken(id, { modelStl: m.data, modelName: f.name });
+      }
       setWarn(null);
       setView3d(true);
     } catch (err) {
@@ -229,6 +253,7 @@ export function DndTabletop() {
             selectedId={selectedId}
             onSelect={setSelectedId}
             onMoveToken={(id, x, y) => updateToken(id, { x, y })}
+            onMoveTerrain={(id, x, y) => updateTerrain(id, { x, y })}
             ghost={ghost}
           />
         )}
@@ -267,6 +292,7 @@ export function DndTabletop() {
             </section>
           )}
 
+          <input ref={modelFileRef} type="file" accept=".stl,model/stl,application/sla" hidden onChange={onModelFile} />
           <section>
             <h3>Map</h3>
             <div className="dnd-tt-row">
@@ -315,6 +341,66 @@ export function DndTabletop() {
             </div>
             {chars.length === 0 && <p className="muted small">No saved characters yet — build one in Character Sheets.</p>}
           </section>
+
+          <section>
+            <h3>Terrain</h3>
+            <div className="dnd-tt-row dnd-tt-terrain-row">
+              {DND_TERRAIN_PRESETS.map((p) => (
+                <button key={p.kind} onClick={() => addTerrain(p)} disabled={readOnly}>+ {p.label}</button>
+              ))}
+            </div>
+            <p className="muted small">Blocks stand up in the 3D view. Upload an STL to any block to swap it for a model (houses for a village, say).</p>
+          </section>
+
+          {selectedTerrain && (
+            <section className="dnd-tt-edit">
+              <h3>Terrain</h3>
+              <label className="dnd-tt-field">Label
+                <input value={selectedTerrain.label} onChange={(e) => updateTerrain(selectedTerrain.id, { label: e.target.value })} />
+              </label>
+              <div className="dnd-tt-grid2">
+                <label className="dnd-tt-field">{selectedTerrain.shape === "circle" ? "Diameter (cells)" : "Width (cells)"}
+                  <input type="number" min={0.25} max={80} step={0.25} value={selectedTerrain.w}
+                         onChange={(e) => updateTerrain(selectedTerrain.id, { w: Math.max(0.25, Number(e.target.value) || 1) })} />
+                </label>
+                {selectedTerrain.shape === "rect" && (
+                  <label className="dnd-tt-field">Depth (cells)
+                    <input type="number" min={0.25} max={80} step={0.25} value={selectedTerrain.d}
+                           onChange={(e) => updateTerrain(selectedTerrain.id, { d: Math.max(0.25, Number(e.target.value) || 1) })} />
+                  </label>
+                )}
+              </div>
+              <div className="dnd-tt-grid2">
+                <label className="dnd-tt-field">Height (ft)
+                  <input type="number" min={0} max={500} step={5} value={selectedTerrain.height}
+                         onChange={(e) => updateTerrain(selectedTerrain.id, { height: Math.max(0, Number(e.target.value) || 0) })} />
+                </label>
+                <label className="dnd-tt-field">Rotation
+                  <input type="number" min={-180} max={180} step={15} value={selectedTerrain.rotation}
+                         onChange={(e) => updateTerrain(selectedTerrain.id, { rotation: Number(e.target.value) || 0 })} />
+                </label>
+              </div>
+              <label className="dnd-tt-field">Color
+                <input type="color" value={selectedTerrain.color} onChange={(e) => updateTerrain(selectedTerrain.id, { color: e.target.value })} />
+              </label>
+              <div className="dnd-tt-field">3D model (STL)
+                <div className="dnd-tt-row">
+                  <button onClick={() => modelFileRef.current?.click()} disabled={modelBusy || readOnly}>
+                    {modelBusy ? "Processing…" : selectedTerrain.modelStl ? "Replace STL" : "Upload STL"}
+                  </button>
+                  {selectedTerrain.modelStl && (
+                    <button className="ghost-btn" onClick={() => updateTerrain(selectedTerrain.id, { modelStl: undefined, modelName: undefined })}>Clear</button>
+                  )}
+                </div>
+                <span className="muted small">
+                  {selectedTerrain.modelStl
+                    ? `${selectedTerrain.modelName ?? "Model"} · ${Math.round(selectedTerrain.modelStl.length / 1024)} KB synced · stretched to fill the block`
+                    : "The model is stretched to fill this block's width, depth and height."}
+                </span>
+              </div>
+              <button className="danger" onClick={() => removeTerrain(selectedTerrain.id)}>Remove terrain</button>
+            </section>
+          )}
 
           {selected && (
             <section className="dnd-tt-edit">
@@ -370,7 +456,6 @@ export function DndTabletop() {
                   {selected.modelStl && (
                     <button className="ghost-btn" onClick={() => updateToken(selected.id, { modelStl: undefined, modelName: undefined })}>Clear</button>
                   )}
-                  <input ref={modelFileRef} type="file" accept=".stl,model/stl,application/sla" hidden onChange={onModelFile} />
                 </div>
                 <span className="muted small">
                   {selected.modelStl
@@ -470,13 +555,15 @@ function initials(name: string): string {
 type DragState =
   | { kind: "none" }
   | { kind: "token"; id: string; offX: number; offY: number }
+  | { kind: "terrain"; id: string; offX: number; offY: number }
   | { kind: "pan"; sx: number; sy: number; tx: number; ty: number };
 
-function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, ghost }: {
+function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, onMoveTerrain, ghost }: {
   state: DndTabletopState;
   selectedId: string | null;
   onSelect: (id: string | null) => void;
   onMoveToken: (id: string, x: number, y: number) => void;
+  onMoveTerrain: (id: string, x: number, y: number) => void;
   ghost: LogEntry["move"] | null;
 }) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
@@ -536,6 +623,14 @@ function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, ghost }: {
       wrapRef.current?.setPointerCapture(e.pointerId);
       const c = toCell(e.clientX, e.clientY);
       setDrag({ kind: "token", id, offX: c.x - tk.x, offY: c.y - tk.y });
+    } else if ((e.target as Element).closest("[data-terrain]")) {
+      const id = (e.target as Element).closest("[data-terrain]")!.getAttribute("data-terrain")!;
+      const tr = (state.terrain ?? []).find((t) => t.id === id);
+      if (!tr) return;
+      onSelect(id);
+      wrapRef.current?.setPointerCapture(e.pointerId);
+      const c = toCell(e.clientX, e.clientY);
+      setDrag({ kind: "terrain", id, offX: c.x - tr.x, offY: c.y - tr.y });
     } else {
       onSelect(null);
       wrapRef.current?.setPointerCapture(e.pointerId);
@@ -552,6 +647,9 @@ function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, ghost }: {
       const nx = Math.round((c.x - drag.offX) * 2) / 2;
       const ny = Math.round((c.y - drag.offY) * 2) / 2;
       onMoveToken(drag.id, nx, ny);
+    } else if (drag.kind === "terrain") {
+      const c = toCell(e.clientX, e.clientY);
+      onMoveTerrain(drag.id, Math.round((c.x - drag.offX) * 4) / 4, Math.round((c.y - drag.offY) * 4) / 4);
     }
   }
   function onPointerUp() { setDrag({ kind: "none" }); }
@@ -596,6 +694,26 @@ function DungeonCanvas({ state, selectedId, onSelect, onMoveToken, ghost }: {
               ))}
             </g>
           )}
+          {/* Terrain blocks, under the tokens. */}
+          {(state.terrain ?? []).map((t) => {
+            const w = t.w * U, d = (t.shape === "circle" ? t.w : t.d) * U;
+            const cx = t.x * U + w / 2, cy = t.y * U + d / 2;
+            const sel = t.id === selectedId;
+            return (
+              <g key={t.id} data-terrain={t.id} style={{ cursor: "grab" }}
+                 transform={`rotate(${t.rotation} ${cx} ${cy})`}>
+                {t.shape === "circle"
+                  ? <circle cx={cx} cy={cy} r={w / 2} fill={t.color} fillOpacity={0.7}
+                            stroke={sel ? "#ffd24a" : "#0009"} strokeWidth={(sel ? 3 : 1.5) / view.scale} />
+                  : <rect x={t.x * U} y={t.y * U} width={w} height={d} fill={t.color} fillOpacity={0.7}
+                          stroke={sel ? "#ffd24a" : "#0009"} strokeWidth={(sel ? 3 : 1.5) / view.scale} />}
+                <text x={cx} y={cy + 4} textAnchor="middle" fontSize={11} fill="#fff" fillOpacity={0.85}
+                      pointerEvents="none" paintOrder="stroke" stroke="#000" strokeWidth={2}>
+                  {(t.modelStl ? "▲ " : "") + (t.label || t.kind)} · {t.height}ft
+                </text>
+              </g>
+            );
+          })}
           {/* Token icon clip paths — one per token with an avatar image. */}
           <defs>
             {state.tokens.filter((t) => t.avatarUrl).map((t) => {

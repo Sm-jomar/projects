@@ -66,6 +66,7 @@ export default function Legion3D({ state, selectedId, onSelect, showGrid }: {
       standable: t.kind === "building" || t.kind === "rock",
       // With a hovering/flying unit selected, show what it can pass over.
       tint: flyHeight > 0 && t.kind !== "objective" ? (h <= flyHeight ? "clear" : "block") : null,
+      selected: t.id === selectedId,
     };
   });
 

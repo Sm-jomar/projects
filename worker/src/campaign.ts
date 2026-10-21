@@ -50,7 +50,7 @@ export type CampaignMapSummary = {
   bytes: number;
   updatedAt: number;
 };
-type MapData = { map: Record<string, unknown>; tokens: unknown[] };
+type MapData = { map: Record<string, unknown>; tokens: unknown[]; terrain?: unknown[] };
 
 export type CampaignView = {
   role: CampaignRole;
@@ -84,6 +84,7 @@ const LIMITS = {
   mapName: 80,
   mapBytes: 1_500_000,
   mapTokens: 500,
+  mapTerrain: 300,
   maps: 100,
 };
 
@@ -299,7 +300,10 @@ export class CampaignDO extends DurableObject<CampaignEnv> {
     const d = input.data;
     if (!isObj(d) || !isObj(d.map) || !Array.isArray(d.tokens)) return fail(400, "bad_map", "Map needs {map, tokens}.");
     if (d.tokens.length > LIMITS.mapTokens) return fail(422, "limit", `A saved map can hold ${LIMITS.mapTokens} tokens.`);
-    const data: MapData = { map: d.map, tokens: d.tokens };
+    if (d.terrain !== undefined && (!Array.isArray(d.terrain) || d.terrain.length > LIMITS.mapTerrain)) {
+      return fail(422, "limit", `A saved map can hold ${LIMITS.mapTerrain} terrain pieces.`);
+    }
+    const data: MapData = { map: d.map, tokens: d.tokens, ...(Array.isArray(d.terrain) ? { terrain: d.terrain } : {}) };
     const bytes = JSON.stringify(data).length;
     if (bytes > LIMITS.mapBytes) return fail(413, "too_large", "That map is too large to save — try a smaller image.");
     const prev = await this.ctx.storage.get<CampaignMapSummary>(`map:${id}`);

@@ -64,6 +64,9 @@ export type Block3D = {
   standable?: boolean;
   /** Hover highlight: green if the selected piece flies over it, red if not. */
   tint?: "clear" | "block" | null;
+  /** Uploaded STL (lib/stlModel encoding), stretched to fill the block. */
+  stl?: string;
+  selected?: boolean;
 };
 
 export type Zone3D = { x: number; y: number; w: number; d: number; color: string };
@@ -107,7 +110,7 @@ export default function Board3D(props: Props) {
 
   return (
     <div className="board3d" ref={hostRef}>
-      <div className="board3d-hint small">Drag to orbit · right-drag to pan · scroll to zoom · click a piece to select</div>
+      <div className="board3d-hint small">Drag to orbit · right-drag to pan · scroll to zoom · click a piece or terrain to select</div>
     </div>
   );
 }
@@ -287,7 +290,12 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
     }
 
     // --- Terrain ---------------------------------------------------------
-    for (const b of p.blocks) content.add(buildBlock(b));
+    for (const b of p.blocks) {
+      const bo = buildBlock(b);
+      bo.traverse((o) => { o.userData.pieceId = b.id; });
+      pickables.push(bo);
+      content.add(bo);
+    }
 
     // --- Pieces ----------------------------------------------------------
     const unit = Math.max(p.width, p.depth) / 400; // hairline thickness
@@ -424,6 +432,23 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
     const tintColor = b.tint === "clear" ? "#4ac86a" : b.tint === "block" ? "#e2554a" : null;
     const h = Math.max(0.02, b.height);
 
+    const stlGeom = b.stl ? stlGeometry(b.stl) : null;
+    if (stlGeom) {
+      stlGeom.computeBoundingBox();
+      const size = stlGeom.boundingBox!.getSize(new THREE.Vector3());
+      const mesh = new THREE.Mesh(stlGeom, new THREE.MeshStandardMaterial({
+        color: b.color, roughness: 0.8, flatShading: true,
+        emissive: tintColor ?? (b.selected ? "#7a5a00" : "#000"), emissiveIntensity: tintColor || b.selected ? 0.25 : 0,
+      }));
+      const d = b.shape === "circle" ? b.w : b.d;
+      mesh.scale.set(b.w / Math.max(size.x, 1e-3), h / Math.max(size.y, 1e-3), d / Math.max(size.z, 1e-3));
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      g.add(mesh);
+      if (tintColor || b.selected) g.add(outline(b, h, tintColor ?? "#ffd24a"));
+      return g;
+    }
+
     if (b.style === "forest") {
       // Area terrain: a low base plus a stand of trees up to the canopy
       // height. Trees are placed deterministically from the block's id.
@@ -454,7 +479,7 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
         c.castShadow = true;
         g.add(t, c);
       }
-      if (tintColor) g.add(outline(b, h, tintColor));
+      if (tintColor || b.selected) g.add(outline(b, h, b.selected ? "#ffd24a" : tintColor!));
       return g;
     }
 
@@ -468,7 +493,7 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
     body.receiveShadow = true;
     g.add(body);
     const edges = new THREE.LineSegments(new THREE.EdgesGeometry(body.geometry, 30),
-      new THREE.LineBasicMaterial({ color: tintColor ?? b.edge }));
+      new THREE.LineBasicMaterial({ color: b.selected ? "#ffd24a" : tintColor ?? b.edge }));
     edges.position.y = h / 2;
     g.add(edges);
     return g;
