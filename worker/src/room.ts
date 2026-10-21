@@ -148,7 +148,12 @@ export class RoomDO extends DurableObject<RoomEnv> {
         // Persist + relay. Cap stored size so a bad client can't blow up
         // the object's storage.
         const json = JSON.stringify(msg.state);
-        if (json.length > MAX_STATE_BYTES) return;
+        if (json.length > MAX_STATE_BYTES) {
+          // Tell the sender rather than silently desyncing them from the
+          // table (they already believe the change went out).
+          this.send(ws, { t: "stateRejected", reason: "too-large", bytes: json.length, max: MAX_STATE_BYTES });
+          return;
+        }
         await this.ctx.storage.put(STATE_KEY, msg.state);
         this.broadcast({ t: "state", state: msg.state, from: att.id }, ws);
         // Keep a long-running game fresh in the lobby directory even when

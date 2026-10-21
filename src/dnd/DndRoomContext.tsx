@@ -4,7 +4,7 @@ import {
   type DndTabletopState,
 } from "./dndTabletop";
 import { RoomClient, generateRoomCode, type RoomHandlers } from "../lib/roomClient";
-import { appendLog, type LogActor } from "../lib/auditLog";
+import { appendLog, logId, type LogActor } from "../lib/auditLog";
 import type { DndCharacter } from "./dndTypes";
 import { loadCharacter } from "./dndStorage";
 import {
@@ -24,6 +24,9 @@ const AVATAR_KEY = "dnd.myavatar";
 // Which saved sheet I last shared with a game, so it can be re-shared under
 // my new connection id after a reconnect (same churn problem as avatars).
 const ATTACHED_KEY = "dnd.attachedChar";
+// My own board, parked while I'm in a game (joining replaces the local
+// board with the room's) and restored when I leave.
+const SOLO_KEY = "dnd.tabletop.solo.v1";
 const DEFAULT_COLOR = "#4a86c8";
 
 export function DndRoomProvider({ children }: { children: React.ReactNode }) {
@@ -40,6 +43,7 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   const [wantPrivate, setWantPrivate] = useState(() => localStorage.getItem(PRIVATE_KEY) === "1");
   const [myAvatarUrl, setMyAvatarUrl] = useState<string | null>(() => localStorage.getItem(AVATAR_KEY));
   const [rollFeed, setRollFeed] = useState<SharedRoll[]>([]);
+  const [syncWarning, setSyncWarning] = useState<string | null>(null);
 
   const roomRef = useRef<RoomClient<DndTabletopState> | null>(null);
   const stateRef = useRef(state);
@@ -48,6 +52,10 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   const appliedRemoteRef = useRef<string | null>(null);
   const readOnlyRef = useRef(false);
   const diffTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // replaceBoard() summary awaiting the next diff pass.
+  const replaceSummaryRef = useRef<string | null>(null);
+  // Host intent, read by onWelcome when the new room has no state yet.
+  const hostBlankRef = useRef(false);
 
   const readOnly = online?.status === "open" && online.you?.color === "spectator";
   useEffect(() => { readOnlyRef.current = !!readOnly; }, [readOnly]);
@@ -79,7 +87,11 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     diffTimer.current = setTimeout(() => {
       const prev = prevRef.current;
       prevRef.current = state;
-      const entries = diffDnd(prev, state, actorRef.current);
+      const summary = replaceSummaryRef.current;
+      replaceSummaryRef.current = null;
+      const entries = summary
+        ? [{ id: logId(), ts: Date.now(), actor: actorRef.current, kind: "misc" as const, text: summary }]
+        : diffDnd(prev, state, actorRef.current);
       if (entries.length) setStateRaw((s) => ({ ...s, log: appendLog(s.log, entries) }));
     }, 350);
   }, [state]);
@@ -151,8 +163,14 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
           appliedRemoteRef.current = js;
           setStateRaw(remoteState);
         } else {
-          remoteEchoRef.current = JSON.stringify(stateRef.current);
-          roomRef.current?.sendState(stateRef.current);
+          // New room: seed it from my board, or from a blank one if asked
+          // (so DM prep on my local board isn't shown to players).
+          const seed = hostBlankRef.current ? newDndTabletop() : stateRef.current;
+          hostBlankRef.current = false;
+          const js = JSON.stringify(seed);
+          remoteEchoRef.current = js;
+          if (seed !== stateRef.current) { appliedRemoteRef.current = js; setStateRaw(seed); }
+          roomRef.current?.sendState(seed);
         }
       },
       onState: (remoteState) => {
@@ -166,6 +184,12 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
         const you = o.you ? peers.find((p) => p.id === o.you!.id) ?? o.you : o.you;
         return { ...o, peers, you };
       }),
+      onAppMessage: (msg) => {
+        if (msg.t === "stateRejected") {
+          const mb = (n: unknown) => (Number(n) / 1_000_000).toFixed(1);
+          setSyncWarning(`The board is too large to sync (${mb(msg.bytes)} MB of ${mb(msg.max)} MB) — your last change didn't reach the table. Try a smaller map image or fewer token icons.`);
+        }
+      },
       onDice: (_id, _color, entry) => {
         const r = entry as SharedRoll;
         if (r && r.id) setRollFeed((f) => [r, ...f].slice(0, 60));
@@ -174,6 +198,13 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   }
 
   function startRoom(code: string) {
+    // Park my own board before the room's replaces it (only on the first
+    // connect — a reload mid-game must not overwrite the parked one).
+    try {
+      if (!roomRef.current && !localStorage.getItem(SOLO_KEY)) {
+        localStorage.setItem(SOLO_KEY, JSON.stringify(stateRef.current));
+      }
+    } catch { /* quota — the solo board just won't be restored */ }
     const name = playerName.trim() || "Player";
     localStorage.setItem(NAME_KEY, name);
     localStorage.setItem(COLOR_KEY, playerColor);
@@ -186,7 +217,11 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     setOnline({ status: "connecting", code: client.code, you: null, peers: [] });
     client.connect();
   }
-  function hostRoom() { if (playerName.trim()) startRoom(generateRoomCode()); }
+  function hostRoom(opts?: { blankBoard?: boolean }) {
+    if (!playerName.trim()) return;
+    hostBlankRef.current = !!opts?.blankBoard;
+    startRoom(generateRoomCode());
+  }
   function joinRoom() { const c = joinCode.trim().toUpperCase(); if (c.length >= 4 && playerName.trim()) startRoom(c); }
   function changeIdentity(spec: boolean, color: string) {
     setSpectator(spec);
@@ -194,7 +229,29 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem(COLOR_KEY, color);
     roomRef.current?.setColor(spec ? "spectator" : color);
   }
-  function leaveRoom() { roomRef.current?.close(); roomRef.current = null; remoteEchoRef.current = null; setOnline(null); }
+  function leaveRoom() {
+    roomRef.current?.close();
+    roomRef.current = null;
+    remoteEchoRef.current = null;
+    setOnline(null);
+    setSyncWarning(null);
+    // Back to my own board.
+    try {
+      const raw = localStorage.getItem(SOLO_KEY);
+      localStorage.removeItem(SOLO_KEY);
+      if (raw) {
+        const solo = { ...newDndTabletop(), ...(JSON.parse(raw) as Partial<DndTabletopState>), profiles: {}, avatars: {} };
+        appliedRemoteRef.current = JSON.stringify(solo);
+        setStateRaw(solo);
+      }
+    } catch { /* keep the room's board */ }
+  }
+
+  function replaceBoard(update: (s: DndTabletopState) => DndTabletopState, summary: string) {
+    if (readOnlyRef.current) return;
+    replaceSummaryRef.current = summary;
+    setStateRaw(update);
+  }
 
   // Add a roll to the shared feed and broadcast it if connected.
   function sendRoll(payload: RollPayload) {
@@ -255,7 +312,8 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   }
 
   const value: DndRoomValue = {
-    state, setBoard, readOnly: !!readOnly, actor,
+    state, setBoard, replaceBoard, readOnly: !!readOnly, actor,
+    syncWarning, clearSyncWarning: () => setSyncWarning(null),
     online, onlineOpen, setOnlineOpen, joinCode, setJoinCode,
     playerName, setPlayerName, playerColor, spectator,
     wantPrivate, setWantPrivate,

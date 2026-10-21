@@ -20,7 +20,7 @@ export type RoomApp = "legion" | "dnd";
 
 export type RoomHandlers<S> = {
   onStatus?: (status: ConnStatus, detail?: string) => void;
-  onWelcome?: (you: Peer, state: S | null, peers: Peer[]) => void;
+  onWelcome?: (you: Peer, state: S | null, peers: Peer[], extra: Record<string, unknown>) => void;
   onState?: (state: S, fromId: string) => void;
   onCursor?: (id: string, color: PlayerColor, x: number, y: number) => void;
   onPresence?: (peers: Peer[]) => void;
@@ -29,6 +29,10 @@ export type RoomHandlers<S> = {
   onColorDenied?: (color: PlayerColor) => void;
   /** The room belongs to a different app (Legion vs D&D). */
   onDenied?: (reason: string) => void;
+  /** Any server message type this client doesn't handle itself — lets an
+   * app (D&D) add its own message types without the shared client
+   * knowing about them. */
+  onAppMessage?: (msg: Record<string, unknown>) => void;
 };
 
 const STATE_THROTTLE_MS = 60;
@@ -93,6 +97,8 @@ export class RoomClient<S> {
    * the server's welcome message, so it reflects reality even for a
    * joiner who didn't request privacy themselves. */
   isPrivate = false;
+  /** Server protocol version from the welcome (1 = before app messages). */
+  proto = 1;
 
   constructor(
     code: string, name: string, preferredColor: string, handlers: RoomHandlers<S>,
@@ -161,11 +167,13 @@ export class RoomClient<S> {
       case "welcome": {
         this.you = msg.you as Peer;
         this.isPrivate = msg.private === true;
+        this.proto = typeof msg.proto === "number" ? msg.proto : 1;
         this.welcomed = true;
         this.handlers.onWelcome?.(
           msg.you as Peer,
           (msg.state ?? null) as S | null,
           (msg.peers ?? []) as Peer[],
+          msg,
         );
         break;
       }
@@ -200,6 +208,8 @@ export class RoomClient<S> {
       case "colorDenied":
         this.handlers.onColorDenied?.(msg.color as PlayerColor);
         break;
+      default:
+        this.handlers.onAppMessage?.(msg);
     }
   }
 
@@ -236,6 +246,11 @@ export class RoomClient<S> {
   // server relays it without storing; the entry should carry its own actor.
   sendDice(entry: unknown): void {
     this.raw({ t: "dice", entry });
+  }
+
+  /** Send an app-specific message (only meaningful when proto >= 2). */
+  sendApp(msg: { t: string } & Record<string, unknown>): void {
+    this.raw(msg);
   }
 
   setName(name: string): void {

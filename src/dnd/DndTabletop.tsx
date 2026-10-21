@@ -11,6 +11,7 @@ import { AuditLogView } from "../components/AuditLogView";
 import { RollFeed } from "./RollFeed";
 import { CharacterSheetView } from "./CharacterSheetView";
 import { useDndRoom, type OnlineState } from "./dndRoom";
+import { CampaignMapsPanel } from "./CampaignMapLibrary";
 
 const U = 48; // SVG units per grid cell
 const SIDE_KEY = "dnd.ttSideCollapsed";
@@ -140,6 +141,11 @@ export function DndTabletop() {
       <div className="dnd-section-head">
         <h2>Tabletop</h2>
         {warn && <span className="dnd-tt-warn small">{warn}</span>}
+        {room.syncWarning && (
+          <span className="dnd-tt-warn small dnd-tt-syncwarn">
+            {room.syncWarning} <button className="ghost-btn small" onClick={room.clearSyncWarning}>×</button>
+          </span>
+        )}
         <button className="ghost-btn small dnd-tt-side-toggle"
                 onClick={() => { const v = !sideCollapsed; setSideCollapsed(v); writeSideCollapsed(v); }}
                 title={sideCollapsed ? "Show the board tools" : "Hide the board tools for a bigger board"}>
@@ -159,6 +165,7 @@ export function DndTabletop() {
               wantPrivate={room.wantPrivate} onWantPrivateChange={room.setWantPrivate}
               myAvatarUrl={room.myAvatarUrl} onAvatarFile={onAvatarFile} onClearAvatar={() => room.setMyAvatar(null)}
               onIdentityChange={room.changeIdentity}
+              boardHasContent={state.tokens.length > 0 || !!state.map.imageUrl}
               onHost={room.hostRoom} onJoin={room.joinRoom} onLeave={room.leaveRoom}
               onClosePanel={() => room.setOnlineOpen(false)}
             />
@@ -305,6 +312,11 @@ export function DndTabletop() {
               <button className="danger" onClick={() => removeToken(selected.id)}>Remove token</button>
             </section>
           )}
+
+          <section>
+            <h3>Campaign maps</h3>
+            <CampaignMapsPanel />
+          </section>
 
           <section>
             <div className="dnd-tt-init-head">
@@ -599,15 +611,21 @@ function MultiplayerPanel(props: {
   wantPrivate: boolean; onWantPrivateChange: (v: boolean) => void;
   myAvatarUrl: string | null; onAvatarFile: (file: File) => void; onClearAvatar: () => void;
   onIdentityChange: (spectator: boolean, color: string) => void;
-  onHost: () => void; onJoin: () => void; onLeave: () => void;
+  boardHasContent: boolean;
+  onHost: (opts: { blankBoard: boolean }) => void; onJoin: () => void; onLeave: () => void;
   onClosePanel: () => void;
 }) {
   const {
     online, joinCode, onJoinCodeChange, playerName, onNameChange,
     playerColor, spectator, wantPrivate, onWantPrivateChange,
     myAvatarUrl, onAvatarFile, onClearAvatar,
-    onIdentityChange, onHost, onJoin, onLeave, onClosePanel,
+    onIdentityChange, onHost, onJoin, onLeave, onClosePanel, boardHasContent,
   } = props;
+  // Hosting seeds the new room from a board. Default to a blank one when
+  // mine has content — it may be DM prep (secret tokens) not meant for
+  // players yet.
+  const [startBlank, setStartBlank] = useState(boardHasContent);
+  const host = () => onHost({ blankBoard: boardHasContent && startBlank });
   const connected = online?.status === "open";
   const failed = online && (online.status === "error" || online.status === "closed");
   const nameOk = playerName.trim().length > 0;
@@ -659,7 +677,7 @@ function MultiplayerPanel(props: {
           <label className="dnd-tt-field">Your name
             <input value={playerName} maxLength={24} autoFocus
                    onChange={(e) => onNameChange(e.target.value)}
-                   onKeyDown={(e) => { if (e.key !== "Enter" || !nameOk) return; if (joinCode.trim().length >= 4) onJoin(); else onHost(); }} />
+                   onKeyDown={(e) => { if (e.key !== "Enter" || !nameOk) return; if (joinCode.trim().length >= 4) onJoin(); else host(); }} />
           </label>
           <div className="dnd-mp-identity">
             <label className="dnd-tt-field">Your color
@@ -678,7 +696,14 @@ function MultiplayerPanel(props: {
                    onChange={(e) => onWantPrivateChange(e.target.checked)} />
             Private game (hide from the public Live games list)
           </label>
-          <button className="dnd-primary" onClick={onHost} disabled={!nameOk}>Host a new game</button>
+          {boardHasContent && (
+            <div className="dnd-mp-start" role="radiogroup" aria-label="Start the game with">
+              <span className="muted small">Start the game with:</span>
+              <label className="dnd-tt-check"><input type="radio" checked={startBlank} onChange={() => setStartBlank(true)} /> A blank board</label>
+              <label className="dnd-tt-check"><input type="radio" checked={!startBlank} onChange={() => setStartBlank(false)} /> My current board (everyone sees it)</label>
+            </div>
+          )}
+          <button className="dnd-primary" onClick={host} disabled={!nameOk}>Host a new game</button>
           <div className="dnd-mp-join">
             <input placeholder="CODE" value={joinCode} maxLength={12}
                    onChange={(e) => onJoinCodeChange(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))}

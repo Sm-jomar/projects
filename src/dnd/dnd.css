@@ -713,3 +713,94 @@
 }
 .dnd-qb-slot-pip.spent { background: var(--bg); border-color: var(--border); }
 .dnd-quick-bar .dnd-coin input { min-width: 0; width: 100%; }
+
+/* ----- Campaigns ----- */
+.dnd-camp { display: flex; flex-direction: column; gap: 12px; }
+.dnd-camp .dnd-section-head { margin-bottom: 4px; flex-wrap: wrap; }
+.dnd-camp-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.dnd-camp-form {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+}
+.dnd-camp-form textarea { width: 100%; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+.dnd-camp-form textarea[rows="2"] { font-family: inherit; font-size: inherit; }
+.dnd-camp-banner {
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+  padding: 10px 12px; border: 1px solid var(--dnd-accent-2); border-radius: 8px; background: var(--panel-2);
+}
+.dnd-camp-okmsg { color: var(--ok); font-size: 13px; margin: 0; }
+.dnd-camp-error { color: var(--danger); font-size: 13px; margin: 0; }
+.dnd-camp-stale { color: var(--danger); }
+.dnd-card-row.stale { opacity: 0.7; }
+
+.dnd-camp-role {
+  display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 2px 7px; border-radius: 10px; border: 1px solid currentColor; white-space: nowrap;
+}
+.dnd-camp-role.owner { color: var(--dnd-accent-2); }
+.dnd-camp-role.codm { color: var(--accent); }
+.dnd-camp-role.player { color: var(--muted); }
+
+.dnd-camp-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+.dnd-camp-tab {
+  border: 1px solid transparent; border-bottom: none; border-radius: 6px 6px 0 0;
+  background: transparent; font-size: 13px; padding: 6px 12px; margin-bottom: -1px;
+}
+.dnd-camp-tab.active { border-color: var(--border); background: var(--bg); color: var(--dnd-accent-2); }
+
+.dnd-camp-desc-field textarea { min-height: 44px; }
+.dnd-camp-desc { margin: 0; line-height: 1.5; white-space: pre-wrap; }
+.dnd-camp-journal { display: flex; flex-direction: column; gap: 10px; }
+.dnd-camp-journal h3 { margin: 6px 0 0; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.dnd-camp-journal-entry { padding: 10px 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; }
+.dnd-camp-journal-entry h4 { margin: 0 0 6px; font-size: 15px; }
+.dnd-camp-journal-entry p { margin: 0; white-space: pre-wrap; line-height: 1.5; font-size: 14px; }
+
+.dnd-camp-notes { display: flex; flex-direction: column; gap: 8px; }
+.dnd-camp-notes-bar { display: flex; align-items: center; gap: 10px; }
+.dnd-camp-save.error { color: var(--danger); }
+.dnd-camp-save.saved { color: var(--ok); }
+.dnd-camp-vis-icon { font-size: 12px; }
+.dnd-camp-vis { display: flex; gap: 0; }
+.dnd-camp-vis button { font-size: 12px; border-radius: 0; }
+.dnd-camp-vis button:first-child { border-radius: 6px 0 0 6px; }
+.dnd-camp-vis button:last-child { border-radius: 0 6px 6px 0; border-left: none; }
+.dnd-camp-vis button.on { background: var(--panel-2); border-color: var(--dnd-accent-2); color: var(--dnd-accent-2); }
+.dnd-notes-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+
+.dnd-camp-npcs, .dnd-camp-npc-edit { display: flex; flex-direction: column; gap: 10px; }
+
+.dnd-camp-maps, .dnd-camp-maps-panel { display: flex; flex-direction: column; gap: 8px; }
+.dnd-camp-save-form { display: flex; flex-direction: column; gap: 6px; padding: 8px; border: 1px dashed var(--border); border-radius: 6px; }
+.dnd-camp-map-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.dnd-camp-map {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  padding: 8px 10px; background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
+}
+.dnd-camp-map-main { flex: 1; min-width: 140px; display: flex; flex-direction: column; gap: 2px; }
+
+.dnd-camp-share { display: flex; flex-direction: column; gap: 12px; }
+.dnd-camp-code-row { display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; }
+.dnd-camp-code-head { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.dnd-camp-code { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.dnd-camp-code code {
+  flex: 1; min-width: 0; overflow-wrap: anywhere;
+  font-size: 12px; padding: 6px 8px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px;
+}
+.dnd-camp-settings { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.dnd-camp-settings h3 { margin: 8px 0 0; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.dnd-camp-owner-modal { display: flex; flex-direction: column; gap: 12px; }
+.dnd-camp-owner-modal p { margin: 0; line-height: 1.5; }
+
+.dnd-camp-backup { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.dnd-camp-backup .dnd-camp-form { align-self: stretch; }
+.dnd-camp-personal { border-top: 1px solid var(--border); padding-top: 10px; }
+.dnd-camp-personal > summary { cursor: pointer; color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+.dnd-camp-personal .dnd-section { max-width: none; }
+
+.dnd-mp-start { display: flex; flex-direction: column; gap: 2px; }
+.dnd-tt-syncwarn { color: var(--danger); }
+
+@container dnd-drawer (max-width: 560px) {
+  .dnd-camp-tab { padding: 6px 8px; font-size: 12px; }
+}

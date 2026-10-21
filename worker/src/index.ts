@@ -35,6 +35,7 @@ import { LobbyDO } from "./lobby";
 import { UploadSessionDO } from "./uploadSession";
 import { handleModel, type ModelEnv } from "./model";
 import { handleBridge, type BridgeEnv } from "./bridge";
+import { CampaignDO, handleCampaign, type CampaignEnv } from "./campaign";
 
 const FLAG_PATH = "/api/flags";
 // Remote-tabletop room sockets: /api/room/<code>/ws
@@ -46,11 +47,13 @@ const MODEL_PREFIX = "/api/model/";
 // The Tripo Forge Custom GPT bridge + its browser upload page — see
 // bridge.ts for the full route list and BRIDGE_API_CONTRACT.md for the
 // spec this implements.
+// Shareable D&D campaigns — see campaign.ts.
+const CAMPAIGN_PATH = "/api/campaign";
 const BRIDGE_PATHS = ["/health", "/api/balance", "/api/upload-session", "/api/generate/", "/api/task/", "/api/convert", "/api/upload-page/"];
 
-export { RoomDO, LobbyDO, UploadSessionDO };
+export { RoomDO, LobbyDO, UploadSessionDO, CampaignDO };
 
-export interface Env extends ModelEnv, BridgeEnv {
+export interface Env extends ModelEnv, BridgeEnv, CampaignEnv {
   ASSETS: { fetch(request: Request): Promise<Response> };
   ROOM: DurableObjectNamespace;
   LOBBY: DurableObjectNamespace;
@@ -173,6 +176,11 @@ export default {
     }
     if (url.pathname.startsWith(MODEL_PREFIX)) {
       return handleModel(request, env, url);
+    }
+    // Before the bridge check: campaign routes must never reach the
+    // bridge's Bearer-key gate.
+    if (url.pathname === CAMPAIGN_PATH || url.pathname.startsWith(CAMPAIGN_PATH + "/")) {
+      return handleCampaign(request, env, url);
     }
     if (BRIDGE_PATHS.some((p) => url.pathname === p || url.pathname.startsWith(p))) {
       return handleBridge(request, env, url);
