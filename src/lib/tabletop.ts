@@ -69,6 +69,11 @@ export type Token = {
    * from color (rebels/republic = blue, imperials/separatists = red, etc.)
    * if not set explicitly. */
   side?: "blue" | "red";
+  /** Squad this token is bundled into (see lib/squads). Squads are base
+   * locked: every member must link back to the leader by base contact. */
+  squadId?: string;
+  /** True on the squad leader; moving the leader carries the squad. */
+  squadLead?: boolean;
 };
 
 // --- Movement templates ---------------------------------------------------
