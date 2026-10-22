@@ -733,7 +733,12 @@ export function TabletopPanel({ onClose }: Props) {
                 <div className="tt-canvas-wrap board3d-host">
                   <Suspense fallback={<div className="board3d board3d-loading">Loading 3D view…</div>}>
                     <Legion3D state={state} selectedId={selectedId} onSelect={setSelectedId} showGrid={showGrid}
-                              onUploadModel={readOnly ? undefined : () => modelFileRef.current?.click()} />
+                              onUploadModel={readOnly ? undefined : () => modelFileRef.current?.click()}
+                              step={snap || 1}
+                              onMoveToken={readOnly ? undefined : (id, x, y) => {
+                                const sn = (n: number) => snap ? Math.round(n / snap) * snap : n;
+                                commit(moveToken(state, id, sn(x), sn(y)));
+                              }} />
                   </Suspense>
                 </div>
               ) : (

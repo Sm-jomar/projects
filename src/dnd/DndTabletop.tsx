@@ -146,6 +146,7 @@ export function DndTabletop() {
       charId: c.id,
       hpMax: c.hpMax || undefined,
       hpCurrent: (c.hpCurrent || c.hpMax) || undefined,
+      speed: parseInt(c.speed, 10) || undefined,
       color: "#4a86c8",
     });
   }
@@ -289,7 +290,8 @@ export function DndTabletop() {
           <div className="dnd-tt-canvas">
             <Suspense fallback={<div className="board3d board3d-loading">Loading 3D view…</div>}>
               <Dnd3D state={boardView} selectedId={selectedId} onSelect={setSelectedId} fog={fogView}
-                     onUploadModel={readOnly ? undefined : () => modelFileRef.current?.click()} />
+                     onUploadModel={readOnly ? undefined : () => modelFileRef.current?.click()}
+                     onMoveToken={readOnly ? undefined : (id, x, y) => updateToken(id, { x, y })} />
             </Suspense>
           </div>
         ) : (
@@ -532,6 +534,10 @@ export function DndTabletop() {
                          onChange={(e) => updateToken(selected.id, { elevation: Math.max(0, Number(e.target.value) || 0) || undefined })} />
                 </label>
               </div>
+              <label className="dnd-tt-field" title="How far this token can move in one move — the 3D view's move readout counts against it">Speed (ft)
+                <input type="number" min={0} step={5} value={selected.speed ?? 30}
+                       onChange={(e) => updateToken(selected.id, { speed: Math.max(0, Number(e.target.value) || 0) })} />
+              </label>
               {fogOn && (
                 <label className="dnd-tt-field" title="Fog of war: how far this token can see. Leave blank on a lit map; set it for darkvision or a torch.">Sight (ft, blank = unlimited)
                   <input type="number" min={0} step={5} value={selected.sight ?? ""} placeholder="unlimited"
