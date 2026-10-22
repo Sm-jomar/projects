@@ -11,8 +11,8 @@ import {
 import { appendLog, type LogActor, type LogEntry } from "../lib/auditLog";
 import { legionPlayUrl, roomsAvailableHere } from "../lib/appRouting";
 import { AuditLogView } from "./AuditLogView";
-import { ChatDock } from "./ChatDock";
-import { useSessionChat } from "./useSessionChat";
+import { ChatButton, ChatDock } from "./ChatDock";
+import { useChatToggle, useSessionChat } from "./useSessionChat";
 import {
   moveToken, startSquad, joinSquad, leaveSquad, makeLeader, disbandSquad, regroupSquad,
   normalizeSquads, listSquads, squadMembers, unlockedIds,
@@ -182,6 +182,7 @@ export function TabletopPanel({ onClose }: Props) {
   const readOnly = online?.status === "open" && online.you?.color === "spectator";
   useEffect(() => { readOnlyRef.current = !!readOnly; }, [readOnly]);
   const chat = useSessionChat("legion", () => roomRef.current, online?.code ?? null, online?.you ?? null, online?.status === "open");
+  const chatToggle = useChatToggle(chat, online?.you?.id ?? null);
   // Always-fresh state for the seed-on-join callback (which fires outside
   // the render that owns `state`). Kept in sync via an effect rather than
   // assigned during render.
@@ -654,6 +655,7 @@ export function TabletopPanel({ onClose }: Props) {
                     title={view3d ? "Back to the flat board" : "See terrain height and depth in 3D"}>
               {view3d ? "2D view" : "3D view"}
             </button>
+            <ChatButton toggle={chatToggle} className="cb-tab" />
           </div>
           <div className="tt-online-wrap">
             <button
@@ -694,7 +696,7 @@ export function TabletopPanel({ onClose }: Props) {
         <div className="tabletop-body">
           <input ref={modelFileRef} type="file" accept=".stl,model/stl,application/sla" hidden onChange={onModelFile} />
           <div className="tt-canvas-col">
-            <ChatDock chat={chat} myId={online?.you?.id ?? null} colorOf={(a) => legionActorColor(a.color)} />
+            <ChatDock chat={chat} myId={online?.you?.id ?? null} toggle={chatToggle} colorOf={(a) => legionActorColor(a.color)} />
             {readOnly && (
               <div className="tt-spectating-bar">
                 👁 Spectating — you can watch, pan and measure, but not change the board.

@@ -9,7 +9,8 @@ import { dndPlayUrl, roomsAvailableHere } from "../lib/appRouting";
 import type { LogEntry } from "../lib/auditLog";
 import { AuditLogView } from "../components/AuditLogView";
 import { RollFeed } from "./RollFeed";
-import { ChatDock } from "../components/ChatDock";
+import { ChatButton, ChatDock } from "../components/ChatDock";
+import { useChatToggle } from "../components/useSessionChat";
 import { CharacterSheetView } from "./CharacterSheetView";
 import { useDndRoom, type OnlineState } from "./dndRoom";
 import { CampaignMapsPanel } from "./CampaignMapLibrary";
@@ -37,6 +38,7 @@ export function DndTabletop() {
   // survive tab switches and are shared with the dice roller.
   const room = useDndRoom();
   const { state, setBoard, readOnly, online } = room;
+  const chatToggle = useChatToggle(room.chat, room.myId);
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const chars = useCharacters();
@@ -251,6 +253,7 @@ export function DndTabletop() {
                 title={view3d ? "Back to the flat board" : "See height and depth in 3D"}>
           {view3d ? "2D view" : "3D view"}
         </button>
+        <ChatButton toggle={chatToggle} className="ghost-btn small dnd" />
         <button className="ghost-btn small dnd-tt-side-toggle"
                 onClick={() => { const v = !sideCollapsed; setSideCollapsed(v); writeSideCollapsed(v); }}
                 title={sideCollapsed ? "Show the board tools" : "Hide the board tools for a bigger board"}>
@@ -285,7 +288,7 @@ export function DndTabletop() {
       )}
 
       <div className={"dnd-tt-body" + (sideCollapsed ? " side-collapsed" : "")}>
-        <ChatDock chat={room.chat} myId={room.myId} className="dnd" />
+        <ChatDock chat={room.chat} myId={room.myId} toggle={chatToggle} className="dnd" />
         {view3d ? (
           <div className="dnd-tt-canvas">
             <Suspense fallback={<div className="board3d board3d-loading">Loading 3D view…</div>}>
