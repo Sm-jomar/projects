@@ -7,12 +7,16 @@ import {
   saveRegister,
 } from "../lib/storage";
 import {
+  blankDossier,
   blankRegister,
   downloadJson,
   jsonToRegisters,
   registersToJson,
 } from "../lib/register";
 import { RegisterEditor } from "./RegisterEditor";
+import { TtaImportModal } from "./TtaImportModal";
+import { unitById, upgradeById } from "../data/catalog";
+import type { TtaImport } from "../lib/ttaList";
 
 type Props = {
   onClose: () => void;
@@ -23,6 +27,7 @@ export function RegisterPanel({ onClose }: Props) {
   const [editing, setEditing] = useState<TodRegister | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const [ttaOpen, setTtaOpen] = useState(false);
 
   function refresh() {
     setRegisters(listRegisters());
@@ -35,6 +40,25 @@ export function RegisterPanel({ onClose }: Props) {
 
   function startNew() {
     setEditing(blankRegister());
+  }
+
+  // A new register with one dossier per unit of a Tabletop Admiral list.
+  function startFromTta({ army }: TtaImport) {
+    const r = blankRegister();
+    r.name = army.name === "Tabletop Admiral import" ? "" : army.name;
+    r.faction = army.faction;
+    r.dossiers = army.entries.map((e) => {
+      const u = unitById(e.unitId);
+      return {
+        ...blankDossier(),
+        unitId: e.unitId,
+        unitName: u?.name ?? e.unitId,
+        unitFaction: u?.faction,
+        upgrades: (e.upgrades ?? []).map((id) => upgradeById(id)?.name ?? id).join(", "),
+      };
+    });
+    setTtaOpen(false);
+    setEditing(r);
   }
 
   function openOne(id: string) {
@@ -130,6 +154,12 @@ export function RegisterPanel({ onClose }: Props) {
               <h2>Tours of Duty Registers</h2>
               <div className="saved-row-actions">
                 <button onClick={startNew}>+ New register</button>
+                <button
+                  onClick={() => setTtaOpen(true)}
+                  title="Start a register from a Tabletop Admiral list, one dossier per unit"
+                >
+                  + From Tabletop Admiral
+                </button>
                 <button onClick={exportAll}>Export all</button>
                 <button onClick={pickFile}>Import</button>
                 <input
@@ -187,6 +217,14 @@ export function RegisterPanel({ onClose }: Props) {
             )}
             {toast && <div className="toast">{toast}</div>}
           </>
+        )}
+        {ttaOpen && (
+          <TtaImportModal
+            title="New register from Tabletop Admiral"
+            actionLabel="Create register"
+            onClose={() => setTtaOpen(false)}
+            onImport={startFromTta}
+          />
         )}
       </div>
     </div>

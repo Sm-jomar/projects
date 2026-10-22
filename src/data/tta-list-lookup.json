@@ -1,0 +1,2647 @@
+{
+ "generated_by": "scripts/build_tta_list_lookup.py",
+ "unit_ids": {
+  "1": "rebels-at-rt",
+  "2": "imperials-74-z-speeder-bikes",
+  "3": "imperials-darth-vader-dark-lord-of-the-sith",
+  "4": "rebels-luke-skywalker-hero-of-the-rebellion",
+  "5": "imperials-stormtroopers",
+  "6": "rebels-rebel-troopers",
+  "7": "imperials-snowtroopers",
+  "8": "imperials-general-veers",
+  "9": "imperials-at-st",
+  "a": "rebels-t-47-airspeeder",
+  "b": "rebels-leia-organa",
+  "c": "rebels-fleet-troopers",
+  "d": "rebels-rebel-commandos",
+  "e": "rebels-rebel-commandos-strike-team",
+  "f": "rebels-han-solo",
+  "10": "imperials-boba-fett-infamous-bounty-hunter",
+  "11": "imperials-scout-troopers",
+  "12": "rebels-1-4-fd-laser-cannon-team",
+  "13": "imperials-e-web-heavy-blaster-team",
+  "16": "rebels-rebel-officer",
+  "17": "imperials-imperial-officer",
+  "18": "rebels-wookiee-warriors-freedom-fighters",
+  "19": "rebels-chewbacca",
+  "1a": "imperials-scout-troopers-strike-team",
+  "1b": "rebels-jyn-erso",
+  "1d": "imperials-director-orson-krennic",
+  "1e": "imperials-imperial-death-troopers",
+  "1f": "imperials-tx-225-gavw-occupier-tank",
+  "20": "rebels-x-34-landspeeder",
+  "21": "rebels-sabine-wren",
+  "22": "imperials-bossk-trandoshan-terror",
+  "23": "rebels-tauntaun-riders",
+  "24": "rebels-rebel-veterans",
+  "26": "separatists-b1-battle-droids",
+  "27": "imperials-shoretroopers",
+  "28": "imperials-dewback-rider",
+  "29": "republic-obi-wan-kenobi-civilized-warrior",
+  "2a": "rebels-mark-ii-medium-blaster-trooper",
+  "2b": "separatists-droidekas",
+  "2c": "republic-barc-speeder",
+  "2d": "separatists-general-grievous-sinister-cyborg",
+  "2e": "rebels-luke-skywalker-jedi-knight",
+  "2f": "imperials-darth-vader-the-emperor-s-apprentice",
+  "30": "imperials-df-90-mortar-trooper",
+  "31": "separatists-count-dooku-darth-tyranus",
+  "32": "republic-clone-captain-rex",
+  "34": "separatists-b2-super-battle-droids",
+  "35": "republic-tx-130-saber-class-fighter-tank",
+  "36": "separatists-aat-battle-tank",
+  "37": "rebels-r2-d2",
+  "38": "republic-r2-d2-independent-astromech",
+  "39": "rebels-cassian-andor",
+  "3a": "imperials-iden-versio",
+  "3b": "mercenary-cad-bane-needs-no-introduction",
+  "3c": "republic-padm-amidala-spirited-senator",
+  "3d": "republic-arc-troopers-strike-team",
+  "3e": "republic-arc-troopers",
+  "3f": "separatists-bx-series-droid-commandos-strike-team",
+  "40": "separatists-bx-series-droid-commandos",
+  "44": "rebels-k-2so",
+  "45": "separatists-stap-riders",
+  "46": "republic-at-rt-galactic-republic",
+  "47": "rebels-mandalorian-resistance",
+  "48": "rebels-mandalorian-resistance-clan-wren",
+  "49": "republic-anakin-skywalker-hero-without-fear",
+  "4a": "separatists-maul-impatient-apprentice",
+  "4b": "republic-clone-commander",
+  "4c": "separatists-t-series-tactical-droid",
+  "4d": "separatists-drk-1-sith-probe-droids",
+  "4e": "imperials-imperial-special-forces",
+  "4f": "imperials-imperial-special-forces-inferno-squad",
+  "50": "rebels-lando-calrissian",
+  "51": "imperials-agent-kallus",
+  "52": "republic-yoda-grand-master-of-the-jedi-order",
+  "54": "republic-laat-le-patrol-transport-republic",
+  "55": "mercenary-a-a5-speeder-truck",
+  "56": "imperials-laat-le-patrol-transport",
+  "57": "republic-wookiee-warriors-kashyyyk-defenders",
+  "58": "republic-wookiee-chieftain",
+  "59": "rebels-wookiee-warriors-kashyyyk-resistance",
+  "5a": "republic-wookiee-warriors-noble-fighters",
+  "5b": "republic-chewbacca-republic",
+  "5c": "separatists-ig-100-magnaguards",
+  "5d": "separatists-kraken",
+  "5e": "separatists-super-tactical-droid",
+  "5f": "separatists-kalani",
+  "60": "republic-raddaugh-gnasp-fluttercraft",
+  "61": "separatists-dsd1-dwarf-spider-droid",
+  "62": "republic-infantry-support-platform",
+  "63": "separatists-nr-n99-persuader-class-tank-droid",
+  "64": "mercenary-pyke-syndicate-foot-soldiers",
+  "65": "mercenary-pyke-syndicate-capo",
+  "66": "mercenary-black-sun-enforcers",
+  "67": "mercenary-maul-a-rival",
+  "68": "mercenary-black-sun-vigo",
+  "69": "mercenary-mandalorian-super-commandos",
+  "6a": "mercenary-gar-saxon-militant-commando",
+  "6b": "mercenary-a-a5-speeder-truck",
+  "6c": "imperials-bossk-trandoshan-terror",
+  "6d": "imperials-boba-fett-infamous-bounty-hunter",
+  "6e": "mercenary-cad-bane-needs-no-introduction",
+  "6f": "mercenary-swoop-bike-riders",
+  "70": "imperials-stormtroopers-heavy-response-unit",
+  "71": "rebels-boba-fett-daimyo-of-mos-espa",
+  "72": "imperials-ig-88-assassin-droid",
+  "73": "imperials-ig-11-nurse-droid",
+  "74": "rebels-din-djarin-the-mandalorian",
+  "75": "imperials-imperial-dark-troopers",
+  "76": "republic-clone-commander-cody",
+  "77": "imperials-moff-gideon",
+  "78": "separatists-asajj-ventress-sith-assassin",
+  "79": "rebels-ahsoka-tano-fulcrum",
+  "7a": "rebels-wicket-hero-of-bright-tree",
+  "7b": "rebels-c-3po-golden-god",
+  "7c": "rebels-ewok-skirmishers",
+  "7d": "rebels-chewbacca-let-the-wookiee-win",
+  "7e": "rebels-ewok-slingers",
+  "7f": "rebels-logray-superstitious-shaman",
+  "80": "imperials-major-marquand",
+  "81": "separatists-nr-n99-persuader-class-tank-droid-prototype-tank-droid",
+  "82": "separatists-ig-100-magnaguards-prototype-assassin-droids",
+  "83": "republic-raddaugh-gnasp-fluttercraft-attack-craft",
+  "84": "separatists-geonosian-warriors",
+  "85": "separatists-sun-fac",
+  "86": "separatists-poggle-the-lesser",
+  "87": "imperials-fifth-brother",
+  "88": "imperials-seventh-sister",
+  "89": "rebels-the-bad-batch",
+  "8a": "republic-clone-commandos",
+  "8b": "imperials-range-troopers",
+  "8c": "republic-clone-commandos-delta-squad",
+  "8d": "rebels-the-bad-batch",
+  "8e": "republic-clone-trooper-infantry",
+  "8f": "separatists-lm-432-crab-droid",
+  "90": "imperials-stormtrooper-riot-squad",
+  "91": "rebels-rebel-sleeper-cell",
+  "92": "rebels-rebel-commandos-strike-team",
+  "93": "republic-arc-troopers-strike-team",
+  "94": "imperials-scout-troopers-strike-team",
+  "95": "separatists-bx-series-droid-commandos-strike-team",
+  "96": "separatists-aqua-droids",
+  "97": "republic-arf-troopers",
+  "98": "republic-ahsoka-tano-padawan-commander",
+  "99": "mercenary-hondo-ohnaka",
+  "9a": "rebels-jyn-erso",
+  "9b": "rebels-cassian-andor",
+  "9c": "rebels-k-2so",
+  "9d": "imperials-agent-kallus",
+  "9e": "imperials-imperial-agent",
+  "a1": "rebels-rebel-agent",
+  "a2": "republic-jedi-knight-general",
+  "a3": "republic-jedi-knight",
+  "a4": "separatists-super-tactical-command-droid",
+  "a5": "separatists-super-tactical-command-droid-operative",
+  "a7": "republic-clone-trooper-marksmen",
+  "ac": "mercenary-weequay-pirates",
+  "ad": "mercenary-wlo-5-speeder-tank",
+  "c2": "republic-shaak-ti-jedi-council",
+  "c3": "mercenary-the-armorer-forging-the-future",
+  "c4": "mercenary-mandalorian-warriors-fire-support",
+  "c5": "mercenary-mandalorian-warriors",
+  "c7": "rebels-din-djarin-the-mandalorian",
+  "c8": "mercenary-rook-kast-devoted-to-the-cause",
+  "c9": "mercenary-sabine-wren-back-in-the-fold",
+  "ca": "mercenary-gar-saxon-head-of-clan-saxon",
+  "cb": "mercenary-ursa-wren-leader-of-clan-wren",
+  "cc": "mercenary-super-commandos",
+  "cd": "separatists-b2-super-rocket-battle-droids",
+  "ce": "separatists-admiral-trench-fleet-commander",
+  "cf": "republic-obi-wan-kenobi-mounted-jedi-general"
+ },
+ "upgrade_ids": {
+  "1": "comms-jammer",
+  "2": "long-range-comlink",
+  "3": "at-rt-laser-cannon",
+  "4": "at-rt-rotary-blaster",
+  "5": "battle-meditation",
+  "6": "concussion-grenades",
+  "7": "dlt-19-stormtrooper",
+  "8": "force-choke",
+  "9": "force-push",
+  "a": "force-reflexes",
+  "b": "mpl-57-ion-trooper",
+  "c": "rebel-trooper",
+  "d": "saber-throw",
+  "e": "stormtrooper",
+  "f": "targeting-scopes",
+  "10": "z-6-trooper",
+  "11": "commanding-presence",
+  "12": "grappling-hooks",
+  "13": "hh-12-stormtrooper",
+  "14": "at-rt-flamethrower",
+  "15": "t-7-ion-snowtrooper",
+  "16": "88i-twin-light-blaster",
+  "17": "at-st-mortar-launcher",
+  "18": "dw-3-concussion-grenade-launcher",
+  "19": "general-weiss",
+  "1a": "esteemed-leader",
+  "1b": "ax-108-ground-buzzer",
+  "1c": "mo-dk-power-harpoon",
+  "1d": "wedge-antilles",
+  "1e": "impact-grenades",
+  "1f": "scatter-gun-trooper",
+  "20": "jedi-mind-trick",
+  "21": "duck-and-cover",
+  "22": "snowtrooper",
+  "23": "fleet-trooper",
+  "24": "flametrooper",
+  "25": "environmental-gear",
+  "26": "hunter",
+  "27": "mpl-57-barrage-trooper",
+  "28": "barrage-generator",
+  "29": "hq-uplink",
+  "2a": "overcharged-generator",
+  "2b": "emergency-stims",
+  "2c": "improvised-orders",
+  "2d": "anger",
+  "2f": "dh-447-sniper",
+  "30": "proton-charge-saboteur",
+  "31": "rebel-officer",
+  "32": "imperial-officer",
+  "33": "bowcaster-wookiee",
+  "34": "dlt-19-x-sniper",
+  "35": "sonic-charge-saboteur",
+  "36": "tenacity",
+  "37": "rebel-comms-technician",
+  "39": "fragmentation-grenades",
+  "3a": "recon-intel",
+  "3b": "a-180",
+  "3e": "strict-orders",
+  "3f": "astromech-droid",
+  "40": "2-1-b-medical-droid",
+  "41": "comms-relay",
+  "42": "fx-9-medical-droid",
+  "43": "imperial-comms-technician",
+  "44": "r4-astromech",
+  "45": "a-180",
+  "46": "endurance",
+  "47": "the-darksaber",
+  "48": "overwatch",
+  "4c": "rebel-veteran",
+  "4d": "dt-f-16",
+  "4f": "sabine-s-combat-shield",
+  "50": "a-300-rifle-gunner",
+  "51": "rps-6-rocket-gunner",
+  "52": "outer-rim-speeder-jockey",
+  "53": "imperial-hammers-elite-armor-pilot",
+  "54": "dlt-19-d-trooper",
+  "55": "e-11d",
+  "56": "e-11d",
+  "57": "first-seargant-arbmab",
+  "58": "pintle-mounted-dlt-19",
+  "59": "pintle-mounted-rt-97c",
+  "5a": "ryder-azadi",
+  "5b": "mark-ii-medium-blaster",
+  "5c": "m-45-ion-blaster",
+  "5e": "b1-battle-droid",
+  "5f": "shoretrooper",
+  "60": "t-21-blaster-rifle",
+  "61": "electro-grappling-line",
+  "62": "cm-0-93-trooper",
+  "63": "linked-targeting-array",
+  "64": "barc-twin-laser-gunner",
+  "65": "electrobinoculars",
+  "66": "force-guidance",
+  "67": "smoke-grenades",
+  "68": "aggressive-tactics",
+  "69": "e-5c-b1-battle-droid",
+  "6a": "e-60r-b1-battle-droid",
+  "6b": "hope",
+  "6e": "dt-57-annihilator",
+  "6f": "fear",
+  "70": "barc-ion-gunner",
+  "71": "barc-rps-6-gunner",
+  "72": "t-21b-shoretrooper",
+  "73": "cr-24-flame-rifle",
+  "74": "rt-97c-blaster-rifle",
+  "76": "b2-super-battle-droid",
+  "77": "aayla-secura",
+  "78": "t-series-tactical-droid-pilot",
+  "79": "rt-97c-stormtrooper",
+  "7a": "t-21-stormtrooper",
+  "7b": "dlt-20a-trooper",
+  "7c": "sx-21-trooper",
+  "7d": "b1-security-droid",
+  "7e": "e-5s-b1-battle-droid",
+  "81": "offensive-push",
+  "82": "integrated-comms-antenna",
+  "83": "c-3po",
+  "84": "rebel-trooper-captain",
+  "85": "rebel-trooper-specialist",
+  "86": "stormtrooper-captain",
+  "87": "stormtrooper-specialist",
+  "88": "oom-series-battle-droid",
+  "89": "radiation-cannon-b1-battle-droid",
+  "8d": "b2-acm-battle-droid",
+  "8e": "a280-rifle-config",
+  "8f": "iden-s-dlt-20a-rifle",
+  "91": "beam-turret",
+  "92": "veteran-clone-pilot",
+  "93": "armor-piercing-shells",
+  "94": "b2-ha-battle-droid",
+  "95": "lok-durd",
+  "96": "plo-koon",
+  "97": "twin-laser-turret",
+  "98": "bunker-buster-shells",
+  "99": "high-energy-shells",
+  "9a": "oom-series-droid-pilot",
+  "9b": "electro-gauntlets",
+  "9c": "looted-e-5-blaster",
+  "9d": "jt-12-jetpacks",
+  "9e": "dc-15x-arc-trooper-sniper",
+  "9f": "bx-series-droid-sniper",
+  "a0": "bx-deflector-shields",
+  "a1": "bx-vibroswords",
+  "a2": "emp-droid-poppers",
+  "a3": "fives",
+  "a4": "echo",
+  "a5": "a280-rifle-config",
+  "a6": "jyn-s-se-14-blaster",
+  "a7": "iden-s-id10-seeker-droid",
+  "a8": "iden-s-tl-50-repeater",
+  "a9": "command-control-array",
+  "aa": "del-meeko",
+  "ab": "gideon-hask",
+  "ac": "situational-awareness",
+  "ad": "ascension-cables",
+  "ae": "dioxis-mine-saboteur",
+  "b0": "jetpack-rockets",
+  "b1": "tristan-wren",
+  "b2": "ursa-wren",
+  "b3": "offensive-defensive-stance",
+  "b4": "portable-scanner",
+  "b5": "t-series-tactical-droid",
+  "b6": "t-21-special-forces-trooper",
+  "b7": "offensive-defensive-stance",
+  "b8": "force-barrier",
+  "b9": "seize-the-initiative",
+  "ba": "j-19-bo-rifle",
+  "bb": "j-19-bo-rifle",
+  "bc": "inspiring-presence",
+  "bd": "ev-series-medical-droid",
+  "be": "pk-series-worker-droid",
+  "bf": "vigilance",
+  "c0": "viper-recon-droid",
+  "c1": "clone-commander-personnel",
+  "c2": "clone-comms-technician",
+  "c3": "clone-engineer",
+  "c4": "clone-medic-personnel",
+  "c5": "heavy-laser-retrofit",
+  "c6": "shriv-suurgav",
+  "c7": "governor-pryce",
+  "c8": "clone-commander-fox",
+  "c9": "onboard-comms-channel",
+  "ca": "clone-shock-trooper-pilot",
+  "cb": "hound-grizzer",
+  "cc": "imperial-tie-pilot",
+  "cd": "baron-rudor",
+  "ce": "ag-2g-quad-laser",
+  "cf": "hotshot-pilot",
+  "d0": "reckless-driver",
+  "d1": "unstable-astromech",
+  "d2": "unorthodox-tactician",
+  "d3": "refurbished-gonk-droid",
+  "d4": "backworld-medic",
+  "d5": "battle-shield-wookiee",
+  "d6": "long-gun-wookiee",
+  "d7": "force-lift",
+  "d8": "burst-of-speed",
+  "d9": "protector",
+  "da": "into-the-fray",
+  "db": "ig-100-magnaguard",
+  "dc": "rps-6-magnaguard",
+  "dd": "electro-whip-magnaguard",
+  "de": "hacked-comms-unit",
+  "df": "gnasp-gunner",
+  "e0": "gnasp-bombardier",
+  "e1": "attack-protocols",
+  "e2": "nose-mounted-flamethrower",
+  "e3": "nose-mounted-ion-blaster",
+  "e4": "nose-mounted-laser-cannon",
+  "e5": "327th-star-corps-elite-armor-pilots",
+  "e6": "defense-protocols",
+  "e7": "engagement-protocols",
+  "e8": "twin-beam-cannons",
+  "e9": "twin-blaster-cannons",
+  "ea": "twin-missile-pods",
+  "eb": "p13-m-disruptor-soldier",
+  "ec": "electro-whip-soldier",
+  "ed": "pyke-syndicate-foot-soldier",
+  "ee": "pyke-syndicate-capo",
+  "ef": "underworld-connections",
+  "f0": "scatter-gun-enforcer",
+  "f1": "black-sun-enforcer",
+  "f2": "black-sun-vigo",
+  "f3": "mag-det-enforcer",
+  "f4": "prepared-supplies",
+  "f5": "sonic-imploders",
+  "f6": "up-close-and-personal",
+  "f7": "the-darksaber-maul",
+  "f8": "lead-by-example",
+  "f9": "emergency-transponder",
+  "fa": "super-commando-combat-shields",
+  "fb": "super-commando-jetpack-rockets",
+  "fc": "mandalorian-super-commando",
+  "fd": "super-commando-marksman",
+  "fe": "rook-kast-heavy-weapon",
+  "ff": "super-commando-gunslinger",
+  "100": "saxon-s-galar-90-rifle",
+  "101": "saxon-s-jetpack-rockets",
+  "102": "saxon-s-zx-flame-projector",
+  "103": "frenzied-gunner",
+  "104": "raiding-party-leader",
+  "105": "saxon-s-combat-shield",
+  "106": "nanny-programming",
+  "107": "grogu",
+  "108": "din-s-amban-rifle",
+  "109": "din-s-flame-projector",
+  "10a": "the-mando-s-jetpack",
+  "10b": "waxer-personnel",
+  "10c": "boil-personnel",
+  "10d": "beskar-spear",
+  "10e": "bounty-programming",
+  "10f": "boba-s-flame-projector",
+  "110": "the-darksaber",
+  "111": "xs-iv-assault-cannon",
+  "112": "sm-9-frag-launcher",
+  "113": "mertalizer-dark-trooper",
+  "114": "imperial-dark-trooper",
+  "116": "programmed-loyalty",
+  "117": "forest-dwellers",
+  "118": "axe-ewok",
+  "119": "call-to-arms",
+  "11a": "insatiable-curiosity",
+  "11b": "ewok-trapper",
+  "11c": "secret-ingredients",
+  "11d": "herbal-medicine",
+  "11e": "onward-to-victory",
+  "11f": "geonosian-warrior",
+  "120": "force-pike-warrior",
+  "121": "sonic-cannon-warrior",
+  "122": "inquisitorius-training",
+  "123": "crosshair",
+  "124": "dlt-20a-range-trooper",
+  "125": "hunter-heavy-weapon",
+  "126": "katarn-pattern-armor",
+  "128": "range-trooper",
+  "129": "t-21a-range-trooper",
+  "12a": "dc-17m-icws-config",
+  "12b": "omega",
+  "12c": "wrecker",
+  "12d": "echo",
+  "12e": "tech",
+  "12f": "crosshair",
+  "130": "fives-squad-leader",
+  "131": "waxer",
+  "132": "boil",
+  "133": "clone-commander",
+  "134": "clone-captain",
+  "135": "z-6-clone-trooper",
+  "136": "fleet-trooper-squad",
+  "137": "clone-trooper-infantry",
+  "138": "rps-6-clone-trooper",
+  "139": "geonosian-warrior-squad",
+  "13a": "rebel-trooper-squad",
+  "13b": "b2-super-battle-droid-squad",
+  "13c": "ewok-skirmisher-squad",
+  "13d": "snowtrooper-squad",
+  "13e": "stormtrooper-squad",
+  "13f": "clone-specialist",
+  "140": "mortar-clone-trooper",
+  "141": "echo-arc-marksman",
+  "142": "shoretrooper-squad",
+  "143": "clone-trooper-infantry-squad",
+  "144": "dp-23-clone-trooper",
+  "145": "b1-battle-droid-squad",
+  "146": "rebel-veteran-squad",
+  "147": "ewok-slinger-squad",
+  "148": "rebel-marksman",
+  "149": "stormtrooper-marksman",
+  "14a": "twin-blaster-cannons",
+  "14b": "kx-series-security-droids",
+  "14c": "heavy-laser-cannon",
+  "14d": "astromech",
+  "14e": "heavy-aqua-droid",
+  "14f": "arf-trooper-duo",
+  "150": "rps-6-arf-trooper",
+  "151": "jedi-guardian",
+  "152": "ahsoka-tano-jedi-padawan",
+  "153": "on-the-hunt",
+  "154": "din-s-jetpack",
+  "155": "echo-clone-force-99",
+  "156": "mandalorian-combat-shields",
+  "157": "clone-medic",
+  "158": "strike-and-fade",
+  "159": "strike-team-leader",
+  "15a": "mission-objective",
+  "15b": "trusted-agent",
+  "15c": "imperial-march",
+  "15d": "terror",
+  "15e": "dug-in",
+  "15f": "tranquility",
+  "160": "extra-supplies",
+  "161": "clairvoyance",
+  "162": "spotter-uplink",
+  "163": "door-gunners",
+  "164": "imperial-march",
+  "165": "dug-in",
+  "167": "tip-of-the-spear",
+  "168": "defend-in-depth",
+  "169": "platoon-commander",
+  "16a": "combat-armor",
+  "16b": "seeker-droid",
+  "16c": "command-and-control-uplink",
+  "16d": "heavy-blaster-pistol",
+  "16e": "stun-baton",
+  "16f": "z-6-riot-baton",
+  "171": "unseen-saboteur",
+  "173": "reluctant-hero",
+  "174": "combat-armor",
+  "175": "repeating-blaster",
+  "176": "heavy-blaster-pistol",
+  "177": "vibro-axe",
+  "178": "thermal-detonator",
+  "179": "dug-in",
+  "17a": "general-of-the-republic",
+  "17b": "jedi-consular",
+  "17c": "jedi-negotiator",
+  "17d": "jedi-guardian-doctrine",
+  "17e": "lightsaber",
+  "17f": "twin-lightsabers",
+  "180": "double-bladed-lightsaber",
+  "181": "jedi-training-master-duelist",
+  "182": "jedi-training-peacekeeping-mission",
+  "183": "jedi-training-force-adept",
+  "184": "jedi-training-tactical-acumen",
+  "185": "tyrannical-taskmaster",
+  "186": "seek-and-destroy",
+  "187": "sliced-comms",
+  "188": "overclock",
+  "189": "targeting-relay",
+  "18a": "limiter-override",
+  "18b": "optimized-task-flow",
+  "18c": "strategic-programming",
+  "18d": "enhanced-combat-subroutines",
+  "18e": "mobility-upgrade",
+  "18f": "heavy-arm-cannon",
+  "190": "electrostaff",
+  "191": "expanded-databanks",
+  "192": "dug-in",
+  "194": "clone-trooper-marksmen-squad",
+  "195": "clone-marksman",
+  "196": "cassian-andor",
+  "197": "agent-kallus",
+  "198": "clone-captain-rex",
+  "199": "kraken",
+  "19a": "kraken",
+  "19b": "pyke-syndicate-crew",
+  "19c": "gang-boss",
+  "19d": "weequay-crew",
+  "19e": "black-sun-crew",
+  "19f": "pirate-captain",
+  "1a2": "security-detail",
+  "1a3": "electrostaff-pirate",
+  "1a4": "weequay-pirate-squad",
+  "1a5": "weequay-captain",
+  "1a6": "long-rifle-pirate",
+  "1a8": "shaak-ti",
+  "1a9": "din-djarin",
+  "1aa": "the-armorer",
+  "1ab": "pyke-syndicate-foot-soldier-squad",
+  "1ac": "imperial-probe-droid",
+  "1ad": "jyn-erso",
+  "1ae": "luke-skywalker",
+  "1af": "obi-wan-kenobi",
+  "1b0": "clone-commander-cody",
+  "1b1": "asajj-ventress",
+  "1b2": "general-grievous",
+  "1b3": "chewbacca",
+  "1b4": "fifth-brother",
+  "1b5": "seventh-sister",
+  "1b6": "dc-15x-arc-trooper-gunner",
+  "1b7": "dug-in",
+  "1b9": "galaar-15-carbines",
+  "1ba": "galaar-90-sniper-rifle",
+  "1bb": "shukur-05-repeater",
+  "1bc": "micro-grenade-launcher",
+  "1bd": "paz-vizsla",
+  "1bf": "axe-woves",
+  "1c0": "bo-katan-kryze",
+  "1c1": "grogu",
+  "1c2": "the-darksaber",
+  "1c3": "rook-kast",
+  "1c4": "din-djarin",
+  "1c5": "clan-kryze",
+  "1c6": "clan-wren",
+  "1c7": "children-of-the-watch",
+  "1c8": "clan-saxon",
+  "1c9": "champion-of-the-watch",
+  "1ca": "super-commando-gunslinger",
+  "1cb": "super-commando-marksman",
+  "1cd": "combat-shields",
+  "1ce": "personal-combat-shield",
+  "1cf": "jetpack-rockets-grenades",
+  "1d0": "whipcord-launcher",
+  "1d1": "flame-projector",
+  "1d2": "tristan-wren-personnel",
+  "1d3": "sabine-wren",
+  "1d4": "the-darksaber",
+  "1d5": "the-darksaber",
+  "1d6": "the-darksaber",
+  "1d7": "gar-saxon",
+  "1d8": "ursa-wren-personnel",
+  "1e3": "superior-equipment",
+  "1e4": "adaptive-combat-network",
+  "1e5": "agile-climber",
+  "1e6": "annul",
+  "1e7": "battlemind",
+  "1e8": "despair",
+  "1e9": "fire-control",
+  "1ec": "force-absorb",
+  "1ed": "force-agility",
+  "1ee": "force-drain",
+  "1ef": "force-enhanced-defense",
+  "1f0": "go-for-broke",
+  "1f1": "hatred",
+  "1f2": "helping-hand",
+  "1f3": "high-speed-tracking",
+  "1f4": "hit-the-dirt",
+  "1f5": "infantry-support",
+  "1f6": "lying-in-wait",
+  "1f7": "overcharged-blaster-packs",
+  "1f8": "squadron-leader",
+  "1f9": "strong-in-the-force",
+  "1fa": "tank-hunting-munitions",
+  "1fb": "stuck-in",
+  "1fd": "ki-adi-mundi",
+  "1fe": "plo-koon-squad-leader",
+  "1ff": "mace-windu",
+  "200": "b2-super-rocket-battle-droid",
+  "201": "missile-pod-rocket-droid",
+  "202": "b2-ha-rocket-droid",
+  "203": "caught-in-a-web"
+ },
+ "unit_names": {
+  "14fdlasercannonteam": [
+   "rebels-1-4-fd-laser-cannon-team"
+  ],
+  "74zspeederbikes": [
+   "imperials-74-z-speeder-bikes"
+  ],
+  "aa5speedertruck": [
+   "mercenary-a-a5-speeder-truck"
+  ],
+  "aatbattletank": [
+   "separatists-aat-battle-tank"
+  ],
+  "admiraltrenchfleetcommander": [
+   "separatists-admiral-trench-fleet-commander"
+  ],
+  "agentkallus": [
+   "imperials-agent-kallus"
+  ],
+  "agentkallushunterofspectres": [
+   "imperials-agent-kallus"
+  ],
+  "ahsokatano": [
+   "rebels-ahsoka-tano-fulcrum"
+  ],
+  "ahsokatanofulcrum": [
+   "rebels-ahsoka-tano-fulcrum"
+  ],
+  "ahsokatanopadawancommander": [
+   "republic-ahsoka-tano-padawan-commander"
+  ],
+  "anakinskywalker": [
+   "republic-anakin-skywalker-hero-without-fear"
+  ],
+  "anakinskywalkerthechosenone": [
+   "republic-anakin-skywalker-hero-without-fear"
+  ],
+  "aquadroids": [
+   "separatists-aqua-droids"
+  ],
+  "arctroopers": [
+   "republic-arc-troopers"
+  ],
+  "arctroopersstriketeam": [
+   "republic-arc-troopers-strike-team"
+  ],
+  "arftroopers": [
+   "republic-arf-troopers"
+  ],
+  "asajjventress": [
+   "separatists-asajj-ventress-sith-assassin"
+  ],
+  "asajjventressseparatistassassin": [
+   "separatists-asajj-ventress-sith-assassin"
+  ],
+  "atrt": [
+   "rebels-at-rt",
+   "republic-at-rt-galactic-republic"
+  ],
+  "atst": [
+   "imperials-at-st"
+  ],
+  "b1battledroids": [
+   "separatists-b1-battle-droids"
+  ],
+  "b2superbattledroids": [
+   "separatists-b2-super-battle-droids"
+  ],
+  "b2superrocketbattledroids": [
+   "separatists-b2-super-rocket-battle-droids"
+  ],
+  "barcspeeder": [
+   "republic-barc-speeder"
+  ],
+  "blacksunenforcers": [
+   "mercenary-black-sun-enforcers"
+  ],
+  "blacksunvigo": [
+   "mercenary-black-sun-vigo"
+  ],
+  "bobafett": [
+   "imperials-boba-fett-infamous-bounty-hunter",
+   "rebels-boba-fett-daimyo-of-mos-espa"
+  ],
+  "bobafettdaimyoofmosespa": [
+   "rebels-boba-fett-daimyo-of-mos-espa"
+  ],
+  "bobafettinfamousbountyhunter": [
+   "imperials-boba-fett-infamous-bounty-hunter"
+  ],
+  "bossk": [
+   "imperials-bossk-trandoshan-terror"
+  ],
+  "bossktrandoshanterror": [
+   "imperials-bossk-trandoshan-terror"
+  ],
+  "bxseriesdroidcommandos": [
+   "separatists-bx-series-droid-commandos"
+  ],
+  "bxseriesdroidcommandosstriketeam": [
+   "separatists-bx-series-droid-commandos-strike-team"
+  ],
+  "c3p0": [
+   "rebels-c-3po-golden-god"
+  ],
+  "c3p0goldengod": [
+   "rebels-c-3po-golden-god"
+  ],
+  "cadbane": [
+   "mercenary-cad-bane-needs-no-introduction"
+  ],
+  "cadbaneneedsnointroduction": [
+   "mercenary-cad-bane-needs-no-introduction"
+  ],
+  "cassianandor": [
+   "rebels-cassian-andor"
+  ],
+  "cassianandorcapableintelligenceagent": [
+   "rebels-cassian-andor"
+  ],
+  "chewbacca": [
+   "rebels-chewbacca",
+   "rebels-chewbacca-let-the-wookiee-win",
+   "republic-chewbacca-republic"
+  ],
+  "chewbaccaheroofkashyyyk": [
+   "republic-chewbacca-republic"
+  ],
+  "chewbaccaletthewookieewin": [
+   "rebels-chewbacca-let-the-wookiee-win"
+  ],
+  "chewbaccawalkingcarpet": [
+   "rebels-chewbacca"
+  ],
+  "clonecaptainrex": [
+   "republic-clone-captain-rex"
+  ],
+  "clonecaptainrexhonorablesoldier": [
+   "republic-clone-captain-rex"
+  ],
+  "clonecommander": [
+   "republic-clone-commander"
+  ],
+  "clonecommandercody": [
+   "republic-clone-commander-cody"
+  ],
+  "clonecommandercodyleaderofthe212th": [
+   "republic-clone-commander-cody"
+  ],
+  "clonecommandertrainedforleadership": [
+   "republic-clone-commander"
+  ],
+  "clonecommandos": [
+   "republic-clone-commandos"
+  ],
+  "clonecommandosdeltasquad": [
+   "republic-clone-commandos-delta-squad"
+  ],
+  "clonecommandosdsdeltasquad": [
+   "republic-clone-commandos-delta-squad"
+  ],
+  "clonetrooperinfantry": [
+   "republic-clone-trooper-infantry"
+  ],
+  "clonetroopermarksmen": [
+   "republic-clone-trooper-marksmen"
+  ],
+  "countdooku": [
+   "separatists-count-dooku-darth-tyranus"
+  ],
+  "countdookudarthtyranus": [
+   "separatists-count-dooku-darth-tyranus"
+  ],
+  "darthvader": [
+   "imperials-darth-vader-the-emperor-s-apprentice"
+  ],
+  "darthvaderdarklordofthesith": [
+   "imperials-darth-vader-dark-lord-of-the-sith"
+  ],
+  "darthvadertheemperorsapprentice": [
+   "imperials-darth-vader-the-emperor-s-apprentice"
+  ],
+  "dewbackrider": [
+   "imperials-dewback-rider"
+  ],
+  "df90mortartrooper": [
+   "imperials-df-90-mortar-trooper"
+  ],
+  "dindjarin": [
+   "rebels-din-djarin-the-mandalorian"
+  ],
+  "dindjarincotwthemandalorian": [
+   "rebels-din-djarin-the-mandalorian"
+  ],
+  "dindjarinthemandalorian": [
+   "rebels-din-djarin-the-mandalorian"
+  ],
+  "directororsonkrennic": [
+   "imperials-director-orson-krennic"
+  ],
+  "directororsonkrennicarchitectofterror": [
+   "imperials-director-orson-krennic"
+  ],
+  "drk1sithprobedroids": [
+   "separatists-drk-1-sith-probe-droids"
+  ],
+  "droidekas": [
+   "separatists-droidekas"
+  ],
+  "dsd1dwarfspiderdroid": [
+   "separatists-dsd1-dwarf-spider-droid"
+  ],
+  "ewebheavyblasterteam": [
+   "imperials-e-web-heavy-blaster-team"
+  ],
+  "ewokskirmishers": [
+   "rebels-ewok-skirmishers"
+  ],
+  "ewokslingers": [
+   "rebels-ewok-slingers"
+  ],
+  "fifthbrotherthekillismine": [
+   "imperials-fifth-brother"
+  ],
+  "fleettroopers": [
+   "rebels-fleet-troopers"
+  ],
+  "garsaxon": [
+   "mercenary-gar-saxon-militant-commando"
+  ],
+  "garsaxonheadofclansaxon": [
+   "mercenary-gar-saxon-head-of-clan-saxon"
+  ],
+  "garsaxonmilitantcommando": [
+   "mercenary-gar-saxon-militant-commando"
+  ],
+  "generalgrievous": [
+   "separatists-general-grievous-sinister-cyborg"
+  ],
+  "generalgrievoussinistercyborg": [
+   "separatists-general-grievous-sinister-cyborg"
+  ],
+  "generalveers": [
+   "imperials-general-veers"
+  ],
+  "generalveersmastertactician": [
+   "imperials-general-veers"
+  ],
+  "geonosianwarriors": [
+   "separatists-geonosian-warriors"
+  ],
+  "geonosianwarriorssoldiersofthehive": [
+   "separatists-geonosian-warriors"
+  ],
+  "hansolo": [
+   "rebels-han-solo"
+  ],
+  "hansolounorthodoxgeneral": [
+   "rebels-han-solo"
+  ],
+  "hondoohnaka": [
+   "mercenary-hondo-ohnaka"
+  ],
+  "hondoohnakatrustworthycompatriot": [
+   "mercenary-hondo-ohnaka"
+  ],
+  "idenversio": [
+   "imperials-iden-versio"
+  ],
+  "idenversioinfernosquadleader": [
+   "imperials-iden-versio"
+  ],
+  "ig100magnaguard": [
+   "separatists-ig-100-magnaguards"
+  ],
+  "ig100magnaguardprototypeassassindroids": [
+   "separatists-ig-100-magnaguards-prototype-assassin-droids"
+  ],
+  "ig11": [
+   "imperials-ig-11-nurse-droid"
+  ],
+  "ig11nurseandprotect": [
+   "imperials-ig-11-nurse-droid"
+  ],
+  "ig88": [
+   "imperials-ig-88-assassin-droid"
+  ],
+  "ig88notoriousassassindroid": [
+   "imperials-ig-88-assassin-droid"
+  ],
+  "imperialagent": [
+   "imperials-imperial-agent"
+  ],
+  "imperialagentbringingordertothegalaxy": [
+   "imperials-imperial-agent"
+  ],
+  "imperialdarktroopers": [
+   "imperials-imperial-dark-troopers"
+  ],
+  "imperialdeathtroopers": [
+   "imperials-imperial-death-troopers"
+  ],
+  "imperialofficer": [
+   "imperials-imperial-officer"
+  ],
+  "imperialofficerruthlesscommander": [
+   "imperials-imperial-officer"
+  ],
+  "imperialspecialforces": [
+   "imperials-imperial-special-forces"
+  ],
+  "imperialspecialforcesinfernosquad": [
+   "imperials-imperial-special-forces-inferno-squad"
+  ],
+  "infantrysupportplatform": [
+   "republic-infantry-support-platform"
+  ],
+  "jediknightgeneralstrongintheforce": [
+   "republic-jedi-knight-general"
+  ],
+  "jediknightkeeperofthepeace": [
+   "republic-jedi-knight"
+  ],
+  "jynerso": [
+   "rebels-jyn-erso"
+  ],
+  "jynersostardust": [
+   "rebels-jyn-erso"
+  ],
+  "k2so": [
+   "rebels-k-2so"
+  ],
+  "k2sosardonicsecuritydroid": [
+   "rebels-k-2so"
+  ],
+  "kalanisupertacticaldroid": [
+   "separatists-kalani"
+  ],
+  "krakensupertacticaldroid": [
+   "separatists-kraken"
+  ],
+  "laatlepatroltransport": [
+   "imperials-laat-le-patrol-transport",
+   "republic-laat-le-patrol-transport-republic"
+  ],
+  "landocalrissian": [
+   "rebels-lando-calrissian"
+  ],
+  "landocalrissiancannygeneral": [
+   "rebels-lando-calrissian"
+  ],
+  "leiaorgana": [
+   "rebels-leia-organa"
+  ],
+  "leiaorganafearlessandinventive": [
+   "rebels-leia-organa"
+  ],
+  "lm432crabdroid": [
+   "separatists-lm-432-crab-droid"
+  ],
+  "logray": [
+   "rebels-logray-superstitious-shaman"
+  ],
+  "lograysuperstitiousshaman": [
+   "rebels-logray-superstitious-shaman"
+  ],
+  "lukeskywalkerherooftherebellion": [
+   "rebels-luke-skywalker-hero-of-the-rebellion"
+  ],
+  "lukeskywalkerjediknight": [
+   "rebels-luke-skywalker-jedi-knight"
+  ],
+  "majormarquand": [
+   "imperials-major-marquand"
+  ],
+  "majormarquandtempestscout2": [
+   "imperials-major-marquand"
+  ],
+  "mandalorianresistance": [
+   "rebels-mandalorian-resistance",
+   "rebels-mandalorian-resistance-clan-wren"
+  ],
+  "mandalorianresistanceclanwren": [
+   "rebels-mandalorian-resistance-clan-wren"
+  ],
+  "mandaloriansupercommandos": [
+   "mercenary-mandalorian-super-commandos"
+  ],
+  "mandalorianwarriors": [
+   "mercenary-mandalorian-warriors"
+  ],
+  "mandalorianwarriorsfiresupport": [
+   "mercenary-mandalorian-warriors-fire-support"
+  ],
+  "markiimediumblastertrooper": [
+   "rebels-mark-ii-medium-blaster-trooper"
+  ],
+  "maul": [
+   "mercenary-maul-a-rival",
+   "separatists-maul-impatient-apprentice"
+  ],
+  "maularival": [
+   "mercenary-maul-a-rival"
+  ],
+  "maulimpatientapprentice": [
+   "separatists-maul-impatient-apprentice"
+  ],
+  "moffgideonlonglivetheempire": [
+   "imperials-moff-gideon"
+  ],
+  "obiwankenobi": [
+   "republic-obi-wan-kenobi-civilized-warrior"
+  ],
+  "obiwankenobicivilizedwarrior": [
+   "republic-obi-wan-kenobi-civilized-warrior"
+  ],
+  "obiwankenobimountedjedigeneral": [
+   "republic-obi-wan-kenobi-mounted-jedi-general"
+  ],
+  "padmeamidala": [
+   "republic-padm-amidala-spirited-senator"
+  ],
+  "padmeamidalaspiritedsenator": [
+   "republic-padm-amidala-spirited-senator"
+  ],
+  "persuaderclasstankdroid": [
+   "separatists-nr-n99-persuader-class-tank-droid"
+  ],
+  "persuaderclasstankdroidprototypetankdroid": [
+   "separatists-nr-n99-persuader-class-tank-droid-prototype-tank-droid"
+  ],
+  "pogglethelesserpublicleaderofthegeonosians": [
+   "separatists-poggle-the-lesser"
+  ],
+  "pykesyndicatecapo": [
+   "mercenary-pyke-syndicate-capo"
+  ],
+  "pykesyndicatefootsoldiers": [
+   "mercenary-pyke-syndicate-foot-soldiers"
+  ],
+  "r2d2": [
+   "rebels-r2-d2",
+   "republic-r2-d2-independent-astromech"
+  ],
+  "r2d2heroofathousanddevices": [
+   "rebels-r2-d2"
+  ],
+  "r2d2independentastromech": [
+   "republic-r2-d2-independent-astromech"
+  ],
+  "raddaughgnaspfluttercraft": [
+   "republic-raddaugh-gnasp-fluttercraft"
+  ],
+  "raddaughgnaspfluttercraftattackcraft": [
+   "republic-raddaugh-gnasp-fluttercraft-attack-craft"
+  ],
+  "rangetroopers": [
+   "imperials-range-troopers"
+  ],
+  "rebelagent": [
+   "rebels-rebel-agent"
+  ],
+  "rebelagentdefenderofdemocracy": [
+   "rebels-rebel-agent"
+  ],
+  "rebelcommandos": [
+   "rebels-rebel-commandos"
+  ],
+  "rebelcommandosstriketeam": [
+   "rebels-rebel-commandos-strike-team"
+  ],
+  "rebelofficer": [
+   "rebels-rebel-officer"
+  ],
+  "rebelofficerresolutecommander": [
+   "rebels-rebel-officer"
+  ],
+  "rebelsleepercell": [
+   "rebels-rebel-sleeper-cell"
+  ],
+  "rebelsleepercellreadytostrike": [
+   "rebels-rebel-sleeper-cell"
+  ],
+  "rebeltroopers": [
+   "rebels-rebel-troopers"
+  ],
+  "rebelveterans": [
+   "rebels-rebel-veterans"
+  ],
+  "rookkastdevotedtothecause": [
+   "mercenary-rook-kast-devoted-to-the-cause"
+  ],
+  "saberclasstank": [
+   "republic-tx-130-saber-class-fighter-tank"
+  ],
+  "sabinewren": [
+   "rebels-sabine-wren"
+  ],
+  "sabinewrenbackinthefold": [
+   "mercenary-sabine-wren-back-in-the-fold"
+  ],
+  "sabinewrenexplosiveartist": [
+   "rebels-sabine-wren"
+  ],
+  "scouttroopers": [
+   "imperials-scout-troopers"
+  ],
+  "scouttroopersstriketeam": [
+   "imperials-scout-troopers-strike-team"
+  ],
+  "seventhsistercompelledtoinflictpain": [
+   "imperials-seventh-sister"
+  ],
+  "shaaktijedicouncil": [
+   "republic-shaak-ti-jedi-council"
+  ],
+  "shoretroopers": [
+   "imperials-shoretroopers"
+  ],
+  "snowtroopers": [
+   "imperials-snowtroopers"
+  ],
+  "stapriders": [
+   "separatists-stap-riders"
+  ],
+  "stormtrooperriotsquad": [
+   "imperials-stormtrooper-riot-squad"
+  ],
+  "stormtroopers": [
+   "imperials-stormtroopers"
+  ],
+  "stormtroopersheavyresponseunit": [
+   "imperials-stormtroopers-heavy-response-unit"
+  ],
+  "sunfacruthlesslieutenant": [
+   "separatists-sun-fac"
+  ],
+  "supercommandos": [
+   "mercenary-super-commandos"
+  ],
+  "supertacticalcommanddroidauxiliarycommanddroid": [
+   "separatists-super-tactical-command-droid-operative"
+  ],
+  "supertacticalcommanddroidcommandandcontroldroid": [
+   "separatists-super-tactical-command-droid"
+  ],
+  "supertacticaldroid": [
+   "separatists-super-tactical-droid"
+  ],
+  "swoopbikeriders": [
+   "mercenary-swoop-bike-riders"
+  ],
+  "t47airspeeder": [
+   "rebels-t-47-airspeeder"
+  ],
+  "tauntaunriders": [
+   "rebels-tauntaun-riders"
+  ],
+  "thearmorerforgingthefuture": [
+   "mercenary-the-armorer-forging-the-future"
+  ],
+  "thebadbatchcloneforce99": [
+   "rebels-the-bad-batch"
+  ],
+  "tseriestacticaldroid": [
+   "separatists-t-series-tactical-droid"
+  ],
+  "tseriestacticaldroidprogrammedforstrategy": [
+   "separatists-t-series-tactical-droid"
+  ],
+  "tx225gavwoccupiertank": [
+   "imperials-tx-225-gavw-occupier-tank"
+  ],
+  "ursawrenleaderofclanwren": [
+   "mercenary-ursa-wren-leader-of-clan-wren"
+  ],
+  "weequaypirates": [
+   "mercenary-weequay-pirates"
+  ],
+  "wicket": [
+   "rebels-wicket-hero-of-bright-tree"
+  ],
+  "wicketheroofbrighttree": [
+   "rebels-wicket-hero-of-bright-tree"
+  ],
+  "wlo5speedertank": [
+   "mercenary-wlo-5-speeder-tank"
+  ],
+  "wookieechieftain": [
+   "republic-wookiee-chieftain"
+  ],
+  "wookieechieftainclanleader": [
+   "republic-wookiee-chieftain"
+  ],
+  "wookieewarriors": [
+   "rebels-wookiee-warriors-freedom-fighters",
+   "republic-wookiee-warriors-noble-fighters"
+  ],
+  "wookieewarriorsfreedomfighters": [
+   "rebels-wookiee-warriors-freedom-fighters"
+  ],
+  "wookieewarriorskashyyykdefenders": [
+   "republic-wookiee-warriors-kashyyyk-defenders"
+  ],
+  "wookieewarriorskashyyykresistance": [
+   "rebels-wookiee-warriors-kashyyyk-resistance"
+  ],
+  "wookieewarriorsnoblefighters": [
+   "republic-wookiee-warriors-noble-fighters"
+  ],
+  "x34landspeeder": [
+   "rebels-x-34-landspeeder"
+  ],
+  "yoda": [
+   "republic-yoda-grand-master-of-the-jedi-order"
+  ],
+  "yodagrandmasterofthejediorder": [
+   "republic-yoda-grand-master-of-the-jedi-order"
+  ]
+ },
+ "upgrade_names": {
+  "21bmedicaldroid": [
+   "2-1-b-medical-droid"
+  ],
+  "327thstarcorpselitearmorpilots": [
+   "327th-star-corps-elite-armor-pilots"
+  ],
+  "88itwinlightblaster": [
+   "88i-twin-light-blaster"
+  ],
+  "a180": [
+   "a-180"
+  ],
+  "a180config": [
+   "a-180"
+  ],
+  "a280rifleconfig": [
+   "a280-rifle-config"
+  ],
+  "a300riflegunner": [
+   "a-300-rifle-gunner"
+  ],
+  "aaylasecura": [
+   "aayla-secura"
+  ],
+  "adaptivecombatnetwork": [
+   "adaptive-combat-network"
+  ],
+  "ag2gquadlaser": [
+   "ag-2g-quad-laser"
+  ],
+  "agentkallus": [
+   "agent-kallus"
+  ],
+  "aggressivetactics": [
+   "aggressive-tactics"
+  ],
+  "agileclimber": [
+   "agile-climber"
+  ],
+  "ahsokatanojedipadawan": [
+   "ahsoka-tano-jedi-padawan"
+  ],
+  "anger": [
+   "anger"
+  ],
+  "annul": [
+   "annul"
+  ],
+  "arftrooperduo": [
+   "arf-trooper-duo"
+  ],
+  "armorpiercingshells": [
+   "armor-piercing-shells"
+  ],
+  "asajjventress": [
+   "asajj-ventress"
+  ],
+  "ascensioncables": [
+   "ascension-cables"
+  ],
+  "astromech": [
+   "astromech"
+  ],
+  "astromechdroid": [
+   "astromech-droid"
+  ],
+  "atrtflamethrower": [
+   "at-rt-flamethrower"
+  ],
+  "atrtlasercannon": [
+   "at-rt-laser-cannon"
+  ],
+  "atrtrotaryblaster": [
+   "at-rt-rotary-blaster"
+  ],
+  "atstmortarlauncher": [
+   "at-st-mortar-launcher"
+  ],
+  "attackprotocols": [
+   "attack-protocols"
+  ],
+  "ax108groundbuzzer": [
+   "ax-108-ground-buzzer"
+  ],
+  "axeewok": [
+   "axe-ewok"
+  ],
+  "axewoves": [
+   "axe-woves"
+  ],
+  "b1battledroid": [
+   "b1-battle-droid"
+  ],
+  "b1battledroidsquad": [
+   "b1-battle-droid-squad"
+  ],
+  "b1securitydroid": [
+   "b1-security-droid"
+  ],
+  "b2acmbattledroid": [
+   "b2-acm-battle-droid"
+  ],
+  "b2habattledroid": [
+   "b2-ha-battle-droid"
+  ],
+  "b2harocketdroid": [
+   "b2-ha-rocket-droid"
+  ],
+  "b2superbattledroid": [
+   "b2-super-battle-droid"
+  ],
+  "b2superbattledroidsquad": [
+   "b2-super-battle-droid-squad"
+  ],
+  "b2superrocketbattledroid": [
+   "b2-super-rocket-battle-droid"
+  ],
+  "backworldmedic": [
+   "backworld-medic"
+  ],
+  "barciongunner": [
+   "barc-ion-gunner"
+  ],
+  "barcrps6gunner": [
+   "barc-rps-6-gunner"
+  ],
+  "barctwinlasergunner": [
+   "barc-twin-laser-gunner"
+  ],
+  "baronrudor": [
+   "baron-rudor"
+  ],
+  "barragegenerator": [
+   "barrage-generator"
+  ],
+  "battlemeditation": [
+   "battle-meditation"
+  ],
+  "battlemind": [
+   "battlemind"
+  ],
+  "battleshieldwookiee": [
+   "battle-shield-wookiee"
+  ],
+  "beamturret": [
+   "beam-turret"
+  ],
+  "beskarspear": [
+   "beskar-spear"
+  ],
+  "blacksuncrew": [
+   "black-sun-crew"
+  ],
+  "blacksunenforcer": [
+   "black-sun-enforcer"
+  ],
+  "blacksunvigo": [
+   "black-sun-vigo"
+  ],
+  "bobasflameprojector": [
+   "boba-s-flame-projector"
+  ],
+  "boil": [
+   "boil",
+   "boil-personnel"
+  ],
+  "bokatankryze": [
+   "bo-katan-kryze"
+  ],
+  "bountyprogramming": [
+   "bounty-programming"
+  ],
+  "bowcasterwookiee": [
+   "bowcaster-wookiee"
+  ],
+  "bunkerbustershells": [
+   "bunker-buster-shells"
+  ],
+  "burstofspeed": [
+   "burst-of-speed"
+  ],
+  "bxdeflectorshields": [
+   "bx-deflector-shields"
+  ],
+  "bxseriesdroidsniper": [
+   "bx-series-droid-sniper"
+  ],
+  "bxvibroswords": [
+   "bx-vibroswords"
+  ],
+  "c3po": [
+   "c-3po"
+  ],
+  "c3pohumancyborgrelations": [
+   "c-3po"
+  ],
+  "calltoarms": [
+   "call-to-arms"
+  ],
+  "cassianandor": [
+   "cassian-andor"
+  ],
+  "caughtinaweb": [
+   "caught-in-a-web"
+  ],
+  "championofthewatch": [
+   "champion-of-the-watch"
+  ],
+  "chewbacca": [
+   "chewbacca"
+  ],
+  "childrenofthewatch": [
+   "children-of-the-watch"
+  ],
+  "clairvoyance": [
+   "clairvoyance"
+  ],
+  "clankryze": [
+   "clan-kryze"
+  ],
+  "clansaxon": [
+   "clan-saxon"
+  ],
+  "clanwren": [
+   "clan-wren"
+  ],
+  "clonecaptain": [
+   "clone-captain"
+  ],
+  "clonecaptainrex": [
+   "clone-captain-rex"
+  ],
+  "clonecommander": [
+   "clone-commander",
+   "clone-commander-personnel"
+  ],
+  "clonecommandercody": [
+   "clone-commander-cody"
+  ],
+  "clonecommanderfox": [
+   "clone-commander-fox"
+  ],
+  "clonecommstechnician": [
+   "clone-comms-technician"
+  ],
+  "cloneengineer": [
+   "clone-engineer"
+  ],
+  "clonemarksman": [
+   "clone-marksman"
+  ],
+  "clonemedic": [
+   "clone-medic",
+   "clone-medic-personnel"
+  ],
+  "cloneshocktrooperpilot": [
+   "clone-shock-trooper-pilot"
+  ],
+  "clonespecialist": [
+   "clone-specialist"
+  ],
+  "clonetrooperinfantry": [
+   "clone-trooper-infantry"
+  ],
+  "clonetrooperinfantrysquad": [
+   "clone-trooper-infantry-squad"
+  ],
+  "clonetroopermarksmensquad": [
+   "clone-trooper-marksmen-squad"
+  ],
+  "cm093trooper": [
+   "cm-0-93-trooper"
+  ],
+  "combatarmor": [
+   "combat-armor"
+  ],
+  "combatarmorempire": [
+   "combat-armor"
+  ],
+  "combatarmorrebel": [
+   "combat-armor"
+  ],
+  "combatshields": [
+   "combat-shields"
+  ],
+  "commandandcontroluplink": [
+   "command-and-control-uplink"
+  ],
+  "commandcontrolarray": [
+   "command-control-array"
+  ],
+  "commandingpresence": [
+   "commanding-presence"
+  ],
+  "commsjammer": [
+   "comms-jammer"
+  ],
+  "commsrelay": [
+   "comms-relay"
+  ],
+  "concussiongrenades": [
+   "concussion-grenades"
+  ],
+  "cr24flamerifle": [
+   "cr-24-flame-rifle"
+  ],
+  "crosshair": [
+   "crosshair"
+  ],
+  "dc15xarctroopergunner": [
+   "dc-15x-arc-trooper-gunner"
+  ],
+  "dc15xarctroopersniper": [
+   "dc-15x-arc-trooper-sniper"
+  ],
+  "dc17micwsconfig": [
+   "dc-17m-icws-config"
+  ],
+  "defendindepth": [
+   "defend-in-depth"
+  ],
+  "defenseprotocols": [
+   "defense-protocols"
+  ],
+  "delmeeko": [
+   "del-meeko"
+  ],
+  "despair": [
+   "despair"
+  ],
+  "dh447sniper": [
+   "dh-447-sniper"
+  ],
+  "dindjarin": [
+   "din-djarin"
+  ],
+  "dinsambanrifle": [
+   "din-s-amban-rifle"
+  ],
+  "dinsflameprojector": [
+   "din-s-flame-projector"
+  ],
+  "dinsjetpack": [
+   "din-s-jetpack"
+  ],
+  "dioxisminesaboteur": [
+   "dioxis-mine-saboteur"
+  ],
+  "dlt19dtrooper": [
+   "dlt-19-d-trooper"
+  ],
+  "dlt19stormtrooper": [
+   "dlt-19-stormtrooper"
+  ],
+  "dlt19xsniper": [
+   "dlt-19-x-sniper"
+  ],
+  "dlt20arangetrooper": [
+   "dlt-20a-range-trooper"
+  ],
+  "dlt20atrooper": [
+   "dlt-20a-trooper"
+  ],
+  "doorgunners": [
+   "door-gunners"
+  ],
+  "doublebladedlightsaber": [
+   "double-bladed-lightsaber"
+  ],
+  "dp23clonetrooper": [
+   "dp-23-clone-trooper"
+  ],
+  "dt57annihilator": [
+   "dt-57-annihilator"
+  ],
+  "dtf16": [
+   "dt-f-16"
+  ],
+  "duckandcover": [
+   "duck-and-cover"
+  ],
+  "dugin": [
+   "dug-in"
+  ],
+  "dw3concussiongrenadelauncher": [
+   "dw-3-concussion-grenade-launcher"
+  ],
+  "e11d": [
+   "e-11d"
+  ],
+  "e11dconfig": [
+   "e-11d"
+  ],
+  "e5cb1battledroid": [
+   "e-5c-b1-battle-droid"
+  ],
+  "e5sb1battledroid": [
+   "e-5s-b1-battle-droid"
+  ],
+  "e60rb1battledroid": [
+   "e-60r-b1-battle-droid"
+  ],
+  "echo": [
+   "echo"
+  ],
+  "echoarcmarksman": [
+   "echo-arc-marksman"
+  ],
+  "echocloneforce99": [
+   "echo-clone-force-99"
+  ],
+  "echothebadbatch": [
+   "echo"
+  ],
+  "electrobinoculars": [
+   "electrobinoculars"
+  ],
+  "electrogauntlets": [
+   "electro-gauntlets"
+  ],
+  "electrograpplingline": [
+   "electro-grappling-line"
+  ],
+  "electrostaff": [
+   "electrostaff"
+  ],
+  "electrostaffpirate": [
+   "electrostaff-pirate"
+  ],
+  "electrowhipmagnaguard": [
+   "electro-whip-magnaguard"
+  ],
+  "electrowhipsoldier": [
+   "electro-whip-soldier"
+  ],
+  "emergencystims": [
+   "emergency-stims"
+  ],
+  "emergencytransponder": [
+   "emergency-transponder"
+  ],
+  "empdroidpoppers": [
+   "emp-droid-poppers"
+  ],
+  "endurance": [
+   "endurance"
+  ],
+  "engagementprotocols": [
+   "engagement-protocols"
+  ],
+  "enhancedcombatsubroutines": [
+   "enhanced-combat-subroutines"
+  ],
+  "environmentalgear": [
+   "environmental-gear"
+  ],
+  "esteemedleader": [
+   "esteemed-leader"
+  ],
+  "evseriesmedicaldroid": [
+   "ev-series-medical-droid"
+  ],
+  "ewokskirmishersquad": [
+   "ewok-skirmisher-squad"
+  ],
+  "ewokslingersquad": [
+   "ewok-slinger-squad"
+  ],
+  "ewoktrapper": [
+   "ewok-trapper"
+  ],
+  "expandeddatabanks": [
+   "expanded-databanks"
+  ],
+  "extrasupplies": [
+   "extra-supplies"
+  ],
+  "fear": [
+   "fear"
+  ],
+  "fifthbrother": [
+   "fifth-brother"
+  ],
+  "firecontrol": [
+   "fire-control"
+  ],
+  "firstsergeantarbmab": [
+   "first-seargant-arbmab"
+  ],
+  "fives": [
+   "fives",
+   "fives-squad-leader"
+  ],
+  "flameprojector": [
+   "flame-projector"
+  ],
+  "flametrooper": [
+   "flametrooper"
+  ],
+  "fleettrooper": [
+   "fleet-trooper"
+  ],
+  "fleettroopersquad": [
+   "fleet-trooper-squad"
+  ],
+  "forceabsorb": [
+   "force-absorb"
+  ],
+  "forceagility": [
+   "force-agility"
+  ],
+  "forcebarrier": [
+   "force-barrier"
+  ],
+  "forcechoke": [
+   "force-choke"
+  ],
+  "forcedrain": [
+   "force-drain"
+  ],
+  "forceenhanceddefense": [
+   "force-enhanced-defense"
+  ],
+  "forceguidance": [
+   "force-guidance"
+  ],
+  "forcelift": [
+   "force-lift"
+  ],
+  "forcepikewarrior": [
+   "force-pike-warrior"
+  ],
+  "forcepush": [
+   "force-push"
+  ],
+  "forcereflexes": [
+   "force-reflexes"
+  ],
+  "forestdwellers": [
+   "forest-dwellers"
+  ],
+  "fragmentationgrenades": [
+   "fragmentation-grenades"
+  ],
+  "frenziedgunner": [
+   "frenzied-gunner"
+  ],
+  "fx9medicaldroid": [
+   "fx-9-medical-droid"
+  ],
+  "galaar15carbines": [
+   "galaar-15-carbines"
+  ],
+  "galaar90sniperrifle": [
+   "galaar-90-sniper-rifle"
+  ],
+  "gangboss": [
+   "gang-boss"
+  ],
+  "garsaxon": [
+   "gar-saxon"
+  ],
+  "generalgrievous": [
+   "general-grievous"
+  ],
+  "generaloftherepublic": [
+   "general-of-the-republic"
+  ],
+  "generalweiss": [
+   "general-weiss"
+  ],
+  "geonosianwarrior": [
+   "geonosian-warrior"
+  ],
+  "geonosianwarriorsquad": [
+   "geonosian-warrior-squad"
+  ],
+  "gideonhask": [
+   "gideon-hask"
+  ],
+  "gnaspbombardier": [
+   "gnasp-bombardier"
+  ],
+  "gnaspgunner": [
+   "gnasp-gunner"
+  ],
+  "goforbroke": [
+   "go-for-broke"
+  ],
+  "governorpryce": [
+   "governor-pryce"
+  ],
+  "grapplinghooks": [
+   "grappling-hooks"
+  ],
+  "grogu": [
+   "grogu"
+  ],
+  "groguthechildcotw": [
+   "grogu"
+  ],
+  "hackedcommsunit": [
+   "hacked-comms-unit"
+  ],
+  "hatred": [
+   "hatred"
+  ],
+  "heavyaquadroid": [
+   "heavy-aqua-droid"
+  ],
+  "heavyarmcannon": [
+   "heavy-arm-cannon"
+  ],
+  "heavyblasterpistol": [
+   "heavy-blaster-pistol"
+  ],
+  "heavyblasterpistolempire": [
+   "heavy-blaster-pistol"
+  ],
+  "heavyblasterpistolrebel": [
+   "heavy-blaster-pistol"
+  ],
+  "heavylasercannon": [
+   "heavy-laser-cannon"
+  ],
+  "heavylaserretrofit": [
+   "heavy-laser-retrofit"
+  ],
+  "helpinghand": [
+   "helping-hand"
+  ],
+  "herbalmedicine": [
+   "herbal-medicine"
+  ],
+  "hh12stormtrooper": [
+   "hh-12-stormtrooper"
+  ],
+  "highenergyshells": [
+   "high-energy-shells"
+  ],
+  "highspeedtracking": [
+   "high-speed-tracking"
+  ],
+  "hitthedirt": [
+   "hit-the-dirt"
+  ],
+  "hope": [
+   "hope"
+  ],
+  "hotshotpilot": [
+   "hotshot-pilot"
+  ],
+  "houndgrizzer": [
+   "hound-grizzer"
+  ],
+  "hquplink": [
+   "hq-uplink"
+  ],
+  "hunter": [
+   "hunter",
+   "hunter-heavy-weapon"
+  ],
+  "idensdlt20arifle": [
+   "iden-s-dlt-20a-rifle"
+  ],
+  "idensid10seekerdroid": [
+   "iden-s-id10-seeker-droid"
+  ],
+  "idenstl50repeater": [
+   "iden-s-tl-50-repeater"
+  ],
+  "ig100magnaguard": [
+   "ig-100-magnaguard"
+  ],
+  "impactgrenades": [
+   "impact-grenades"
+  ],
+  "imperialcommstechnician": [
+   "imperial-comms-technician"
+  ],
+  "imperialdarktrooper": [
+   "imperial-dark-trooper"
+  ],
+  "imperialhammerselitearmorpilot": [
+   "imperial-hammers-elite-armor-pilot"
+  ],
+  "imperialmarch": [
+   "imperial-march"
+  ],
+  "imperialofficer": [
+   "imperial-officer"
+  ],
+  "imperialprobedroid": [
+   "imperial-probe-droid"
+  ],
+  "imperialtiepilot": [
+   "imperial-tie-pilot"
+  ],
+  "improvisedorders": [
+   "improvised-orders"
+  ],
+  "infantrysupport": [
+   "infantry-support"
+  ],
+  "inquisitoriustraining": [
+   "inquisitorius-training"
+  ],
+  "insatiablecuriosity": [
+   "insatiable-curiosity"
+  ],
+  "inspiringpresence": [
+   "inspiring-presence"
+  ],
+  "integratedcommsantenna": [
+   "integrated-comms-antenna"
+  ],
+  "intothefray": [
+   "into-the-fray"
+  ],
+  "j19borifle": [
+   "j-19-bo-rifle"
+  ],
+  "jediconsular": [
+   "jedi-consular"
+  ],
+  "jediguardian": [
+   "jedi-guardian",
+   "jedi-guardian-doctrine"
+  ],
+  "jediguardiandoctrine": [
+   "jedi-guardian-doctrine"
+  ],
+  "jedimindtrick": [
+   "jedi-mind-trick"
+  ],
+  "jedinegotiator": [
+   "jedi-negotiator"
+  ],
+  "jeditrainingforceadept": [
+   "jedi-training-force-adept"
+  ],
+  "jeditrainingmasterduelist": [
+   "jedi-training-master-duelist"
+  ],
+  "jeditrainingpeacekeepingmission": [
+   "jedi-training-peacekeeping-mission"
+  ],
+  "jeditrainingtacticalacumen": [
+   "jedi-training-tactical-acumen"
+  ],
+  "jetpackrockets": [
+   "jetpack-rockets",
+   "jetpack-rockets-grenades"
+  ],
+  "jt12jetpacks": [
+   "jt-12-jetpacks"
+  ],
+  "jynerso": [
+   "jyn-erso"
+  ],
+  "jynsse14blaster": [
+   "jyn-s-se-14-blaster"
+  ],
+  "katarnpatternarmor": [
+   "katarn-pattern-armor"
+  ],
+  "kiadimundi": [
+   "ki-adi-mundi"
+  ],
+  "kraken": [
+   "kraken"
+  ],
+  "kxseriessecuritydroids": [
+   "kx-series-security-droids"
+  ],
+  "leadbyexample": [
+   "lead-by-example"
+  ],
+  "lightsaber": [
+   "lightsaber"
+  ],
+  "limiteroverride": [
+   "limiter-override"
+  ],
+  "linkedtargetingarray": [
+   "linked-targeting-array"
+  ],
+  "lokdurd": [
+   "lok-durd"
+  ],
+  "longgunwookiee": [
+   "long-gun-wookiee"
+  ],
+  "longrangecomlink": [
+   "long-range-comlink"
+  ],
+  "longriflepirate": [
+   "long-rifle-pirate"
+  ],
+  "lootede5blaster": [
+   "looted-e-5-blaster"
+  ],
+  "lukeskywalker": [
+   "luke-skywalker"
+  ],
+  "lyinginwait": [
+   "lying-in-wait"
+  ],
+  "m45ionblaster": [
+   "m-45-ion-blaster"
+  ],
+  "macewindu": [
+   "mace-windu"
+  ],
+  "magdetenforcer": [
+   "mag-det-enforcer"
+  ],
+  "mandaloriancombatshields": [
+   "mandalorian-combat-shields"
+  ],
+  "mandaloriansupercommando": [
+   "mandalorian-super-commando"
+  ],
+  "markiimediumblaster": [
+   "mark-ii-medium-blaster"
+  ],
+  "mertalizerdarktrooper": [
+   "mertalizer-dark-trooper"
+  ],
+  "microgrenadelauncher": [
+   "micro-grenade-launcher"
+  ],
+  "missilepodrocketdroid": [
+   "missile-pod-rocket-droid"
+  ],
+  "missionobjective": [
+   "mission-objective"
+  ],
+  "mobilityupgrade": [
+   "mobility-upgrade"
+  ],
+  "modkpowerharpoon": [
+   "mo-dk-power-harpoon"
+  ],
+  "mortarclonetrooper": [
+   "mortar-clone-trooper"
+  ],
+  "mpl57barragetrooper": [
+   "mpl-57-barrage-trooper"
+  ],
+  "mpl57iontrooper": [
+   "mpl-57-ion-trooper"
+  ],
+  "nannyprogramming": [
+   "nanny-programming"
+  ],
+  "nosemountedflamethrower": [
+   "nose-mounted-flamethrower"
+  ],
+  "nosemountedionblaster": [
+   "nose-mounted-ion-blaster"
+  ],
+  "nosemountedlasercannon": [
+   "nose-mounted-laser-cannon"
+  ],
+  "obiwankenobi": [
+   "obi-wan-kenobi"
+  ],
+  "offensivedefensivestance": [
+   "offensive-defensive-stance"
+  ],
+  "offensivepush": [
+   "offensive-push"
+  ],
+  "offensivestance": [
+   "offensive-defensive-stance"
+  ],
+  "omega": [
+   "omega"
+  ],
+  "omegamascotofthe99th": [
+   "omega"
+  ],
+  "onboardcommschannel": [
+   "onboard-comms-channel"
+  ],
+  "onthehunt": [
+   "on-the-hunt"
+  ],
+  "onwardtovictory": [
+   "onward-to-victory"
+  ],
+  "oomseriesbattledroid": [
+   "oom-series-battle-droid"
+  ],
+  "oomseriesdroidpilot": [
+   "oom-series-droid-pilot"
+  ],
+  "optimizedtaskflow": [
+   "optimized-task-flow"
+  ],
+  "outerrimspeederjockey": [
+   "outer-rim-speeder-jockey"
+  ],
+  "overchargedblasterpacks": [
+   "overcharged-blaster-packs"
+  ],
+  "overchargedgenerator": [
+   "overcharged-generator"
+  ],
+  "overclock": [
+   "overclock"
+  ],
+  "overwatch": [
+   "overwatch"
+  ],
+  "p13mdisruptorsoldier": [
+   "p13-m-disruptor-soldier"
+  ],
+  "pazvizsla": [
+   "paz-vizsla"
+  ],
+  "personalcombatshield": [
+   "personal-combat-shield"
+  ],
+  "pintlemounteddlt19": [
+   "pintle-mounted-dlt-19"
+  ],
+  "pintlemountedrt97c": [
+   "pintle-mounted-rt-97c"
+  ],
+  "piratecaptain": [
+   "pirate-captain"
+  ],
+  "pkseriesworkerdroid": [
+   "pk-series-worker-droid"
+  ],
+  "platooncommander": [
+   "platoon-commander"
+  ],
+  "plokoon": [
+   "plo-koon",
+   "plo-koon-squad-leader"
+  ],
+  "plokoonsquadleader": [
+   "plo-koon-squad-leader"
+  ],
+  "portablescanner": [
+   "portable-scanner"
+  ],
+  "preparedsupplies": [
+   "prepared-supplies"
+  ],
+  "programmedloyalty": [
+   "programmed-loyalty"
+  ],
+  "protector": [
+   "protector"
+  ],
+  "protonchargesaboteur": [
+   "proton-charge-saboteur"
+  ],
+  "pykesyndicatecapo": [
+   "pyke-syndicate-capo"
+  ],
+  "pykesyndicatecrew": [
+   "pyke-syndicate-crew"
+  ],
+  "pykesyndicatefootsoldier": [
+   "pyke-syndicate-foot-soldier"
+  ],
+  "pykesyndicatefootsoldiersquad": [
+   "pyke-syndicate-foot-soldier-squad"
+  ],
+  "r4astromech": [
+   "r4-astromech"
+  ],
+  "radiationcannonb1battledroid": [
+   "radiation-cannon-b1-battle-droid"
+  ],
+  "raidingpartyleader": [
+   "raiding-party-leader"
+  ],
+  "rangetrooper": [
+   "range-trooper"
+  ],
+  "rebelcommstechnician": [
+   "rebel-comms-technician"
+  ],
+  "rebelmarksman": [
+   "rebel-marksman"
+  ],
+  "rebelofficer": [
+   "rebel-officer"
+  ],
+  "rebeltrooper": [
+   "rebel-trooper"
+  ],
+  "rebeltroopercaptain": [
+   "rebel-trooper-captain"
+  ],
+  "rebeltrooperspecialist": [
+   "rebel-trooper-specialist"
+  ],
+  "rebeltroopersquad": [
+   "rebel-trooper-squad"
+  ],
+  "rebelveteran": [
+   "rebel-veteran"
+  ],
+  "rebelveteransquad": [
+   "rebel-veteran-squad"
+  ],
+  "recklessdriver": [
+   "reckless-driver"
+  ],
+  "reconintel": [
+   "recon-intel"
+  ],
+  "refurbishedgonkdroid": [
+   "refurbished-gonk-droid"
+  ],
+  "reluctanthero": [
+   "reluctant-hero"
+  ],
+  "repeatingblaster": [
+   "repeating-blaster"
+  ],
+  "rookkast": [
+   "rook-kast",
+   "rook-kast-heavy-weapon"
+  ],
+  "rookkastsaxon": [
+   "rook-kast"
+  ],
+  "rps6arftrooper": [
+   "rps-6-arf-trooper"
+  ],
+  "rps6clonetrooper": [
+   "rps-6-clone-trooper"
+  ],
+  "rps6magnaguard": [
+   "rps-6-magnaguard"
+  ],
+  "rps6rocketgunner": [
+   "rps-6-rocket-gunner"
+  ],
+  "rt97cblasterrifle": [
+   "rt-97c-blaster-rifle"
+  ],
+  "rt97cstormtrooper": [
+   "rt-97c-stormtrooper"
+  ],
+  "ryderazadi": [
+   "ryder-azadi"
+  ],
+  "saberthrow": [
+   "saber-throw"
+  ],
+  "sabinescombatshield": [
+   "sabine-s-combat-shield"
+  ],
+  "sabinewren": [
+   "sabine-wren"
+  ],
+  "saxonscombatshield": [
+   "saxon-s-combat-shield"
+  ],
+  "saxonsgalar90rifle": [
+   "saxon-s-galar-90-rifle"
+  ],
+  "saxonsjetpackrockets": [
+   "saxon-s-jetpack-rockets"
+  ],
+  "saxonszxflameprojector": [
+   "saxon-s-zx-flame-projector"
+  ],
+  "scattergunenforcer": [
+   "scatter-gun-enforcer"
+  ],
+  "scatterguntrooper": [
+   "scatter-gun-trooper"
+  ],
+  "secretingredients": [
+   "secret-ingredients"
+  ],
+  "securitydetail": [
+   "security-detail"
+  ],
+  "seekanddestroy": [
+   "seek-and-destroy"
+  ],
+  "seekerdroid": [
+   "seeker-droid"
+  ],
+  "seizetheinitiative": [
+   "seize-the-initiative"
+  ],
+  "seventhsister": [
+   "seventh-sister"
+  ],
+  "shaakti": [
+   "shaak-ti"
+  ],
+  "shoretrooper": [
+   "shoretrooper"
+  ],
+  "shoretroopersquad": [
+   "shoretrooper-squad"
+  ],
+  "shrivsuurgav": [
+   "shriv-suurgav"
+  ],
+  "shukur05repeater": [
+   "shukur-05-repeater"
+  ],
+  "situationalawareness": [
+   "situational-awareness"
+  ],
+  "slicedcomms": [
+   "sliced-comms"
+  ],
+  "sm9fraglauncher": [
+   "sm-9-frag-launcher"
+  ],
+  "smokegrenades": [
+   "smoke-grenades"
+  ],
+  "snowtrooper": [
+   "snowtrooper"
+  ],
+  "snowtroopersquad": [
+   "snowtrooper-squad"
+  ],
+  "soniccannonwarrior": [
+   "sonic-cannon-warrior"
+  ],
+  "sonicchargesaboteur": [
+   "sonic-charge-saboteur"
+  ],
+  "sonicimploders": [
+   "sonic-imploders"
+  ],
+  "spotteruplink": [
+   "spotter-uplink"
+  ],
+  "squadronleader": [
+   "squadron-leader"
+  ],
+  "stormtrooper": [
+   "stormtrooper"
+  ],
+  "stormtroopercaptain": [
+   "stormtrooper-captain"
+  ],
+  "stormtroopermarksman": [
+   "stormtrooper-marksman"
+  ],
+  "stormtrooperspecialist": [
+   "stormtrooper-specialist"
+  ],
+  "stormtroopersquad": [
+   "stormtrooper-squad"
+  ],
+  "strategicprogramming": [
+   "strategic-programming"
+  ],
+  "strictorders": [
+   "strict-orders"
+  ],
+  "strikeandfade": [
+   "strike-and-fade"
+  ],
+  "striketeamleader": [
+   "strike-team-leader"
+  ],
+  "strongintheforce": [
+   "strong-in-the-force"
+  ],
+  "stuckin": [
+   "stuck-in"
+  ],
+  "stunbaton": [
+   "stun-baton"
+  ],
+  "supercommandocombatshields": [
+   "super-commando-combat-shields"
+  ],
+  "supercommandogunslinger": [
+   "super-commando-gunslinger"
+  ],
+  "supercommandogunslingersaxon": [
+   "super-commando-gunslinger"
+  ],
+  "supercommandojetpackrockets": [
+   "super-commando-jetpack-rockets"
+  ],
+  "supercommandomarksman": [
+   "super-commando-marksman"
+  ],
+  "supercommandomarksmansaxon": [
+   "super-commando-marksman"
+  ],
+  "superiorequipment": [
+   "superior-equipment"
+  ],
+  "sx21trooper": [
+   "sx-21-trooper"
+  ],
+  "t21arangetrooper": [
+   "t-21a-range-trooper"
+  ],
+  "t21blasterrifle": [
+   "t-21-blaster-rifle"
+  ],
+  "t21bshoretrooper": [
+   "t-21b-shoretrooper"
+  ],
+  "t21specialforcestrooper": [
+   "t-21-special-forces-trooper"
+  ],
+  "t21stormtrooper": [
+   "t-21-stormtrooper"
+  ],
+  "t7ionsnowtrooper": [
+   "t-7-ion-snowtrooper"
+  ],
+  "tankhuntingmunitions": [
+   "tank-hunting-munitions"
+  ],
+  "targetingrelay": [
+   "targeting-relay"
+  ],
+  "targetingscopes": [
+   "targeting-scopes"
+  ],
+  "tech": [
+   "tech"
+  ],
+  "tenacity": [
+   "tenacity"
+  ],
+  "terror": [
+   "terror"
+  ],
+  "thearmorer": [
+   "the-armorer"
+  ],
+  "thedarksaber": [
+   "the-darksaber"
+  ],
+  "thedarksaberbokatan": [
+   "the-darksaber"
+  ],
+  "thedarksaberdin": [
+   "the-darksaber"
+  ],
+  "thedarksabergar": [
+   "the-darksaber"
+  ],
+  "thedarksabergideon": [
+   "the-darksaber"
+  ],
+  "thedarksabermaul": [
+   "the-darksaber-maul"
+  ],
+  "themandosjetpack": [
+   "the-mando-s-jetpack"
+  ],
+  "thermaldetonator": [
+   "thermal-detonator"
+  ],
+  "tipofthespear": [
+   "tip-of-the-spear"
+  ],
+  "tranquility": [
+   "tranquility"
+  ],
+  "tristanwren": [
+   "tristan-wren",
+   "tristan-wren-personnel"
+  ],
+  "trustedagent": [
+   "trusted-agent"
+  ],
+  "tseriestacticaldroid": [
+   "t-series-tactical-droid"
+  ],
+  "tseriestacticaldroidpilot": [
+   "t-series-tactical-droid-pilot"
+  ],
+  "twinbeamcannons": [
+   "twin-beam-cannons"
+  ],
+  "twinblastercannons": [
+   "twin-blaster-cannons"
+  ],
+  "twinblastercannonsisp": [
+   "twin-blaster-cannons"
+  ],
+  "twinlaserturret": [
+   "twin-laser-turret"
+  ],
+  "twinlightsabers": [
+   "twin-lightsabers"
+  ],
+  "twinmissilepods": [
+   "twin-missile-pods"
+  ],
+  "tyrannicaltaskmaster": [
+   "tyrannical-taskmaster"
+  ],
+  "underworldconnections": [
+   "underworld-connections"
+  ],
+  "unorthodoxtactician": [
+   "unorthodox-tactician"
+  ],
+  "unseensaboteur": [
+   "unseen-saboteur"
+  ],
+  "unstableastromech": [
+   "unstable-astromech"
+  ],
+  "upcloseandpersonal": [
+   "up-close-and-personal"
+  ],
+  "ursawren": [
+   "ursa-wren",
+   "ursa-wren-personnel"
+  ],
+  "veteranclonepilot": [
+   "veteran-clone-pilot"
+  ],
+  "vibroaxe": [
+   "vibro-axe"
+  ],
+  "vigilance": [
+   "vigilance"
+  ],
+  "viperrecondroid": [
+   "viper-recon-droid"
+  ],
+  "waxer": [
+   "waxer",
+   "waxer-personnel"
+  ],
+  "wedgeantilles": [
+   "wedge-antilles"
+  ],
+  "weequaycaptain": [
+   "weequay-captain"
+  ],
+  "weequaycrew": [
+   "weequay-crew"
+  ],
+  "weequaypiratesquad": [
+   "weequay-pirate-squad"
+  ],
+  "whipcordlauncher": [
+   "whipcord-launcher"
+  ],
+  "wrecker": [
+   "wrecker"
+  ],
+  "xsivassaultcannon": [
+   "xs-iv-assault-cannon"
+  ],
+  "z6clonetrooper": [
+   "z-6-clone-trooper"
+  ],
+  "z6riotbaton": [
+   "z-6-riot-baton"
+  ],
+  "z6trooper": [
+   "z-6-trooper"
+  ]
+ }
+}

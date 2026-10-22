@@ -53,7 +53,14 @@ builder (https://tabletopadmiral.com/api), imported by
 ```
 npx esbuild scripts/dump_catalog.ts --bundle --platform=node | node > /tmp/ours.json
 python3 scripts/import_tabletop_admiral.py --ours /tmp/ours.json --fetch
+python3 scripts/build_tta_list_lookup.py
 ```
+
+The second script writes `src/data/tta-list-lookup.json`, which maps
+Tabletop Admiral's unit and upgrade names and listbuilder-link ids onto
+ours, for importing its army lists (`src/lib/ttaList.ts`, the "Import
+Tabletop Admiral" button in Saved lists and "+ From Tabletop Admiral" in
+Tours of Duty). It prints the units and upgrades we don't carry.
 
 When a unit is paired with the wrong Tabletop Admiral printing (it keeps
 classic and Revamp versions side by side), add it to `MANUAL` in the

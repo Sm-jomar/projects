@@ -3,6 +3,7 @@ import { FACTIONS } from "../lib/factions";
 import type { SavedArmy } from "../lib/types";
 import { armiesToCsv, csvToArmies, downloadCsv } from "../lib/csv";
 import { clearFlags, downloadFlags, flagCount } from "../lib/flags";
+import { TtaImportModal } from "./TtaImportModal";
 
 type Props = {
   armies: SavedArmy[];
@@ -21,6 +22,7 @@ export function SavedListsPanel({
 }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [flags, setFlags] = useState(() => flagCount());
+  const [ttaOpen, setTtaOpen] = useState(false);
 
   function exportAll() {
     if (armies.length === 0) {
@@ -71,6 +73,12 @@ export function SavedListsPanel({
           <div className="saved-row-actions">
             <button onClick={exportAll}>Export CSV</button>
             <button onClick={pickFile}>Import CSV</button>
+            <button
+              onClick={() => setTtaOpen(true)}
+              title="Import a list exported from Tabletop Admiral (JSON, link or text)"
+            >
+              Import Tabletop Admiral
+            </button>
             <button
               onClick={() => {
                 if (flagCount() === 0) {
@@ -151,6 +159,18 @@ export function SavedListsPanel({
           </ul>
         )}
       </div>
+      {ttaOpen && (
+        <TtaImportModal
+          title="Import from Tabletop Admiral"
+          actionLabel="Import and open"
+          onClose={() => setTtaOpen(false)}
+          onImport={({ army }) => {
+            onImport([army]);
+            setTtaOpen(false);
+            onLoad(army.id);
+          }}
+        />
+      )}
     </div>
   );
 }
