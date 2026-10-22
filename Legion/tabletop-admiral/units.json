@@ -52,7 +52,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 18,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "2",
@@ -93,7 +96,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 2,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "772",
@@ -155,7 +161,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 85,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "4919",
@@ -217,7 +226,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 107,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "54",
@@ -272,7 +284,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 54,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "35770",
@@ -334,7 +349,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 206,
+  "tts_name": "Admiral Trench Fleet Commander",
+  "include_title": true
  },
  {
   "id": "29931",
@@ -382,7 +400,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 157,
+  "tts_name": "Agent Kallus Hunter of Spectres",
+  "include_title": null
  },
  {
   "id": "81",
@@ -437,7 +458,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 81,
+  "tts_name": "Agent Kallus Hunter of Spectres",
+  "include_title": null
  },
  {
   "id": "29671",
@@ -485,7 +509,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 152,
+  "tts_name": "Ahsoka Tano Padawan Commander",
+  "include_title": true
  },
  {
   "id": "15014",
@@ -540,7 +567,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 121,
+  "tts_name": "Ahsoka Tano Fulcrum",
+  "include_title": null
  },
  {
   "id": "33769",
@@ -602,7 +632,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 178,
+  "tts_name": "Anakin Skywalker Mounted Jedi General",
+  "include_title": true
  },
  {
   "id": "73",
@@ -657,7 +690,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 73,
+  "tts_name": "Anakin Skywalker The Chosen One",
+  "include_title": null
  },
  {
   "id": "28382",
@@ -698,7 +734,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 150,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "61",
@@ -767,7 +806,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 61,
+  "tts_name": "Arc Troopers Strike Team",
+  "include_title": true
  },
  {
   "id": "25980",
@@ -836,7 +878,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 147,
+  "tts_name": "Arc Troopers Strike Team",
+  "include_title": true
  },
  {
   "id": "62",
@@ -912,7 +957,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 62,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "28861",
@@ -981,7 +1029,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 151,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "13582",
@@ -1036,7 +1087,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 120,
+  "tts_name": "Asajj Ventress Separatist Assassin",
+  "include_title": false
  },
  {
   "id": "1",
@@ -1077,7 +1131,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 1,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "70",
@@ -1118,7 +1175,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 70,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "9",
@@ -1180,7 +1240,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 9,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "33770",
@@ -1249,7 +1312,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 179,
+  "tts_name": "Axe Woves Cunning Warrior",
+  "include_title": true
  },
  {
   "id": "38",
@@ -1332,7 +1398,10 @@
     "unlocked_by": 20803,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 38,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "52",
@@ -1387,7 +1456,10 @@
     "unlocked_by": 20803,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 52,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "35769",
@@ -1442,7 +1514,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 205,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "44",
@@ -1490,7 +1565,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 44,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "4417",
@@ -1545,7 +1623,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 102,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "4717",
@@ -1586,7 +1667,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 104,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "6176",
@@ -1641,7 +1725,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 113,
+  "tts_name": "Boba Fett Daimyo of Mos Espa",
+  "include_title": null
  },
  {
   "id": "16",
@@ -1696,7 +1783,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 16,
+  "tts_name": "Boba Fett Infamous Bounty Hunter",
+  "include_title": null
  },
  {
   "id": "5000",
@@ -1758,7 +1848,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 109,
+  "tts_name": "Boba Fett Infamous Bounty Hunter",
+  "include_title": null
  },
  {
   "id": "33771",
@@ -1834,7 +1927,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 180,
+  "tts_name": "Bo-Katan Kryze Savior of Mandalore",
+  "include_title": true
  },
  {
   "id": "4999",
@@ -1882,7 +1978,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 108,
+  "tts_name": "Bossk Trandoshan Terror",
+  "include_title": null
  },
  {
   "id": "34",
@@ -1930,7 +2029,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 34,
+  "tts_name": "Bossk Trandoshan Terror",
+  "include_title": null
  },
  {
   "id": "63",
@@ -1992,7 +2094,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 63,
+  "tts_name": "BX-series Droid Commandos Strike Team",
+  "include_title": true
  },
  {
   "id": "25982",
@@ -2054,7 +2159,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 149,
+  "tts_name": "BX-series Droid Commandos Strike Team",
+  "include_title": true
  },
  {
   "id": "64",
@@ -2123,7 +2231,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 64,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "15016",
@@ -2149,7 +2260,10 @@
   "hidden": null,
   "has_new_image": true,
   "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1686159088/unitcards/ta4d3wcrk1df6ktjhra2.png",
-  "upgrade_types": []
+  "upgrade_types": [],
+  "public_id": 123,
+  "tts_name": "C-3P0 Golden God",
+  "include_title": null
  },
  {
   "id": "59",
@@ -2211,7 +2325,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 59,
+  "tts_name": "Cad Bane Needs No Introduction",
+  "include_title": null
  },
  {
   "id": "5001",
@@ -2280,7 +2397,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 110,
+  "tts_name": "Cad Bane Needs No Introduction",
+  "include_title": null
  },
  {
   "id": "57",
@@ -2335,7 +2455,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 57,
+  "tts_name": "Cassian Andor Capable Intelligence Agent",
+  "include_title": null
  },
  {
   "id": "29930",
@@ -2397,7 +2520,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 155,
+  "tts_name": "Cassian Andor Capable Intelligence Agent",
+  "include_title": null
  },
  {
   "id": "25",
@@ -2445,7 +2571,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 25,
+  "tts_name": "Chewbacca Walking Carpet",
+  "include_title": null
  },
  {
   "id": "1565",
@@ -2493,7 +2622,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 91,
+  "tts_name": "Chewbacca Hero of Kashyyyk",
+  "include_title": null
  },
  {
   "id": "15969",
@@ -2519,7 +2651,10 @@
   "hidden": null,
   "has_new_image": true,
   "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1686159078/unitcards/fx9yaroe2jjcs6zdrenv.png",
-  "upgrade_types": []
+  "upgrade_types": [],
+  "public_id": 125,
+  "tts_name": "Chewbacca Let the Wookiee Win",
+  "include_title": null
  },
  {
   "id": "33772",
@@ -2581,7 +2716,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 181,
+  "tts_name": "Clan Kryze Veterans",
+  "include_title": null
  },
  {
   "id": "33773",
@@ -2643,7 +2781,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 182,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "50",
@@ -2705,7 +2846,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 50,
+  "tts_name": "Clone Captain Rex Honorable Soldier",
+  "include_title": null
  },
  {
   "id": "75",
@@ -2753,7 +2897,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 75,
+  "tts_name": "Clone Commander Trained For Leadership",
+  "include_title": null
  },
  {
   "id": "6376",
@@ -2801,7 +2948,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 118,
+  "tts_name": "Clone Commander Cody Leader of the 212th",
+  "include_title": null
  },
  {
   "id": "23656",
@@ -2863,7 +3013,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 138,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "24084",
@@ -2932,7 +3085,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 140,
+  "tts_name": "Clone Commandos Delta Squad",
+  "include_title": true
  },
  {
   "id": "25964",
@@ -3022,7 +3178,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 142,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "32248",
@@ -3105,7 +3264,10 @@
     "unlocked_by": 20802,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 167,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "49",
@@ -3160,7 +3322,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 49,
+  "tts_name": "Count Dooku Darth Tyranus",
+  "include_title": null
  },
  {
   "id": "47",
@@ -3215,7 +3380,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 47,
+  "tts_name": "Darth Vader The Emperor's Apprentice",
+  "include_title": null
  },
  {
   "id": "3",
@@ -3270,7 +3438,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 3,
+  "tts_name": "Darth Vader Dark Lord of the Sith",
+  "include_title": true
  },
  {
   "id": "40",
@@ -3318,7 +3489,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 40,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "48",
@@ -3366,7 +3540,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 48,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "6179",
@@ -3442,7 +3619,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 116,
+  "tts_name": "Din Djarin The Mandalorian",
+  "include_title": null
  },
  {
   "id": "34881",
@@ -3518,7 +3698,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 199,
+  "tts_name": "Din Djarin (CotW) The Mandalorian",
+  "include_title": true
  },
  {
   "id": "29",
@@ -3573,7 +3756,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 29,
+  "tts_name": "Director Orson Krennic Architect of Terror",
+  "include_title": null
  },
  {
   "id": "77",
@@ -3607,7 +3793,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 77,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "43",
@@ -3641,7 +3830,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 43,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "2019",
@@ -3689,7 +3881,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 97,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "20",
@@ -3744,7 +3939,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 20,
+  "tts_name": "Emperor Palpatine Ruler of the Galactic Empire",
+  "include_title": null
  },
  {
   "id": "19",
@@ -3792,7 +3990,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 19,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "15784",
@@ -3854,7 +4055,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 124,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "16377",
@@ -3916,7 +4120,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 126,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "19108",
@@ -3964,7 +4171,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 135,
+  "tts_name": "Fifth Brother The Kill is Mine",
+  "include_title": true
  },
  {
   "id": "12",
@@ -4061,7 +4271,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 12,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "34888",
@@ -4137,7 +4350,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 202,
+  "tts_name": "Gar Saxon Head of Clan Saxon",
+  "include_title": true
  },
  {
   "id": "4891",
@@ -4213,7 +4429,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 106,
+  "tts_name": "Gar Saxon Militant Commando",
+  "include_title": false
  },
  {
   "id": "45",
@@ -4275,7 +4494,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 45,
+  "tts_name": "General Grievous Sinister Cyborg",
+  "include_title": null
  },
  {
   "id": "32232",
@@ -4330,7 +4552,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 166,
+  "tts_name": "General Grievous Wheel Bike Warlord",
+  "include_title": true
  },
  {
   "id": "33593",
@@ -4392,7 +4617,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 177,
+  "tts_name": "General Tagge Imperial High Command",
+  "include_title": true
  },
  {
   "id": "8",
@@ -4440,7 +4668,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 8,
+  "tts_name": "General Veers Master Tactician",
+  "include_title": null
  },
  {
   "id": "34054",
@@ -4474,7 +4705,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 198,
+  "tts_name": "Geonosian Warriors Geonosian Engineers",
+  "include_title": true
  },
  {
   "id": "19103",
@@ -4529,7 +4763,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 132,
+  "tts_name": "Geonosian Warriors Soldiers of the Hive",
+  "include_title": null
  },
  {
   "id": "32588",
@@ -4591,7 +4828,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 168,
+  "tts_name": "Grand Admiral Thrawn Imperial High Command",
+  "include_title": true
  },
  {
   "id": "32589",
@@ -4646,7 +4886,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 169,
+  "tts_name": "Grand Moff Tarkin Imperial High Command",
+  "include_title": true
  },
  {
   "id": "33774",
@@ -4687,7 +4930,10 @@
     "unlocked_by": 21907,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 183,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "33775",
@@ -4742,7 +4988,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 184,
+  "tts_name": "Han & Chewie Notorious Scoundrels",
+  "include_title": true
  },
  {
   "id": "32594",
@@ -4797,7 +5046,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 175,
+  "tts_name": "Han Solo Reluctant Hero",
+  "include_title": true
  },
  {
   "id": "15",
@@ -4845,7 +5097,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 15,
+  "tts_name": "Han Solo Unorthodox General",
+  "include_title": null
  },
  {
   "id": "29681",
@@ -4914,7 +5169,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 153,
+  "tts_name": "Hondo Ohnaka Trustworthy Compatriot",
+  "include_title": null
  },
  {
   "id": "58",
@@ -4990,7 +5248,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 58,
+  "tts_name": "Iden Versio Inferno Squad Leader",
+  "include_title": null
  },
  {
   "id": "19077",
@@ -5038,7 +5299,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 130,
+  "tts_name": "IG-100 MagnaGuard Prototype Assassin Droids",
+  "include_title": true
  },
  {
   "id": "1809",
@@ -5107,7 +5371,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 92,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "6178",
@@ -5169,7 +5436,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 115,
+  "tts_name": "IG-11 Nurse and Protect",
+  "include_title": null
  },
  {
   "id": "6177",
@@ -5217,7 +5487,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 114,
+  "tts_name": "IG-88 Notorious Assassin Droid",
+  "include_title": null
  },
  {
   "id": "31667",
@@ -5279,7 +5552,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 158,
+  "tts_name": "Imperial Agent Bringing Order to the Galaxy",
+  "include_title": null
  },
  {
   "id": "6180",
@@ -5341,7 +5617,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 117,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "30",
@@ -5424,7 +5703,10 @@
     "unlocked_by": 20801,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 30,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "31668",
@@ -5500,7 +5782,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 159,
+  "tts_name": "Imperial Officer Ruthless Efficiency",
+  "include_title": null
  },
  {
   "id": "23",
@@ -5541,7 +5826,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 23,
+  "tts_name": "Imperial Officer Ruthless Commander",
+  "include_title": null
  },
  {
   "id": "32590",
@@ -5567,7 +5855,10 @@
   "hidden": null,
   "has_new_image": true,
   "image_url": null,
-  "upgrade_types": []
+  "upgrade_types": [],
+  "public_id": 170,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "21",
@@ -5629,7 +5920,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 21,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "78",
@@ -5705,7 +5999,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 78,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "79",
@@ -5781,7 +6078,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 79,
+  "tts_name": "Imperial Special Forces Inferno Squad",
+  "include_title": true
  },
  {
   "id": "2108",
@@ -5829,7 +6129,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 98,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "33776",
@@ -5898,7 +6201,10 @@
     "unlocked_by": 20438,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 185,
+  "tts_name": "Jedi Knight Mounted Jedi General",
+  "include_title": true
  },
  {
   "id": "31843",
@@ -5974,7 +6280,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 163,
+  "tts_name": "Jedi Knight Keeper of the Peace",
+  "include_title": true
  },
  {
   "id": "31842",
@@ -6071,7 +6380,10 @@
     "unlocked_by": 20430,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 162,
+  "tts_name": "Jedi Knight General Strong in the Force",
+  "include_title": true
  },
  {
   "id": "27",
@@ -6126,7 +6438,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 27,
+  "tts_name": "Jyn Erso Stardust",
+  "include_title": null
  },
  {
   "id": "29928",
@@ -6174,7 +6489,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 154,
+  "tts_name": "Jyn Erso Stardust",
+  "include_title": null
  },
  {
   "id": "29932",
@@ -6215,7 +6533,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 156,
+  "tts_name": "K-2SO Sardonic Security Droid",
+  "include_title": null
  },
  {
   "id": "68",
@@ -6256,7 +6577,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 68,
+  "tts_name": "K-2SO Sardonic Security Droid",
+  "include_title": null
  },
  {
   "id": "1854",
@@ -6318,7 +6642,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 95,
+  "tts_name": "Kalani Super Tactical Droid",
+  "include_title": true
  },
  {
   "id": "33777",
@@ -6380,7 +6707,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 186,
+  "tts_name": "Ki-Adi-Mundi Jedi Council",
+  "include_title": true
  },
  {
   "id": "1852",
@@ -6442,7 +6772,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 93,
+  "tts_name": "Kraken Super Tactical Droid",
+  "include_title": true
  },
  {
   "id": "771",
@@ -6504,7 +6837,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 84,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "773",
@@ -6566,7 +6902,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 86,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "80",
@@ -6614,7 +6953,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 80,
+  "tts_name": "Lando Calrissian Canny General",
+  "include_title": null
  },
  {
   "id": "11",
@@ -6669,7 +7011,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 11,
+  "tts_name": "Leia Organa Fearless and Inventive",
+  "include_title": null
  },
  {
   "id": "25966",
@@ -6717,7 +7062,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 143,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "16687",
@@ -6772,7 +7120,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 127,
+  "tts_name": "Logray Superstitious Shaman",
+  "include_title": null
  },
  {
   "id": "46",
@@ -6827,7 +7178,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 46,
+  "tts_name": "Luke Skywalker Jedi Knight",
+  "include_title": true
  },
  {
   "id": "4",
@@ -6889,7 +7243,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 4,
+  "tts_name": "Luke Skywalker Hero of the Rebellion",
+  "include_title": true
  },
  {
   "id": "32593",
@@ -6944,7 +7301,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 174,
+  "tts_name": "Luke Skywalker Commander Skywalker",
+  "include_title": true
  },
  {
   "id": "33575",
@@ -7013,7 +7373,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 176,
+  "tts_name": "Mace Windu Jedi Council",
+  "include_title": true
  },
  {
   "id": "17348",
@@ -7039,7 +7402,10 @@
   "hidden": null,
   "has_new_image": true,
   "image_url": "https://res.cloudinary.com/tabletopadmiral/image/upload/v1689268802/unitcards/zewhzywyzufqqb0vit6g.png",
-  "upgrade_types": []
+  "upgrade_types": [],
+  "public_id": 128,
+  "tts_name": "Major Marquand Tempest Scout 2",
+  "include_title": null
  },
  {
   "id": "33787",
@@ -7115,7 +7481,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 187,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "33788",
@@ -7177,7 +7546,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 188,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "33789",
@@ -7260,7 +7632,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 189,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "71",
@@ -7329,7 +7704,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 71,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "72",
@@ -7405,7 +7783,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 72,
+  "tts_name": "Mandalorian Resistance Clan Wren",
+  "include_title": null
  },
  {
   "id": "4767",
@@ -7474,7 +7855,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 105,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "33796",
@@ -7543,7 +7927,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 196,
+  "tts_name": "Mandalorian Warriors Fire Support",
+  "include_title": true
  },
  {
   "id": "33797",
@@ -7619,7 +8006,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 197,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "42",
@@ -7667,7 +8057,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 42,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "4551",
@@ -7729,7 +8122,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 103,
+  "tts_name": "Maul A Rival",
+  "include_title": null
  },
  {
   "id": "74",
@@ -7784,7 +8180,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 74,
+  "tts_name": "Maul Impatient Apprentice",
+  "include_title": null
  },
  {
   "id": "11258",
@@ -7846,7 +8245,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 119,
+  "tts_name": "Moff Gideon Long Live the Empire",
+  "include_title": true
  },
  {
   "id": "41",
@@ -7901,7 +8303,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 41,
+  "tts_name": "Obi-Wan Kenobi Civilized Warrior",
+  "include_title": null
  },
  {
   "id": "36283",
@@ -7963,7 +8368,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 207,
+  "tts_name": "Obi-Wan Kenobi Mounted Jedi General",
+  "include_title": true
  },
  {
   "id": "60",
@@ -8018,7 +8426,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 60,
+  "tts_name": "Padme Amidala Spirited Senator",
+  "include_title": null
  },
  {
   "id": "33790",
@@ -8073,7 +8484,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 190,
+  "tts_name": "Paz Vizsla Proud Warrior",
+  "include_title": true
  },
  {
   "id": "19076",
@@ -8128,7 +8542,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 129,
+  "tts_name": "Persuader-class Tank Droid Prototype Tank Droid",
+  "include_title": true
  },
  {
   "id": "2109",
@@ -8190,7 +8607,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 99,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "37",
@@ -8266,7 +8686,10 @@
     "unlocked_by": 139,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 37,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "51",
@@ -8335,7 +8758,10 @@
     "unlocked_by": 194,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 51,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "33791",
@@ -8390,7 +8816,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 191,
+  "tts_name": "Plo Koon Jedi Council",
+  "include_title": true
  },
  {
   "id": "19106",
@@ -8445,7 +8874,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 134,
+  "tts_name": "Poggle the Lesser Public Leader of the Geonosians",
+  "include_title": true
  },
  {
   "id": "4216",
@@ -8493,7 +8925,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 101,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "4215",
@@ -8562,7 +8997,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 100,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "56",
@@ -8603,7 +9041,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 56,
+  "tts_name": "R2-D2 Independent Astromech",
+  "include_title": null
  },
  {
   "id": "55",
@@ -8644,7 +9085,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 55,
+  "tts_name": "R2-D2 Hero of a Thousand Devices",
+  "include_title": null
  },
  {
   "id": "19078",
@@ -8692,7 +9136,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 131,
+  "tts_name": "Raddaugh Gnasp Fluttercraft Attack Craft",
+  "include_title": true
  },
  {
   "id": "1984",
@@ -8740,7 +9187,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 96,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "23657",
@@ -8795,7 +9245,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 139,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "31670",
@@ -8864,7 +9317,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 161,
+  "tts_name": "Rebel Agent Defender of Democracy",
+  "include_title": null
  },
  {
   "id": "25979",
@@ -8926,7 +9382,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 146,
+  "tts_name": "Rebel Commandos Strike Team",
+  "include_title": true
  },
  {
   "id": "14",
@@ -8988,7 +9447,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 14,
+  "tts_name": "Rebel Commandos Strike Team",
+  "include_title": true
  },
  {
   "id": "13",
@@ -9057,7 +9519,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 13,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "31669",
@@ -9133,7 +9598,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 160,
+  "tts_name": "Rebel Officer Fighting for Freedom",
+  "include_title": null
  },
  {
   "id": "22",
@@ -9174,7 +9642,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 22,
+  "tts_name": "Rebel Officer Resolute Commander",
+  "include_title": null
  },
  {
   "id": "28",
@@ -9243,7 +9714,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 28,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "25968",
@@ -9312,7 +9786,10 @@
     "unlocked_by": 55,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 145,
+  "tts_name": "Rebel Sleeper Cell Ready to Strike",
+  "include_title": null
  },
  {
   "id": "6",
@@ -9416,7 +9893,10 @@
     "unlocked_by": 21907,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 6,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "36",
@@ -9520,7 +10000,10 @@
     "unlocked_by": 55,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 36,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "34886",
@@ -9582,7 +10065,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 200,
+  "tts_name": "Rook Kast Devoted to the Cause",
+  "include_title": true
  },
  {
   "id": "53",
@@ -9644,7 +10130,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 53,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "34887",
@@ -9706,7 +10195,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 201,
+  "tts_name": "Sabine Wren Back in the Fold",
+  "include_title": true
  },
  {
   "id": "33",
@@ -9761,7 +10253,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 33,
+  "tts_name": "Sabine Wren Explosive Artist",
+  "include_title": null
  },
  {
   "id": "33792",
@@ -9802,7 +10297,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 192,
+  "tts_name": "Savage Opress Dooku's Apprentice",
+  "include_title": true
  },
  {
   "id": "33793",
@@ -9843,7 +10341,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 193,
+  "tts_name": "Savage Opress Maul's Enforcer",
+  "include_title": true
  },
  {
   "id": "26",
@@ -9905,7 +10406,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 26,
+  "tts_name": "Scout Troopers Strike Team",
+  "include_title": true
  },
  {
   "id": "17",
@@ -9981,7 +10485,10 @@
     "unlocked_by": 20801,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 17,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "25981",
@@ -10050,7 +10557,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 148,
+  "tts_name": "Scout Troopers Strike Team",
+  "include_title": true
  },
  {
   "id": "19109",
@@ -10098,7 +10608,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 136,
+  "tts_name": "Seventh Sister Compelled to Inflict Pain",
+  "include_title": true
  },
  {
   "id": "33794",
@@ -10153,7 +10666,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 194,
+  "tts_name": "Shaak Ti Jedi Council",
+  "include_title": true
  },
  {
   "id": "39",
@@ -10250,7 +10766,10 @@
     "unlocked_by": 67,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 39,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "7",
@@ -10347,7 +10866,10 @@
     "unlocked_by": 67,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 7,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "69",
@@ -10388,7 +10910,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 69,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "25967",
@@ -10457,7 +10982,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 144,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "5",
@@ -10554,7 +11082,10 @@
     "unlocked_by": 21906,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 5,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "5880",
@@ -10602,7 +11133,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 112,
+  "tts_name": "Stormtroopers Heavy Response Unit",
+  "include_title": true
  },
  {
   "id": "19105",
@@ -10650,7 +11184,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 133,
+  "tts_name": "Sun Fac Ruthless Lieutenant",
+  "include_title": true
  },
  {
   "id": "34890",
@@ -10712,7 +11249,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 204,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "31844",
@@ -10816,7 +11356,10 @@
     "unlocked_by": 20458,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 164,
+  "tts_name": "Super Tactical Command Droid Command and Control Droid",
+  "include_title": true
  },
  {
   "id": "31845",
@@ -10913,7 +11456,10 @@
     "unlocked_by": 20458,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 165,
+  "tts_name": "Super Tactical Command Droid Auxiliary Command Droid",
+  "include_title": true
  },
  {
   "id": "1853",
@@ -10968,7 +11514,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 94,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "5406",
@@ -11009,7 +11558,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 111,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "10",
@@ -11064,7 +11616,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 10,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "35",
@@ -11105,7 +11660,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 35,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "33795",
@@ -11167,7 +11725,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 195,
+  "tts_name": "The Armorer Forging the Future",
+  "include_title": true
  },
  {
   "id": "23655",
@@ -11229,7 +11790,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 137,
+  "tts_name": "The Bad Batch Clone Force 99",
+  "include_title": true
  },
  {
   "id": "25086",
@@ -11291,7 +11855,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 141,
+  "tts_name": "The Bad Batch Clone Force 99",
+  "include_title": true
  },
  {
   "id": "76",
@@ -11339,7 +11906,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 76,
+  "tts_name": "T-series Tactical Droid Programmed For Strategy",
+  "include_title": null
  },
  {
   "id": "32595",
@@ -11394,7 +11964,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 171,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "31",
@@ -11449,7 +12022,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 31,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "34889",
@@ -11518,7 +12094,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 203,
+  "tts_name": "Ursa Wren Leader of Clan Wren",
+  "include_title": true
  },
  {
   "id": "32591",
@@ -11587,7 +12166,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 172,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "15015",
@@ -11635,7 +12217,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 122,
+  "tts_name": "Wicket Hero of Bright Tree",
+  "include_title": null
  },
  {
   "id": "32592",
@@ -11683,7 +12268,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 173,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "1528",
@@ -11738,7 +12326,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 88,
+  "tts_name": "Wookiee Chieftain Clan Leader",
+  "include_title": null
  },
  {
   "id": "1529",
@@ -11793,7 +12384,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 89,
+  "tts_name": "Wookiee Warriors Kashyyyk Resistance",
+  "include_title": true
  },
  {
   "id": "1563",
@@ -11855,7 +12449,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 90,
+  "tts_name": "Wookiee Warriors Noble Fighters",
+  "include_title": null
  },
  {
   "id": "1527",
@@ -11910,7 +12507,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 87,
+  "tts_name": "Wookiee Warriors Kashyyyk Defenders",
+  "include_title": true
  },
  {
   "id": "24",
@@ -11972,7 +12572,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 24,
+  "tts_name": "Wookiee Warriors Freedom Fighters",
+  "include_title": null
  },
  {
   "id": "32",
@@ -12041,7 +12644,10 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 32,
+  "tts_name": null,
+  "include_title": null
  },
  {
   "id": "764",
@@ -12096,6 +12702,9 @@
     "unlocked_by": null,
     "battle_force_fkey": null
    }
-  ]
+  ],
+  "public_id": 82,
+  "tts_name": "Yoda Grand Master of the Jedi Order",
+  "include_title": null
  }
 ]

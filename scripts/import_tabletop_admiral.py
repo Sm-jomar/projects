@@ -55,12 +55,13 @@ UNIT_FIELDS = [
     "id", "name", "title", "faction_fkey", "rank_fkey", "unit_type_fkey", "is_unique",
     "original_cost", "current_cost", "revamp_cost", "health", "courage", "speed", "figures",
     "red_defense", "surge_hit", "surge_crit", "surge_defense", "classic", "revamp", "hidden",
-    "has_new_image", "image_url", "upgrade_types",
+    "has_new_image", "image_url", "upgrade_types", "public_id", "tts_name", "include_title",
 ]
 SLOT_FIELDS = ["upgrade_type_fkey", "classic", "revamp", "unlocked_by", "battle_force_fkey"]
 UPGRADE_FIELDS = [
     "id", "name", "upgrade_type_fkey", "faction_fkey", "is_unique", "original_cost", "current_cost",
     "revamp_cost", "classic", "revamp", "hide", "image_url", "rank_fkey", "rank_fkey2", "alignment",
+    "public_id", "tts_name",
 ] + [f"unit_fkey{s}" for s in ["", "2", "3", "4", "5"]] + [
     f"unit_type_fkey{s}" for s in ["", "2", "3", "4", "5", "6", "7"]
 ]
