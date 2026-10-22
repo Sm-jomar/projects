@@ -456,7 +456,9 @@ export function TabletopPanel({ onClose }: Props) {
         next = { ...state, models, tokens: state.tokens.map((t) => t.id === id ? { ...t, modelId } : t) };
       }
       commit(pruneModels(next));
-      setModelMsg(`${f.name}: ${m.triangles.toLocaleString()} triangles, ${Math.max(1, Math.round(m.bytes / 1024))} KB`);
+      setModelMsg(m.shared
+        ? `${f.name}: ${m.triangles.toLocaleString()} triangles, ${(m.bytes / 1048576).toFixed(1)} MB, shared with the table`
+        : `${f.name}: couldn't reach the model server, so it was trimmed to ${m.triangles.toLocaleString()} triangles to fit the board`);
       setView3d(true);
     } catch (err) {
       setModelMsg(err instanceof Error && err.message ? err.message : "Could not read that STL file.");

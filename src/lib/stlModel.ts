@@ -1,45 +1,60 @@
-// Compact, syncable 3D models from uploaded STL files.
+// Detailed, shareable 3D models from uploaded STL files.
 //
-// A miniature STL straight off a slicer is often several MB, far too big to
-// keep in localStorage or push through the room server (2 MB board cap). So
-// on upload we:
+// On upload we:
 //   1. parse the STL (binary or ASCII) into a triangle soup,
 //   2. turn it upright (STLs are Z-up; the 3D board is Y-up) and normalize
 //      it into a unit box: footprint fits 1×1, base sits on y = 0,
 //   3. weld the soup into a connected mesh (shared vertices), so the
 //      simplifier sees the real surface instead of loose triangles,
-//   4. simplify it with meshoptimizer's quadric edge collapse, which keeps
-//      the silhouette and thin parts (swords, spears, ears) and never tears
-//      holes along open edges,
+//   4. simplify it (only if it's over the limit) with meshoptimizer's
+//      quadric edge collapse, which keeps the silhouette and thin parts and
+//      never tears holes along open edges,
 //   5. quantize vertices to 16 bits and pack vertices + indices with the
-//      meshopt codec (the one glTF uses), then base64 the result.
-// Detail is spent up to a byte budget rather than a fixed triangle count:
-// a typical mini keeps 20–40k triangles in about 150 KB.
+//      meshopt codec (the one glTF uses).
 //
-// Format "stl2:" + base64(header + vertex stream + index stream)
+// A model keeps up to 500k triangles, a few MB, which is too big for the
+// 2 MB board a room syncs. So the packed model is uploaded once to the
+// site's model store (see stlStore.ts) and the board carries only
+// "stlref:" + its SHA-256; everyone's browser fetches and caches it. If the
+// upload fails (offline, or a copy of the site without the server) we fall
+// back to an inline "stl2:" model trimmed to fit the board, as before.
+//
+// Packed layout (stlref bytes, and the base64 body of "stl2:")
 //   header = Uint32 vertexCount, Uint32 indexCount, Float32 height,
 //            Uint32 vertexStreamBytes
 //   vertex stream = meshopt-encoded Uint16 × 4 per vertex
 //                   (x, z in [-0.5, 0.5], y in [0, height], pad)
 //   index stream  = meshopt-encoded Uint32 triangle list
 // The older "stl1:" format (vertex-clustered, raw Uint16 buffers) still
-// decodes, so models saved before this change keep working.
+// decodes, so models saved before these changes keep working.
 
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 import { MeshoptDecoder } from "meshoptimizer/decoder";
+import { loadModel, sha256Hex, uploadModel } from "./stlStore";
 
 export const STL_PREFIX = "stl2:";
 const STL1_PREFIX = "stl1:";
+export const STL_REF_PREFIX = "stlref:";
 
-/** Encoded size we aim for. Leaves room for several models on one board. */
-export const STL_BYTE_BUDGET = 160_000;
-/** Most triangles kept, however small the encoding comes out. */
-export const STL_MAX_TRIS = 40_000;
+/** Most triangles a shared (server-stored) model keeps. */
+export const STL_MAX_TRIS = 500_000;
+/** Shared models are kept under this; the server takes up to 16 MB. */
+const SHARED_BYTE_BUDGET = 12_000_000;
+/** Inline fallback: sized to leave room for several models on one board. */
+export const STL_INLINE_BUDGET = 160_000;
+const INLINE_MAX_TRIS = 40_000;
 
-/** size: the model's normalized extents (largest footprint side = 1). */
-export type EncodedModel = { data: string; triangles: number; bytes: number; size: { x: number; y: number; z: number } };
+/**
+ * size: the model's normalized extents (largest footprint side = 1).
+ * shared: false when the upload failed and the model was trimmed to fit
+ * inline in the board instead.
+ */
+export type EncodedModel = {
+  data: string; triangles: number; bytes: number; shared: boolean;
+  size: { x: number; y: number; z: number };
+};
 
-export async function encodeStlFile(file: File, budget = STL_BYTE_BUDGET): Promise<EncodedModel> {
+export async function encodeStlFile(file: File): Promise<EncodedModel> {
   const buf = await file.arrayBuffer();
   const geom = new STLLoader().parse(buf);
   const pos = geom.getAttribute("position");
@@ -52,16 +67,26 @@ export async function encodeStlFile(file: File, budget = STL_BYTE_BUDGET): Promi
     soup[i * 3 + 2] = -pos.getY(i);
   }
   geom.dispose();
-  return encodeSoup(soup, budget);
+  return encodeSoup(soup);
 }
 
-export async function encodeSoup(soup: Float32Array, budget = STL_BYTE_BUDGET): Promise<EncodedModel> {
-  const [{ MeshoptSimplifier }, { MeshoptEncoder }] = await Promise.all([
-    import("meshoptimizer/simplifier"),
-    import("meshoptimizer/encoder"),
-  ]);
-  await Promise.all([MeshoptSimplifier.ready, MeshoptEncoder.ready]);
+export async function encodeSoup(soup: Float32Array): Promise<EncodedModel> {
+  const mesh = await prepareMesh(soup);
+  const full = await packWithin(mesh, STL_MAX_TRIS, SHARED_BYTE_BUDGET);
+  try {
+    const hash = await sha256Hex(full.bytes);
+    await uploadModel(hash, full.bytes);
+    return { data: STL_REF_PREFIX + hash, triangles: full.triangles, bytes: full.bytes.length, shared: true, size: mesh.size };
+  } catch {
+    const small = await packWithin(mesh, INLINE_MAX_TRIS, STL_INLINE_BUDGET * 3 / 4);
+    const data = STL_PREFIX + toBase64(small.bytes);
+    return { data, triangles: small.triangles, bytes: data.length, shared: false, size: mesh.size };
+  }
+}
 
+type Mesh = { positions: Float32Array; indices: Uint32Array; height: number; size: EncodedModel["size"] };
+
+async function prepareMesh(soup: Float32Array): Promise<Mesh> {
   // Normalize: centre on x/z, base at y = 0, footprint scaled to fit 1.
   let minX = Infinity, minY = Infinity, minZ = Infinity;
   let maxX = -Infinity, maxY = -Infinity, maxZ = -Infinity;
@@ -78,16 +103,26 @@ export async function encodeSoup(soup: Float32Array, budget = STL_BYTE_BUDGET): 
 
   const { positions, indices } = weld(soup, (x) => (x - cx) / foot, (y) => (y - minY) / foot, (z) => (z - cz) / foot);
   if (indices.length === 0) throw new Error("That STL has no usable triangles in it.");
+  return { positions, indices, height, size };
+}
 
-  // Spend detail up to the byte budget: simplify, encode, and if it came
-  // out too big, aim lower in proportion and try again from the original.
-  let target = Math.min(indices.length / 3, STL_MAX_TRIS);
+// Spend detail up to a triangle cap and a byte budget: simplify, encode,
+// and if it came out too big, aim lower in proportion and try again from
+// the original.
+async function packWithin(mesh: Mesh, maxTris: number, budget: number): Promise<{ bytes: Uint8Array; triangles: number }> {
+  const [{ MeshoptSimplifier }, { MeshoptEncoder }] = await Promise.all([
+    import("meshoptimizer/simplifier"),
+    import("meshoptimizer/encoder"),
+  ]);
+  await Promise.all([MeshoptSimplifier.ready, MeshoptEncoder.ready]);
+  const { positions, indices, height } = mesh;
+  let target = Math.min(indices.length / 3, maxTris);
   let out = packMesh(simplifyTo(MeshoptSimplifier, indices, positions, target), positions, height, MeshoptEncoder);
-  for (let i = 0; i < 6 && out.data.length > budget; i++) {
-    target = Math.max(500, Math.floor(target * (budget / out.data.length) * 0.92));
+  for (let i = 0; i < 6 && out.bytes.length > budget; i++) {
+    target = Math.max(500, Math.floor(target * (budget / out.bytes.length) * 0.92));
     out = packMesh(simplifyTo(MeshoptSimplifier, indices, positions, target), positions, height, MeshoptEncoder);
   }
-  return { data: out.data, triangles: out.triangles, bytes: out.data.length, size };
+  return out;
 }
 
 type Simplifier = typeof import("meshoptimizer/simplifier").MeshoptSimplifier;
@@ -106,7 +141,7 @@ function simplifyTo(S: Simplifier, indices: Uint32Array, positions: Float32Array
   return sloppy.length ? sloppy : res;
 }
 
-function packMesh(indices: Uint32Array, positions: Float32Array, height: number, E: Encoder): { data: string; triangles: number } {
+function packMesh(indices: Uint32Array, positions: Float32Array, height: number, E: Encoder): { bytes: Uint8Array; triangles: number } {
   const idx = indices.slice();
   // Reorder for vertex-cache locality and drop unused vertices; this is
   // what lets the meshopt codec compress the streams well.
@@ -130,7 +165,7 @@ function packMesh(indices: Uint32Array, positions: Float32Array, height: number,
   dv.setUint32(12, vs.length, true);
   out.set(vs, 16);
   out.set(is, 16 + vs.length);
-  return { data: STL_PREFIX + toBase64(out), triangles: idx.length / 3 };
+  return { bytes: out, triangles: idx.length / 3 };
 }
 
 // Merge coincident corners (STL repeats every vertex per triangle) on a
@@ -169,13 +204,24 @@ function weld(
 
 export type DecodedModel = { positions: Float32Array; indices: Uint32Array | Uint16Array; height: number };
 
-/** Decode either model format. Resolves to null for anything unreadable. */
+/** Decode any model format. Resolves to null for anything unreadable. */
 export async function decodeModel(data: string): Promise<DecodedModel | null> {
   try {
+    if (data.startsWith(STL_REF_PREFIX)) {
+      const bytes = await loadModel(data.slice(STL_REF_PREFIX.length));
+      return bytes && decodePacked(bytes);
+    }
     if (data.startsWith(STL1_PREFIX)) return decodeV1(fromBase64(data.slice(STL1_PREFIX.length)));
-    if (!data.startsWith(STL_PREFIX)) return null;
+    if (data.startsWith(STL_PREFIX)) return decodePacked(fromBase64(data.slice(STL_PREFIX.length)));
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+async function decodePacked(bytes: Uint8Array): Promise<DecodedModel | null> {
+  try {
     await MeshoptDecoder.ready;
-    const bytes = fromBase64(data.slice(STL_PREFIX.length));
     const dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
     const vCount = dv.getUint32(0, true);
     const iCount = dv.getUint32(4, true);

@@ -36,6 +36,7 @@ import { UploadSessionDO } from "./uploadSession";
 import { handleModel, type ModelEnv } from "./model";
 import { handleBridge, type BridgeEnv } from "./bridge";
 import { CampaignDO, handleCampaign, type CampaignEnv } from "./campaign";
+import { StlStoreDO, handleStl, type StlEnv } from "./stlStore";
 
 const FLAG_PATH = "/api/flags";
 // Remote-tabletop room sockets: /api/room/<code>/ws
@@ -49,11 +50,13 @@ const MODEL_PREFIX = "/api/model/";
 // spec this implements.
 // Shareable D&D campaigns — see campaign.ts.
 const CAMPAIGN_PATH = "/api/campaign";
+// Uploaded STL models, shared by hash — see stlStore.ts.
+const STL_PREFIX = "/api/stl/";
 const BRIDGE_PATHS = ["/health", "/api/balance", "/api/upload-session", "/api/generate/", "/api/task/", "/api/convert", "/api/upload-page/"];
 
-export { RoomDO, LobbyDO, UploadSessionDO, CampaignDO };
+export { RoomDO, LobbyDO, UploadSessionDO, CampaignDO, StlStoreDO };
 
-export interface Env extends ModelEnv, BridgeEnv, CampaignEnv {
+export interface Env extends ModelEnv, BridgeEnv, CampaignEnv, StlEnv {
   ASSETS: { fetch(request: Request): Promise<Response> };
   ROOM: DurableObjectNamespace;
   LOBBY: DurableObjectNamespace;
@@ -181,6 +184,9 @@ export default {
     // bridge's Bearer-key gate.
     if (url.pathname === CAMPAIGN_PATH || url.pathname.startsWith(CAMPAIGN_PATH + "/")) {
       return handleCampaign(request, env, url);
+    }
+    if (url.pathname.startsWith(STL_PREFIX)) {
+      return handleStl(request, env, url);
     }
     if (BRIDGE_PATHS.some((p) => url.pathname === p || url.pathname.startsWith(p))) {
       return handleBridge(request, env, url);
