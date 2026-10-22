@@ -9,6 +9,7 @@ import { dndPlayUrl, roomsAvailableHere } from "../lib/appRouting";
 import type { LogEntry } from "../lib/auditLog";
 import { AuditLogView } from "../components/AuditLogView";
 import { RollFeed } from "./RollFeed";
+import { ChatDock } from "../components/ChatDock";
 import { CharacterSheetView } from "./CharacterSheetView";
 import { useDndRoom, type OnlineState } from "./dndRoom";
 import { CampaignMapsPanel } from "./CampaignMapLibrary";
@@ -283,6 +284,7 @@ export function DndTabletop() {
       )}
 
       <div className={"dnd-tt-body" + (sideCollapsed ? " side-collapsed" : "")}>
+        <ChatDock chat={room.chat} myId={room.myId} className="dnd" />
         {view3d ? (
           <div className="dnd-tt-canvas">
             <Suspense fallback={<div className="board3d board3d-loading">Loading 3D view…</div>}>

@@ -884,3 +884,11 @@
 
 .dnd-tt-terrain-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
 .dnd-tt-terrain-row button { white-space: nowrap; }
+
+/* Session chat: float over the board, clear of the side panel. */
+.dnd-tt-body { position: relative; }
+.dnd-tt-body > .chat-dock { right: 326px; }
+.dnd-tt-body.side-collapsed > .chat-dock { right: 14px; }
+@media (max-width: 820px) {
+  .dnd-tt-body > .chat-dock { position: fixed; right: 14px; }
+}

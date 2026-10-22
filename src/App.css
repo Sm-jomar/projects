@@ -1086,6 +1086,7 @@ input, select {
   grid-template-columns: 1fr 320px;
 }
 .tt-canvas-col {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-width: 0;
