@@ -3,7 +3,7 @@
 
 import Board3D, { type Block3D, type FigureStyle, type MoveMeasure, type Piece3D, type PieceModel } from "./Board3D";
 import {
-  deploymentZones, terrainElevation, FACTION_STROKE, TEMPLATE_SEGMENT_INCHES,
+  deploymentZones, terrainClears, terrainElevation, FACTION_STROKE, TEMPLATE_SEGMENT_INCHES,
   type FactionColor, type TabletopState, type Terrain, type Token,
 } from "../lib/tabletop";
 import { unitById } from "../data/catalog";
@@ -82,11 +82,11 @@ export default function Legion3D({ state, selectedId, onSelect, showGrid, onUplo
     const c = TERRAIN_COLOR[t.kind];
     return {
       id: t.id, shape: t.shape, x: t.x, y: t.y, w: t.width, d: t.shape === "circle" ? t.width : t.height,
-      rotation: t.rotation, height: h, color: c.fill, edge: c.edge,
+      rotation: t.rotation, height: h, base: t.float ?? 0, color: c.fill, edge: c.edge,
       style: t.kind === "forest" ? "forest" : "solid",
-      standable: t.kind === "building" || t.kind === "rock",
+      standable: t.kind === "building" || t.kind === "rock" || (t.float ?? 0) > 0,
       // With a hovering/flying unit selected, show what it can pass over.
-      tint: flyHeight > 0 && t.kind !== "objective" ? (h <= flyHeight ? "clear" : "block") : null,
+      tint: flyHeight > 0 && t.kind !== "objective" ? (terrainClears(t, flyHeight) ? "clear" : "block") : null,
       selected: t.id === selectedId,
       stl: model(t.modelId),
     };
@@ -149,6 +149,7 @@ export default function Legion3D({ state, selectedId, onSelect, showGrid, onUplo
               : <> · on the ground</>}
           </> : selTerrain && <>
             <b>{selTerrain.label || selTerrain.kind}</b> · {terrainElevation(selTerrain)}" tall
+            {(selTerrain.float ?? 0) > 0 && <>, floating {selTerrain.float}" up</>}
           </>}
           {onUploadModel && (
             <button className="ghost-btn small board3d-upload" onClick={onUploadModel}>

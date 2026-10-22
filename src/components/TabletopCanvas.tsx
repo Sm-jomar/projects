@@ -368,7 +368,7 @@ export function TabletopCanvas({
                         fill={TERRAIN_FILL[t.kind]} stroke={selectedId === t.id ? "#ffd24a" : TERRAIN_STROKE[t.kind]}
                         strokeWidth={(selectedId === t.id ? 2 : 1) / view.scale} fillOpacity={0.7} />
               )}
-              <text x={2} y={10 / view.scale + 2} fontSize={10 / view.scale} fill="#d8dde6" fillOpacity={0.85}>{t.label}</text>
+              <text x={2} y={10 / view.scale + 2} fontSize={10 / view.scale} fill="#d8dde6" fillOpacity={0.85}>{t.label}{t.float ? ` ↑${t.float}"` : ""}</text>
             </g>
           ))}
 

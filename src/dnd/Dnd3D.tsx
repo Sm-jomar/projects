@@ -82,13 +82,14 @@ export default function Dnd3D({ state, selectedId, onSelect, fog, onUploadModel,
   const terrain = (state.terrain ?? []).filter((t) => !seenPolys || terrainSeen(t, seenPolys));
   const blocks: Block3D[] = terrain.map((t) => ({
     id: t.id, shape: t.shape, x: t.x, y: t.y, w: t.w, d: t.shape === "circle" ? t.w : t.d,
-    rotation: t.rotation, height: t.height / FEET_PER_CELL,
+    rotation: t.rotation, height: t.height / FEET_PER_CELL, base: (t.float ?? 0) / FEET_PER_CELL,
     color: t.color, edge: "#c8ccd6",
     style: t.kind === "tree" && !t.modelStl ? "forest" : "solid",
-    standable: t.kind !== "tree",
+    standable: t.kind !== "tree" || (t.float ?? 0) > 0,
     stl: t.modelStl,
     selected: t.id === selectedId,
-    tint: flyFt > 0 ? (t.height <= flyFt ? "clear" : "block") : null,
+    // Floating terrain never blocks: a flyer passes under it or lands on it.
+    tint: flyFt > 0 ? ((t.float ?? 0) > 0 || t.height <= flyFt ? "clear" : "block") : null,
   }));
   const selTerrain = (state.terrain ?? []).find((t) => t.id === selectedId);
 
@@ -125,6 +126,7 @@ export default function Dnd3D({ state, selectedId, onSelect, fog, onUploadModel,
               : <> · on the ground</>}
           </> : selTerrain && <>
             <b>{selTerrain.label || selTerrain.kind}</b> · {selTerrain.height} ft tall
+            {(selTerrain.float ?? 0) > 0 && <>, floating {selTerrain.float} ft up</>}
           </>}
           {onUploadModel && (
             <button className="ghost-btn small board3d-upload" onClick={onUploadModel}>

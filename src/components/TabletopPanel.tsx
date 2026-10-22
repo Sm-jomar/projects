@@ -11,6 +11,8 @@ import {
 import { appendLog, type LogActor, type LogEntry } from "../lib/auditLog";
 import { legionPlayUrl, roomsAvailableHere } from "../lib/appRouting";
 import { AuditLogView } from "./AuditLogView";
+import { ChatDock } from "./ChatDock";
+import { useSessionChat } from "./useSessionChat";
 import {
   moveToken, startSquad, joinSquad, leaveSquad, makeLeader, disbandSquad, regroupSquad,
   normalizeSquads, listSquads, squadMembers, unlockedIds,
@@ -179,6 +181,7 @@ export function TabletopPanel({ onClose }: Props) {
   // early-defined commit() can honor it without a stale-closure hazard.
   const readOnly = online?.status === "open" && online.you?.color === "spectator";
   useEffect(() => { readOnlyRef.current = !!readOnly; }, [readOnly]);
+  const chat = useSessionChat("legion", () => roomRef.current, online?.code ?? null, online?.you ?? null, online?.status === "open");
   // Always-fresh state for the seed-on-join callback (which fires outside
   // the render that owns `state`). Kept in sync via an effect rather than
   // assigned during render.
@@ -223,9 +226,11 @@ export function TabletopPanel({ onClose }: Props) {
 
   function buildHandlers(): RoomHandlers<TabletopState> {
     return {
+      ...chat.handlers,
       onStatus: (status, detail) =>
         setOnline((o) => (o ? { ...o, status, error: detail } : o)),
-      onWelcome: (you, remoteState, peers) => {
+      onWelcome: (you, remoteState, peers, extra) => {
+        chat.onWelcome(roomRef.current?.code ?? "", extra);
         setOnline((o) => ({
           status: "open",
           code: roomRef.current?.code ?? o?.code ?? "",
@@ -304,6 +309,7 @@ export function TabletopPanel({ onClose }: Props) {
   }
 
   function leaveRoom() {
+    chat.reset();
     roomRef.current?.close();
     roomRef.current = null;
     remoteEchoRef.current = null;
@@ -688,6 +694,7 @@ export function TabletopPanel({ onClose }: Props) {
         <div className="tabletop-body">
           <input ref={modelFileRef} type="file" accept=".stl,model/stl,application/sla" hidden onChange={onModelFile} />
           <div className="tt-canvas-col">
+            <ChatDock chat={chat} myId={online?.you?.id ?? null} colorOf={(a) => legionActorColor(a.color)} />
             {readOnly && (
               <div className="tt-spectating-bar">
                 👁 Spectating — you can watch, pan and measure, but not change the board.
@@ -1001,7 +1008,7 @@ export function TabletopPanel({ onClose }: Props) {
                         <option value="red">Red</option>
                       </select>
                     </label>
-                    <label title="How high the unit hovers or flies, in inches. It clears terrain this tall or shorter (see the 3D view).">
+                    <label title="How high the unit hovers or flies, in inches. It clears terrain this tall or shorter, and stands on floating terrain it reaches (see the 3D view).">
                       Hover / fly height (in)
                       <input type="number" min={0} max={24} step={0.5} value={selectedToken.elevation ?? 0}
                              onChange={(e) => updateSelectedToken({ elevation: Math.max(0, Number(e.target.value) || 0) || undefined })} />
@@ -1068,6 +1075,11 @@ export function TabletopPanel({ onClose }: Props) {
                       Height (in)
                       <input type="number" min={0} max={24} step={0.25} value={terrainElevation(selectedTerrain)}
                              onChange={(e) => updateSelectedTerrain({ elevation: Math.max(0, Number(e.target.value) || 0) })} />
+                    </label>
+                    <label title="Lift the piece off the table, in inches: floating rocks, gantries, upper floors. Units under it stay on the ground; a unit hovering at this height or higher stands on top (3D view).">
+                      Floats (in)
+                      <input type="number" min={0} max={48} step={0.25} value={selectedTerrain.float ?? 0}
+                             onChange={(e) => updateSelectedTerrain({ float: Math.max(0, Number(e.target.value) || 0) || undefined })} />
                     </label>
                     <ModelField
                       model={selectedTerrain.modelId ? state.models?.[selectedTerrain.modelId] : undefined}
