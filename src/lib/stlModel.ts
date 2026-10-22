@@ -6,24 +6,40 @@
 //   1. parse the STL (binary or ASCII) into a triangle soup,
 //   2. turn it upright (STLs are Z-up; the 3D board is Y-up) and normalize
 //      it into a unit box: footprint fits 1×1, base sits on y = 0,
-//   3. simplify it by vertex clustering until it fits a triangle budget,
-//   4. quantize vertices to 16 bits and base64 the result.
-// A typical mini ends up around 60–120 KB, which is small enough to sync.
+//   3. weld the soup into a connected mesh (shared vertices), so the
+//      simplifier sees the real surface instead of loose triangles,
+//   4. simplify it with meshoptimizer's quadric edge collapse, which keeps
+//      the silhouette and thin parts (swords, spears, ears) and never tears
+//      holes along open edges,
+//   5. quantize vertices to 16 bits and pack vertices + indices with the
+//      meshopt codec (the one glTF uses), then base64 the result.
+// Detail is spent up to a byte budget rather than a fixed triangle count:
+// a typical mini keeps 20–40k triangles in about 150 KB.
 //
-// Format: "stl1:" + base64(header + vertices + indices)
-//   header  = Uint32 vertexCount, Uint32 triCount, Float32 height
-//   verts   = Uint16 × 3 × vertexCount  (x, z in [-0.5, 0.5], y in [0, height])
-//   indices = Uint16 × 3 × triCount
+// Format "stl2:" + base64(header + vertex stream + index stream)
+//   header = Uint32 vertexCount, Uint32 indexCount, Float32 height,
+//            Uint32 vertexStreamBytes
+//   vertex stream = meshopt-encoded Uint16 × 4 per vertex
+//                   (x, z in [-0.5, 0.5], y in [0, height], pad)
+//   index stream  = meshopt-encoded Uint32 triangle list
+// The older "stl1:" format (vertex-clustered, raw Uint16 buffers) still
+// decodes, so models saved before this change keep working.
 
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
+import { MeshoptDecoder } from "meshoptimizer/decoder";
 
-export const STL_PREFIX = "stl1:";
-export const STL_DEFAULT_MAX_TRIS = 8000;
+export const STL_PREFIX = "stl2:";
+const STL1_PREFIX = "stl1:";
+
+/** Encoded size we aim for. Leaves room for several models on one board. */
+export const STL_BYTE_BUDGET = 160_000;
+/** Most triangles kept, however small the encoding comes out. */
+export const STL_MAX_TRIS = 40_000;
 
 /** size: the model's normalized extents (largest footprint side = 1). */
 export type EncodedModel = { data: string; triangles: number; bytes: number; size: { x: number; y: number; z: number } };
 
-export async function encodeStlFile(file: File, maxTris = STL_DEFAULT_MAX_TRIS): Promise<EncodedModel> {
+export async function encodeStlFile(file: File, budget = STL_BYTE_BUDGET): Promise<EncodedModel> {
   const buf = await file.arrayBuffer();
   const geom = new STLLoader().parse(buf);
   const pos = geom.getAttribute("position");
@@ -36,10 +52,16 @@ export async function encodeStlFile(file: File, maxTris = STL_DEFAULT_MAX_TRIS):
     soup[i * 3 + 2] = -pos.getY(i);
   }
   geom.dispose();
-  return encodeSoup(soup, maxTris);
+  return encodeSoup(soup, budget);
 }
 
-export function encodeSoup(soup: Float32Array, maxTris = STL_DEFAULT_MAX_TRIS): EncodedModel {
+export async function encodeSoup(soup: Float32Array, budget = STL_BYTE_BUDGET): Promise<EncodedModel> {
+  const [{ MeshoptSimplifier }, { MeshoptEncoder }] = await Promise.all([
+    import("meshoptimizer/simplifier"),
+    import("meshoptimizer/encoder"),
+  ]);
+  await Promise.all([MeshoptSimplifier.ready, MeshoptEncoder.ready]);
+
   // Normalize: centre on x/z, base at y = 0, footprint scaled to fit 1.
   let minX = Infinity, minY = Infinity, minZ = Infinity;
   let maxX = -Infinity, maxY = -Infinity, maxZ = -Infinity;
@@ -51,126 +73,155 @@ export function encodeSoup(soup: Float32Array, maxTris = STL_DEFAULT_MAX_TRIS): 
   }
   const foot = Math.max(maxX - minX, maxZ - minZ) || 1;
   const cx = (minX + maxX) / 2, cz = (minZ + maxZ) / 2;
-  const norm = new Float32Array(soup.length);
-  for (let i = 0; i < soup.length; i += 3) {
-    norm[i] = (soup[i]! - cx) / foot;
-    norm[i + 1] = (soup[i + 1]! - minY) / foot;
-    norm[i + 2] = (soup[i + 2]! - cz) / foot;
-  }
   const height = Math.max(1e-3, (maxY - minY) / foot);
+  const size = { x: (maxX - minX) / foot, y: height, z: (maxZ - minZ) / foot };
 
-  // Vertex clustering. Shrink the grid until the mesh fits the budget (and
-  // the 16-bit index limit).
-  let res = 256;
-  let mesh = cluster(norm, height, res);
-  while ((mesh.tris.length / 3 > maxTris || mesh.verts.length / 3 > 65535) && res > 8) {
-    res = Math.floor(res * 0.8);
-    mesh = cluster(norm, height, res);
-  }
-  const vCount = mesh.verts.length / 3;
-  const tCount = mesh.tris.length / 3;
-  if (tCount === 0) throw new Error("That STL simplified down to nothing — is it a valid model?");
+  const { positions, indices } = weld(soup, (x) => (x - cx) / foot, (y) => (y - minY) / foot, (z) => (z - cz) / foot);
+  if (indices.length === 0) throw new Error("That STL has no usable triangles in it.");
 
-  const out = new ArrayBuffer(12 + vCount * 6 + tCount * 6);
-  const dv = new DataView(out);
-  dv.setUint32(0, vCount, true);
-  dv.setUint32(4, tCount, true);
-  dv.setFloat32(8, height, true);
-  const q = new Uint16Array(out, 12, vCount * 3);
-  for (let i = 0; i < vCount; i++) {
-    q[i * 3] = quant(mesh.verts[i * 3]! + 0.5, 1);
-    q[i * 3 + 1] = quant(mesh.verts[i * 3 + 1]!, height);
-    q[i * 3 + 2] = quant(mesh.verts[i * 3 + 2]! + 0.5, 1);
+  // Spend detail up to the byte budget: simplify, encode, and if it came
+  // out too big, aim lower in proportion and try again from the original.
+  let target = Math.min(indices.length / 3, STL_MAX_TRIS);
+  let out = packMesh(simplifyTo(MeshoptSimplifier, indices, positions, target), positions, height, MeshoptEncoder);
+  for (let i = 0; i < 6 && out.data.length > budget; i++) {
+    target = Math.max(500, Math.floor(target * (budget / out.data.length) * 0.92));
+    out = packMesh(simplifyTo(MeshoptSimplifier, indices, positions, target), positions, height, MeshoptEncoder);
   }
-  new Uint16Array(out, 12 + vCount * 6, tCount * 3).set(mesh.tris);
-  const data = STL_PREFIX + toBase64(new Uint8Array(out));
-  return {
-    data, triangles: tCount, bytes: data.length,
-    size: { x: (maxX - minX) / foot, y: height, z: (maxZ - minZ) / foot },
-  };
+  return { data: out.data, triangles: out.triangles, bytes: out.data.length, size };
 }
 
-export type DecodedModel = { positions: Float32Array; indices: Uint16Array; height: number };
+type Simplifier = typeof import("meshoptimizer/simplifier").MeshoptSimplifier;
+type Encoder = typeof import("meshoptimizer/encoder").MeshoptEncoder;
 
-export function decodeModel(data: string): DecodedModel | null {
-  if (!data.startsWith(STL_PREFIX)) return null;
+function simplifyTo(S: Simplifier, indices: Uint32Array, positions: Float32Array, targetTris: number): Uint32Array {
+  if (indices.length / 3 <= targetTris) return indices;
+  const want = targetTris * 3;
+  // Quadric collapse with a generous error ceiling (5% of the model size).
+  // It stops early where collapsing would visibly change the shape, so if
+  // it can't reach the target, finish with the sloppy (clustering)
+  // simplifier on what's left rather than blowing the budget.
+  const [res] = S.simplify(indices, positions, 3, want, 0.05, ["Regularize"]);
+  if (res.length <= want * 1.15) return res;
+  const [sloppy] = S.simplifySloppy(res, positions, 3, null, want, 0.05);
+  return sloppy.length ? sloppy : res;
+}
+
+function packMesh(indices: Uint32Array, positions: Float32Array, height: number, E: Encoder): { data: string; triangles: number } {
+  const idx = indices.slice();
+  // Reorder for vertex-cache locality and drop unused vertices; this is
+  // what lets the meshopt codec compress the streams well.
+  const [remap, unique] = E.reorderMesh(idx, true, false);
+  const q = new Uint16Array(unique * 4);
+  const total = positions.length / 3;
+  for (let i = 0; i < total; i++) {
+    const r = remap[i]!;
+    if (r === 0xffffffff || r >= unique) continue;
+    q[r * 4] = quant(positions[i * 3]! + 0.5, 1);
+    q[r * 4 + 1] = quant(positions[i * 3 + 1]!, height);
+    q[r * 4 + 2] = quant(positions[i * 3 + 2]! + 0.5, 1);
+  }
+  const vs = E.encodeVertexBuffer(new Uint8Array(q.buffer), unique, 8);
+  const is = E.encodeIndexBuffer(new Uint8Array(idx.buffer, idx.byteOffset, idx.byteLength), idx.length, 4);
+  const out = new Uint8Array(16 + vs.length + is.length);
+  const dv = new DataView(out.buffer);
+  dv.setUint32(0, unique, true);
+  dv.setUint32(4, idx.length, true);
+  dv.setFloat32(8, height, true);
+  dv.setUint32(12, vs.length, true);
+  out.set(vs, 16);
+  out.set(is, 16 + vs.length);
+  return { data: STL_PREFIX + toBase64(out), triangles: idx.length / 3 };
+}
+
+// Merge coincident corners (STL repeats every vertex per triangle) on a
+// ~1/130000-of-the-model grid, normalizing as we go. Degenerate triangles
+// are dropped.
+function weld(
+  soup: Float32Array,
+  nx: (v: number) => number, ny: (v: number) => number, nz: (v: number) => number,
+): { positions: Float32Array; indices: Uint32Array } {
+  const Q = 131072;
+  const step = Q / 4; // x, z span ~1 and y spans the height; keep each key part under Q
+  let yMax = 0;
+  for (let v = 1; v < soup.length; v += 3) yMax = Math.max(yMax, ny(soup[v]!));
+  const yStep = step / Math.max(1, yMax / 3);
+  const map = new Map<number, number>();
+  const pos: number[] = [];
+  const corner = new Uint32Array(soup.length / 3);
+  for (let v = 0; v < corner.length; v++) {
+    const x = nx(soup[v * 3]!), y = ny(soup[v * 3 + 1]!), z = nz(soup[v * 3 + 2]!);
+    const key = (Math.round((x + 1) * step) * Q + Math.round(y * yStep)) * Q + Math.round((z + 1) * step);
+    let id = map.get(key);
+    if (id === undefined) {
+      id = pos.length / 3;
+      map.set(key, id);
+      pos.push(x, y, z);
+    }
+    corner[v] = id;
+  }
+  const tris: number[] = [];
+  for (let t = 0; t < corner.length; t += 3) {
+    const a = corner[t]!, b = corner[t + 1]!, c = corner[t + 2]!;
+    if (a !== b && b !== c && a !== c) tris.push(a, b, c);
+  }
+  return { positions: new Float32Array(pos), indices: new Uint32Array(tris) };
+}
+
+export type DecodedModel = { positions: Float32Array; indices: Uint32Array | Uint16Array; height: number };
+
+/** Decode either model format. Resolves to null for anything unreadable. */
+export async function decodeModel(data: string): Promise<DecodedModel | null> {
   try {
+    if (data.startsWith(STL1_PREFIX)) return decodeV1(fromBase64(data.slice(STL1_PREFIX.length)));
+    if (!data.startsWith(STL_PREFIX)) return null;
+    await MeshoptDecoder.ready;
     const bytes = fromBase64(data.slice(STL_PREFIX.length));
     const dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
     const vCount = dv.getUint32(0, true);
-    const tCount = dv.getUint32(4, true);
+    const iCount = dv.getUint32(4, true);
     const height = dv.getFloat32(8, true);
-    if (bytes.byteLength < 12 + vCount * 6 + tCount * 6) return null;
-    // Copy into aligned buffers (base64 output may not be 2-byte aligned).
-    const body = bytes.slice(12);
-    const q = new Uint16Array(body.buffer, 0, vCount * 3);
+    const vsLen = dv.getUint32(12, true);
+    if (16 + vsLen > bytes.length || iCount % 3) return null;
+    const q = new Uint16Array(vCount * 4);
+    MeshoptDecoder.decodeVertexBuffer(new Uint8Array(q.buffer), vCount, 8, bytes.subarray(16, 16 + vsLen));
+    const indices = new Uint32Array(iCount);
+    MeshoptDecoder.decodeIndexBuffer(new Uint8Array(indices.buffer), iCount, 4, bytes.subarray(16 + vsLen));
+    for (const ix of indices) if (ix >= vCount) return null;
     const positions = new Float32Array(vCount * 3);
     for (let i = 0; i < vCount; i++) {
-      positions[i * 3] = q[i * 3]! / 65535 - 0.5;
-      positions[i * 3 + 1] = (q[i * 3 + 1]! / 65535) * height;
-      positions[i * 3 + 2] = q[i * 3 + 2]! / 65535 - 0.5;
+      positions[i * 3] = q[i * 4]! / 65535 - 0.5;
+      positions[i * 3 + 1] = (q[i * 4 + 1]! / 65535) * height;
+      positions[i * 3 + 2] = q[i * 4 + 2]! / 65535 - 0.5;
     }
-    const indices = new Uint16Array(body.buffer, vCount * 6, tCount * 3).slice();
-    for (const ix of indices) if (ix >= vCount) return null;
     return { positions, indices, height };
   } catch {
     return null;
   }
 }
 
-function quant(v: number, range: number): number {
-  return Math.max(0, Math.min(65535, Math.round((v / range) * 65535)));
+// Legacy "stl1:" layout: Uint32 vCount, Uint32 triCount, Float32 height,
+// then raw Uint16 xyz vertices and Uint16 indices.
+function decodeV1(bytes: Uint8Array): DecodedModel | null {
+  const dv = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const vCount = dv.getUint32(0, true);
+  const tCount = dv.getUint32(4, true);
+  const height = dv.getFloat32(8, true);
+  if (bytes.byteLength < 12 + vCount * 6 + tCount * 6) return null;
+  const body = bytes.slice(12);
+  const q = new Uint16Array(body.buffer, 0, vCount * 3);
+  const positions = new Float32Array(vCount * 3);
+  for (let i = 0; i < vCount; i++) {
+    positions[i * 3] = q[i * 3]! / 65535 - 0.5;
+    positions[i * 3 + 1] = (q[i * 3 + 1]! / 65535) * height;
+    positions[i * 3 + 2] = q[i * 3 + 2]! / 65535 - 0.5;
+  }
+  const indices = new Uint16Array(body.buffer, vCount * 6, tCount * 3).slice();
+  for (const ix of indices) if (ix >= vCount) return null;
+  return { positions, indices, height };
 }
 
-// Snap every vertex to a res³ grid over the model's box; each occupied cell
-// becomes one vertex at the average of its members. Triangles that collapse
-// (two corners in one cell) or repeat are dropped.
-function cluster(soup: Float32Array, height: number, res: number): { verts: number[]; tris: number[] } {
-  const cellOf = new Map<number, number>();
-  const sums: number[] = [];
-  const counts: number[] = [];
-  const triIdx = new Int32Array(soup.length / 3);
-  const yRes = Math.max(1, Math.round(res * height));
-  for (let v = 0; v < soup.length / 3; v++) {
-    const x = soup[v * 3]!, y = soup[v * 3 + 1]!, z = soup[v * 3 + 2]!;
-    const ix = Math.min(res - 1, Math.floor((x + 0.5) * res));
-    const iy = Math.min(yRes - 1, Math.floor((y / height) * yRes));
-    const iz = Math.min(res - 1, Math.floor((z + 0.5) * res));
-    const key = (ix * (yRes + 1) + iy) * (res + 1) + iz;
-    let id = cellOf.get(key);
-    if (id === undefined) {
-      id = counts.length;
-      cellOf.set(key, id);
-      sums.push(0, 0, 0);
-      counts.push(0);
-    }
-    sums[id * 3] += x; sums[id * 3 + 1] += y; sums[id * 3 + 2] += z;
-    counts[id]++;
-    triIdx[v] = id;
-  }
-  const seen = new Set<string>();
-  const used = new Map<number, number>();
-  const verts: number[] = [];
-  const tris: number[] = [];
-  const remap = (id: number) => {
-    let n = used.get(id);
-    if (n === undefined) {
-      n = verts.length / 3;
-      used.set(id, n);
-      const c = counts[id]!;
-      verts.push(sums[id * 3]! / c, sums[id * 3 + 1]! / c, sums[id * 3 + 2]! / c);
-    }
-    return n;
-  };
-  for (let t = 0; t < triIdx.length; t += 3) {
-    const a = triIdx[t]!, b = triIdx[t + 1]!, c = triIdx[t + 2]!;
-    if (a === b || b === c || a === c) continue;
-    const key = [a, b, c].sort((p, q) => p - q).join(",");
-    if (seen.has(key)) continue;
-    seen.add(key);
-    tris.push(remap(a), remap(b), remap(c));
-  }
-  return { verts, tris };
+function quant(v: number, range: number): number {
+  return Math.max(0, Math.min(65535, Math.round((v / range) * 65535)));
 }
 
 function toBase64(bytes: Uint8Array): string {
