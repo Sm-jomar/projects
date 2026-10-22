@@ -377,7 +377,7 @@ function respond<T>(r: Result<T>, status = 200): Response {
   return r.ok ? json(r.value, status) : err(r.status, r.error, r.message);
 }
 
-async function rateCheck(env: CampaignEnv, name: string, windowMs: number, max: number): Promise<boolean> {
+export async function rateCheck(env: CampaignEnv, name: string, windowMs: number, max: number): Promise<boolean> {
   const stub = env.UPLOAD_SESSION.get(env.UPLOAD_SESSION.idFromName(name));
   const res = await stub.fetch("https://session/rate/check", {
     method: "POST",

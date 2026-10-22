@@ -554,9 +554,16 @@ function creasedGeometry(pos: Float32Array, idx: ArrayLike<number>, crease: numb
   const faces = new Uint32Array(triCount * 3);
   for (let t = 0; t < triCount; t++) for (let k = 0; k < 3; k++) faces[fill[idx[t * 3 + k]!]!++] = t;
 
+  // Each corner's normal averages the faces around its vertex that lie
+  // within the crease angle. Corners of one vertex that land on the same
+  // normal share an output vertex, so the mesh stays indexed and only
+  // splits along hard edges (a 500k-triangle model stays a few MB on the GPU).
   const cos = Math.cos(crease);
-  const outPos = new Float32Array(triCount * 9);
-  const outNrm = new Float32Array(triCount * 9);
+  const outPos: number[] = [];
+  const outNrm: number[] = [];
+  const outIdx = new Uint32Array(triCount * 3);
+  const slot = new Uint32Array(triCount * 3); // per vertex: output ids made so far
+  const used = new Uint32Array(vCount);
   for (let t = 0; t < triCount; t++) {
     for (let k = 0; k < 3; k++) {
       const v = idx[t * 3 + k]!;
@@ -571,14 +578,25 @@ function creasedGeometry(pos: Float32Array, idx: ArrayLike<number>, crease: numb
         sx += fn[f * 3]! * sgn; sy += fn[f * 3 + 1]! * sgn; sz += fn[f * 3 + 2]! * sgn;
       }
       const len = Math.hypot(sx, sy, sz) || 1;
-      const o = t * 9 + k * 3;
-      outPos[o] = pos[v * 3]!; outPos[o + 1] = pos[v * 3 + 1]!; outPos[o + 2] = pos[v * 3 + 2]!;
-      outNrm[o] = sx / len; outNrm[o + 1] = sy / len; outNrm[o + 2] = sz / len;
+      sx /= len; sy /= len; sz /= len;
+      let out = -1;
+      for (let j = 0; j < used[v]!; j++) {
+        const o = slot[start[v]! + j]!;
+        if (outNrm[o * 3]! * sx + outNrm[o * 3 + 1]! * sy + outNrm[o * 3 + 2]! * sz > 0.9999) { out = o; break; }
+      }
+      if (out < 0) {
+        out = outPos.length / 3;
+        outPos.push(pos[v * 3]!, pos[v * 3 + 1]!, pos[v * 3 + 2]!);
+        outNrm.push(sx, sy, sz);
+        slot[start[v]! + used[v]!++] = out;
+      }
+      outIdx[t * 3 + k] = out;
     }
   }
   const g = new THREE.BufferGeometry();
-  g.setAttribute("position", new THREE.BufferAttribute(outPos, 3));
-  g.setAttribute("normal", new THREE.BufferAttribute(outNrm, 3));
+  g.setAttribute("position", new THREE.Float32BufferAttribute(outPos, 3));
+  g.setAttribute("normal", new THREE.Float32BufferAttribute(outNrm, 3));
+  g.setIndex(new THREE.BufferAttribute(outIdx, 1));
   return g;
 }
 

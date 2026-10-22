@@ -40,13 +40,18 @@
       { "name": "UPLOAD_SESSION", "class_name": "UploadSessionDO" },
       // One instance per D&D campaign (addressed by campaign id): notes,
       // NPC sheets, saved maps and the role secrets. See worker/src/campaign.ts.
-      { "name": "CAMPAIGN", "class_name": "CampaignDO" }
+      { "name": "CAMPAIGN", "class_name": "CampaignDO" },
+      // One instance per uploaded STL model (addressed by its SHA-256), so
+      // detailed models live outside the 2 MB room board. See
+      // worker/src/stlStore.ts.
+      { "name": "STL_STORE", "class_name": "StlStoreDO" }
     ]
   },
   "migrations": [
     { "tag": "v1", "new_sqlite_classes": ["RoomDO"] },
     { "tag": "v2", "new_sqlite_classes": ["LobbyDO"] },
     { "tag": "v3", "new_sqlite_classes": ["UploadSessionDO"] },
-    { "tag": "v4", "new_sqlite_classes": ["CampaignDO"] }
+    { "tag": "v4", "new_sqlite_classes": ["CampaignDO"] },
+    { "tag": "v5", "new_sqlite_classes": ["StlStoreDO"] }
   ]
 }

@@ -191,8 +191,9 @@ export function DndTabletop() {
     }
   }
 
-  // STL minis are simplified to a few thousand triangles and stored on the
-  // token, so they sync to everyone in the game like icons do.
+  // STL models (up to 500k triangles) are uploaded to the site's model
+  // store and the token only carries a reference, so everyone in the game
+  // loads the same model without it crowding the synced board.
   async function onModelFile(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];
     const id = selected?.id ?? selectedTerrain?.id;
@@ -212,7 +213,7 @@ export function DndTabletop() {
       } else {
         updateToken(id, { modelStl: m.data, modelName: f.name });
       }
-      setWarn(null);
+      setWarn(m.shared ? null : `Couldn't reach the model server, so ${f.name} was trimmed to ${m.triangles.toLocaleString()} triangles to fit the board.`);
       setView3d(true);
     } catch (err) {
       setWarn(err instanceof Error && err.message ? err.message : "Could not read that STL file.");
