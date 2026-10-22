@@ -1,10 +1,11 @@
-/* Session chat dock, shared by the Legion and D&D tabletops. The host sets
-   --chat-accent (Legion gold, D&D red) and positions it via a class. */
+/* Session chat window, shared by the Legion and D&D tabletops. It floats
+   at the top right of the board (clear of the 3D D-pad at the bottom
+   right); its toggle button sits in each board's top toolbar. */
 .chat-dock {
   --chat-accent: var(--accent);
   position: absolute;
   right: 14px;
-  bottom: 14px;
+  top: 14px;
   z-index: 40;
   width: 340px;
   max-width: calc(100vw - 32px);
@@ -18,26 +19,11 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
   overflow: hidden;
 }
-.chat-dock.collapsed {
-  width: auto;
-  height: auto;
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  overflow: visible;
-}
 .chat-dock.dnd { --chat-accent: var(--dnd-accent-2); }
 .chat-dock.fixed { position: fixed; }
 
-.chat-dock-toggle {
-  position: relative;
-  border-radius: 20px;
-  padding: 8px 14px;
-  font-weight: 600;
-  background: var(--panel-2);
-  border-color: var(--chat-accent);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
-}
+.chat-toggle { position: relative; white-space: nowrap; }
+.chat-toggle.dnd { --chat-accent: var(--dnd-accent-2); }
 .chat-unread {
   position: absolute;
   top: -7px;
@@ -46,7 +32,7 @@
   height: 20px;
   padding: 0 5px;
   border-radius: 10px;
-  background: var(--chat-accent);
+  background: var(--chat-accent, var(--accent));
   color: #111;
   font-size: 11px;
   font-weight: 800;
@@ -156,5 +142,5 @@
 }
 
 @media (max-width: 600px) {
-  div.chat-dock:not(.collapsed) { right: 8px; left: 8px; width: auto; bottom: 8px; height: 60vh; }
+  div.chat-dock { right: 8px; left: 8px; width: auto; top: 8px; height: 60vh; }
 }

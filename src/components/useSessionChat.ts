@@ -186,3 +186,39 @@ export function useSessionChat(
     send, loadOlder, fetchAll, handlers, onWelcome, reset,
   };
 }
+
+const OPEN_KEY = "chat.dock.open";
+
+function readOpen(app: string): boolean {
+  try { return localStorage.getItem(`${OPEN_KEY}.${app}`) === "1"; } catch { return false; }
+}
+
+export type ChatToggle = { open: boolean; setOpen: (v: boolean) => void; unread: number };
+
+/** Open/closed state of the chat window (remembered per app) and the count
+ * of others' lines that arrived while it was closed. */
+export function useChatToggle(chat: SessionChat, myId: string | null): ChatToggle {
+  const [open, setOpenRaw] = useState(() => readOpen(chat.app));
+  const [seen, setSeen] = useState<{ code: string | null; seq: number }>({ code: null, seq: 0 });
+  const seenSeq = seen.code === chat.code ? seen.seq : 0;
+
+  const confirmed = chat.messages.filter((m) => m.seq != null);
+  const lastSeq = confirmed.length ? confirmed[confirmed.length - 1]!.seq! : 0;
+  const since = Math.max(seenSeq, chat.joinSeq);
+  const unread = open ? 0 : confirmed.filter((m) => m.seq! > since && m.from.id !== myId).length;
+
+  function setOpen(v: boolean) {
+    setOpenRaw(v);
+    if (v) setSeen({ code: chat.code, seq: lastSeq });
+    try { localStorage.setItem(`${OPEN_KEY}.${chat.app}`, v ? "1" : "0"); } catch { /* storage unavailable */ }
+  }
+
+  // While open, everything is seen.
+  useEffect(() => {
+    if (!open) return;
+    const t = setTimeout(() => setSeen({ code: chat.code, seq: lastSeq }), 0);
+    return () => clearTimeout(t);
+  }, [open, lastSeq, chat.code]);
+
+  return { open, setOpen, unread };
+}

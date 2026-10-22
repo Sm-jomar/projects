@@ -1,29 +1,16 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import {
   CHAT_MAX_CHARS, authorBadge, deleteChatArchive, downloadChat, listChatArchives, loadChatArchive,
   type ChatArchive, type ChatAuthor, type ChatMessage,
 } from "../lib/chat";
-import type { SessionChat } from "./useSessionChat";
+import type { ChatToggle, SessionChat } from "./useSessionChat";
 import "./chat.css";
 
-// Floating session-chat window, shared by both tabletops. Collapsed it's a
-// small button with an unread count; open it shows the live game chat, or
-// the logs saved on this device from earlier games.
+// Session chat, shared by both tabletops: a toolbar button (with an unread
+// count) that opens a floating window over the board. The window shows the
+// live game chat, or the logs saved on this device from earlier games.
 
-type Props = {
-  chat: SessionChat;
-  myId: string | null;
-  /** Display color for an author (Legion maps its side names to colors). */
-  colorOf?: (a: ChatAuthor) => string;
-  className?: string;
-};
-
-const OPEN_KEY = "chat.dock.open";
 const NO_MESSAGES: ChatMessage[] = [];
-
-function readOpen(app: string): boolean {
-  try { return localStorage.getItem(`${OPEN_KEY}.${app}`) === "1"; } catch { return false; }
-}
 
 function timeLabel(ts: number): string {
   const d = new Date(ts);
@@ -33,34 +20,35 @@ function timeLabel(ts: number): string {
     : d.toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
 }
 
-export function ChatDock({ chat, myId, colorOf, className }: Props) {
-  const [open, setOpenRaw] = useState(() => readOpen(chat.app));
+/** Toolbar button that shows or hides the chat window. */
+export function ChatButton({ toggle, className }: { toggle: ChatToggle; className?: string }) {
+  const { open, setOpen, unread } = toggle;
+  return (
+    <button className={"chat-toggle " + (open ? "active " : "") + (className ?? "")}
+            onClick={() => setOpen(!open)}
+            title={open ? "Hide the game chat" : "Open the game chat"}>
+      💬 Chat{unread > 0 && <span className="chat-unread">{unread > 99 ? "99+" : unread}</span>}
+    </button>
+  );
+}
+
+type Props = {
+  chat: SessionChat;
+  myId: string | null;
+  toggle: ChatToggle;
+  /** Display color for an author (Legion maps its side names to colors). */
+  colorOf?: (a: ChatAuthor) => string;
+  className?: string;
+};
+
+export function ChatDock({ chat, myId, toggle, colorOf, className }: Props) {
+  const { open, setOpen } = toggle;
   const [view, setView] = useState<"live" | "saved">("live");
   const [archive, setArchive] = useState<ChatArchive | null>(null);
   const [draft, setDraft] = useState("");
   const [menu, setMenu] = useState(false);
   const [busy, setBusy] = useState(false);
-  // Count of others' lines that arrived while the window was closed.
-  const [seen, setSeen] = useState<{ code: string | null; seq: number }>({ code: null, seq: 0 });
-  const seenSeq = seen.code === chat.code ? seen.seq : 0;
-
   const confirmed = chat.messages.filter((m) => m.seq != null);
-  const lastSeq = confirmed.length ? confirmed[confirmed.length - 1]!.seq! : 0;
-  const since = Math.max(seenSeq, chat.joinSeq);
-  const unread = open ? 0 : confirmed.filter((m) => m.seq! > since && m.from.id !== myId).length;
-
-  function setOpen(v: boolean) {
-    setOpenRaw(v);
-    if (v) setSeen({ code: chat.code, seq: lastSeq });
-    try { localStorage.setItem(`${OPEN_KEY}.${chat.app}`, v ? "1" : "0"); } catch { /* storage unavailable */ }
-  }
-
-  // While open, everything is seen.
-  useEffect(() => {
-    if (!open) return;
-    const t = setTimeout(() => setSeen({ code: chat.code, seq: lastSeq }), 0);
-    return () => clearTimeout(t);
-  }, [open, lastSeq, chat.code]);
 
   // Stick to the bottom as lines arrive, unless the reader scrolled up.
   const listRef = useRef<HTMLDivElement>(null);
@@ -116,15 +104,7 @@ export function ChatDock({ chat, myId, colorOf, className }: Props) {
   const color = (a: ChatAuthor) => colorOf?.(a) ?? (/^#[0-9a-f]{6}$/i.test(a.color) ? a.color : "var(--muted)");
   const canDownload = view === "saved" ? !!archive?.messages.length : confirmed.length > 0;
 
-  if (!open) {
-    return (
-      <div className={"chat-dock collapsed " + (className ?? "")}>
-        <button className="chat-dock-toggle" onClick={() => setOpen(true)} title="Open the game chat">
-          💬 Chat{unread > 0 && <span className="chat-unread">{unread > 99 ? "99+" : unread}</span>}
-        </button>
-      </div>
-    );
-  }
+  if (!open) return null;
 
   return (
     <div className={"chat-dock " + (className ?? "")} role="dialog" aria-label="Game chat">
