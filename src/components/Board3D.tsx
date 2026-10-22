@@ -222,19 +222,31 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
     return t;
   }
 
+  // Decoding is async (the meshopt codec is WebAssembly): the first build
+  // that meets a model shows a placeholder and kicks off the decode, and the
+  // scene rebuilds once it's ready.
+  const stlPending = new Set<string>();
+  let lastProps: Props | null = null;
   function stlGeometry(data: string): THREE.BufferGeometry | null {
     if (stlGeoms.has(data)) return stlGeoms.get(data)!;
-    const m = decodeModel(data);
-    let g: THREE.BufferGeometry | null = null;
-    if (m) {
-      g = new THREE.BufferGeometry();
-      g.setAttribute("position", new THREE.BufferAttribute(m.positions, 3));
-      g.setIndex(new THREE.BufferAttribute(m.indices, 1));
-      g.computeVertexNormals();
-      g.userData.shared = true;
+    if (!stlPending.has(data)) {
+      stlPending.add(data);
+      void decodeModel(data).then((m) => {
+        stlPending.delete(data);
+        if (disposed) return;
+        let g: THREE.BufferGeometry | null = null;
+        if (m) {
+          // Smooth across gentle curves, keep hard edges (armour plates,
+          // building corners) crisp instead of smearing light across them.
+          g = creasedGeometry(m.positions, m.indices, (40 * Math.PI) / 180);
+          g.computeBoundingBox();
+          g.userData.shared = true;
+        }
+        stlGeoms.set(data, g);
+        if (lastProps) build(lastProps);
+      });
     }
-    stlGeoms.set(data, g);
-    return g;
+    return null;
   }
 
   // Board coordinates → world: centre the board on the origin.
@@ -243,6 +255,7 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
 
   function build(p: Props) {
     if (disposed) return;
+    lastProps = p;
     scene.remove(content);
     disposeGroup(content);
     content = new THREE.Group();
@@ -451,7 +464,7 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
       stlGeom.computeBoundingBox();
       const size = stlGeom.boundingBox!.getSize(new THREE.Vector3());
       const mesh = new THREE.Mesh(stlGeom, new THREE.MeshStandardMaterial({
-        color: b.color, roughness: 0.8, flatShading: true,
+        color: b.color, roughness: 0.8, side: THREE.DoubleSide, shadowSide: THREE.BackSide,
         emissive: tintColor ?? (b.selected ? "#7a5a00" : "#000"), emissiveIntensity: tintColor || b.selected ? 0.25 : 0,
       }));
       const d = b.shape === "circle" ? b.w : b.d;
@@ -514,6 +527,61 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
   }
 }
 
+// Unindexed geometry with "creased" normals: each corner averages the
+// normals of the faces around its vertex that bend less than `crease` from
+// its own face. Faces are weighted by area, so the long thin slivers a
+// simplifier leaves behind don't streak the shading.
+function creasedGeometry(pos: Float32Array, idx: ArrayLike<number>, crease: number): THREE.BufferGeometry {
+  const triCount = idx.length / 3;
+  const fn = new Float32Array(triCount * 3); // area-weighted face normals
+  const fu = new Float32Array(triCount * 3); // unit face normals
+  const vCount = pos.length / 3;
+  const deg = new Uint32Array(vCount + 1);
+  for (let t = 0; t < triCount; t++) {
+    const a = idx[t * 3]! * 3, b = idx[t * 3 + 1]! * 3, c = idx[t * 3 + 2]! * 3;
+    const ux = pos[b]! - pos[a]!, uy = pos[b + 1]! - pos[a + 1]!, uz = pos[b + 2]! - pos[a + 2]!;
+    const vx = pos[c]! - pos[a]!, vy = pos[c + 1]! - pos[a + 1]!, vz = pos[c + 2]! - pos[a + 2]!;
+    const nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx;
+    const len = Math.hypot(nx, ny, nz) || 1;
+    fn[t * 3] = nx; fn[t * 3 + 1] = ny; fn[t * 3 + 2] = nz;
+    fu[t * 3] = nx / len; fu[t * 3 + 1] = ny / len; fu[t * 3 + 2] = nz / len;
+    deg[idx[t * 3]!]!++; deg[idx[t * 3 + 1]!]!++; deg[idx[t * 3 + 2]!]!++;
+  }
+  // Faces around each vertex (CSR layout).
+  const start = new Uint32Array(vCount + 1);
+  for (let v = 0; v < vCount; v++) start[v + 1] = start[v]! + deg[v]!;
+  const fill = start.slice(0, vCount);
+  const faces = new Uint32Array(triCount * 3);
+  for (let t = 0; t < triCount; t++) for (let k = 0; k < 3; k++) faces[fill[idx[t * 3 + k]!]!++] = t;
+
+  const cos = Math.cos(crease);
+  const outPos = new Float32Array(triCount * 9);
+  const outNrm = new Float32Array(triCount * 9);
+  for (let t = 0; t < triCount; t++) {
+    for (let k = 0; k < 3; k++) {
+      const v = idx[t * 3 + k]!;
+      let sx = 0, sy = 0, sz = 0;
+      for (let j = start[v]!; j < start[v + 1]!; j++) {
+        const f = faces[j]!;
+        // Treat flipped faces as facing the same way, so stray winding
+        // doesn't punch dark spots into the shading.
+        const d = fu[f * 3]! * fu[t * 3]! + fu[f * 3 + 1]! * fu[t * 3 + 1]! + fu[f * 3 + 2]! * fu[t * 3 + 2]!;
+        if (Math.abs(d) < cos) continue;
+        const sgn = d < 0 ? -1 : 1;
+        sx += fn[f * 3]! * sgn; sy += fn[f * 3 + 1]! * sgn; sz += fn[f * 3 + 2]! * sgn;
+      }
+      const len = Math.hypot(sx, sy, sz) || 1;
+      const o = t * 9 + k * 3;
+      outPos[o] = pos[v * 3]!; outPos[o + 1] = pos[v * 3 + 1]!; outPos[o + 2] = pos[v * 3 + 2]!;
+      outNrm[o] = sx / len; outNrm[o + 1] = sy / len; outNrm[o + 2] = sz / len;
+    }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute("position", new THREE.BufferAttribute(outPos, 3));
+  g.setAttribute("normal", new THREE.BufferAttribute(outNrm, 3));
+  return g;
+}
+
 function footprintGeom(b: Block3D, h: number): THREE.BufferGeometry {
   return b.shape === "circle"
     ? new THREE.CylinderGeometry(b.w / 2, b.w / 2, h, 40)
@@ -566,7 +634,14 @@ function buildModel(pc: Piece3D, stl: (d: string) => THREE.BufferGeometry | null
   if (m.kind === "stl") {
     const geom = stl(m.data);
     if (geom) {
-      const mesh = new THREE.Mesh(geom, new THREE.MeshStandardMaterial({ color: pc.color, roughness: 0.6, metalness: 0.05 }));
+      // Double-sided: plenty of STLs have a few faces wound the wrong way,
+      // which back-face culling would show as holes.
+      const mesh = new THREE.Mesh(geom, new THREE.MeshStandardMaterial({
+        color: pc.color, roughness: 0.6, metalness: 0.05, side: THREE.DoubleSide,
+        // Cast shadows from back faces only, or a double-sided mesh shades
+        // itself with streaky shadow acne.
+        shadowSide: THREE.BackSide,
+      }));
       mesh.castShadow = true;
       mesh.receiveShadow = true;
       mesh.scale.setScalar(pc.footprint * 0.95);
