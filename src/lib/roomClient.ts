@@ -35,6 +35,12 @@ export type RoomHandlers<S> = {
   onColorDenied?: (color: PlayerColor) => void;
   /** The room belongs to a different app (Legion vs D&D). */
   onDenied?: (reason: string) => void;
+  /** A session chat line (also the echo of my own, as its receipt). */
+  onChat?: (msg: Record<string, unknown>) => void;
+  /** A page of older chat, answering requestChatHistory(). */
+  onChatHistory?: (messages: unknown[], more: boolean, before: number | null) => void;
+  /** The server dropped my chat line (e.g. sending too fast). */
+  onChatDenied?: (cid: string, reason: string, retryAfterMs?: number) => void;
   /** Any server message type this client doesn't handle itself — lets an
    * app (D&D) add its own message types without the shared client
    * knowing about them. */
@@ -216,6 +222,18 @@ export class RoomClient<S> {
       case "colorDenied":
         this.handlers.onColorDenied?.(msg.color as PlayerColor);
         break;
+      case "chat":
+        if (msg.msg && typeof msg.msg === "object") this.handlers.onChat?.(msg.msg as Record<string, unknown>);
+        break;
+      case "chatHistory":
+        this.handlers.onChatHistory?.(
+          Array.isArray(msg.messages) ? msg.messages : [], msg.more === true,
+          typeof msg.before === "number" ? msg.before : null,
+        );
+        break;
+      case "chatDenied":
+        this.handlers.onChatDenied?.(String(msg.cid ?? ""), String(msg.reason ?? ""), typeof msg.retryAfterMs === "number" ? msg.retryAfterMs : undefined);
+        break;
       default:
         this.handlers.onAppMessage?.(msg);
     }
@@ -260,6 +278,19 @@ export class RoomClient<S> {
   /** Send an app-specific message (only meaningful when proto >= 2). */
   sendApp(msg: { t: string } & Record<string, unknown>): void {
     this.raw(msg);
+  }
+
+  /** Post a line to the session chat. `cid` lets the sender match the
+   * server's echo to its pending copy. False if the socket isn't open. */
+  sendChat(text: string, cid: string): boolean {
+    if (!this.welcomed || !this.ws || this.ws.readyState !== WebSocket.OPEN) return false;
+    this.raw({ t: "chat", text, cid });
+    return true;
+  }
+
+  /** Ask for chat older than `before` (a seq), or the newest when null. */
+  requestChatHistory(before: number | null, limit = 100): void {
+    this.raw(before == null ? { t: "chatHistory", limit } : { t: "chatHistory", before, limit });
   }
 
   setName(name: string): void {

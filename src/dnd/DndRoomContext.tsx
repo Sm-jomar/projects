@@ -18,6 +18,7 @@ import {
 } from "./dndProtocol";
 import { bestCodeFor } from "./campaignKeyring";
 import type { DndToken } from "./dndTabletop";
+import { useSessionChat } from "../components/useSessionChat";
 
 const NAME_KEY = "dnd.playername";
 const COLOR_KEY = "dnd.playercolor";
@@ -88,6 +89,7 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   const hostCampaignRef = useRef<string | null>(null);
 
   const readOnly = online?.status === "open" && online.you?.color === "spectator";
+  const chat = useSessionChat("dnd", () => roomRef.current, online?.code ?? null, online?.you ?? null, online?.status === "open");
   useEffect(() => { readOnlyRef.current = !!readOnly; }, [readOnly]);
 
   const actor: LogActor = online?.status === "open" && online.you
@@ -183,11 +185,13 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
 
   function buildHandlers(): RoomHandlers<DndTabletopState> {
     return {
+      ...chat.handlers,
       onStatus: (status, detail) => setOnline((o) => (o ? { ...o, status, error: detail } : o)),
       onDenied: () => setOnline((o) => (o ? { ...o, status: "error", error: "That code belongs to a Legion game. Use a different code." } : o)),
       onWelcome: (you, remoteState, peers, extra) => {
         const client = roomRef.current;
         const code = client?.code ?? "";
+        chat.onWelcome(code, extra);
         setOnline({ status: "open", code, you, peers, isPrivate: client?.isPrivate ?? false });
         const p = typeof extra.proto === "number" ? extra.proto : 1;
         setProto(p);
@@ -328,6 +332,7 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     setOutgoingRequests([]);
     setCampaignInvites([]);
     setDmNotice(null);
+    chat.reset();
     roomRef.current?.close();
     roomRef.current = null;
     remoteEchoRef.current = null;
@@ -493,6 +498,7 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     sendRollRequest, outgoingRequests, clearOutgoingRequests: () => setOutgoingRequests([]),
     rollRequests, dismissRollRequest: (id) => setRollRequests((l) => l.filter((x) => x.id !== id)),
     staged, stageTokens, revealStaged, discardStaged,
+    chat,
   };
   return <DndRoomCtx.Provider value={value}>{children}</DndRoomCtx.Provider>;
 }

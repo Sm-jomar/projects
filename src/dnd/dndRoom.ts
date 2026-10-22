@@ -7,6 +7,7 @@ import type {
 } from "./dndProtocol";
 import type { DndCharacter } from "./dndTypes";
 import type { LogActor } from "../lib/auditLog";
+import type { SessionChat } from "../components/useSessionChat";
 
 export type OnlineState = {
   status: ConnStatus; code: string; you: Peer | null; peers: Peer[]; error?: string;
@@ -114,6 +115,8 @@ export type DndRoomValue = {
   stageTokens: (tokens: DndToken[]) => void;
   revealStaged: (id: string | "all") => void;
   discardStaged: (id: string | "all") => void;
+  /** Real-time chat for everyone in the game (kept across tab switches). */
+  chat: SessionChat;
 };
 
 export const DndRoomCtx = createContext<DndRoomValue | null>(null);

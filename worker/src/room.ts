@@ -56,7 +56,15 @@ type ClientMsg =
   | { t: "linkCampaign"; code?: unknown }
   | { t: "unlinkCampaign" }
   | { t: "rollRequest"; to?: unknown; req?: unknown }
-  | { t: "campaignInvite"; code?: unknown; to?: unknown };
+  | { t: "campaignInvite"; code?: unknown; to?: unknown }
+  | { t: "chat"; text?: unknown; cid?: unknown }
+  | { t: "chatHistory"; before?: unknown; limit?: unknown };
+
+// A chat line as stored and sent. `from` is a snapshot of the sender at
+// send time, so the log still reads right after they rename or leave.
+type ChatRole = "player" | "dm" | "spectator";
+type ChatAuthor = { id: string; name: string; color: string; role: ChatRole; kind: "human" };
+type ChatMessage = { seq: number; ts: number; from: ChatAuthor; text: string; cid?: string };
 
 const STATE_KEY = "board-state";
 const APP_KEY = "room-app";
@@ -82,6 +90,17 @@ const MAX_DICE_BYTES = 8_000;
 // only their seat token (or a valid owner/Co-DM code) can take it.
 const DM_GRACE_MS = 90_000;
 const PROTOCOL = 2;
+// Session chat: stored one message per key ("chat:<seq>", zero-padded so
+// keys sort in order), the newest CHAT_CAP kept.
+const CHAT_PREFIX = "chat:";
+const CHAT_SEQ_KEY = "chat-seq";
+const CHAT_CAP = 1000;
+const CHAT_MAX_CHARS = 1000;
+const CHAT_WELCOME_COUNT = 50;
+const CHAT_PAGE_MAX = 200;
+// Per-connection flood guard: at most this many messages per window.
+const CHAT_RATE_COUNT = 8;
+const CHAT_RATE_WINDOW_MS = 10_000;
 
 // Legion's two exclusive sides; D&D has no exclusive colors.
 const LEGION_EXCLUSIVE = new Set(["blue", "red"]);
@@ -98,6 +117,13 @@ function randomToken(): string {
   const b = new Uint8Array(18);
   crypto.getRandomValues(b);
   return Array.from(b, (x) => x.toString(16).padStart(2, "0")).join("");
+}
+
+const chatKey = (seq: number): string => CHAT_PREFIX + String(seq).padStart(9, "0");
+
+function chatRoleOf(att: Attachment): ChatRole {
+  if (att.dm) return "dm";
+  return att.color === "spectator" ? "spectator" : "player";
 }
 
 function peerOf(att: Attachment): Peer {
@@ -178,6 +204,7 @@ export class RoomDO extends DurableObject<RoomEnv> {
     const state = await this.ctx.storage.get<unknown>(STATE_KEY);
     const isPrivate = (await this.ctx.storage.get<boolean>(PRIVATE_KEY)) ?? false;
     const campaign = app === "dnd" ? (await this.ctx.storage.get<LinkedCampaign>(CAMPAIGN_KEY)) ?? null : null;
+    const chat = await this.chatPage(null, CHAT_WELCOME_COUNT);
     this.send(server, {
       t: "welcome",
       you: peerOf(att),
@@ -186,6 +213,8 @@ export class RoomDO extends DurableObject<RoomEnv> {
       campaign,
       state: state ?? null,
       peers: this.peers(),
+      chat: chat.messages,
+      chatMore: chat.more,
     });
     // Notify everyone (including the joiner) of the updated roster. The
     // new socket is already in getWebSockets() at this point, so no
@@ -286,6 +315,18 @@ export class RoomDO extends DurableObject<RoomEnv> {
         this.send(ws, { t: "pong" });
         break;
 
+      // --- Session chat (both apps) -------------------------------------
+      case "chat":
+        await this.onChat(ws, att, msg);
+        break;
+      case "chatHistory": {
+        const before = typeof msg.before === "number" && Number.isFinite(msg.before) ? Math.floor(msg.before) : null;
+        const limit = typeof msg.limit === "number" ? Math.max(1, Math.min(CHAT_PAGE_MAX, Math.floor(msg.limit))) : 100;
+        const page = await this.chatPage(before, limit);
+        this.send(ws, { t: "chatHistory", before, messages: page.messages, more: page.more });
+        break;
+      }
+
       // --- D&D DM features (protocol 2) ---------------------------------
       case "claimDm":
         if (att.app !== "dnd") return this.opDenied(ws, msg.t, "not-dnd");
@@ -366,6 +407,51 @@ export class RoomDO extends DurableObject<RoomEnv> {
   async webSocketError(ws: WebSocket): Promise<void> {
     await this.onSocketGone(ws);
   }
+
+  // --- Session chat -----------------------------------------------------
+
+  private async onChat(ws: WebSocket, att: Attachment, msg: { text?: unknown; cid?: unknown }): Promise<void> {
+    // Collapse runs of blank lines and trim; an empty message is dropped.
+    const text = (typeof msg.text === "string" ? msg.text : "")
+      .replace(/\r\n?/g, "\n").replace(/\n{3,}/g, "\n\n").trim().slice(0, CHAT_MAX_CHARS);
+    const cid = str(msg.cid, 40);
+    if (!text) return;
+
+    const now = Date.now();
+    const recent = (this.chatSends.get(att.id) ?? []).filter((t) => now - t < CHAT_RATE_WINDOW_MS);
+    if (recent.length >= CHAT_RATE_COUNT) {
+      this.send(ws, { t: "chatDenied", cid, reason: "rate", retryAfterMs: CHAT_RATE_WINDOW_MS - (now - recent[0]!) });
+      return;
+    }
+    recent.push(now);
+    this.chatSends.set(att.id, recent);
+
+    // Identity comes from the socket, never from the message.
+    const seq = ((await this.ctx.storage.get<number>(CHAT_SEQ_KEY)) ?? 0) + 1;
+    const entry: ChatMessage = {
+      seq, ts: now, text,
+      from: { id: att.id, name: att.name, color: att.color, role: chatRoleOf(att), kind: "human" },
+    };
+    if (cid) entry.cid = cid;
+    await this.ctx.storage.put({ [CHAT_SEQ_KEY]: seq, [chatKey(seq)]: entry });
+    if (seq > CHAT_CAP) await this.ctx.storage.delete(chatKey(seq - CHAT_CAP));
+    // Everyone, sender included: the echo is the sender's delivery receipt.
+    this.broadcast({ t: "chat", msg: entry }, null);
+  }
+
+  // Up to `limit` messages older than `before` (or the newest, when null),
+  // oldest first, and whether any older ones remain.
+  private async chatPage(before: number | null, limit: number): Promise<{ messages: ChatMessage[]; more: boolean }> {
+    const opts: DurableObjectListOptions = { prefix: CHAT_PREFIX, reverse: true, limit: limit + 1 };
+    if (before != null) opts.end = chatKey(Math.max(0, before));
+    const rows = await this.ctx.storage.list<ChatMessage>(opts);
+    const messages = [...rows.values()];
+    const more = messages.length > limit;
+    return { messages: messages.slice(0, limit).reverse(), more };
+  }
+
+  /** Recent chat send times per connection id (in-memory flood guard). */
+  private chatSends = new Map<string, number[]>();
 
   // --- DM seat ----------------------------------------------------------
 

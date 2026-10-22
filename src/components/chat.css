@@ -1,0 +1,160 @@
+/* Session chat dock, shared by the Legion and D&D tabletops. The host sets
+   --chat-accent (Legion gold, D&D red) and positions it via a class. */
+.chat-dock {
+  --chat-accent: var(--accent);
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 40;
+  width: 340px;
+  max-width: calc(100vw - 32px);
+  height: 440px;
+  max-height: calc(100% - 28px);
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+.chat-dock.collapsed {
+  width: auto;
+  height: auto;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  overflow: visible;
+}
+.chat-dock.dnd { --chat-accent: var(--dnd-accent-2); }
+.chat-dock.fixed { position: fixed; }
+
+.chat-dock-toggle {
+  position: relative;
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-weight: 600;
+  background: var(--panel-2);
+  border-color: var(--chat-accent);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+.chat-unread {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 10px;
+  background: var(--chat-accent);
+  color: #111;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 20px;
+  text-align: center;
+}
+
+.chat-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 8px 7px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel-2);
+}
+.chat-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+.chat-offline { color: var(--muted); font-weight: 400; }
+.chat-head-actions { display: flex; gap: 4px; align-items: center; }
+.chat-menu-wrap { position: relative; }
+.chat-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 4px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+.chat-menu button { background: transparent; border: none; text-align: left; padding: 7px 10px; }
+
+.chat-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.chat-older { align-self: center; margin-bottom: 6px; }
+.chat-empty { margin: auto; text-align: center; padding: 0 10px; }
+
+.chat-line { padding: 3px 0; }
+.chat-line:not(.grouped) { margin-top: 6px; }
+.chat-line.grouped { padding-top: 0; }
+.chat-line-head { display: flex; align-items: baseline; gap: 6px; font-size: 12px; }
+.chat-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; transform: translateY(-1px); }
+.chat-badge {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0 4px;
+  color: var(--muted);
+}
+.chat-badge.ai { border-color: var(--chat-accent); color: var(--chat-accent); }
+.chat-time { margin-left: auto; color: var(--muted); font-size: 11px; }
+.chat-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+  line-height: 1.4;
+  padding-left: 14px;
+}
+.chat-line.mine .chat-text { color: #f3f4f8; }
+.chat-line.pending .chat-text { opacity: 0.55; }
+.chat-line.failed .chat-text { opacity: 0.55; text-decoration: line-through; }
+.chat-failed { color: var(--danger); font-size: 11px; padding-left: 14px; }
+
+.chat-input {
+  border-top: 1px solid var(--border);
+  padding: 8px;
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.chat-input textarea {
+  flex: 1;
+  min-width: 0;
+  resize: none;
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+.chat-input textarea:focus { outline: none; border-color: var(--chat-accent); }
+.chat-input button[type="submit"] { border-color: var(--chat-accent); }
+.chat-notice { flex-basis: 100%; font-size: 12px; color: var(--chat-accent); }
+
+.chat-saved { list-style: none; margin: 0; padding: 6px; overflow-y: auto; flex: 1; }
+.chat-saved li { display: flex; gap: 6px; align-items: center; margin-bottom: 4px; }
+.chat-saved-open {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  text-align: left;
+}
+
+@media (max-width: 600px) {
+  div.chat-dock:not(.collapsed) { right: 8px; left: 8px; width: auto; bottom: 8px; height: 60vh; }
+}
