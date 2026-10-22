@@ -458,6 +458,10 @@ export function DndTabletop() {
                          onChange={(e) => updateTerrain(selectedTerrain.id, { rotation: Number(e.target.value) || 0 })} />
                 </label>
               </div>
+              <label className="dnd-tt-field" title="Lift the block off the ground: an upper floor, a balcony, a floating rock. Tokens under it stay on the ground; set a token's elevation to this height to stand on it.">Floats (ft above ground)
+                <input type="number" min={0} max={500} step={5} value={selectedTerrain.float ?? 0}
+                       onChange={(e) => updateTerrain(selectedTerrain.id, { float: Math.max(0, Number(e.target.value) || 0) || undefined })} />
+              </label>
               <label className="dnd-tt-field">Color
                 <input type="color" value={selectedTerrain.color} onChange={(e) => updateTerrain(selectedTerrain.id, { color: e.target.value })} />
               </label>
@@ -521,7 +525,7 @@ export function DndTabletop() {
                 <label className="dnd-tt-field">Initiative
                   <input type="number" value={selected.initiative ?? ""} onChange={(e) => updateToken(selected.id, { initiative: e.target.value === "" ? undefined : Number(e.target.value) })} />
                 </label>
-                <label className="dnd-tt-field" title="Flying height in feet — the 3D view lifts the token this high">Flying (ft)
+                <label className="dnd-tt-field" title="Height above the ground in feet: flying, or standing on a floating floor or platform that starts at or below this height">Elevation (ft)
                   <input type="number" min={0} step={5} value={selected.elevation ?? 0}
                          onChange={(e) => updateToken(selected.id, { elevation: Math.max(0, Number(e.target.value) || 0) || undefined })} />
                 </label>
@@ -787,7 +791,7 @@ function DungeonCanvas({ state, fog, selectedId, onSelect, onMoveToken, onMoveTe
                   stroke={sel ? "#ffd24a" : "#0009"} strokeWidth={(sel ? 3 : 1.5) / view.scale} />}
         <text x={cx} y={cy + 4} textAnchor="middle" fontSize={11} fill="#fff" fillOpacity={0.85}
               pointerEvents="none" paintOrder="stroke" stroke="#000" strokeWidth={2}>
-          {(t.modelStl ? "▲ " : "") + (t.label || t.kind)} · {t.height}ft
+          {(t.modelStl ? "▲ " : "") + (t.label || t.kind)} · {t.height}ft{t.float ? ` ↑${t.float}ft` : ""}
         </text>
       </g>
     );
