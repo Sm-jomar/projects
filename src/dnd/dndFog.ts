@@ -52,12 +52,14 @@ export function pointInPolygon(p: Pt, poly: Pt[]): boolean {
 export const tokenCenter = (t: DndToken): Pt => ({ x: t.x + t.size / 2, y: t.y + t.size / 2 });
 
 // Terrain taller than the viewer's eyes blocks sight, so a flyer looks
-// over walls and a 5 ft boulder doesn't hide anything. A block the viewer
-// stands inside (or on) never blocks them.
+// over walls and a 5 ft boulder doesn't hide anything. Floating terrain
+// only blocks eyes level with it: a viewer sees under a high platform.
+// A block the viewer stands inside (or on) never blocks them.
 function blockers(terrain: DndTerrain[], eye: Pt, eyeFt: number): Seg[] {
   const out: Seg[] = [];
   for (const t of terrain) {
-    if (t.height <= eyeFt) continue;
+    const base = t.float ?? 0;
+    if (base + t.height <= eyeFt || base > eyeFt) continue;
     const poly = terrainOutline(t);
     if (pointInPolygon(eye, poly)) continue;
     for (let i = 0; i < poly.length; i++) {

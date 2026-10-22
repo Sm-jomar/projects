@@ -1003,7 +1003,7 @@ export function TabletopPanel({ onClose }: Props) {
                         <option value="red">Red</option>
                       </select>
                     </label>
-                    <label title="How high the unit hovers or flies, in inches. It clears terrain this tall or shorter (see the 3D view).">
+                    <label title="How high the unit hovers or flies, in inches. It clears terrain this tall or shorter, and stands on floating terrain it reaches (see the 3D view).">
                       Hover / fly height (in)
                       <input type="number" min={0} max={24} step={0.5} value={selectedToken.elevation ?? 0}
                              onChange={(e) => updateSelectedToken({ elevation: Math.max(0, Number(e.target.value) || 0) || undefined })} />
@@ -1070,6 +1070,11 @@ export function TabletopPanel({ onClose }: Props) {
                       Height (in)
                       <input type="number" min={0} max={24} step={0.25} value={terrainElevation(selectedTerrain)}
                              onChange={(e) => updateSelectedTerrain({ elevation: Math.max(0, Number(e.target.value) || 0) })} />
+                    </label>
+                    <label title="Lift the piece off the table, in inches: floating rocks, gantries, upper floors. Units under it stay on the ground; a unit hovering at this height or higher stands on top (3D view).">
+                      Floats (in)
+                      <input type="number" min={0} max={48} step={0.25} value={selectedTerrain.float ?? 0}
+                             onChange={(e) => updateSelectedTerrain({ float: Math.max(0, Number(e.target.value) || 0) || undefined })} />
                     </label>
                     <ModelField
                       model={selectedTerrain.modelId ? state.models?.[selectedTerrain.modelId] : undefined}

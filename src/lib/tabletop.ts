@@ -31,6 +31,9 @@ export type Terrain = {
   /** How tall the piece stands, in inches (3D view + hover clearance).
    * Undefined = the default for its kind (TERRAIN_ELEVATION). */
   elevation?: number;
+  /** Floats this many inches off the table (3D view): floating rocks,
+   * gantries, upper floors. Undefined / 0 = on the ground. */
+  float?: number;
   /** Uploaded STL in TabletopState.models, shown in 3D instead of the block. */
   modelId?: string;
 };
@@ -53,6 +56,13 @@ export const TERRAIN_ELEVATION: Record<Terrain["kind"], number> = {
 
 export function terrainElevation(t: Terrain): number {
   return t.elevation ?? TERRAIN_ELEVATION[t.kind];
+}
+
+/** Whether a unit flying at `fly` inches gets past this terrain. Floating
+ * terrain never stops it: it passes underneath, or lands on top once it
+ * reaches the underside. Grounded terrain must be no taller than `fly`. */
+export function terrainClears(t: Terrain, fly: number): boolean {
+  return (t.float ?? 0) > 0 || terrainElevation(t) <= fly;
 }
 
 export type FactionColor = "rebels" | "imperials" | "republic" | "separatists" | "mercenary" | "neutral";

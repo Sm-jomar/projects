@@ -57,6 +57,10 @@ export type Block3D = {
   d: number;
   rotation: number;
   height: number;
+  /** Floats this far above the table (board units): a floating rock, a
+   * balcony, an upper floor. Pieces under it stay on the ground; a piece
+   * lifted to its underside or higher stands on top of it. */
+  base?: number;
   color: string;
   edge: string;
   style?: "solid" | "forest" | "objective";
@@ -328,8 +332,10 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
     const unit = Math.max(p.width, p.depth) / 400; // hairline thickness
     for (const pc of p.pieces) {
       const g = new THREE.Group();
-      const standOn = surfaceUnder(p.blocks, pc.x, pc.y);
-      const baseY = standOn + pc.lift;
+      // standOn: the surface the piece rests on (or flies above); baseY:
+      // the bottom of its base.
+      const { standOn, baseY } = footing(p.blocks, pc.x, pc.y, pc.lift);
+      const flyH = baseY - standOn;
       g.position.set(wx(pc.x), 0, wz(pc.y));
       g.rotation.y = -((pc.facing ?? 0) * Math.PI) / 180;
       const sel = pc.id === p.selectedId;
@@ -375,12 +381,12 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
       }
 
       // Hover / flight: clear stand down to the surface + ground shadow ring.
-      if (pc.lift > 0.001) {
+      if (flyH > 0.001) {
         const stand = new THREE.Mesh(
-          new THREE.CylinderGeometry(r * 0.08, r * 0.08, pc.lift, 12),
+          new THREE.CylinderGeometry(r * 0.08, r * 0.08, flyH, 12),
           new THREE.MeshStandardMaterial({ color: "#bfe3ff", transparent: true, opacity: 0.35, roughness: 0.1 }),
         );
-        stand.position.y = standOn + pc.lift / 2;
+        stand.position.y = standOn + flyH / 2;
         g.add(stand);
         const ring = new THREE.Mesh(
           new THREE.RingGeometry(r * 0.85, r, 40),
@@ -454,8 +460,29 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
   function buildBlock(b: Block3D): THREE.Object3D {
     const g = new THREE.Group();
     const cx = wx(b.x + b.w / 2), cz = wz(b.y + (b.shape === "circle" ? b.w : b.d) / 2);
-    g.position.set(cx, 0, cz);
+    const base = Math.max(0, b.base ?? 0);
+    g.position.set(cx, base, cz);
     g.rotation.y = -(b.rotation * Math.PI) / 180;
+    if (base > 0.001) {
+      // A floating piece leaves a faint footprint on the table so you can
+      // tell where it hangs, and what's underneath it.
+      const foot = new THREE.Mesh(
+        b.shape === "circle" ? new THREE.CircleGeometry(b.w / 2, 40) : new THREE.PlaneGeometry(b.w, b.d),
+        new THREE.MeshBasicMaterial({ color: "#000", transparent: true, opacity: 0.22, depthWrite: false }),
+      );
+      foot.rotation.x = -Math.PI / 2;
+      foot.position.y = 0.015 - base;
+      foot.renderOrder = 1;
+      g.add(foot);
+      const ring = new THREE.LineSegments(
+        new THREE.EdgesGeometry(b.shape === "circle" ? new THREE.CircleGeometry(b.w / 2, 40) : new THREE.PlaneGeometry(b.w, b.d)),
+        new THREE.LineDashedMaterial({ color: b.edge, dashSize: 0.4, gapSize: 0.3, transparent: true, opacity: 0.6 }),
+      );
+      ring.computeLineDistances();
+      ring.rotation.x = -Math.PI / 2;
+      ring.position.y = 0.02 - base;
+      g.add(ring);
+    }
     const tintColor = b.tint === "clear" ? "#4ac86a" : b.tint === "block" ? "#e2554a" : null;
     const h = Math.max(0.02, b.height);
 
@@ -614,24 +641,39 @@ function outline(b: Block3D, h: number, color: string): THREE.Object3D {
   return l;
 }
 
-// Top of the tallest standable terrain under a board point (0 = table).
-function surfaceUnder(blocks: Block3D[], x: number, y: number): number {
-  let top = 0;
-  for (const b of blocks) {
-    if (!b.standable) continue;
-    if (b.shape === "circle") {
-      const r = b.w / 2;
-      if (Math.hypot(x - (b.x + r), y - (b.y + r)) <= r) top = Math.max(top, b.height);
-    } else {
-      const cx = b.x + b.w / 2, cy = b.y + b.d / 2;
-      const a = (-b.rotation * Math.PI) / 180;
-      const dx = x - cx, dy = y - cy;
-      const lx = dx * Math.cos(a) - dy * Math.sin(a);
-      const ly = dx * Math.sin(a) + dy * Math.cos(a);
-      if (Math.abs(lx) <= b.w / 2 && Math.abs(ly) <= b.d / 2) top = Math.max(top, b.height);
-    }
+function blockContains(b: Block3D, x: number, y: number): boolean {
+  if (b.shape === "circle") {
+    const r = b.w / 2;
+    return Math.hypot(x - (b.x + r), y - (b.y + r)) <= r;
   }
-  return top;
+  const cx = b.x + b.w / 2, cy = b.y + b.d / 2;
+  const a = (-b.rotation * Math.PI) / 180;
+  const dx = x - cx, dy = y - cy;
+  const lx = dx * Math.cos(a) - dy * Math.sin(a);
+  const ly = dx * Math.sin(a) + dy * Math.cos(a);
+  return Math.abs(lx) <= b.w / 2 && Math.abs(ly) <= b.d / 2;
+}
+
+// Where a piece at a board point stands. Grounded standable terrain
+// (buildings, rocks) lifts it onto its roof as before. Floating terrain
+// (floors, platforms, balconies) only catches a piece lifted to its
+// underside or higher, so a piece can stand under it, on it, or on the
+// floor above. `lift` is the piece's height above the grounded surface.
+function footing(blocks: Block3D[], x: number, y: number, lift: number): { standOn: number; baseY: number } {
+  let ground = 0;
+  for (const b of blocks) {
+    if (b.standable && !((b.base ?? 0) > 0) && blockContains(b, x, y)) ground = Math.max(ground, b.height);
+  }
+  const alt = ground + lift;
+  let floor = ground;
+  for (const b of blocks) {
+    const base = b.base ?? 0;
+    if (!b.standable || !(base > 0) || base > alt + 1e-6 || !blockContains(b, x, y)) continue;
+    floor = Math.max(floor, base + b.height);
+  }
+  // On a floor, the piece stands on it (any lift up to it is used up
+  // getting there); anything above its top is still flight.
+  return { standOn: floor, baseY: Math.max(alt, floor) };
 }
 
 // --- Piece models -----------------------------------------------------------
