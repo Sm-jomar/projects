@@ -33,7 +33,8 @@ export type DndToken = {
   avatarUrl?: string;
   /** Campaign NPC this token was placed from (DM screen). */
   npcId?: string;
-  /** Flying height in feet (3D view). 0 / undefined = on the ground. */
+  /** Height above the ground in feet (3D view): flying, or standing on a
+   * floating floor that starts at or below it. 0 / undefined = on the ground. */
   elevation?: number;
   /** Uploaded STL miniature, simplified + encoded (see lib/stlModel). */
   modelStl?: string;
@@ -62,6 +63,10 @@ export type DndTerrain = {
   rotation: number; // degrees
   /** Height in feet. */
   height: number;
+  /** Floats this many feet off the ground: an upper floor, a balcony, a
+   * floating rock. Tokens under it stay on the ground; a token whose
+   * elevation reaches it stands on top. Undefined / 0 = on the ground. */
+  float?: number;
   color: string;
   /** Uploaded STL (lib/stlModel encoding) shown instead of the block. */
   modelStl?: string;
