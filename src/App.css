@@ -2230,5 +2230,43 @@ input, select {
   .board3d-hint { display: none; }
 }
 .board3d-host { position: relative; }
+.board3d:focus { outline: none; }
+.board3d-move {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.board3d-move > .ghost-btn { background: rgba(11, 13, 18, 0.85); }
+.board3d-move > .ghost-btn.active { border-color: #ffd24a; color: #ffd24a; }
+.board3d-dpad {
+  display: grid;
+  grid-template-columns: repeat(3, 34px);
+  grid-auto-rows: 34px;
+  gap: 3px;
+  padding: 4px;
+  border-radius: 8px;
+  background: rgba(11, 13, 18, 0.75);
+}
+.board3d-dpad .ghost-btn { padding: 0; font-size: 16px; line-height: 1; background: rgba(30, 34, 44, 0.9); }
+.board3d-measure {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: rgba(11, 13, 18, 0.88);
+  border: 1px solid #ffd24a;
+  color: #ffe9a8;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.board3d-measure[data-tone="dash"] { border-color: #ffb347; color: #ffd3a0; }
+.board3d-measure[data-tone="over"] { border-color: #ff6b5e; color: #ffb4ad; }
 .board3d-upload { pointer-events: auto; margin-left: 8px; }
 .tt-model-field { display: flex; flex-direction: column; gap: 4px; }

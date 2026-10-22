@@ -1,9 +1,9 @@
 // Legion board → 3D scene. Lazy-loaded so three.js stays out of the main
 // bundle until someone flips the board into 3D.
 
-import Board3D, { type Block3D, type FigureStyle, type Piece3D, type PieceModel } from "./Board3D";
+import Board3D, { type Block3D, type FigureStyle, type MoveMeasure, type Piece3D, type PieceModel } from "./Board3D";
 import {
-  deploymentZones, terrainElevation, FACTION_STROKE,
+  deploymentZones, terrainElevation, FACTION_STROKE, TEMPLATE_SEGMENT_INCHES,
   type FactionColor, type TabletopState, type Terrain, type Token,
 } from "../lib/tabletop";
 import { unitById } from "../data/catalog";
@@ -47,13 +47,30 @@ function modelFor(tk: Token): { model: PieceModel; height: number } {
   return { model: { kind: "figure", style }, height: tk.size * 1.3 };
 }
 
-export default function Legion3D({ state, selectedId, onSelect, showGrid, onUploadModel }: {
+// How far a unit moved against its speed: a full move is one movement
+// template (speed × segment), up to double is a second move.
+function measureMove(tk: Token | undefined, dx: number, dy: number): MoveMeasure {
+  const dist = Math.hypot(dx, dy);
+  const speed = tk?.unitId ? unitById(tk.unitId)?.speed : undefined;
+  const text = `${(Math.round(dist * 10) / 10).toFixed(1)}"`;
+  if (!speed) return { label: text, tone: "ok" };
+  const full = speed * TEMPLATE_SEGMENT_INCHES;
+  if (dist <= full + 1e-6) return { label: `${text} · speed ${speed} (${full}")`, tone: "ok" };
+  if (dist <= full * 2 + 1e-6) return { label: `${text} · 2 moves (${full * 2}")`, tone: "dash" };
+  return { label: `${text} · out of range`, tone: "over" };
+}
+
+export default function Legion3D({ state, selectedId, onSelect, showGrid, onUploadModel, onMoveToken, step }: {
   state: TabletopState;
   selectedId: string | null;
   onSelect: (id: string | null) => void;
   showGrid: boolean;
   /** Opens the STL picker for the selected unit/terrain (absent = read-only). */
   onUploadModel?: () => void;
+  /** Move a token's top-left to (x, y) inches (absent = read-only). */
+  onMoveToken?: (id: string, x: number, y: number) => void;
+  /** D-pad step in inches. */
+  step?: number;
 }) {
   const model = (id?: string) => (id ? state.models?.[id]?.data : undefined);
   const selected = state.tokens.find((t) => t.id === selectedId);
@@ -116,6 +133,12 @@ export default function Legion3D({ state, selectedId, onSelect, showGrid, onUplo
         pieces={pieces}
         selectedId={selectedId}
         onSelect={onSelect}
+        moveStep={step}
+        onMove={onMoveToken && ((id, x, y) => {
+          const tk = state.tokens.find((t) => t.id === id);
+          if (tk) onMoveToken(id, x - tk.size / 2, y - tk.size / 2);
+        })}
+        measure={(id, dx, dy) => measureMove(state.tokens.find((t) => t.id === id), dx, dy)}
       />
       {(selected || selTerrain) && (
         <div className="board3d-info small">

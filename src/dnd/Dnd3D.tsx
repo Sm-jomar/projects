@@ -2,9 +2,9 @@
 // bundle until someone flips the board into 3D. Board units are grid
 // cells (5 ft); token elevation is stored in feet.
 
-import Board3D, { type Block3D, type Piece3D } from "../components/Board3D";
+import Board3D, { type Block3D, type MoveMeasure, type Piece3D } from "../components/Board3D";
 import { useMemo } from "react";
-import type { DndTabletopState } from "./dndTabletop";
+import type { DndTabletopState, DndToken } from "./dndTabletop";
 import { terrainSeen, type FogView, type Pt } from "./dndFog";
 
 const FEET_PER_CELL = 5;
@@ -36,13 +36,27 @@ function fogCanvas(fog: FogView, cols: number, rows: number): HTMLCanvasElement 
   return c;
 }
 
-export default function Dnd3D({ state, selectedId, onSelect, fog, onUploadModel }: {
+// Grid movement the 5e way: every square, diagonal or not, is 5 ft. Past
+// the token's speed it's a Dash (up to double), then out of range.
+function measureMove(tk: DndToken | undefined, dx: number, dy: number): MoveMeasure {
+  const ft = Math.round(Math.max(Math.abs(dx), Math.abs(dy))) * FEET_PER_CELL;
+  const speed = tk?.speed ?? 30;
+  if (!speed) return { label: `${ft} ft`, tone: "ok" };
+  return {
+    label: ft <= speed ? `${ft} ft / ${speed} ft` : ft <= speed * 2 ? `${ft} ft · Dash (${speed * 2} ft)` : `${ft} ft · out of range`,
+    tone: ft <= speed ? "ok" : ft <= speed * 2 ? "dash" : "over",
+  };
+}
+
+export default function Dnd3D({ state, selectedId, onSelect, fog, onUploadModel, onMoveToken }: {
   state: DndTabletopState;
   selectedId: string | null;
   onSelect: (id: string | null) => void;
   fog?: FogView | null;
   /** Opens the STL picker for the selected token/terrain (absent = read-only). */
   onUploadModel?: () => void;
+  /** Move a token's top-left to (x, y) cells (absent = read-only). */
+  onMoveToken?: (id: string, x: number, y: number) => void;
 }) {
   const { cols, rows } = state.map;
   const overlay = useMemo(() => (fog ? fogCanvas(fog, cols, rows) : null), [fog, cols, rows]);
@@ -93,6 +107,14 @@ export default function Dnd3D({ state, selectedId, onSelect, fog, onUploadModel 
         pieces={pieces}
         selectedId={selectedId}
         onSelect={onSelect}
+        onMove={onMoveToken && ((id, x, y) => {
+          const tk = state.tokens.find((t) => t.id === id);
+          if (!tk) return;
+          // Snap to the half cell, like dragging on the 2D map.
+          const snap = (n: number) => Math.round(n * 2) / 2;
+          onMoveToken(id, snap(x - tk.size / 2), snap(y - tk.size / 2));
+        })}
+        measure={(id, dx, dy) => measureMove(state.tokens.find((t) => t.id === id), dx, dy)}
       />
       {(selected || selTerrain) && (
         <div className="board3d-info small">

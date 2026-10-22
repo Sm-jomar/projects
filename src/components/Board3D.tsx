@@ -1,15 +1,16 @@
 // Semi-3D view of a tabletop, shared by the Legion and D&D boards.
 //
-// The 2D boards stay the place where pieces are moved; this view is for
-// reading height and depth: terrain is extruded to its set height, pieces
-// stand on whatever they're on top of, and hovering/flying pieces float at
-// their elevation on a clear stand with a shadow on the ground beneath.
+// Terrain is extruded to its set height, pieces stand on whatever they're on
+// top of, and hovering/flying pieces float at their elevation on a clear
+// stand with a shadow on the ground beneath. With the camera locked, pieces
+// can be dragged right here; the D-pad (or arrow keys) steps the selected
+// piece, and a floating readout shows how far it has moved this move.
 //
 // Coordinates: the caller works in its own board units (inches for Legion,
 // grid cells for D&D) with x to the right and y down the board. Here that
 // maps to three.js x and z, with y up.
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { decodeModel } from "../lib/stlModel";
@@ -88,7 +89,16 @@ type Props = {
   pieces: Piece3D[];
   selectedId: string | null;
   onSelect: (id: string | null) => void;
+  /** Move a piece so its centre lands on (x, y), board units. Absent = view only. */
+  onMove?: (id: string, x: number, y: number) => void;
+  /** D-pad / arrow-key step, board units (default 1). */
+  moveStep?: number;
+  /** Describe a move of (dx, dy) board units from where the piece started;
+   * tone colours the readout (dash = past its speed but within double). */
+  measure?: (id: string, dx: number, dy: number) => MoveMeasure;
 };
+
+export type MoveMeasure = { label: string; tone: "ok" | "dash" | "over" };
 
 export default function Board3D(props: Props) {
   const hostRef = useRef<HTMLDivElement | null>(null);
@@ -111,9 +121,51 @@ export default function Board3D(props: Props) {
     ctxRef.current?.build(props);
   });
 
+  const [locked, setLocked] = useState(false);
+  useEffect(() => { ctxRef.current?.setLocked(locked); }, [locked]);
+
+  const selected = props.onMove ? props.pieces.find((pc) => pc.id === props.selectedId) : undefined;
+  // Step the selected piece. Directions follow the camera, snapped to the
+  // board's axes: "up" is away from you, whichever side you're looking from.
+  function step(sx: number, sy: number) {
+    if (!selected || !props.onMove) return;
+    const a = Math.round((ctxRef.current?.azimuth() ?? 0) / (Math.PI / 2)) * (Math.PI / 2);
+    const fx = -Math.sin(a), fy = -Math.cos(a); // forward, board x/y
+    const rx = Math.cos(a), ry = -Math.sin(a); // right
+    const n = props.moveStep ?? 1;
+    const dx = Math.round(rx * sx + fx * sy), dy = Math.round(ry * sx + fy * sy);
+    props.onMove(selected.id, selected.x + dx * n, selected.y + dy * n);
+  }
+  function onKey(e: React.KeyboardEvent) {
+    const dir: Record<string, [number, number]> = { ArrowUp: [0, 1], ArrowDown: [0, -1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] };
+    const d = dir[e.key];
+    if (!d || !selected) return;
+    e.preventDefault();
+    step(d[0], d[1]);
+  }
+
   return (
-    <div className="board3d" ref={hostRef}>
-      <div className="board3d-hint small">Drag to orbit · right-drag to pan · scroll to zoom · click a piece or terrain to select</div>
+    <div className="board3d" ref={hostRef} tabIndex={0} onKeyDown={onKey}>
+      <div className="board3d-hint small">
+        {locked
+          ? "Camera locked · drag a piece to move it · right-drag to pan · scroll to zoom"
+          : "Drag to orbit · right-drag to pan · scroll to zoom · click a piece or terrain to select"}
+      </div>
+      {props.onMove && (
+        <div className="board3d-move">
+          <button className={"ghost-btn small" + (locked ? " active" : "")} onClick={() => setLocked(!locked)}
+                  title="Lock the camera so dragging moves pieces instead of turning the view">
+            {locked ? "🔒 Camera locked" : "🔓 Lock camera"}
+          </button>
+          {selected && (
+            <div className="board3d-dpad" aria-label="Move the selected piece">
+              {([[-1, 1, "↖"], [0, 1, "↑"], [1, 1, "↗"], [-1, 0, "←"], null, [1, 0, "→"], [-1, -1, "↙"], [0, -1, "↓"], [1, -1, "↘"]] as const).map((d, i) =>
+                d ? <button key={i} className="ghost-btn small" onClick={() => step(d[0], d[1])}>{d[2]}</button>
+                  : <button key={i} className="ghost-btn small" title="Start a new move from here" onClick={() => ctxRef.current?.resetMove()}>⟲</button>)}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -123,6 +175,11 @@ export default function Board3D(props: Props) {
 type SceneCtx = {
   build: (p: Props) => void;
   frame: (w: number, d: number) => void;
+  setLocked: (on: boolean) => void;
+  /** Camera's angle around the board (0 = looking up the board). */
+  azimuth: () => number;
+  /** Measure the selected piece's next move from where it stands now. */
+  resetMove: () => void;
   dispose: () => void;
 };
 
@@ -156,6 +213,8 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
   let content = new THREE.Group();
   scene.add(content);
   const pickables: THREE.Object3D[] = [];
+  // Piece groups by id (for dragging), with their board-space centre.
+  const pieceGroups = new Map<string, { g: THREE.Group; x: number; y: number; top: number }>();
   const stlGeoms = new Map<string, THREE.BufferGeometry | null>();
   let boardW = 1, boardD = 1;
   let disposed = false;
@@ -261,6 +320,7 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
     content = new THREE.Group();
     scene.add(content);
     pickables.length = 0;
+    pieceGroups.clear();
     boardW = p.width; boardD = p.depth;
 
     // --- Ground ----------------------------------------------------------
@@ -401,28 +461,131 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
           if (m && "opacity" in m) { m.transparent = true; m.opacity = Math.min(m.opacity, 0.45); }
         });
       }
-      g.traverse((o) => { o.userData.pieceId = pc.id; });
+      g.traverse((o) => { o.userData.pieceId = pc.id; o.userData.isPiece = true; });
       pickables.push(g);
       content.add(g);
+      pieceGroups.set(pc.id, { g, x: pc.x, y: pc.y, top: baseY + baseH + pc.modelHeight });
     }
+
+    // A move is measured from where the selected piece stood when it was
+    // selected (or when the player started a new move).
+    const sel = p.selectedId ? pieceGroups.get(p.selectedId) : undefined;
+    if (!sel) moveFrom = null;
+    else if (moveFrom?.id !== p.selectedId) moveFrom = { id: p.selectedId!, x: sel.x, y: sel.y };
+    if (drag && pieceGroups.has(drag.id)) placeDragged();
+    else showMeasure();
   }
 
-  // --- Picking ------------------------------------------------------------
+  // --- Move readout ---------------------------------------------------------
+  let moveFrom: { id: string; x: number; y: number } | null = null;
+  const measureLine = new THREE.Line(new THREE.BufferGeometry(), new THREE.LineDashedMaterial({ color: "#ffd24a", dashSize: 0.3, gapSize: 0.2, depthTest: false }));
+  measureLine.renderOrder = 5;
+  measureLine.visible = false;
+  scene.add(measureLine);
+  const label = document.createElement("div");
+  label.className = "board3d-measure";
+  label.hidden = true;
+  host.appendChild(label);
+  let labelAt: THREE.Vector3 | null = null;
+
+  function showMeasure(at?: { x: number; y: number }) {
+    const pc = moveFrom && pieceGroups.get(moveFrom.id);
+    const cur = at ?? pc;
+    if (!moveFrom || !pc || !cur || Math.hypot(cur.x - moveFrom.x, cur.y - moveFrom.y) < 1e-3) {
+      measureLine.visible = false;
+      label.hidden = true;
+      labelAt = null;
+      return;
+    }
+    const dx = cur.x - moveFrom.x, dy = cur.y - moveFrom.y;
+    const m = lastProps?.measure?.(moveFrom.id, dx, dy) ?? { label: Math.hypot(dx, dy).toFixed(1), tone: "ok" as const };
+    const color = m.tone === "over" ? "#ff6b5e" : m.tone === "dash" ? "#ffb347" : "#ffd24a";
+    measureLine.geometry.dispose();
+    measureLine.geometry = new THREE.BufferGeometry().setFromPoints([
+      new THREE.Vector3(wx(moveFrom.x), 0.04, wz(moveFrom.y)),
+      new THREE.Vector3(wx(cur.x), 0.04, wz(cur.y)),
+    ]);
+    measureLine.computeLineDistances();
+    const lm = measureLine.material as THREE.LineDashedMaterial;
+    lm.color.set(color);
+    const span = Math.max(boardW, boardD);
+    lm.dashSize = span / 120; lm.gapSize = span / 200;
+    measureLine.visible = true;
+    label.textContent = m.label;
+    label.dataset.tone = m.tone;
+    label.hidden = false;
+    labelAt = new THREE.Vector3(wx(cur.x), pc.top + span * 0.02, wz(cur.y));
+  }
+
+  // --- Picking and dragging ---------------------------------------------
   const ray = new THREE.Raycaster();
+  const table = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
   let down: { x: number; y: number } | null = null;
-  const onDown = (e: PointerEvent) => { down = { x: e.clientX, y: e.clientY }; framed = true; };
+  let locked = false;
+  // A piece being dragged (camera locked): board-space offset from the
+  // pointer to the piece centre, and where it is now.
+  let drag: { id: string; offX: number; offY: number; x: number; y: number } | null = null;
+
+  function aim(e: PointerEvent) {
+    const rect = renderer.domElement.getBoundingClientRect();
+    const ndc = new THREE.Vector2(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+  }
+  // Where the pointer meets the table, in board units.
+  function onTable(e: PointerEvent): { x: number; y: number } | null {
+    aim(e);
+    const v = ray.ray.intersectPlane(table, new THREE.Vector3());
+    return v ? { x: v.x + boardW / 2, y: v.z + boardD / 2 } : null;
+  }
+  function placeDragged() {
+    const pg = drag && pieceGroups.get(drag.id);
+    if (!drag || !pg) return;
+    pg.g.position.set(wx(drag.x), 0, wz(drag.y));
+    showMeasure(drag);
+  }
+
+  const onDown = (e: PointerEvent) => {
+    down = { x: e.clientX, y: e.clientY };
+    framed = true;
+    if (!locked || e.button !== 0 || !lastProps?.onMove) return;
+    aim(e);
+    const hit = ray.intersectObjects(pickables, true).find((h) => h.object.userData.isPiece);
+    const id = hit?.object.userData.pieceId as string | undefined;
+    const pg = id ? pieceGroups.get(id) : undefined;
+    const at = onTable(e);
+    if (!id || !pg || !at) return;
+    drag = { id, offX: pg.x - at.x, offY: pg.y - at.y, x: pg.x, y: pg.y };
+    renderer.domElement.setPointerCapture(e.pointerId);
+    if (lastProps.selectedId !== id) onPick(id);
+  };
+  const onMoveEvt = (e: PointerEvent) => {
+    if (!drag) return;
+    const at = onTable(e);
+    if (!at) return;
+    drag.x = Math.max(0, Math.min(boardW, at.x + drag.offX));
+    drag.y = Math.max(0, Math.min(boardD, at.y + drag.offY));
+    placeDragged();
+  };
   const onUp = (e: PointerEvent) => {
+    if (drag) {
+      const d = drag;
+      drag = null;
+      down = null;
+      const pg = pieceGroups.get(d.id);
+      if (pg && Math.hypot(d.x - pg.x, d.y - pg.y) > 1e-3) lastProps?.onMove?.(d.id, d.x, d.y);
+      else showMeasure();
+      return;
+    }
     if (!down || e.button !== 0) { down = null; return; }
     const moved = Math.hypot(e.clientX - down.x, e.clientY - down.y);
     down = null;
     if (moved > 4) return; // that was an orbit, not a click
-    const rect = renderer.domElement.getBoundingClientRect();
-    const ndc = new THREE.Vector2(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
-    ray.setFromCamera(ndc, camera);
+    aim(e);
     const hit = ray.intersectObjects(pickables, true)[0];
     onPick((hit?.object.userData.pieceId as string | undefined) ?? null);
   };
   renderer.domElement.addEventListener("pointerdown", onDown);
+  renderer.domElement.addEventListener("pointermove", onMoveEvt);
   renderer.domElement.addEventListener("pointerup", onUp);
 
   let raf = 0;
@@ -430,18 +593,39 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
     raf = requestAnimationFrame(loop);
     controls.update();
     renderer.render(scene, camera);
+    if (labelAt) {
+      // Pin the readout above the piece, in screen space.
+      const v = labelAt.clone().project(camera);
+      label.style.transform = `translate(${((v.x + 1) / 2) * host.clientWidth}px, ${((1 - v.y) / 2) * host.clientHeight}px) translate(-50%, -100%)`;
+    }
   };
   loop();
 
   return {
     build,
     frame,
+    setLocked(on) {
+      locked = on;
+      // Locked: the left button moves pieces; right-drag still pans, the
+      // wheel still zooms.
+      controls.enableRotate = !on;
+    },
+    azimuth: () => controls.getAzimuthalAngle(),
+    resetMove() {
+      const pg = moveFrom && pieceGroups.get(moveFrom.id);
+      if (moveFrom && pg) moveFrom = { id: moveFrom.id, x: pg.x, y: pg.y };
+      showMeasure();
+    },
     dispose() {
       disposed = true;
       cancelAnimationFrame(raf);
       ro.disconnect();
       renderer.domElement.removeEventListener("pointerdown", onDown);
+      renderer.domElement.removeEventListener("pointermove", onMoveEvt);
       renderer.domElement.removeEventListener("pointerup", onUp);
+      measureLine.geometry.dispose();
+      (measureLine.material as THREE.Material).dispose();
+      label.remove();
       renderer.domElement.removeEventListener("wheel", onWheelAny);
       controls.dispose();
       disposeGroup(content);

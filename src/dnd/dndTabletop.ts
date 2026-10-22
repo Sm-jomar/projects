@@ -33,6 +33,8 @@ export type DndToken = {
   avatarUrl?: string;
   /** Campaign NPC this token was placed from (DM screen). */
   npcId?: string;
+  /** Walking speed in feet per move (3D move readout). Undefined = 30. */
+  speed?: number;
   /** Flying height in feet (3D view). 0 / undefined = on the ground. */
   elevation?: number;
   /** Uploaded STL miniature, simplified + encoded (see lib/stlModel). */
