@@ -19,6 +19,8 @@ import {
 } from "../lib/squads";
 import { listArmies } from "../lib/storage";
 import { unitById } from "../data/catalog";
+import { endPhaseStatus, showsUnitStatus, WOUND_INFO, WOUND_URL } from "../lib/statusTokens";
+import { InfoDot, StatusTokenPanel } from "./StatusTokenPanel";
 import { cardForUnit } from "../lib/cardLookup";
 import { FACTIONS } from "../lib/factions";
 import type { SavedArmy, Unit } from "../lib/types";
@@ -570,19 +572,19 @@ export function TabletopPanel({ onClose }: Props) {
     commit({
       ...state,
       round: state.round + 1,
-      tokens: state.tokens.map((t) => ({ ...t, activated: false, ordered: false })),
+      tokens: state.tokens.map((t) => endPhaseStatus({ ...t, activated: false, ordered: false })),
       hands: { blue: sweep(state.hands.blue), red: sweep(state.hands.red) },
     });
   }
 
   function resetGame() {
-    if (!confirm("Reset round to 1, zero both VP scores, ready all units, and shuffle both command decks? The board layout stays.")) return;
+    if (!confirm("Reset round to 1, zero both VP scores, ready all units, clear all wounds and tokens, and shuffle both command decks? The board layout stays.")) return;
     commit({
       ...state,
       round: 1,
       vp: { blue: 0, red: 0 },
       moveTemplate: null,
-      tokens: state.tokens.map((t) => ({ ...t, activated: false, ordered: false, wounds: 0, suppression: 0 })),
+      tokens: state.tokens.map((t) => ({ ...t, activated: false, ordered: false, wounds: 0, suppression: 0, status: undefined })),
       hands: { blue: newCommandHand(), red: newCommandHand() },
     });
   }
@@ -626,7 +628,8 @@ export function TabletopPanel({ onClose }: Props) {
     const t = { blue: { ordered: 0, total: 0 }, red: { ordered: 0, total: 0 } };
     for (const tk of state.tokens) {
       const s = tokenSide(tk);
-      if (s === "neutral" || tk.kind !== "unit") continue;
+      // A squad is one unit with one order token.
+      if (s === "neutral" || tk.kind !== "unit" || !showsUnitStatus(tk)) continue;
       t[s].total++;
       if (tk.ordered) t[s].ordered++;
     }
@@ -703,14 +706,14 @@ export function TabletopPanel({ onClose }: Props) {
               </div>
             )}
             <div className={"tt-status-bar" + (readOnly ? " readonly" : "")}>
-              <div className="tt-status-group">
+              <div className="tt-tok-group">
                 <span className="tt-status-label">Round</span>
                 <button onClick={() => commit({ ...state, round: Math.max(1, state.round - 1) })} aria-label="Previous round">−</button>
                 <b>{state.round}</b>
                 <button onClick={() => commit({ ...state, round: state.round + 1 })} aria-label="Next round">+</button>
-                <button className="tt-endround" onClick={endRound} title="Advance to the next round and ready all units">End round ▸</button>
+                <button className="tt-endround" onClick={endRound} title="Advance to the next round: ready all units, drop green tokens, and remove 1 suppression from each unit">End round ▸</button>
               </div>
-              <div className="tt-status-group tt-status-blue">
+              <div className="tt-tok-group tt-status-blue">
                 <span className="tt-status-label">Blue VP</span>
                 <button onClick={() => bumpVp("blue", -1)} aria-label="Blue VP minus">−</button>
                 <b>{state.vp.blue}</b>
@@ -719,7 +722,7 @@ export function TabletopPanel({ onClose }: Props) {
                   Orders <b>{orderTally.blue.ordered}/{orderTally.blue.total}</b>
                 </span>
               </div>
-              <div className="tt-status-group tt-status-red">
+              <div className="tt-tok-group tt-status-red">
                 <span className="tt-status-label">Red VP</span>
                 <button onClick={() => bumpVp("red", -1)} aria-label="Red VP minus">−</button>
                 <b>{state.vp.red}</b>
@@ -958,19 +961,11 @@ export function TabletopPanel({ onClose }: Props) {
                     <label>Size (in) <input type="number" min={0.5} max={4} step={0.25} value={selectedToken.size} onChange={(e) => updateSelectedToken({ size: Number(e.target.value) || 1 })} /></label>
 
                     <div className="tt-counter-row">
-                      <span>Wounds</span>
+                      <span className="tt-tok-name">Wounds <InfoDot title="Wound token" text={WOUND_INFO} url={WOUND_URL} /></span>
                       <div className="tt-counter-controls">
                         <button onClick={() => updateSelectedToken({ wounds: Math.max(0, (selectedToken.wounds ?? 0) - 1) })}>−</button>
                         <b>{selectedToken.wounds ?? 0}</b>
                         <button onClick={() => updateSelectedToken({ wounds: (selectedToken.wounds ?? 0) + 1 })}>+</button>
-                      </div>
-                    </div>
-                    <div className="tt-counter-row">
-                      <span>Suppression</span>
-                      <div className="tt-counter-controls">
-                        <button onClick={() => updateSelectedToken({ suppression: Math.max(0, (selectedToken.suppression ?? 0) - 1) })}>−</button>
-                        <b>{selectedToken.suppression ?? 0}</b>
-                        <button onClick={() => updateSelectedToken({ suppression: (selectedToken.suppression ?? 0) + 1 })}>+</button>
                       </div>
                     </div>
                     <div className="tt-counter-row">
@@ -994,11 +989,8 @@ export function TabletopPanel({ onClose }: Props) {
                              onChange={(e) => updateSelectedToken({ activated: e.target.checked })} />
                       Activated this round
                     </label>
-                    <label className="tt-check">
-                      <input type="checkbox" checked={!!selectedToken.ordered}
-                             onChange={(e) => updateSelectedToken({ ordered: e.target.checked })} />
-                      Has an order
-                    </label>
+                    <StatusTokenPanel state={state} token={selectedToken} readOnly={readOnly} onCommit={commit}
+                                      rank={selectedToken.unitId ? unitById(selectedToken.unitId)?.rank : undefined} />
                     <label>Side
                       <select value={selectedToken.side ?? "(auto)"}
                               onChange={(e) => {

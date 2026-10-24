@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import type { TabletopState, Token, Terrain, FactionColor, MoveTemplate } from "../lib/tabletop";
 import { moveToken } from "../lib/squads";
 import { SquadMarkers } from "./SquadOverlay";
+import { StatusChips } from "./StatusChips";
+import { statusChips } from "../lib/statusTokens";
 import {
   deploymentZones, templateAnchor, templatePoints, TEMPLATE_WIDTH_INCHES,
 } from "../lib/tabletop";
@@ -455,16 +457,9 @@ export function TabletopCanvas({
                     <text x={px + sz - 2 / view.scale} y={py + sz - 2 / view.scale + badgeFont * 0.4} textAnchor="middle" fontSize={badgeFont} fill="#ffb0b0" fontWeight={700}>{tk.wounds}</text>
                   </g>
                 )}
-                {/* Suppression (bottom-left, orange) */}
-                {(tk.suppression ?? 0) > 0 && (
-                  <g>
-                    <circle cx={px + 2 / view.scale} cy={py + sz - 2 / view.scale} r={badgeR} fill="#5a4214" stroke="#ffc24a" strokeWidth={1 / view.scale} />
-                    <text x={px + 2 / view.scale} y={py + sz - 2 / view.scale + badgeFont * 0.4} textAnchor="middle" fontSize={badgeFont} fill="#ffe0a0" fontWeight={700}>{tk.suppression}</text>
-                  </g>
-                )}
                 {/* Name label under the selected token */}
                 {selectedId === tk.id && (
-                  <text x={cx} y={py + sz + 11 / view.scale}
+                  <text x={cx} y={py + sz + (!tk.squadId && statusChips(tk).length ? Math.max(0.5 * UNITS_PER_INCH, 13 / view.scale) : 0) + 11 / view.scale}
                         textAnchor="middle" fontSize={9 / view.scale}
                         fill="#ffd24a" fontWeight={600}
                         paintOrder="stroke" stroke="#0e0f12" strokeWidth={2.5 / view.scale}>
@@ -476,6 +471,7 @@ export function TabletopCanvas({
           })}
 
           <SquadMarkers tokens={state.tokens} u={UNITS_PER_INCH} scale={view.scale} />
+          <StatusChips tokens={state.tokens} u={UNITS_PER_INCH} scale={view.scale} />
 
           {/* Movement template (one at a time, anchored to its token) */}
           {state.moveTemplate && (() => {
