@@ -3,11 +3,12 @@ import { TabletopCanvas, type Tool } from "./TabletopCanvas";
 import { DiceRoller } from "./DiceRoller";
 import {
   GAME_TYPES, DEPLOYMENTS, newTabletop, terrainElevation, pruneModels, addToken, addTerrain, addTokenForUnit,
-  loadTabletop, saveTabletop, newId, newCommandHand, tokenSide, diffLegion,
+  loadTabletop, saveTabletop, newId, newCommandHand, tokenSide, diffLegion, boardBytes, BOARD_BYTES_SAFE,
   templateAnchor, templatePoints,
   type GameType, type TabletopState, type Terrain, type Token, type FactionColor,
-  type DeploymentKey, type MoveTemplate, type CommandHand,
+  type DeploymentKey, type MoveTemplate, type CommandHand, type MapImage,
 } from "../lib/tabletop";
+import { downscaleImage } from "../lib/image";
 import { appendLog, type LogActor, type LogEntry } from "../lib/auditLog";
 import { legionPlayUrl, roomsAvailableHere } from "../lib/appRouting";
 import { AuditLogView } from "./AuditLogView";
@@ -364,6 +365,39 @@ export function TabletopPanel({ onClose }: Props) {
   function setGameType(gt: GameType) {
     const size = gt === "custom" ? { widthInches: customW, heightInches: customH } : GAME_TYPES[gt].size;
     commit({ ...state, gameType: gt, map: size });
+  }
+
+  // --- Map image --------------------------------------------------------------
+  // The picture rides along in the synced board state, so uploads are
+  // shrunk to a JPEG that stays well inside the room's size cap.
+  const mapFileRef = useRef<HTMLInputElement | null>(null);
+  const [mapNote, setMapNote] = useState<string | null>(null);
+
+  function setMapImage(img: MapImage | null) {
+    const next = { ...state, mapImage: img };
+    if (img && boardBytes(next) > BOARD_BYTES_SAFE) {
+      setMapNote("That image makes the board too large to sync. Try a smaller picture.");
+      return;
+    }
+    setMapNote(null);
+    commit(next);
+  }
+
+  function patchMapImage(patch: Partial<MapImage>) {
+    if (state.mapImage) setMapImage({ ...state.mapImage, ...patch });
+  }
+
+  async function onMapFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    try {
+      const url = await downscaleImage(f, 1600, 0.75);
+      setMapImage({ fit: "stretch", dim: 0, ...state.mapImage, url });
+    } catch {
+      setMapNote("Could not read that image.");
+    } finally {
+      if (mapFileRef.current) mapFileRef.current.value = "";
+    }
   }
 
   function spawnTerrain(p: typeof TERRAIN_PRESETS[number]) {
@@ -904,6 +938,41 @@ export function TabletopPanel({ onClose }: Props) {
                       <span className="muted small">inches</span>
                     </div>
                   )}
+                </section>
+
+                <section>
+                  <h3>Map image</h3>
+                  <div className="tt-edit-actions">
+                    <button onClick={() => mapFileRef.current?.click()}>{state.mapImage ? "Replace image" : "Upload image"}</button>
+                    <button className="ghost-btn" onClick={() => setMapImage(null)} disabled={!state.mapImage}>Clear</button>
+                    <input ref={mapFileRef} type="file" accept="image/*" hidden onChange={onMapFile} />
+                  </div>
+                  <label className="tt-map-field">Or paste image URL
+                    <input value={state.mapImage?.url.startsWith("http") ? state.mapImage.url : ""}
+                           placeholder="https://…"
+                           onChange={(e) => {
+                             const url = e.target.value.trim();
+                             setMapImage(url ? { fit: "stretch", dim: 0, ...state.mapImage, url } : null);
+                           }} />
+                  </label>
+                  {state.mapImage && (
+                    <>
+                      <div className="tt-faction-pills">
+                        <button className={"tt-faction-pill" + (state.mapImage.fit === "stretch" ? " active" : "")}
+                                onClick={() => patchMapImage({ fit: "stretch" })}
+                                title="Squash or stretch the picture to fill the board exactly">Stretch to board</button>
+                        <button className={"tt-faction-pill" + (state.mapImage.fit === "cover" ? " active" : "")}
+                                onClick={() => patchMapImage({ fit: "cover" })}
+                                title="Keep the picture's shape and crop the edges that overhang the board">Fill and crop</button>
+                      </div>
+                      <label className="tt-map-field">Darken {Math.round(state.mapImage.dim * 100)}%
+                        <input type="range" min={0} max={0.8} step={0.05} value={state.mapImage.dim}
+                               onChange={(e) => patchMapImage({ dim: Number(e.target.value) })} />
+                      </label>
+                    </>
+                  )}
+                  {mapNote && <p className="muted small">{mapNote}</p>}
+                  <p className="muted small">The picture is laid under the board as the map, for every player and in 3D. A pasted link only shows in 3D if its host allows it.</p>
                 </section>
 
                 <section>
