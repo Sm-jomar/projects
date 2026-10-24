@@ -3,6 +3,7 @@
 import type { TableMusic } from "../lib/media";
 import { logId, type LogActor, type LogEntry } from "../lib/auditLog";
 import type { DndCharacter } from "./dndTypes";
+import { conditionDef, type ConditionId } from "./dndConditions";
 
 export type TokenKind = "pc" | "monster" | "marker";
 
@@ -46,6 +47,11 @@ export type DndToken = {
   /** Fog of war: how far this token sees, in feet. Undefined = no limit
    * (a lit map); set it for darkness, darkvision or a torch's radius. */
   sight?: number;
+  /** 5e conditions (see dndConditions), in list order. Exhaustion is kept
+   * separately because it has levels. */
+  conditions?: ConditionId[];
+  /** Exhaustion level 1-6. Undefined = none. */
+  exhaustion?: number;
 };
 
 // A terrain block on the board: walls, buildings, pillars, platforms,
@@ -166,6 +172,14 @@ export function diffDnd(prev: DndTabletopState, next: DndTabletopState, actor: L
       const d = (t.hpCurrent ?? 0) - (p.hpCurrent ?? 0);
       out.push(mk("hp", `${t.name || "token"} HP ${d >= 0 ? "+" : ""}${d} (${t.hpCurrent ?? "?"}${t.hpMax != null ? "/" + t.hpMax : ""})`));
     }
+    const was = new Set(p.conditions ?? []), now = new Set(t.conditions ?? []);
+    const gained = [...now].filter((c) => !was.has(c)).map((c) => conditionDef(c).label);
+    const lost = [...was].filter((c) => !now.has(c)).map((c) => conditionDef(c).label);
+    if ((p.exhaustion ?? 0) !== (t.exhaustion ?? 0)) {
+      if (t.exhaustion) gained.push(`Exhaustion ${t.exhaustion}`); else lost.push("Exhaustion");
+    }
+    if (gained.length) out.push(mk("misc", `${t.name || "token"} is ${gained.join(", ")}`));
+    if (lost.length) out.push(mk("misc", `${t.name || "token"} is no longer ${lost.join(", ")}`));
   }
   for (const p of prev.tokens) {
     if (!nextById.has(p.id)) out.push(mk("remove", `removed ${p.name || "a token"}`));

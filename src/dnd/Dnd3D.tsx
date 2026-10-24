@@ -5,6 +5,7 @@
 import Board3D, { type Block3D, type MoveMeasure, type Piece3D } from "../components/Board3D";
 import { useMemo } from "react";
 import type { DndTabletopState, DndToken } from "./dndTabletop";
+import { conditionColors, conditionSummary } from "./dndConditions";
 import { terrainSeen, type FogView, type Pt } from "./dndFog";
 
 const FEET_PER_CELL = 5;
@@ -69,6 +70,7 @@ export default function Dnd3D({ state, selectedId, onSelect, fog, onUploadModel,
     lift: (t.elevation ?? 0) / FEET_PER_CELL,
     color: t.color,
     accent: t.id === state.activeTokenId ? "#ffd24a" : t.color,
+    rimColors: conditionColors(t),
     model: t.modelStl
       ? { kind: "stl", data: t.modelStl }
       : t.kind === "marker" ? { kind: "marker" } : { kind: "figure", style: "pawn" },
@@ -121,6 +123,7 @@ export default function Dnd3D({ state, selectedId, onSelect, fog, onUploadModel,
         <div className="board3d-info small">
           {selected ? <>
             <b>{selected.name}</b>
+            {conditionSummary(selected) && <> · <span className="board3d-conds">{conditionSummary(selected)}</span></>}
             {flyFt > 0
               ? <> · flying {flyFt} ft up — <span className="board3d-clear">green</span> terrain it clears, <span className="board3d-block">red</span> blocks it</>
               : <> · on the ground</>}

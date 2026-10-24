@@ -21,6 +21,8 @@ import { RollRequestBanner } from "./RollRequestBanner";
 import { useKeyring } from "./useCampaign";
 import { canEdit } from "./campaign";
 import { bestCodeFor } from "./campaignKeyring";
+import { ConditionsPanel } from "./ConditionsPanel";
+import { conditionColors, conditionSummary, ringArc } from "./dndConditions";
 import { computeFog, isMyToken, pointInPolygon, polysPath, terrainSeen, type FogMode, type FogView, type Pt } from "./dndFog";
 
 // three.js is only fetched once someone switches the board into 3D.
@@ -560,6 +562,8 @@ export function DndTabletop() {
                          onChange={(e) => updateToken(selected.id, { sight: e.target.value === "" ? undefined : Math.max(0, Number(e.target.value) || 0) || undefined })} />
                 </label>
               )}
+              <ConditionsPanel key={selected.id} token={selected} readOnly={readOnly}
+                               onPatch={(p) => updateToken(selected.id, p)} />
               <div className="dnd-tt-field">3D model (STL)
                 <div className="dnd-tt-row">
                   <button onClick={() => modelFileRef.current?.click()} disabled={modelBusy}>
@@ -607,6 +611,11 @@ export function DndTabletop() {
                       <span className="dnd-tt-init-num">{t.initiative}</span>
                       <span className="dnd-tt-init-dot" style={{ background: t.color }} />
                       <span className="dnd-tt-init-name">{t.name}</span>
+                      {conditionColors(t).length > 0 && (
+                        <span className="dnd-tt-init-conds" title={conditionSummary(t)}>
+                          {conditionColors(t).map((c, i) => <i key={i} style={{ background: c }} />)}
+                        </span>
+                      )}
                       {t.hpMax != null && <span className="muted small">{t.hpCurrent ?? t.hpMax}/{t.hpMax}</span>}
                     </li>
                   ))}
@@ -889,11 +898,18 @@ function DungeonCanvas({ state, fog, selectedId, onSelect, onMoveToken, onMoveTe
             const sel = t.id === selectedId;
             const hpFrac = t.hpMax ? Math.max(0, Math.min(1, (t.hpCurrent ?? t.hpMax) / t.hpMax)) : null;
             const hasIcon = !!t.avatarUrl;
+            const conds = conditionColors(t);
+            // Conditions: the token's rim split into one slice per condition.
+            const ringW = Math.max(4, Math.min(9, r * 0.26));
+            const ringR = r - ringW / 2;
+            const slice = (2 * Math.PI) / Math.max(1, conds.length);
             return (
               <g key={t.id} data-token={t.id} style={{ cursor: "grab" }}>
+                {conds.length > 0 && <title>{`${t.name}: ${conditionSummary(t)}`}</title>}
                 {active && <circle cx={cx} cy={cy} r={r + 4 / view.scale} fill="none" stroke="#ffd24a" strokeWidth={3 / view.scale} />}
+                {sel && conds.length > 0 && <circle cx={cx} cy={cy} r={r + 1.5 / view.scale} fill="none" stroke="#fff" strokeWidth={2 / view.scale} />}
                 <circle cx={cx} cy={cy} r={r} fill={t.color}
-                        stroke={sel ? "#fff" : "#0009"} strokeWidth={(sel ? 3 : 1.5) / view.scale} />
+                        stroke={sel && !conds.length ? "#fff" : "#0009"} strokeWidth={(sel && !conds.length ? 3 : 1.5) / view.scale} />
                 {hasIcon && (
                   <image href={t.avatarUrl}
                          x={cx - r} y={cy - r} width={2 * r} height={2 * r}
@@ -905,6 +921,16 @@ function DungeonCanvas({ state, fog, selectedId, onSelect, onMoveToken, onMoveTe
                   <text x={cx} y={cy + 5} textAnchor="middle" fontSize={Math.min(18, t.size * 14)} fontWeight={700} fill="#fff" pointerEvents="none">
                     {initials(t.name)}
                   </text>
+                )}
+                {conds.length === 1 && (
+                  <circle cx={cx} cy={cy} r={ringR} fill="none" stroke={conds[0]} strokeWidth={ringW} pointerEvents="none" className="dnd-cond-ring" />
+                )}
+                {conds.length > 1 && (
+                  <g pointerEvents="none" className="dnd-cond-ring">
+                    {conds.map((c, i) => (
+                      <path key={i} d={ringArc(cx, cy, ringR, i * slice, (i + 1) * slice)} fill="none" stroke={c} strokeWidth={ringW} />
+                    ))}
+                  </g>
                 )}
                 {hpFrac != null && (
                   <g pointerEvents="none">

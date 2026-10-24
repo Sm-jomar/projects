@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { InfoDot } from "./InfoDot";
 import type { TabletopState, Token } from "../lib/tabletop";
 import type { Rank } from "../lib/types";
 import {
@@ -8,25 +9,6 @@ import {
 
 // Status token section of the Legion token inspector. Counts belong to the
 // unit, so a squad member edits the whole squad's tokens.
-
-/** Small "i" dot that shows rules text on hover, focus, or tap. */
-export function InfoDot({ title, text, url }: { title: string; text: string; url: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <span className={"tt-info" + (open ? " open" : "")}>
-      <button type="button" className="tt-info-dot" aria-label={`About ${title}`}
-              aria-expanded={open}
-              onClick={(e) => { e.preventDefault(); setOpen((o) => !o); }}
-              onBlur={() => setOpen(false)}>i</button>
-      <span className="tt-info-tip" role="tooltip">
-        <b>{title}</b>
-        {text}
-        <a href={url} target="_blank" rel="noreferrer"
-           onMouseDown={(e) => e.preventDefault()}>Full rules on Legion Helper ↗</a>
-      </span>
-    </span>
-  );
-}
 
 /** The token's art, or a coloured glyph when there is none. */
 export function TokenIcon({ def }: { def: Pick<StatusDef, "icon" | "glyph" | "color" | "label"> }) {
