@@ -14,6 +14,9 @@ import { legionPlayUrl, roomsAvailableHere } from "../lib/appRouting";
 import { AuditLogView } from "./AuditLogView";
 import { ChatButton, ChatDock } from "./ChatDock";
 import { useChatToggle, useSessionChat } from "./useSessionChat";
+import { AiInvitePanel, AiSeatBanner } from "./AiInvites";
+import { useAiInvites, type AiInvitesState } from "./useAiInvites";
+import { AI_DENIED_TEXT, aiCodeFromUrl, parseAiCode } from "../lib/aiInvite";
 import { MediaButton, MediaDock } from "./MediaPlayer";
 import { useMediaPlayback, useMediaToggle } from "./useMediaPlayer";
 import { parseTableMusic } from "../lib/media";
@@ -174,8 +177,9 @@ export function TabletopPanel({ onClose }: Props) {
   // Auto-open the panel when arriving via an invite link so the player is
   // immediately prompted for a name + color before joining.
   const [onlineOpen, setOnlineOpen] = useState(hasRoomParam);
+  // An AI invite link (?ai=<code>) fills the join box with the whole code.
   const [joinCode, setJoinCode] = useState(
-    () => new URLSearchParams(location.search).get("room")?.toUpperCase() ?? "",
+    () => aiCodeFromUrl() ?? new URLSearchParams(location.search).get("room")?.toUpperCase() ?? "",
   );
   // Player identity, remembered between sessions. Empty name forces the
   // prompt; color is the requested side (server honors it if free).
@@ -189,7 +193,10 @@ export function TabletopPanel({ onClose }: Props) {
 
   // Watch-only when connected as a spectator. Kept in a ref (above) so the
   // early-defined commit() can honor it without a stale-closure hazard.
-  const readOnly = online?.status === "open" && online.you?.color === "spectator";
+  // An AI whose invite can't move pieces is watch-only too.
+  const ai = useAiInvites(() => roomRef.current);
+  const aiCodeRef = useRef<string | null>(null);
+  const readOnly = online?.status === "open" && (online.you?.color === "spectator" || (!!online.you?.ai && !ai.self?.board));
   useEffect(() => { readOnlyRef.current = !!readOnly; }, [readOnly]);
   const chat = useSessionChat("legion", () => roomRef.current, online?.code ?? null, online?.you ?? null, online?.status === "open");
   const chatToggle = useChatToggle(chat, online?.you?.id ?? null);
@@ -241,10 +248,18 @@ export function TabletopPanel({ onClose }: Props) {
   function buildHandlers(): RoomHandlers<TabletopState> {
     return {
       ...chat.handlers,
+      // A refusal's reason (onDenied) outlives the close that follows it.
       onStatus: (status, detail) =>
-        setOnline((o) => (o ? { ...o, status, error: detail } : o)),
+        setOnline((o) => (o ? { ...o, status, error: detail ?? (status === "closed" ? o.error : undefined) } : o)),
+      onDenied: (reason) =>
+        setOnline((o) => (o ? {
+          ...o, status: "error",
+          error: AI_DENIED_TEXT[reason] ?? "That code belongs to a D&D game. Use a different code.",
+        } : o)),
+      onAppMessage: (msg) => { ai.handle(msg); },
       onWelcome: (you, remoteState, peers, extra) => {
         chat.onWelcome(roomRef.current?.code ?? "", extra);
+        ai.onWelcome(extra);
         setOnline((o) => ({
           status: "open",
           code: roomRef.current?.code ?? o?.code ?? "",
@@ -292,21 +307,38 @@ export function TabletopPanel({ onClose }: Props) {
 
   function joinRoom() {
     const code = joinCode.trim().toUpperCase();
+    // A whole AI code joins as that AI (no name needed: the invite has one).
+    const asAi = parseAiCode(code);
+    if (asAi) { startRoom(asAi.room, asAi.code); return; }
     if (code.length < 4 || !playerName.trim()) return;
     startRoom(code);
   }
 
-  function startRoom(code: string) {
+  function startRoom(code: string, aiCode: string | null = null) {
+    aiCodeRef.current = aiCode;
     const name = playerName.trim();
-    localStorage.setItem(NAME_KEY, name);
-    localStorage.setItem(PRIVATE_KEY, wantPrivate ? "1" : "0");
+    // An AI join (usually my own preview) leaves my saved identity alone.
+    if (!aiCode) {
+      localStorage.setItem(NAME_KEY, name);
+      localStorage.setItem(PRIVATE_KEY, wantPrivate ? "1" : "0");
+    }
     roomRef.current?.close();
     remoteEchoRef.current = null;
-    const client = new RoomClient<TabletopState>(code, name, preferredColor, buildHandlers(), "legion", wantPrivate);
+    const client = new RoomClient<TabletopState>(code, name, preferredColor, buildHandlers(), "legion", wantPrivate && !aiCode, aiCode);
     roomRef.current = client;
     setOnline({ status: "connecting", code: client.code, you: null, peers: [] });
     client.connect();
   }
+
+  // Opened from "Preview as AI" (or an AI link): join straight away.
+  useEffect(() => {
+    const code = aiCodeFromUrl();
+    const parsed = code ? parseAiCode(code) : null;
+    if (!parsed) return;
+    const t = setTimeout(() => startRoom(parsed.room, parsed.code), 0);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function changeMyColor(color: PlayerColor) {
     setPreferredColor(color);
@@ -323,6 +355,15 @@ export function TabletopPanel({ onClose }: Props) {
   }
 
   function leaveRoom() {
+    if (aiCodeRef.current) {
+      // Drop the AI code from the address bar so a reload doesn't rejoin.
+      const u = new URL(location.href);
+      u.searchParams.delete("ai");
+      history.replaceState(null, "", u.toString());
+      if (joinCode.includes("-AI-")) setJoinCode(roomRef.current?.code ?? "");
+    }
+    aiCodeRef.current = null;
+    ai.reset();
     chat.reset();
     roomRef.current?.close();
     roomRef.current = null;
@@ -735,6 +776,7 @@ export function TabletopPanel({ onClose }: Props) {
                 onRename={renameMe}
                 onLeave={leaveRoom}
                 onClosePanel={() => setOnlineOpen(false)}
+                ai={ai}
               />
             )}
           </div>
@@ -749,9 +791,14 @@ export function TabletopPanel({ onClose }: Props) {
                        canSet={!readOnly} myName={playerName.trim()}
                        cantSetWhy="Spectators can't change the table's music."
                        onSet={(m) => setState((s) => ({ ...s, music: m }))} />
+            {online && ai.self && (
+              <AiSeatBanner app="legion" ai={ai} onLeave={leaveRoom} error={online.status === "open" ? undefined : online.error} />
+            )}
             {readOnly && (
               <div className="tt-spectating-bar">
-                👁 Spectating — you can watch, pan and measure, but not change the board.
+                {online?.you?.ai
+                  ? "👁 This AI invite can't move pieces — it can watch, pan and measure, chat and roll."
+                  : "👁 Spectating — you can watch, pan and measure, but not change the board."}
               </div>
             )}
             <div className={"tt-status-bar" + (readOnly ? " readonly" : "")}>
@@ -1340,16 +1387,20 @@ function OnlinePanel(props: {
   onRename: (name: string) => void;
   onLeave: () => void;
   onClosePanel: () => void;
+  ai: AiInvitesState;
 }) {
   const {
     online, joinCode, onJoinCodeChange, playerName, onNameChange,
     preferredColor, onPreferredColorChange, colorNote, wantPrivate, onWantPrivateChange,
-    onHost, onJoin, onChangeColor, onRename, onLeave, onClosePanel,
+    onHost, onJoin, onChangeColor, onRename, onLeave, onClosePanel, ai,
   } = props;
   const connected = online?.status === "open";
   const connecting = online && (online.status === "connecting" || online.status === "reconnecting");
   const failed = online && (online.status === "error" || online.status === "closed");
-  const nameOk = playerName.trim().length > 0;
+  // A whole AI code in the join box joins as that AI, which needs no name.
+  const joinAsAi = !!parseAiCode(joinCode);
+  const nameOk = playerName.trim().length > 0 || joinAsAi;
+  const amAi = !!online?.you?.ai;
   // Colors held by OTHER players — used to disable those swap buttons.
   const takenByOthers = new Set(
     (online?.peers ?? [])
@@ -1443,12 +1494,14 @@ function OnlinePanel(props: {
               type="text"
               placeholder="CODE"
               value={joinCode}
-              maxLength={12}
-              onChange={(e) => onJoinCodeChange(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))}
+              maxLength={40}
+              className={joinAsAi ? "ai-code" : undefined}
+              onChange={(e) => onJoinCodeChange(e.target.value.toUpperCase().replace(/[^A-Z0-9-]/g, ""))}
               onKeyDown={(e) => { if (e.key === "Enter" && nameOk) onJoin(); }}
             />
-            <button onClick={onJoin} disabled={joinCode.trim().length < 4 || !nameOk}>Join</button>
+            <button onClick={onJoin} disabled={joinCode.trim().length < 4 || !nameOk}>{joinAsAi ? "Join as AI" : "Join"}</button>
           </div>
+          {joinAsAi && <p className="muted small">That's an AI invite code: you'll join as the AI it admits, to see what it can do.</p>}
           {!nameOk && <p className="muted small">Enter a name to host or join.</p>}
           <p className="muted small tt-online-note">
             Your preferred color is granted if it's free; otherwise you get the
@@ -1472,7 +1525,7 @@ function OnlinePanel(props: {
             )}
           </div>
 
-          {connected && (
+          {connected && !amAi && (
             <>
               <label className="tt-online-field">
                 Your name
@@ -1528,13 +1581,17 @@ function OnlinePanel(props: {
               online.peers.map((p) => (
                 <span key={p.id} className={"tt-online-peer tt-side-" + p.color}>
                   ● {p.name}
+                  {p.ai && <> <span className="ai-tag">AI</span></>}
                   {online.you?.id === p.id && " (you)"}
                 </span>
               ))
             )}
           </div>
 
-          {failed && (
+          {connected && !amAi && <AiInvitePanel app="legion" ai={ai} you={online.you} peers={online.peers} />}
+
+          {failed && online.error && <p className="muted small tt-online-warn">{online.error}</p>}
+          {failed && !online.error && (
             <p className="muted small tt-online-note">
               Couldn't reach the room server. Remote play only works on the
               Worker deployment — if you're on the static site, reopen the app
@@ -1542,7 +1599,7 @@ function OnlinePanel(props: {
             </p>
           )}
 
-          <button className="danger" onClick={onLeave}>Leave game</button>
+          <button className="danger" onClick={onLeave}>{amAi ? "Leave AI preview" : "Leave game"}</button>
         </>
       )}
     </div>

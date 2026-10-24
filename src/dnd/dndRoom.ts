@@ -8,6 +8,7 @@ import type {
 import type { DndCharacter } from "./dndTypes";
 import type { LogActor } from "../lib/auditLog";
 import type { SessionChat } from "../components/useSessionChat";
+import type { AiInvitesState } from "../components/useAiInvites";
 
 export type OnlineState = {
   status: ConnStatus; code: string; you: Peer | null; peers: Peer[]; error?: string;
@@ -117,6 +118,8 @@ export type DndRoomValue = {
   discardStaged: (id: string | "all") => void;
   /** Real-time chat for everyone in the game (kept across tab switches). */
   chat: SessionChat;
+  /** AI invites: the ones I manage, and mine if I joined as an AI. */
+  ai: AiInvitesState;
 };
 
 export const DndRoomCtx = createContext<DndRoomValue | null>(null);

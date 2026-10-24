@@ -3,6 +3,7 @@
 // through as app messages.
 
 import type { AbilityKey, SkillKey } from "./dndTypes";
+import { AI_DENIED_TEXT } from "../lib/aiInvite";
 
 export type RollVis = "table" | "dm";
 export type RollKind = "skill" | "save" | "ability" | "initiative" | "custom";
@@ -41,6 +42,7 @@ const DENIED_TEXT: Record<string, string> = {
   "not-dm": "Only the DM can do that.",
   "no-dm": "There's no DM seated, so the secret roll stayed with you.",
   "not-dnd": "That only works in D&D games.",
+  ...AI_DENIED_TEXT,
 };
 
 export function deniedText(op: string, reason: string, retryAfterMs?: number): string {

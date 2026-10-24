@@ -49,17 +49,13 @@ Planned: an AI (e.g. ChatGPT) joins a game as a DM or a player, decided by
 the invite code it's given. The chat is built so this slots in without a
 protocol change:
 
-- `from.kind` is already part of every message. Today it is always
-  `"human"`; an AI connection will be stamped `"ai"` by the server, and the
-  chat window already labels those lines (**AI** / **AI DM**).
+- `from.kind` is part of every message: `"human"`, or `"ai"` for a
+  connection admitted with an AI invite (stamped by the server). The chat
+  window labels those lines (**AI** / **AI DM**).
 - The role comes from the server's view of the connection (`role`), not the
-  message. An AI admitted with a DM invite would hold the DM seat the same
-  way a person does (D&D `claimDm` with a campaign code), so its lines show
-  as DM lines.
-- What's still needed: role-scoped invite codes for agents (e.g. a code that
-  admits one AI as "player" or "dm" in one room), a server-side flag on the
-  socket attachment (`kind: "ai"`), and an adapter that connects the AI to
-  the room — either a WebSocket bridge or a small HTTP API
-  (`POST /api/room/<CODE>/chat`, `GET …/chat?after=<seq>`) authenticated by
-  that invite. The `chatHistory` paging already gives an agent a way to
-  catch up on context.
+  message. An AI admitted with a DM invite is seated as DM when it joins,
+  so its lines show as DM lines.
+- Role-scoped AI invite codes and the server-side `kind: "ai"` stamp are
+  built: see [ai-invites.md](ai-invites.md). What's still needed is the
+  adapter that connects an actual AI to the room — either a WebSocket
+  bridge or a small HTTP API authenticated by its AI code.
