@@ -2,6 +2,7 @@
 
 import { logId, type LogActor, type LogEntry } from "./auditLog";
 import { STATUS_TOKENS, type StatusCounts } from "./statusTokens";
+import type { TableMusic } from "./media";
 
 export type GameType = "skirmish" | "standard" | "grand-army" | "custom";
 
@@ -193,6 +194,8 @@ export type TabletopState = {
   log?: LogEntry[];
   /** Uploaded 3D models, keyed by id (see Token/Terrain.modelId). */
   models?: Record<string, BoardModel>;
+  /** Table music: the YouTube playlist both players hear. */
+  music?: TableMusic | null;
 };
 
 /** Drop models no token or terrain refers to any more. */

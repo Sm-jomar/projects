@@ -1,5 +1,6 @@
 // State model + persistence for the D&D dungeon tabletop.
 
+import type { TableMusic } from "../lib/media";
 import { logId, type LogActor, type LogEntry } from "../lib/auditLog";
 import type { DndCharacter } from "./dndTypes";
 
@@ -126,6 +127,8 @@ export type DndTabletopState = {
   /** Players' uploaded avatar images (data URLs), keyed by connection id.
    * Shown in the party roster and defaulted onto a "+ My token". */
   avatars?: Record<string, string>;
+  /** Table music: the YouTube playlist everyone in the game hears. */
+  music?: TableMusic | null;
 };
 
 export function newDndTabletop(): DndTabletopState {

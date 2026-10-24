@@ -1,0 +1,117 @@
+/* Music player window, shared by the Legion and D&D tabletops. It floats
+   at the top left of the board (the chat takes the top right); its toggle
+   button sits next to the chat button. Minimized, it stays in the page,
+   hidden, so the music keeps playing. */
+.media-dock {
+  --media-accent: var(--accent);
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  z-index: 39;
+  width: 340px;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100% - 28px);
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  overflow: hidden auto;
+}
+.media-dock.dnd { --media-accent: var(--dnd-accent-2); }
+.media-dock.minimized {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.media-toggle { position: relative; white-space: nowrap; }
+.media-toggle.dnd { --media-accent: var(--dnd-accent-2); }
+.media-live {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-left: 6px;
+  border-radius: 50%;
+  background: var(--media-accent, var(--accent));
+  vertical-align: middle;
+  animation: media-pulse 1.6s ease-in-out infinite;
+}
+@keyframes media-pulse { 50% { opacity: 0.35; } }
+@media (prefers-reduced-motion: reduce) { .media-live { animation: none; } }
+
+.media-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 8px 7px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel-2);
+}
+.media-title { flex: 1; min-width: 0; font-size: 13px; }
+
+.media-now {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+}
+.media-now-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.media-now-text b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+
+.media-frame {
+  position: relative;
+  flex: none;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+.media-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.media-frame-off {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: auto;
+  height: 54px;
+  background: var(--panel-2);
+}
+
+.media-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px 12px 0;
+}
+.media-yt { margin-left: auto; color: inherit; text-decoration: none; }
+
+.media-form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 12px;
+}
+.media-form input { width: 100%; box-sizing: border-box; }
+.media-form-btns { display: flex; gap: 6px; }
+.media-form-btns button { flex: 1; }
+.media-error { color: #ff8a80; }
+
+.media-saved {
+  list-style: none;
+  margin: 0;
+  padding: 0 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.media-saved li {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 4px 3px 8px;
+  border-radius: 6px;
+  background: var(--panel-2);
+}
+.media-saved li.on { outline: 1px solid var(--media-accent, var(--accent)); }
+.media-saved-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+
+/* Legion: clear of the round / VP bar along the top of the board. */
+.tt-canvas-col > .media-dock { top: 60px; max-height: calc(100% - 74px); }
