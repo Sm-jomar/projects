@@ -2285,3 +2285,46 @@ input, select {
 .board3d-measure[data-tone="over"] { border-color: #ff6b5e; color: #ffb4ad; }
 .board3d-upload { pointer-events: auto; margin-left: 8px; }
 .tt-model-field { display: flex; flex-direction: column; gap: 4px; }
+
+/* ----- Status tokens (shared by a squad) ----- */
+.tt-tok { margin: 8px 0; padding-top: 6px; border-top: 1px solid var(--border); }
+.tt-tok-head { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; margin-bottom: 4px; }
+.tt-tok-shared { font-size: 11px; color: #7fd6ff; }
+.tt-tok-group { margin-top: 6px; }
+.tt-tok-group-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 2px; }
+.tt-tok-row { display: flex; align-items: center; gap: 6px; padding: 2px 0; font-size: 12px; color: var(--muted); }
+.tt-tok-row.on { color: var(--text); }
+.tt-tok-row .tt-counter-controls { margin-left: auto; }
+.tt-tok-row .tt-counter-controls button { min-width: 22px; height: 22px; font-size: 13px; }
+.tt-tok-row .tt-counter-controls b { min-width: 18px; }
+.tt-tok-chip {
+  display: inline-grid; place-items: center; flex: none;
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 1.5px solid; background: #0e0f12;
+  font-size: 11px; font-weight: 700; line-height: 1;
+}
+.tt-tok-name { display: inline-flex; align-items: center; gap: 4px; }
+.tt-tok-order { margin: 2px 0 0; font-size: 12px; text-transform: none !important; letter-spacing: 0 !important; color: var(--text) !important; }
+.tt-tok-more { width: 100%; margin-top: 6px; font-size: 12px; }
+/* The tip spans the row it sits in, so it stays inside the sidebar. */
+.tt-info { display: inline-flex; }
+.tt-tok-row, .tt-tok-order, .tt-counter-row { position: relative; }
+.tt-info-dot {
+  width: 15px; height: 15px; min-width: 0; padding: 0; border-radius: 50%;
+  font: italic 700 10px/1 Georgia, serif; text-transform: none;
+  display: inline-grid; place-items: center;
+  background: var(--panel-2); color: var(--muted); border: 1px solid var(--border);
+  cursor: help;
+}
+.tt-info-dot:hover, .tt-info.open .tt-info-dot { color: var(--accent); border-color: var(--accent); }
+.tt-info-tip {
+  display: none; position: absolute; z-index: 30; left: 0; right: 0; top: calc(100% + 4px);
+  padding: 8px 10px; border-radius: 6px;
+  background: #0e0f12; border: 1px solid var(--border); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  font-size: 12px; line-height: 1.4; color: var(--text);
+  text-transform: none; letter-spacing: 0; font-weight: 400; font-style: normal; white-space: normal;
+}
+.tt-info-tip b { display: block; margin-bottom: 3px; color: var(--accent); }
+.tt-info-tip a { display: block; margin-top: 4px; font-size: 11px; color: #7fd6ff; }
+.tt-info:hover .tt-info-tip, .tt-info.open .tt-info-tip, .tt-info:focus-within .tt-info-tip { display: block; }
+.tt-tok-icon { width: 20px; height: 20px; flex: none; object-fit: contain; }

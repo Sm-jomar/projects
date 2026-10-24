@@ -1,6 +1,7 @@
 // Tabletop session model. Everything the canvas needs to render a game state.
 
 import { logId, type LogActor, type LogEntry } from "./auditLog";
+import { STATUS_TOKENS, type StatusCounts } from "./statusTokens";
 
 export type GameType = "skirmish" | "standard" | "grand-army" | "custom";
 
@@ -115,6 +116,9 @@ export type Token = {
   squadId?: string;
   /** True on the squad leader; moving the leader carries the squad. */
   squadLead?: boolean;
+  /** Status tokens (aim, dodge, ion, ...) by kind, see lib/statusTokens.
+   * Suppression is kept in `suppression` above. Squad members share them. */
+  status?: StatusCounts;
 };
 
 // --- Movement templates ---------------------------------------------------
@@ -224,7 +228,7 @@ export function newTabletop(gameType: GameType = "standard"): TabletopState {
 }
 
 // Diff two Legion boards into audit-log entries. Covers token moves (with
-// from/to for ghost replay), adds/removes, wound/suppression changes, VP
+// from/to for ghost replay), adds/removes, wound and status token changes, VP
 // and round changes. Positions are in inches.
 export function diffLegion(prev: TabletopState, next: TabletopState, actor: LogActor): LogEntry[] {
   const out: LogEntry[] = [];
@@ -245,9 +249,15 @@ export function diffLegion(prev: TabletopState, next: TabletopState, actor: LogA
       const d = (t.wounds ?? 0) - (p.wounds ?? 0);
       out.push(mk("hp", `${t.label || "token"} wounds ${d >= 0 ? "+" : ""}${d}`));
     }
-    if ((p.suppression ?? 0) !== (t.suppression ?? 0)) {
-      const d = (t.suppression ?? 0) - (p.suppression ?? 0);
-      out.push(mk("hp", `${t.label || "token"} suppression ${d >= 0 ? "+" : ""}${d}`));
+    // A squad shares its status tokens, so log them once, on the leader.
+    if (t.squadId && !t.squadLead) continue;
+    for (const def of STATUS_TOKENS) {
+      const key = def.id === "suppression" ? undefined : def.id;
+      const was = (key ? p.status?.[key] : p.suppression) ?? 0;
+      const now = (key ? t.status?.[key] : t.suppression) ?? 0;
+      if (was === now) continue;
+      const d = now - was;
+      out.push(mk("hp", `${t.label || "token"} ${def.label.toLowerCase()} ${d >= 0 ? "+" : ""}${d}`));
     }
   }
   for (const p of prev.tokens) {

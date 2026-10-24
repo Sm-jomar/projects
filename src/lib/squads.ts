@@ -9,6 +9,7 @@
 // is no such spot.
 
 import { newId, type TabletopState, type Token } from "./tabletop";
+import { poolSquadStatus } from "./statusTokens";
 
 /** Slack (inches) when deciding whether two round bases touch, so bases
  * that sit flush on the grid count as in contact despite float error. */
@@ -154,7 +155,8 @@ export function startSquad(state: TabletopState, tokenId: string): TabletopState
   };
 }
 
-/** Add a token to a squad and pull it into base contact. */
+/** Add a token to a squad and pull it into base contact. The squad pools
+ * its status tokens with the newcomer's (see lib/statusTokens). */
 export function joinSquad(state: TabletopState, tokenId: string, squadId: string): TabletopState {
   const tk = state.tokens.find((t) => t.id === tokenId);
   if (!tk) return state;
@@ -162,7 +164,7 @@ export function joinSquad(state: TabletopState, tokenId: string, squadId: string
   const tokens = state.tokens.map((t) => t.id === tokenId ? joined : t);
   const spot = lockedSpot(tokens, joined, { x: tk.x, y: tk.y });
   if (!spot) return state; // no room around the squad
-  return { ...state, tokens: tokens.map((t) => t.id === tokenId ? { ...t, ...spot } : t) };
+  return { ...state, tokens: poolSquadStatus(tokens.map((t) => t.id === tokenId ? { ...t, ...spot } : t), squadId) };
 }
 
 /** Take a token out of its squad. If it led, the nearest member takes over. */
