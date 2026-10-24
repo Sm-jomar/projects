@@ -5,6 +5,8 @@
 // stand with a shadow on the ground beneath. With the camera locked, pieces
 // can be dragged right here; the D-pad (or arrow keys) steps the selected
 // piece, and a floating readout shows how far it has moved this move.
+// "Take control" hands a piece to the keyboard: WASD runs it around with a
+// chase camera, a walk cycle and a hop, and its position syncs as it goes.
 //
 // Coordinates: the caller works in its own board units (inches for Legion,
 // grid cells for D&D) with x to the right and y down the board. Here that
@@ -100,8 +102,11 @@ type Props = {
   pieces: Piece3D[];
   selectedId: string | null;
   onSelect: (id: string | null) => void;
-  /** Move a piece so its centre lands on (x, y), board units. Absent = view only. */
-  onMove?: (id: string, x: number, y: number) => void;
+  /** Move a piece so its centre lands on (x, y), board units. Absent = view
+   * only. A piece under direct control also reports its facing (degrees
+   * clockwise from up the board), and live: true while it's still running
+   * (the last report of a run has live: false). */
+  onMove?: (id: string, x: number, y: number, run?: { facing: number; live: boolean }) => void;
   /** D-pad / arrow-key step, board units (default 1). */
   moveStep?: number;
   /** Describe a move of (dx, dy) board units from where the piece started;
@@ -136,6 +141,16 @@ export default function Board3D(props: Props) {
   useEffect(() => { ctxRef.current?.setLocked(locked); }, [locked]);
 
   const selected = props.onMove ? props.pieces.find((pc) => pc.id === props.selectedId) : undefined;
+  // The piece under direct control lets go when it's deselected or removed.
+  const [controlId, setControlId] = useState<string | null>(null);
+  const controlling = controlId != null && controlId === selected?.id;
+  useEffect(() => {
+    ctxRef.current?.setControl(controlling ? controlId : null);
+    if (!controlling) hostRef.current?.blur();
+    else hostRef.current?.focus();
+  }, [controlling, controlId]);
+  useEffect(() => ctxRef.current?.onRelease(() => setControlId(null)), []);
+
   // Step the selected piece. Directions follow the camera, snapped to the
   // board's axes: "up" is away from you, whichever side you're looking from.
   function step(sx: number, sy: number) {
@@ -150,7 +165,7 @@ export default function Board3D(props: Props) {
   function onKey(e: React.KeyboardEvent) {
     const dir: Record<string, [number, number]> = { ArrowUp: [0, 1], ArrowDown: [0, -1], ArrowLeft: [-1, 0], ArrowRight: [1, 0] };
     const d = dir[e.key];
-    if (!d || !selected) return;
+    if (!d || !selected || controlling) return;
     e.preventDefault();
     step(d[0], d[1]);
   }
@@ -158,7 +173,9 @@ export default function Board3D(props: Props) {
   return (
     <div className="board3d" ref={hostRef} tabIndex={0} onKeyDown={onKey}>
       <div className="board3d-hint small">
-        {locked
+        {controlling
+          ? "WASD / arrows to run · Shift to sprint · Space to hop · drag to look around · Esc to let go"
+          : locked
           ? "Camera locked · drag a piece to move it · right-drag to pan · scroll to zoom"
           : "Drag to orbit · right-drag to pan · scroll to zoom · click a piece or terrain to select"}
       </div>
@@ -169,6 +186,23 @@ export default function Board3D(props: Props) {
             {locked ? "🔒 Camera locked" : "🔓 Lock camera"}
           </button>
           {selected && (
+            <button className={"ghost-btn small" + (controlling ? " active" : "")}
+                    onClick={() => setControlId(controlling ? null : selected.id)}
+                    title="Run this piece around with WASD / the arrow keys and a chase camera">
+              {controlling ? "✋ Let go" : "🎮 Take control"}
+            </button>
+          )}
+          {controlling ? (
+            <div className="board3d-dpad board3d-stick" aria-label="Run the controlled piece">
+              {([null, ["w", "▲"], null, ["a", "◀"], [" ", "⤒"], ["d", "▶"], null, ["s", "▼"], ["shift", "⇧"]] as const).map((k, i) =>
+                k ? <button key={i} className="ghost-btn small" title={k[0] === " " ? "Hop" : k[0] === "shift" ? "Sprint" : undefined}
+                            onPointerDown={(e) => { e.preventDefault(); ctxRef.current?.press(k[0], true); }}
+                            onPointerUp={() => ctxRef.current?.press(k[0], false)}
+                            onPointerLeave={() => ctxRef.current?.press(k[0], false)}
+                            onPointerCancel={() => ctxRef.current?.press(k[0], false)}>{k[1]}</button>
+                  : <span key={i} />)}
+            </div>
+          ) : selected && (
             <div className="board3d-dpad" aria-label="Move the selected piece">
               {([[-1, 1, "↖"], [0, 1, "↑"], [1, 1, "↗"], [-1, 0, "←"], null, [1, 0, "→"], [-1, -1, "↙"], [0, -1, "↓"], [1, -1, "↘"]] as const).map((d, i) =>
                 d ? <button key={i} className="ghost-btn small" onClick={() => step(d[0], d[1])}>{d[2]}</button>
@@ -191,6 +225,12 @@ type SceneCtx = {
   azimuth: () => number;
   /** Measure the selected piece's next move from where it stands now. */
   resetMove: () => void;
+  /** Put a piece under keyboard control (null lets go). */
+  setControl: (id: string | null) => void;
+  /** Hold / release a control key from the on-screen pad. */
+  press: (key: string, down: boolean) => void;
+  /** Called when the piece lets go by itself (Esc); returns an unsubscribe. */
+  onRelease: (fn: () => void) => () => void;
   dispose: () => void;
 };
 
@@ -225,7 +265,15 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
   scene.add(content);
   const pickables: THREE.Object3D[] = [];
   // Piece groups by id (for dragging), with their board-space centre.
-  const pieceGroups = new Map<string, { g: THREE.Group; x: number; y: number; top: number }>();
+  // rig: the model's own group, which the walk cycle bobs and sways;
+  // baseY: the bottom of the base where the build put it.
+  const pieceGroups = new Map<string, {
+    g: THREE.Group; x: number; y: number; top: number;
+    rig: THREE.Group; rigY: number; baseY: number; pc: Piece3D;
+  }>();
+  // Facing a controlled piece turned to, for pieces the board keeps no
+  // facing for (so the model doesn't snap back to face up the board).
+  const turned = new Map<string, number>();
   const stlGeoms = new Map<string, THREE.BufferGeometry | null>();
   let boardW = 1, boardD = 1;
   let disposed = false;
@@ -411,7 +459,7 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
       const { standOn, baseY } = footing(p.blocks, pc.x, pc.y, pc.lift);
       const flyH = baseY - standOn;
       g.position.set(wx(pc.x), 0, wz(pc.y));
-      g.rotation.y = -((pc.facing ?? 0) * Math.PI) / 180;
+      g.rotation.y = -((pc.facing ?? turned.get(pc.id) ?? 0) * Math.PI) / 180;
       const sel = pc.id === p.selectedId;
       const r = pc.footprint / 2;
 
@@ -490,9 +538,10 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
         g.add(ring);
       }
 
-      const model = buildModel(pc, stlGeometry);
-      model.position.y = baseY + baseH;
-      g.add(model);
+      const rig = new THREE.Group();
+      rig.add(buildModel(pc, stlGeometry));
+      rig.position.y = baseY + baseH;
+      g.add(rig);
 
       if (pc.dim) {
         g.traverse((o) => {
@@ -503,7 +552,7 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
       g.traverse((o) => { o.userData.pieceId = pc.id; o.userData.isPiece = true; });
       pickables.push(g);
       content.add(g);
-      pieceGroups.set(pc.id, { g, x: pc.x, y: pc.y, top: baseY + baseH + pc.modelHeight });
+      pieceGroups.set(pc.id, { g, x: pc.x, y: pc.y, top: baseY + baseH + pc.modelHeight, rig, rigY: baseY + baseH, baseY, pc });
     }
 
     // A move is measured from where the selected piece stood when it was
@@ -513,6 +562,13 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
     else if (moveFrom?.id !== p.selectedId) moveFrom = { id: p.selectedId!, x: sel.x, y: sel.y };
     if (drag && pieceGroups.has(drag.id)) placeDragged();
     else showMeasure();
+    if (control && !pieceGroups.has(control.id)) release();
+    else if (control && !control.started) {
+      // Between runs, take the board's word for where the piece is (a
+      // squad's base lock or the grid snap may have nudged it).
+      const pg = pieceGroups.get(control.id)!;
+      control.x = pg.x; control.y = pg.y;
+    }
   }
 
   // --- Move readout ---------------------------------------------------------
@@ -586,7 +642,7 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
   const onDown = (e: PointerEvent) => {
     down = { x: e.clientX, y: e.clientY };
     framed = true;
-    if (!locked || e.button !== 0 || !lastProps?.onMove) return;
+    if (!locked || control || e.button !== 0 || !lastProps?.onMove) return;
     aim(e);
     const hit = ray.intersectObjects(pickables, true).find((h) => h.object.userData.isPiece);
     const id = hit?.object.userData.pieceId as string | undefined;
@@ -627,9 +683,193 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
   renderer.domElement.addEventListener("pointermove", onMoveEvt);
   renderer.domElement.addEventListener("pointerup", onUp);
 
+  // --- Direct control -----------------------------------------------------
+  // The piece runs where the keys point, relative to the camera, and turns
+  // to face the way it's going; the camera follows it (drag still orbits,
+  // the wheel still zooms). Solid terrain taller than a step blocks it.
+  type Control = {
+    id: string; x: number; y: number; heading: number;
+    phase: number; walk: number; hop: number; lift: number;
+    dirty: boolean; sentAt: number; started: boolean;
+  };
+  let control: Control | null = null;
+  const keys = new Set<string>();
+  const releaseFns = new Set<() => void>();
+  const clock = new THREE.Clock();
+  const savedLimits = { minPolar: 0, maxPolar: 0, minDist: 0 };
+  const KEY_ALIAS: Record<string, string> = { arrowup: "w", arrowdown: "s", arrowleft: "a", arrowright: "d" };
+  const keyName = (e: KeyboardEvent) => { const k = e.key.toLowerCase(); return KEY_ALIAS[k] ?? k; };
+  const typing = (t: EventTarget | null) =>
+    t instanceof HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName));
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (!control || typing(e.target) || e.ctrlKey || e.metaKey || e.altKey) return;
+    const k = keyName(e);
+    if (k === "escape") { release(); e.preventDefault(); return; }
+    if (!["w", "a", "s", "d", " ", "shift"].includes(k)) return;
+    e.preventDefault();
+    if (k === " " && !keys.has(" ") && control.hop <= 0) control.hop = 1e-6;
+    keys.add(k);
+  };
+  const onKeyUp = (e: KeyboardEvent) => { keys.delete(keyName(e)); };
+  const onBlur = () => keys.clear();
+  window.addEventListener("keydown", onKeyDown);
+  window.addEventListener("keyup", onKeyUp);
+  window.addEventListener("blur", onBlur);
+
+  function release() {
+    if (!control) return;
+    finishRun();
+    control = null;
+    keys.clear();
+    controls.minPolarAngle = savedLimits.minPolar;
+    controls.maxPolarAngle = savedLimits.maxPolar;
+    controls.minDistance = savedLimits.minDist;
+    for (const fn of releaseFns) fn();
+  }
+
+  // Report where the piece got to: live while it runs, final when it stops.
+  function sendRun(live: boolean) {
+    if (!control || !lastProps?.onMove) return;
+    control.dirty = false;
+    control.sentAt = performance.now();
+    const pc = pieceGroups.get(control.id)?.pc;
+    const facing = Math.round(((control.heading % 360) + 360) % 360);
+    if (pc?.facing == null) turned.set(control.id, facing);
+    lastProps.onMove(control.id, control.x, control.y, { facing, live });
+  }
+  function finishRun() {
+    if (control?.started) { sendRun(false); control.started = false; }
+  }
+
+  // Solid terrain at (x, y) that a piece whose feet are at `feet` can't
+  // step up onto or duck under. Area terrain (forests) never blocks.
+  function blocked(x: number, y: number, r: number, feet: number, height: number): boolean {
+    const step = height * 0.5;
+    for (const b of lastProps?.blocks ?? []) {
+      if (b.style === "forest") continue;
+      const bottom = b.base ?? 0, top = bottom + b.height;
+      if (top <= feet + step || bottom >= feet + height) continue;
+      const k = r * 0.8;
+      if ([[0, 0], [k, 0], [-k, 0], [0, k], [0, -k]].some(([ox, oy]) => blockContains(b, x + ox!, y + oy!))) return true;
+    }
+    return false;
+  }
+
+  function tickControl(dt: number) {
+    const pg = control && pieceGroups.get(control.id);
+    if (!control || !pg || !lastProps) return;
+    const pc = pg.pc;
+    const fwd = (keys.has("w") ? 1 : 0) - (keys.has("s") ? 1 : 0);
+    const side = (keys.has("d") ? 1 : 0) - (keys.has("a") ? 1 : 0);
+    const run = keys.has("shift");
+    const before = new THREE.Vector3(wx(control.x), 0, wz(control.y));
+    let moving = false;
+    if (fwd || side) {
+      // Camera-relative: "forward" is away from the camera.
+      const a = controls.getAzimuthalAngle();
+      let dx = -Math.sin(a) * fwd + Math.cos(a) * side;
+      let dy = -Math.cos(a) * fwd - Math.sin(a) * side;
+      const len = Math.hypot(dx, dy) || 1;
+      dx /= len; dy /= len;
+      // Turn toward the way we're heading (forward = (sin h, -cos h)).
+      const want = (Math.atan2(dx, -dy) * 180) / Math.PI;
+      const diff = ((want - control.heading + 540) % 360) - 180;
+      control.heading += diff * Math.min(1, dt * 12);
+      // A brisk walk is a few base widths a second; sprinting doubles it.
+      const speed = Math.max(pc.footprint, pc.modelHeight) * 3 * (run ? 2 : 1);
+      const r = pc.footprint / 2;
+      const feet = footing(lastProps.blocks, control.x, control.y, control.lift).baseY;
+      const clampX = (v: number) => Math.max(r, Math.min(boardW - r, v));
+      const clampY = (v: number) => Math.max(r, Math.min(boardD - r, v));
+      const nx = clampX(control.x + dx * speed * dt), ny = clampY(control.y + dy * speed * dt);
+      // Stuck inside something already? Let it walk out.
+      const free = (x: number, y: number) =>
+        !blocked(x, y, r, feet, pc.modelHeight) || blocked(control!.x, control!.y, r, feet, pc.modelHeight);
+      const tries: [number, number][] = [[nx, ny], [nx, control.y], [control.x, ny]];
+      const ok = tries.find(([x, y]) => (x !== control!.x || y !== control!.y) && free(x, y));
+      if (ok) {
+        control.x = ok[0]; control.y = ok[1];
+        control.dirty = true;
+        moving = true;
+        if (!control.started) { control.started = true; control.sentAt = 0; }
+      }
+    }
+
+    // Place the piece: on whatever it now stands on, smoothing steps.
+    const { baseY } = footing(lastProps.blocks, control.x, control.y, control.lift);
+    const lerp = Math.min(1, dt * 14);
+    pg.g.position.x = wx(control.x);
+    pg.g.position.z = wz(control.y);
+    pg.g.position.y += (baseY - pg.baseY - pg.g.position.y) * lerp;
+    pg.g.rotation.y = -(control.heading * Math.PI) / 180;
+
+    // Walk cycle: bob, sway, lean in, swing the limbs; breathe when idle.
+    control.walk += ((moving ? 1 : 0) - control.walk) * Math.min(1, dt * 8);
+    control.phase += dt * (run ? 15 : 10) * control.walk;
+    let hopY = 0;
+    if (control.hop > 0) {
+      control.hop += dt / 0.45;
+      if (control.hop >= 1) control.hop = 0;
+      else hopY = Math.sin(control.hop * Math.PI) * pc.modelHeight * 0.45;
+    }
+    const w = control.walk, t = clock.elapsedTime;
+    pg.rig.position.y = pg.rigY + Math.abs(Math.sin(control.phase)) * pc.modelHeight * 0.06 * w + hopY;
+    pg.rig.rotation.z = Math.sin(control.phase) * 0.06 * w;
+    pg.rig.rotation.x = -(run ? 0.2 : 0.1) * w;
+    pg.rig.scale.y = 1 + Math.sin(t * 2.4) * 0.02 * (1 - w);
+    pg.rig.traverse((o) => {
+      const s = o.userData.swing as number | undefined;
+      if (s) o.rotation.x = Math.sin(control!.phase) * (run ? 0.9 : 0.6) * w * s;
+    });
+
+    // Camera follows the piece.
+    const after = new THREE.Vector3(wx(control.x), 0, wz(control.y));
+    const delta = after.sub(before);
+    camera.position.add(delta);
+    controls.target.add(delta);
+    const aimY = pg.g.position.y + pg.rigY + pc.modelHeight * 0.6;
+    const dyAim = (aimY - controls.target.y) * lerp;
+    controls.target.y += dyAim;
+    camera.position.y += dyAim;
+
+    if (moving) showMeasure({ x: control.x, y: control.y });
+    const now = performance.now();
+    if (control.dirty && moving && now - control.sentAt > 300) sendRun(true);
+    else if (!moving && control.started) finishRun();
+  }
+
+  function setControl(id: string | null) {
+    if (id === control?.id) return;
+    release();
+    const pg = id ? pieceGroups.get(id) : undefined;
+    if (!id || !pg) return;
+    const pc = pg.pc;
+    control = {
+      id, x: pg.x, y: pg.y, heading: pc.facing ?? turned.get(id) ?? 0,
+      phase: 0, walk: 0, hop: 0, lift: pc.lift, dirty: false, sentAt: 0, started: false,
+    };
+    framed = true;
+    moveFrom = { id, x: pg.x, y: pg.y };
+    showMeasure();
+    savedLimits.minPolar = controls.minPolarAngle;
+    savedLimits.maxPolar = controls.maxPolarAngle;
+    savedLimits.minDist = controls.minDistance;
+    controls.maxPolarAngle = Math.PI * 0.49;
+    controls.minDistance = pc.modelHeight * 1.5;
+    // Swing in behind the piece, a little above its head.
+    const h = (control.heading * Math.PI) / 180;
+    const dist = Math.max(pc.modelHeight * 6, pc.footprint * 8);
+    const tgt = new THREE.Vector3(wx(pg.x), pg.rigY + pc.modelHeight * 0.6, wz(pg.y));
+    controls.target.copy(tgt);
+    camera.position.set(tgt.x - Math.sin(h) * dist * 0.9, tgt.y + dist * 0.45, tgt.z + Math.cos(h) * dist * 0.9);
+    controls.update();
+  }
+
   let raf = 0;
   const loop = () => {
     raf = requestAnimationFrame(loop);
+    const dt = Math.min(0.05, clock.getDelta());
+    tickControl(dt);
     controls.update();
     renderer.render(scene, camera);
     if (labelAt) {
@@ -655,8 +895,22 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
       if (moveFrom && pg) moveFrom = { id: moveFrom.id, x: pg.x, y: pg.y };
       showMeasure();
     },
+    setControl,
+    press(key, down) {
+      if (!control) return;
+      if (down && key === " " && control.hop <= 0) control.hop = 1e-6;
+      if (down) keys.add(key); else keys.delete(key);
+    },
+    onRelease(fn) {
+      releaseFns.add(fn);
+      return () => { releaseFns.delete(fn); };
+    },
     dispose() {
       disposed = true;
+      release();
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("keyup", onKeyUp);
+      window.removeEventListener("blur", onBlur);
       cancelAnimationFrame(raf);
       ro.disconnect();
       renderer.domElement.removeEventListener("pointerdown", onDown);
@@ -1033,8 +1287,10 @@ function figure(
   if (style === "droid") {
     // B1: thin limbs, narrow torso, long forward-leaning head.
     for (const s of [-1, 1]) {
-      add(new THREE.CylinderGeometry(0.035, 0.035, 0.42, 8), body, s * 0.08, 0.21, 0);
-      add(new THREE.CylinderGeometry(0.03, 0.03, 0.34, 8), body, s * 0.17, 0.52, -0.02).rotation.z = s * 0.15;
+      add(new THREE.CylinderGeometry(0.035, 0.035, 0.42, 8).translate(0, -0.21, 0), body, s * 0.08, 0.42, 0).userData.swing = s;
+      const arm = add(new THREE.CylinderGeometry(0.03, 0.03, 0.34, 8).translate(0, -0.17, 0), body, s * 0.17, 0.69, -0.02);
+      arm.rotation.z = s * 0.15;
+      arm.userData.swing = -s;
     }
     add(new THREE.BoxGeometry(0.24, 0.2, 0.1), body, 0, 0.56, 0);
     add(new THREE.CylinderGeometry(0.025, 0.025, 0.16, 8), body, 0, 0.72, 0);
@@ -1047,9 +1303,12 @@ function figure(
   }
 
   // Humanoid troopers: rebel, imperial, clone.
+  // Limbs hang from the hip / shoulder so the walk cycle can swing them.
   for (const s of [-1, 1]) {
-    add(new THREE.CylinderGeometry(0.07, 0.065, 0.4, 10), style === "rebel" ? trim : body, s * 0.09, 0.2, 0);
-    add(new THREE.CylinderGeometry(0.055, 0.05, 0.34, 10), body, s * 0.2, 0.55, -0.02).rotation.z = s * 0.12;
+    add(new THREE.CylinderGeometry(0.07, 0.065, 0.4, 10).translate(0, -0.2, 0), style === "rebel" ? trim : body, s * 0.09, 0.4, 0).userData.swing = s;
+    const arm = add(new THREE.CylinderGeometry(0.055, 0.05, 0.34, 10).translate(0, -0.17, 0), body, s * 0.2, 0.72, -0.02);
+    arm.rotation.z = s * 0.12;
+    arm.userData.swing = -s;
   }
   add(new THREE.BoxGeometry(0.34, 0.36, 0.2), body, 0, 0.58, 0);
   add(new THREE.BoxGeometry(0.36, 0.06, 0.22), style === "imperial" ? dark : trim, 0, 0.42, 0); // belt

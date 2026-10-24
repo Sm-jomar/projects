@@ -67,8 +67,9 @@ export default function Legion3D({ state, selectedId, onSelect, showGrid, onUplo
   showGrid: boolean;
   /** Opens the STL picker for the selected unit/terrain (absent = read-only). */
   onUploadModel?: () => void;
-  /** Move a token's top-left to (x, y) inches (absent = read-only). */
-  onMoveToken?: (id: string, x: number, y: number) => void;
+  /** Move a token's top-left to (x, y) inches (absent = read-only). A unit
+   * under direct control also passes its facing and whether it's mid-run. */
+  onMoveToken?: (id: string, x: number, y: number, run?: { facing: number; live: boolean }) => void;
   /** D-pad step in inches. */
   step?: number;
 }) {
@@ -137,9 +138,9 @@ export default function Legion3D({ state, selectedId, onSelect, showGrid, onUplo
         selectedId={selectedId}
         onSelect={onSelect}
         moveStep={step}
-        onMove={onMoveToken && ((id, x, y) => {
+        onMove={onMoveToken && ((id, x, y, run) => {
           const tk = state.tokens.find((t) => t.id === id);
-          if (tk) onMoveToken(id, x - tk.size / 2, y - tk.size / 2);
+          if (tk) onMoveToken(id, x - tk.size / 2, y - tk.size / 2, run);
         })}
         measure={(id, dx, dy) => measureMove(state.tokens.find((t) => t.id === id), dx, dy)}
       />
