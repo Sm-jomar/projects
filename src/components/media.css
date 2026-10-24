@@ -115,3 +115,14 @@
 
 /* Legion: clear of the round / VP bar along the top of the board. */
 .tt-canvas-col > .media-dock { top: 60px; max-height: calc(100% - 74px); }
+
+.media-volume {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px 0;
+}
+.media-volume-icon { width: 20px; text-align: center; }
+.media-volume input[type="range"] { flex: 1; min-width: 0; accent-color: var(--media-accent, var(--accent)); }
+.media-volume button { min-width: 0; width: 26px; padding: 2px 0; }
+.media-volume-num { width: 52px; box-sizing: border-box; text-align: center; }

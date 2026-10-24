@@ -59,6 +59,9 @@ export function embedUrl(m: MediaRef, opts: { autoplay?: boolean; loop?: boolean
   }
   p.set("rel", "0");
   p.set("modestbranding", "1");
+  // Lets the page talk to the player (volume) over postMessage.
+  p.set("enablejsapi", "1");
+  if (typeof location !== "undefined") p.set("origin", location.origin);
   const path = m.video ?? "videoseries";
   return `https://www.youtube.com/embed/${path}?${p.toString()}`;
 }
@@ -87,6 +90,11 @@ export function parseTableMusic(raw: unknown): TableMusic | null {
     ...(typeof r.by === "string" && r.by ? { by: r.by.slice(0, 40) } : {}),
     at: typeof r.at === "number" ? r.at : 0,
   };
+}
+
+/** Volume is 0-100, as YouTube's player takes it. */
+export function clampVolume(v: number): number {
+  return Number.isFinite(v) ? Math.min(100, Math.max(0, Math.round(v))) : 0;
 }
 
 // --- Saved playlists (per device) ----------------------------------------

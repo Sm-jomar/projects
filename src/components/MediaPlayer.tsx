@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { MediaPlayback, MediaToggle } from "./useMediaPlayer";
 import {
-  defaultLabel, embedUrl, loadSavedMedia, parseYouTube, sameMedia, saveSavedMedia, watchUrl,
+  clampVolume, defaultLabel, embedUrl, loadSavedMedia, parseYouTube, sameMedia, saveSavedMedia, watchUrl,
   type MediaRef, type SavedMedia, type TableMusic,
 } from "../lib/media";
 import "./media.css";
@@ -39,7 +39,7 @@ type Props = {
 
 export function MediaDock({ music, canSet, cantSetWhy, onSet, myName, toggle, className, playback }: Props & { playback: MediaPlayback }) {
   const { open, setOpen } = toggle;
-  const { mine, setMine, muted, setMuted, current, playing } = playback;
+  const { mine, setMine, muted, setMuted, volume, setVolume, current, playing } = playback;
   const [draft, setDraft] = useState("");
   const [label, setLabel] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -132,15 +132,15 @@ export function MediaDock({ music, canSet, cantSetWhy, onSet, myName, toggle, cl
 
       {playing ? (
         <div className="media-frame">
-          <iframe key={frameKey} src={embedUrl(playing)} title={playing.label || "YouTube player"}
-                  allow="autoplay; encrypted-media; picture-in-picture" referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen />
+          <YouTubeFrame key={frameKey} src={embedUrl(playing)} title={playing.label || "YouTube player"} volume={volume} />
         </div>
       ) : current && (
         <div className="media-frame media-frame-off">
           <span className="muted small">Muted for you.</span>
         </div>
       )}
+
+      {playing && <VolumeControl volume={volume} onChange={setVolume} />}
 
       {current && (
         <div className="media-controls">
@@ -196,4 +196,84 @@ export function MediaDock({ music, canSet, cantSetWhy, onSet, myName, toggle, cl
 
 function pick(m: MediaRef): MediaRef {
   return { ...(m.list ? { list: m.list } : {}), ...(m.video ? { video: m.video } : {}) };
+}
+
+/** The embedded player, kept at this device's volume. YouTube's player takes
+ * commands over postMessage once it's been told someone is listening; it
+ * answers with events, so keep saying hello until it does, then set the
+ * volume (and again whenever it changes). */
+function YouTubeFrame({ src, title, volume }: { src: string; title: string; volume: number }) {
+  const ref = useRef<HTMLIFrameElement>(null);
+  const [ready, setReady] = useState(false);
+
+  function post(msg: object) {
+    ref.current?.contentWindow?.postMessage(JSON.stringify(msg), "https://www.youtube.com");
+  }
+
+  useEffect(() => {
+    function onMessage(e: MessageEvent) {
+      if (e.source !== ref.current?.contentWindow || e.origin !== "https://www.youtube.com") return;
+      setReady(true);
+    }
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, []);
+
+  // Say hello until the player answers (it ignores messages until it has loaded).
+  useEffect(() => {
+    if (ready) return;
+    const hello = setInterval(() => post({ event: "listening", id: 1, channel: "widget" }), 400);
+    return () => clearInterval(hello);
+  }, [ready]);
+
+  useEffect(() => {
+    if (!ready) return;
+    post({ event: "command", func: "setVolume", args: [volume] });
+    if (volume > 0) post({ event: "command", func: "unMute", args: [] });
+  }, [ready, volume]);
+
+  return (
+    <iframe ref={ref} src={src} title={title}
+            allow="autoplay; encrypted-media; picture-in-picture" referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen />
+  );
+}
+
+/** A slider for rough moves, a number box for an exact value, and −/+ to
+ * nudge by one — sliders alone are too twitchy to land on a value. */
+function VolumeControl({ volume, onChange }: { volume: number; onChange: (v: number) => void }) {
+  // The box holds what's typed (even mid-edit or empty) until it's a number.
+  const [text, setText] = useState<string | null>(null);
+
+  function commitText() {
+    if (text != null && text.trim() !== "") onChange(clampVolume(Number(text)));
+    setText(null);
+  }
+
+  return (
+    <div className="media-volume">
+      <span className="media-volume-icon" aria-hidden>{volume === 0 ? "🔇" : volume < 40 ? "🔈" : volume < 75 ? "🔉" : "🔊"}</span>
+      <button type="button" className="ghost-btn small" onClick={() => onChange(volume - 1)}
+              disabled={volume <= 0} aria-label="Volume down one">−</button>
+      <input type="range" min={0} max={100} step={1} value={volume}
+             onChange={(e) => onChange(Number(e.target.value))}
+             onKeyDown={(e) => e.stopPropagation()}
+             aria-label="Volume" />
+      <button type="button" className="ghost-btn small" onClick={() => onChange(volume + 1)}
+              disabled={volume >= 100} aria-label="Volume up one">+</button>
+      <input type="number" className="media-volume-num" min={0} max={100} step={1} inputMode="numeric"
+             value={text ?? String(volume)}
+             onChange={(e) => {
+               setText(e.target.value);
+               const n = Number(e.target.value);
+               if (e.target.value.trim() !== "" && Number.isFinite(n)) onChange(clampVolume(n));
+             }}
+             onBlur={commitText}
+             onKeyDown={(e) => {
+               e.stopPropagation();
+               if (e.key === "Enter") { e.preventDefault(); commitText(); }
+             }}
+             aria-label="Volume (0 to 100)" title="Type an exact volume, 0 to 100" />
+    </div>
+  );
 }
