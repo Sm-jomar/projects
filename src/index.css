@@ -65,3 +65,26 @@ input, select, textarea {
   font-family: inherit;
 }
 textarea { resize: vertical; }
+
+/* Rules "i" dot (InfoDot), used by Legion status tokens and D&D conditions.
+   The tip spans the row it sits in (the row needs position: relative), so it
+   stays inside the sidebar. */
+.tt-info { display: inline-flex; }
+.tt-info-dot {
+  width: 15px; height: 15px; min-width: 0; padding: 0; border-radius: 50%;
+  font: italic 700 10px/1 Georgia, serif; text-transform: none;
+  display: inline-grid; place-items: center;
+  background: var(--panel-2); color: var(--muted); border: 1px solid var(--border);
+  cursor: help;
+}
+.tt-info-dot:hover, .tt-info.open .tt-info-dot { color: var(--accent); border-color: var(--accent); }
+.tt-info-tip {
+  display: none; position: absolute; z-index: 30; left: 0; right: 0; top: calc(100% + 4px);
+  padding: 8px 10px; border-radius: 6px;
+  background: #0e0f12; border: 1px solid var(--border); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  font-size: 12px; line-height: 1.4; color: var(--text);
+  text-transform: none; letter-spacing: 0; font-weight: 400; font-style: normal; white-space: normal;
+}
+.tt-info-tip b { display: block; margin-bottom: 3px; color: var(--accent); }
+.tt-info-tip a { display: block; margin-top: 4px; font-size: 11px; color: #7fd6ff; }
+.tt-info:hover .tt-info-tip, .tt-info.open .tt-info-tip, .tt-info:focus-within .tt-info-tip { display: block; }
