@@ -14,6 +14,9 @@ import { legionPlayUrl, roomsAvailableHere } from "../lib/appRouting";
 import { AuditLogView } from "./AuditLogView";
 import { ChatButton, ChatDock } from "./ChatDock";
 import { useChatToggle, useSessionChat } from "./useSessionChat";
+import { MediaButton, MediaDock } from "./MediaPlayer";
+import { useMediaPlayback, useMediaToggle } from "./useMediaPlayer";
+import { parseTableMusic } from "../lib/media";
 import {
   moveToken, startSquad, joinSquad, leaveSquad, makeLeader, disbandSquad, regroupSquad,
   normalizeSquads, listSquads, squadMembers, unlockedIds,
@@ -149,7 +152,8 @@ export function TabletopPanel({ onClose }: Props) {
   function undo() {
     const prev = historyRef.current.pop();
     if (prev) {
-      setState(prev);
+      // Undo is for the board, not the music.
+      setState((s) => ({ ...prev, music: s.music }));
       setHistLen(historyRef.current.length);
     }
   }
@@ -187,6 +191,9 @@ export function TabletopPanel({ onClose }: Props) {
   useEffect(() => { readOnlyRef.current = !!readOnly; }, [readOnly]);
   const chat = useSessionChat("legion", () => roomRef.current, online?.code ?? null, online?.you ?? null, online?.status === "open");
   const chatToggle = useChatToggle(chat, online?.you?.id ?? null);
+  const mediaToggle = useMediaToggle("legion");
+  const music = parseTableMusic(state.music);
+  const media = useMediaPlayback(music);
   // Always-fresh state for the seed-on-join callback (which fires outside
   // the render that owns `state`). Kept in sync via an effect rather than
   // assigned during render.
@@ -693,6 +700,7 @@ export function TabletopPanel({ onClose }: Props) {
                     title={view3d ? "Back to the flat board" : "See terrain height and depth in 3D"}>
               {view3d ? "2D view" : "3D view"}
             </button>
+            <MediaButton toggle={mediaToggle} playing={!!media.playing} className="cb-tab" />
             <ChatButton toggle={chatToggle} className="cb-tab" />
           </div>
           <div className="tt-online-wrap">
@@ -735,6 +743,10 @@ export function TabletopPanel({ onClose }: Props) {
           <input ref={modelFileRef} type="file" accept=".stl,model/stl,application/sla" hidden onChange={onModelFile} />
           <div className="tt-canvas-col">
             <ChatDock chat={chat} myId={online?.you?.id ?? null} toggle={chatToggle} colorOf={(a) => legionActorColor(a.color)} />
+            <MediaDock music={music} playback={media} toggle={mediaToggle}
+                       canSet={!readOnly} myName={playerName.trim()}
+                       cantSetWhy="Spectators can't change the table's music."
+                       onSet={(m) => setState((s) => ({ ...s, music: m }))} />
             {readOnly && (
               <div className="tt-spectating-bar">
                 👁 Spectating — you can watch, pan and measure, but not change the board.

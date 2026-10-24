@@ -11,6 +11,9 @@ import { AuditLogView } from "../components/AuditLogView";
 import { RollFeed } from "./RollFeed";
 import { ChatButton, ChatDock } from "../components/ChatDock";
 import { useChatToggle } from "../components/useSessionChat";
+import { MediaButton, MediaDock } from "../components/MediaPlayer";
+import { useMediaPlayback, useMediaToggle } from "../components/useMediaPlayer";
+import { parseTableMusic } from "../lib/media";
 import { CharacterSheetView } from "./CharacterSheetView";
 import { useDndRoom, type OnlineState } from "./dndRoom";
 import { CampaignMapsPanel } from "./CampaignMapLibrary";
@@ -41,6 +44,11 @@ export function DndTabletop() {
   const room = useDndRoom();
   const { state, setBoard, readOnly, online } = room;
   const chatToggle = useChatToggle(room.chat, room.myId);
+  const mediaToggle = useMediaToggle("dnd");
+  const music = parseTableMusic(state.music);
+  const media = useMediaPlayback(music);
+  // With a DM seated, the DM runs the music; otherwise any player can.
+  const canSetMusic = !readOnly && (!room.dmPeer || room.isDm);
 
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const chars = useCharacters();
@@ -255,6 +263,7 @@ export function DndTabletop() {
                 title={view3d ? "Back to the flat board" : "See height and depth in 3D"}>
           {view3d ? "2D view" : "3D view"}
         </button>
+        <MediaButton toggle={mediaToggle} playing={!!media.playing} className="ghost-btn small dnd" />
         <ChatButton toggle={chatToggle} className="ghost-btn small dnd" />
         <button className="ghost-btn small dnd-tt-side-toggle"
                 onClick={() => { const v = !sideCollapsed; setSideCollapsed(v); writeSideCollapsed(v); }}
@@ -291,6 +300,10 @@ export function DndTabletop() {
 
       <div className={"dnd-tt-body" + (sideCollapsed ? " side-collapsed" : "")}>
         <ChatDock chat={room.chat} myId={room.myId} toggle={chatToggle} className="dnd" />
+        <MediaDock music={music} playback={media} toggle={mediaToggle} className="dnd"
+                   canSet={canSetMusic} myName={room.playerName}
+                   cantSetWhy={readOnly ? "Spectators can't change the table's music." : "The DM picks the table's music."}
+                   onSet={(m) => setBoard((s) => ({ ...s, music: m }))} />
         {view3d ? (
           <div className="dnd-tt-canvas">
             <Suspense fallback={<div className="board3d board3d-loading">Loading 3D view…</div>}>
