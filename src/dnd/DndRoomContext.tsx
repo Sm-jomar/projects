@@ -19,6 +19,8 @@ import {
 import { bestCodeFor } from "./campaignKeyring";
 import type { DndToken } from "./dndTabletop";
 import { useSessionChat } from "../components/useSessionChat";
+import { useAiInvites } from "../components/useAiInvites";
+import { AI_DENIED_TEXT, aiCodeFromUrl, parseAiCode } from "../lib/aiInvite";
 
 const NAME_KEY = "dnd.playername";
 const COLOR_KEY = "dnd.playercolor";
@@ -54,7 +56,8 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   const hasRoomParam = new URLSearchParams(location.search).has("room");
   const [online, setOnline] = useState<OnlineState | null>(null);
   const [onlineOpen, setOnlineOpen] = useState(hasRoomParam);
-  const [joinCode, setJoinCode] = useState(() => new URLSearchParams(location.search).get("room")?.toUpperCase() ?? "");
+  // An AI invite link (?ai=<code>) fills the join box with the whole code.
+  const [joinCode, setJoinCode] = useState(() => aiCodeFromUrl() ?? new URLSearchParams(location.search).get("room")?.toUpperCase() ?? "");
   const [playerName, setPlayerName] = useState(() => localStorage.getItem(NAME_KEY) ?? "");
   const [playerColor, setPlayerColor] = useState(() => localStorage.getItem(COLOR_KEY) ?? DEFAULT_COLOR);
   const [spectator, setSpectator] = useState(false);
@@ -88,7 +91,11 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   // Campaign code to run (claim the DM seat + link) when hosting.
   const hostCampaignRef = useRef<string | null>(null);
 
-  const readOnly = online?.status === "open" && online.you?.color === "spectator";
+  // The AI code this connection joined with (null for a person).
+  const aiCodeRef = useRef<string | null>(null);
+  const ai = useAiInvites(() => roomRef.current);
+  // Watch-only as a spectator, or as an AI whose invite can't touch the board.
+  const readOnly = online?.status === "open" && (online.you?.color === "spectator" || (!!online.you?.ai && !ai.self?.board));
   const chat = useSessionChat("dnd", () => roomRef.current, online?.code ?? null, online?.you ?? null, online?.status === "open");
   useEffect(() => { readOnlyRef.current = !!readOnly; }, [readOnly]);
 
@@ -146,7 +153,8 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   // the shared board until you notice and re-upload.
   useEffect(() => {
     const id = online?.status === "open" ? online.you?.id : null;
-    if (!id || !myAvatarUrl) return;
+    // An AI (or my preview of one) never wears my avatar.
+    if (!id || !myAvatarUrl || aiCodeRef.current) return;
     const t = setTimeout(() => {
       setStateRaw((s) => {
         if (s.avatars?.[id] === myAvatarUrl) return s;
@@ -161,7 +169,7 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   // spectating or it was deleted.
   useEffect(() => {
     const you = online?.status === "open" ? online.you : null;
-    if (!you) return;
+    if (!you || aiCodeRef.current) return;
     const t = setTimeout(() => {
       if (readOnlyRef.current) return;
       let charId: string | null = null;
@@ -186,18 +194,24 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   function buildHandlers(): RoomHandlers<DndTabletopState> {
     return {
       ...chat.handlers,
-      onStatus: (status, detail) => setOnline((o) => (o ? { ...o, status, error: detail } : o)),
-      onDenied: () => setOnline((o) => (o ? { ...o, status: "error", error: "That code belongs to a Legion game. Use a different code." } : o)),
+      // A refusal's reason (onDenied) outlives the close that follows it.
+      onStatus: (status, detail) => setOnline((o) => (o ? { ...o, status, error: detail ?? (status === "closed" ? o.error : undefined) } : o)),
+      onDenied: (reason) => setOnline((o) => (o ? {
+        ...o, status: "error",
+        error: AI_DENIED_TEXT[reason] ?? "That code belongs to a Legion game. Use a different code.",
+      } : o)),
       onWelcome: (you, remoteState, peers, extra) => {
         const client = roomRef.current;
         const code = client?.code ?? "";
         chat.onWelcome(code, extra);
+        ai.onWelcome(extra);
         setOnline({ status: "open", code, you, peers, isPrivate: client?.isPrivate ?? false });
         const p = typeof extra.proto === "number" ? extra.proto : 1;
         setProto(p);
         const linked = (extra.campaign && typeof extra.campaign === "object") ? extra.campaign as LinkedCampaign : null;
         setLinkedCampaign(linked);
-        if (client && p >= 2) {
+        // An AI's seat comes from its invite (the server seats an AI DM).
+        if (client && p >= 2 && !aiCodeRef.current) {
           // Back in the DM seat after a reload / dropped connection, or
           // take it now if I'm hosting a campaign.
           const token = readSeatToken(code);
@@ -237,6 +251,11 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
         return { ...o, peers, you };
       }),
       onAppMessage: (msg) => {
+        if (ai.handle(msg)) {
+          // e.g. revoking the AI DM's code: the "seat went to the AI" note is done.
+          if (msg.t === "aiInvites") setDmNotice(null);
+          return;
+        }
         const code = roomRef.current?.code ?? "";
         switch (msg.t) {
           case "stateRejected": {
@@ -251,6 +270,7 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
           case "dmRevoked":
             clearSeatToken(code);
             if (msg.reason === "moved") setDmNotice({ kind: "err", text: "The DM seat moved to your other tab or device." });
+            if (msg.reason === "ai") setDmNotice({ kind: "err", text: "An AI joined with your DM invite and took the DM seat. Revoke its code to take the seat back." });
             break;
           case "opDenied":
             setDmNotice({ kind: "err", text: deniedText(String(msg.op), String(msg.reason), typeof msg.retryAfterMs === "number" ? msg.retryAfterMs : undefined) });
@@ -287,22 +307,27 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     };
   }
 
-  function startRoom(code: string) {
-    // Park my own board before the room's replaces it (only on the first
-    // connect — a reload mid-game must not overwrite the parked one).
-    try {
-      if (!roomRef.current && !localStorage.getItem(SOLO_KEY)) {
-        localStorage.setItem(SOLO_KEY, JSON.stringify(stateRef.current));
-      }
-    } catch { /* quota — the solo board just won't be restored */ }
+  function startRoom(code: string, aiCode: string | null = null) {
+    aiCodeRef.current = aiCode;
+    // An AI join (usually my own preview, in another tab) leaves my parked
+    // board and saved identity alone — they belong to my own seat.
+    if (!aiCode) {
+      // Park my own board before the room's replaces it (only on the first
+      // connect — a reload mid-game must not overwrite the parked one).
+      try {
+        if (!roomRef.current && !localStorage.getItem(SOLO_KEY)) {
+          localStorage.setItem(SOLO_KEY, JSON.stringify(stateRef.current));
+        }
+      } catch { /* quota — the solo board just won't be restored */ }
+      localStorage.setItem(NAME_KEY, playerName.trim() || "Player");
+      localStorage.setItem(COLOR_KEY, playerColor);
+      localStorage.setItem(PRIVATE_KEY, wantPrivate ? "1" : "0");
+    }
     const name = playerName.trim() || "Player";
-    localStorage.setItem(NAME_KEY, name);
-    localStorage.setItem(COLOR_KEY, playerColor);
-    localStorage.setItem(PRIVATE_KEY, wantPrivate ? "1" : "0");
     roomRef.current?.close();
     remoteEchoRef.current = null;
     const identity = spectator ? "spectator" : playerColor;
-    const client = new RoomClient<DndTabletopState>(code, name, identity, buildHandlers(), "dnd", wantPrivate);
+    const client = new RoomClient<DndTabletopState>(code, name, identity, buildHandlers(), "dnd", wantPrivate && !aiCode, aiCode);
     roomRef.current = client;
     setOnline({ status: "connecting", code: client.code, you: null, peers: [] });
     client.connect();
@@ -313,7 +338,22 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     hostCampaignRef.current = opts?.campaignCode ?? null;
     startRoom(generateRoomCode());
   }
-  function joinRoom() { const c = joinCode.trim().toUpperCase(); if (c.length >= 4 && playerName.trim()) startRoom(c); }
+  function joinRoom() {
+    const c = joinCode.trim().toUpperCase();
+    // A whole AI code joins as that AI (no name needed: the invite has one).
+    const asAi = parseAiCode(c);
+    if (asAi) { startRoom(asAi.room, asAi.code); return; }
+    if (c.length >= 4 && playerName.trim()) startRoom(c);
+  }
+  // Opened from "Preview as AI" (or an AI link): join straight away.
+  useEffect(() => {
+    const code = aiCodeFromUrl();
+    const parsed = code ? parseAiCode(code) : null;
+    if (!parsed) return;
+    const t = setTimeout(() => startRoom(parsed.room, parsed.code), 0);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   function changeIdentity(spec: boolean, color: string) {
     setSpectator(spec);
     setPlayerColor(color);
@@ -322,9 +362,19 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
   }
   function leaveRoom() {
     const client = roomRef.current;
+    const wasAi = !!aiCodeRef.current;
+    aiCodeRef.current = null;
     if (client) {
       if (online?.you?.dm) client.sendApp({ t: "releaseDm" });
       clearSeatToken(client.code);
+    }
+    ai.reset();
+    if (wasAi) {
+      // Drop the AI code from the address bar so a reload doesn't rejoin.
+      const u = new URL(location.href);
+      u.searchParams.delete("ai");
+      history.replaceState(null, "", u.toString());
+      if (joinCode.includes("-AI-")) setJoinCode(client?.code ?? "");
     }
     setProto(1);
     setLinkedCampaign(null);
@@ -338,6 +388,7 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     remoteEchoRef.current = null;
     setOnline(null);
     setSyncWarning(null);
+    if (wasAi) return; // my own parked board stays parked for my own seat
     // Back to my own board.
     try {
       const raw = localStorage.getItem(SOLO_KEY);
@@ -498,7 +549,7 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
     sendRollRequest, outgoingRequests, clearOutgoingRequests: () => setOutgoingRequests([]),
     rollRequests, dismissRollRequest: (id) => setRollRequests((l) => l.filter((x) => x.id !== id)),
     staged, stageTokens, revealStaged, discardStaged,
-    chat,
+    chat, ai,
   };
   return <DndRoomCtx.Provider value={value}>{children}</DndRoomCtx.Provider>;
 }

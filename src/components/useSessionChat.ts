@@ -126,7 +126,7 @@ export function useSessionChat(
     if (!client || !connected || !client.sendChat(text, cid)) { flash("Not connected — the message wasn't sent."); return; }
     const mine: ChatMessage = {
       ts: Date.now(), text, cid, pending: true,
-      from: { id: you.id, name: you.name, color: you.color, role: roleOf(you), kind: "human" },
+      from: { id: you.id, name: you.name, color: you.color, role: roleOf(you), kind: you.ai ? "ai" : "human" },
     };
     setMessages((list) => [...list, mine]);
   }

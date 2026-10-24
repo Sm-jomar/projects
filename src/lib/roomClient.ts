@@ -20,6 +20,10 @@ export type Peer = {
   dm?: boolean;
   /** Client protocol version (absent = 1, i.e. an older client). */
   v?: number;
+  /** Joined with an AI invite, in this role. */
+  ai?: "player" | "dm";
+  /** The id of that AI invite. */
+  aiInvite?: string;
 };
 export type ConnStatus = "idle" | "connecting" | "open" | "reconnecting" | "closed" | "error";
 export type RoomApp = "legion" | "dnd";
@@ -62,7 +66,7 @@ export function generateRoomCode(len = 6): string {
   return out;
 }
 
-function roomWsUrl(code: string, name: string, color: string, app: RoomApp, isPrivate: boolean): string {
+function roomWsUrl(code: string, name: string, color: string, app: RoomApp, isPrivate: boolean, aiCode: string | null): string {
   const override = import.meta.env.VITE_ROOM_ORIGIN as string | undefined;
   let base: string;
   if (override) {
@@ -80,6 +84,8 @@ function roomWsUrl(code: string, name: string, color: string, app: RoomApp, isPr
   // Only meaningful on the connection that creates the room (the host's
   // first join) — the server stamps it once and ignores it after that.
   if (isPrivate) params.set("private", "1");
+  // Join with an AI invite: the server takes name, colour and role from it.
+  if (aiCode) params.set("ai", aiCode);
   const q = params.toString();
   return `${base}/api/room/${encodeURIComponent(code)}/ws${q ? `?${q}` : ""}`;
 }
@@ -90,6 +96,7 @@ export class RoomClient<S> {
   private preferredColor: string;
   private app: RoomApp;
   private wantPrivate: boolean;
+  private aiCode: string | null;
   private handlers: RoomHandlers<S>;
   private ws: WebSocket | null = null;
   private closedByUser = false;
@@ -116,8 +123,9 @@ export class RoomClient<S> {
 
   constructor(
     code: string, name: string, preferredColor: string, handlers: RoomHandlers<S>,
-    app: RoomApp = "legion", wantPrivate = false,
+    app: RoomApp = "legion", wantPrivate = false, aiCode: string | null = null,
   ) {
+    this.aiCode = aiCode;
     this.code = code.toUpperCase();
     this.name = name;
     this.preferredColor = preferredColor;
@@ -137,7 +145,7 @@ export class RoomClient<S> {
     this.handlers.onStatus?.(this.reconnectAttempts > 0 ? "reconnecting" : "connecting");
     let ws: WebSocket;
     try {
-      ws = new WebSocket(roomWsUrl(this.code, this.name, this.preferredColor, this.app, this.wantPrivate));
+      ws = new WebSocket(roomWsUrl(this.code, this.name, this.preferredColor, this.app, this.wantPrivate, this.aiCode));
     } catch (err) {
       this.handlers.onStatus?.("error", String((err as Error).message));
       this.scheduleReconnect();

@@ -1,0 +1,87 @@
+/* AI invites: the "Invite an AI" section of both multiplayer panels, and the
+   banner a connection joined with an AI code sees. */
+:root { --ai-accent: #9b6dff; }
+
+.ai-tag {
+  display: inline-block;
+  padding: 0 5px;
+  border: 1px solid var(--ai-accent);
+  border-radius: 4px;
+  color: var(--ai-accent);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 16px;
+  vertical-align: middle;
+}
+.ai-tag.dm { background: var(--ai-accent); color: #fff; }
+
+.ai-inv { display: flex; flex-direction: column; gap: 6px; padding-top: 8px; border-top: 1px solid var(--border); }
+.ai-inv-toggle { align-self: flex-start; display: inline-flex; align-items: center; gap: 6px; }
+.ai-inv-body { display: flex; flex-direction: column; gap: 6px; }
+.ai-inv-body p { margin: 0; }
+.ai-inv-roles { display: flex; gap: 6px; }
+.ai-role {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.ai-role.active { border-color: var(--ai-accent); color: var(--ai-accent); font-weight: 600; }
+.ai-role.disabled { opacity: 0.5; cursor: not-allowed; }
+.ai-inv-field { display: flex; flex-direction: column; gap: 2px; font-size: 12px; }
+.ai-inv-check { display: flex; align-items: center; gap: 6px; font-size: 13px; }
+.ai-inv-warn { color: var(--accent); }
+.ai-inv-error { color: var(--danger); margin: 0; }
+.ai-inv-create {
+  border: 1px solid var(--ai-accent);
+  background: color-mix(in srgb, var(--ai-accent) 22%, transparent);
+  color: inherit;
+  font-weight: 600;
+}
+
+.ai-perms { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 2px; font-size: 12px; }
+.ai-perms li { display: flex; gap: 6px; align-items: baseline; }
+.ai-perms li.no { color: var(--muted); }
+.ai-perm-mark { width: 12px; flex-shrink: 0; text-align: center; font-weight: 700; }
+.ai-perms li.yes .ai-perm-mark { color: var(--ok); }
+.ai-perms li.no .ai-perm-mark { color: var(--danger); }
+
+.ai-inv-list { display: flex; flex-direction: column; gap: 6px; margin-top: 4px; }
+.ai-inv-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--ai-accent);
+  border-radius: 6px;
+}
+.ai-inv-item-head { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; font-size: 13px; }
+.ai-inv-live { color: var(--ok); }
+.ai-inv-code { font-size: 12px; letter-spacing: 0.04em; word-break: break-all; user-select: all; }
+.ai-inv-actions { display: flex; flex-wrap: wrap; gap: 4px; }
+.danger-text { color: var(--danger); }
+
+.ai-seat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 6px 0;
+  padding: 8px 12px;
+  border: 1px solid var(--ai-accent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--ai-accent) 12%, var(--panel, transparent));
+  font-size: 13px;
+}
+.ai-seat-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ai-seat-head > span:nth-child(2) { flex: 1; min-width: 200px; }
+.ai-seat .ai-perms { columns: 2 260px; display: block; }
+.ai-seat .ai-perms li { break-inside: avoid; padding: 1px 0; }
+.ai-seat-error { margin: 0; color: var(--danger); font-weight: 600; }

@@ -21,6 +21,13 @@
  *   for the DM alone is sent to the DM's socket alone — never broadcast
  *   and filtered client-side. Campaign codes are verified against the
  *   CampaignDO and never stored, broadcast or kept on a socket.
+ *
+ * AI invites (both apps): a person at the table mints a role-scoped code
+ * (`<ROOM>-AI-<SECRET>`) that admits an AI as a player or (D&D) the DM.
+ * A socket that connects with `?ai=<code>` is stamped from the invite —
+ * name, role, kind "ai" — and held to that invite's permissions here, on
+ * the server, so a person previewing the code sees exactly what an AI
+ * would get. See docs/ai-invites.md.
  */
 import { DurableObject } from "cloudflare:workers";
 import { parseCode, type CampaignDO } from "./campaign";
@@ -38,10 +45,15 @@ export interface RoomEnv {
 //   D&D:    a hex like "#4a86c8" (an editor), or "spectator" (watch-only)
 // The literal "spectator" always means watch-only in either app.
 // `v` is the client's protocol version; `dm` marks the D&D DM seat.
+// `ai` is the id (not the secret) of the AI invite the socket joined with,
+// `aiRole` its role, and `aiBoard` whether it may change the board.
 // Keep this tiny (platform attachment limit ~2KB) and secret-free.
-type Attachment = { id: string; color: string; name: string; app?: "dnd" | "legion"; v?: number; dm?: true };
+type Attachment = {
+  id: string; color: string; name: string; app?: "dnd" | "legion"; v?: number; dm?: true;
+  ai?: string; aiRole?: AiRole; aiBoard?: true;
+};
 
-type Peer = { id: string; color: string; name: string; dm?: true; v?: number };
+type Peer = { id: string; color: string; name: string; dm?: true; v?: number; ai?: AiRole; aiInvite?: string };
 
 // Messages are small JSON objects tagged with `t`.
 type ClientMsg =
@@ -58,12 +70,15 @@ type ClientMsg =
   | { t: "rollRequest"; to?: unknown; req?: unknown }
   | { t: "campaignInvite"; code?: unknown; to?: unknown }
   | { t: "chat"; text?: unknown; cid?: unknown }
-  | { t: "chatHistory"; before?: unknown; limit?: unknown };
+  | { t: "chatHistory"; before?: unknown; limit?: unknown }
+  | { t: "aiInviteCreate"; role?: unknown; name?: unknown; board?: unknown }
+  | { t: "aiInviteList" }
+  | { t: "aiInviteRevoke"; id?: unknown };
 
 // A chat line as stored and sent. `from` is a snapshot of the sender at
 // send time, so the log still reads right after they rename or leave.
 type ChatRole = "player" | "dm" | "spectator";
-type ChatAuthor = { id: string; name: string; color: string; role: ChatRole; kind: "human" };
+type ChatAuthor = { id: string; name: string; color: string; role: ChatRole; kind: "human" | "ai" };
 type ChatMessage = { seq: number; ts: number; from: ChatAuthor; text: string; cid?: string };
 
 const STATE_KEY = "board-state";
@@ -102,6 +117,16 @@ const CHAT_PAGE_MAX = 200;
 const CHAT_RATE_COUNT = 8;
 const CHAT_RATE_WINDOW_MS = 10_000;
 
+// AI invites: one storage key per invite ("ai-invite:<id>"), a few per room.
+type AiRole = "player" | "dm";
+type AiInvite = { id: string; secret: string; role: AiRole; name: string; board: boolean; by: string; createdAt: number };
+const AI_PREFIX = "ai-invite:";
+const AI_MAX_INVITES = 8;
+// The colour an AI takes in D&D (a person picks their own).
+const AI_DND_COLOR = "#9b6dff";
+const AI_CODE_RE = /^([A-Z0-9]{4,12})-AI-([A-Z0-9]{8,24})$/;
+const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
 // Legion's two exclusive sides; D&D has no exclusive colors.
 const LEGION_EXCLUSIVE = new Set(["blue", "red"]);
 
@@ -119,6 +144,26 @@ function randomToken(): string {
   return Array.from(b, (x) => x.toString(16).padStart(2, "0")).join("");
 }
 
+function randomSecret(len = 10): string {
+  const b = new Uint32Array(len);
+  crypto.getRandomValues(b);
+  return Array.from(b, (x) => CODE_ALPHABET[x % CODE_ALPHABET.length]).join("");
+}
+
+// The secret from a full AI code ("<ROOM>-AI-<SECRET>") or a bare secret.
+function aiSecretOf(raw: string, room: string): string | null {
+  const v = raw.trim().toUpperCase();
+  const m = AI_CODE_RE.exec(v);
+  if (m) return m[1] === room ? m[2]! : null;
+  return /^[A-Z0-9]{8,24}$/.test(v) ? v : null;
+}
+
+// What an invite lets its holder do — sent to the creator's list and, on
+// joining, to the AI itself, so the preview and the server agree.
+function aiPublic(inv: AiInvite, room: string): Record<string, unknown> {
+  return { id: inv.id, code: `${room}-AI-${inv.secret}`, role: inv.role, name: inv.name, board: inv.role === "dm" || inv.board, by: inv.by, createdAt: inv.createdAt };
+}
+
 const chatKey = (seq: number): string => CHAT_PREFIX + String(seq).padStart(9, "0");
 
 function chatRoleOf(att: Attachment): ChatRole {
@@ -130,6 +175,7 @@ function peerOf(att: Attachment): Peer {
   const p: Peer = { id: att.id, color: att.color, name: att.name };
   if (att.dm) p.dm = true;
   if (att.v && att.v > 1) p.v = att.v;
+  if (att.ai) { p.ai = att.aiRole ?? "player"; p.aiInvite = att.ai; }
   return p;
 }
 
@@ -189,12 +235,34 @@ export class RoomDO extends DurableObject<RoomEnv> {
       await this.ctx.storage.put(PRIVATE_KEY, url.searchParams.get("private") === "1");
     }
 
+    // An AI invite decides the connection's name, colour and role; the
+    // query's own name/color are ignored for it.
+    const aiParam = url.searchParams.get("ai");
+    let invite: AiInvite | null = null;
+    if (aiParam) {
+      const room = (await this.ctx.storage.get<string>(CODE_KEY)) ?? "";
+      invite = await this.findAiInvite(aiSecretOf(aiParam, room));
+      if (!invite) {
+        this.ctx.acceptWebSocket(server);
+        this.send(server, { t: "denied", reason: "ai-invite-invalid" });
+        try { server.close(1008, "unknown AI invite"); } catch { /* noop */ }
+        return new Response(null, { status: 101, webSocket: client });
+      }
+    }
+
     // Honor the requested color/identity (see pickColor). Legion keeps its
     // blue/red-then-spectator fallback; D&D takes the picked color as-is.
-    const color = this.pickColor(app, url.searchParams.get("color"));
-    const name = (url.searchParams.get("name") || "").slice(0, 24) || defaultName(color);
+    const color = invite
+      ? (app === "dnd" ? AI_DND_COLOR : this.pickColor(app, null))
+      : this.pickColor(app, url.searchParams.get("color"));
+    const name = invite?.name || (url.searchParams.get("name") || "").slice(0, 24) || defaultName(color);
     const v = Math.max(1, Math.min(99, Number(url.searchParams.get("v")) || 1));
     const att: Attachment = { id: randomId(), color, name, app, v };
+    if (invite) {
+      att.ai = invite.id;
+      att.aiRole = invite.role;
+      if (invite.role === "dm" || invite.board) att.aiBoard = true;
+    }
 
     // Accept with hibernation support and stash the attachment.
     this.ctx.acceptWebSocket(server);
@@ -215,7 +283,11 @@ export class RoomDO extends DurableObject<RoomEnv> {
       peers: this.peers(),
       chat: chat.messages,
       chatMore: chat.more,
+      ...(invite ? { ai: aiPublic(invite, (await this.ctx.storage.get<string>(CODE_KEY)) ?? "") } : {}),
     });
+    // A DM invite seats the AI as DM, taking the seat from whoever has it:
+    // only the DM could mint it, so this is the DM handing over.
+    if (invite?.role === "dm" && app === "dnd") await this.seatAiDm(server);
     // Notify everyone (including the joiner) of the updated roster. The
     // new socket is already in getWebSockets() at this point, so no
     // exclusion — passing it would hide the joiner from existing peers.
@@ -242,6 +314,8 @@ export class RoomDO extends DurableObject<RoomEnv> {
         // guard — the client also locks its UI, but this stops a
         // tampered client too.
         if (att.color === "spectator") return;
+        // An AI only changes the board if its invite allows it.
+        if (att.ai && !att.aiBoard) { this.opDenied(ws, "state", "ai-no-board"); return; }
         // Persist + relay. Cap stored size so a bad client can't blow up
         // the object's storage.
         const json = JSON.stringify(msg.state);
@@ -276,12 +350,15 @@ export class RoomDO extends DurableObject<RoomEnv> {
         break;
       }
       case "name": {
+        // An AI's name comes from its invite.
+        if (att.ai) return this.opDenied(ws, msg.t, "ai-fixed");
         const name = String(msg.name || "").slice(0, 24) || att.name;
         ws.serializeAttachment({ ...att, name });
         this.broadcastPresence(null);
         break;
       }
       case "setColor": {
+        if (att.ai) return this.opDenied(ws, msg.t, "ai-fixed");
         const want = String(msg.color || "").slice(0, 16);
         if (!want) break;
         // Only Legion's blue/red are exclusive. If another socket holds
@@ -327,9 +404,23 @@ export class RoomDO extends DurableObject<RoomEnv> {
         break;
       }
 
+      // --- AI invites (both apps) --------------------------------------
+      case "aiInviteCreate":
+        await this.createAiInvite(ws, att, msg);
+        break;
+      case "aiInviteList":
+        if (!this.canManageAi(att)) return this.opDenied(ws, msg.t, att.ai ? "ai-role" : "not-allowed");
+        await this.sendAiInvites(ws);
+        break;
+      case "aiInviteRevoke":
+        await this.revokeAiInvite(ws, att, msg.id);
+        break;
+
       // --- D&D DM features (protocol 2) ---------------------------------
       case "claimDm":
         if (att.app !== "dnd") return this.opDenied(ws, msg.t, "not-dnd");
+        // An AI's role is fixed by its invite (a DM invite is seated on join).
+        if (att.ai) return this.opDenied(ws, msg.t, "ai-role");
         await this.claimDm(ws, msg);
         break;
       case "releaseDm": {
@@ -344,6 +435,8 @@ export class RoomDO extends DurableObject<RoomEnv> {
       }
       case "linkCampaign": {
         if (att.app !== "dnd") return this.opDenied(ws, msg.t, "not-dnd");
+        // Campaign codes are for people; an AI never holds one.
+        if (att.ai) return this.opDenied(ws, msg.t, "ai-role");
         if (!att.dm) return this.opDenied(ws, msg.t, "not-dm");
         const v = await this.verifyCode(msg.code);
         if (!v || v.role === "player") return this.opDenied(ws, msg.t, "bad-code");
@@ -354,6 +447,7 @@ export class RoomDO extends DurableObject<RoomEnv> {
       }
       case "unlinkCampaign":
         if (att.app !== "dnd" || !att.dm) return this.opDenied(ws, msg.t, "not-dm");
+        if (att.ai) return this.opDenied(ws, msg.t, "ai-role");
         await this.ctx.storage.delete(CAMPAIGN_KEY);
         this.broadcast({ t: "campaign", campaign: null }, null);
         break;
@@ -367,6 +461,7 @@ export class RoomDO extends DurableObject<RoomEnv> {
       }
       case "campaignInvite": {
         if (att.app !== "dnd" || !att.dm) return this.opDenied(ws, msg.t, "not-dm");
+        if (att.ai) return this.opDenied(ws, msg.t, "ai-role");
         const linked = await this.ctx.storage.get<LinkedCampaign>(CAMPAIGN_KEY);
         const v = await this.verifyCode(msg.code);
         // Only ever relay the linked campaign's *player* code, so an owner
@@ -430,7 +525,7 @@ export class RoomDO extends DurableObject<RoomEnv> {
     const seq = ((await this.ctx.storage.get<number>(CHAT_SEQ_KEY)) ?? 0) + 1;
     const entry: ChatMessage = {
       seq, ts: now, text,
-      from: { id: att.id, name: att.name, color: att.color, role: chatRoleOf(att), kind: "human" },
+      from: { id: att.id, name: att.name, color: att.color, role: chatRoleOf(att), kind: att.ai ? "ai" : "human" },
     };
     if (cid) entry.cid = cid;
     await this.ctx.storage.put({ [CHAT_SEQ_KEY]: seq, [chatKey(seq)]: entry });
@@ -452,6 +547,92 @@ export class RoomDO extends DurableObject<RoomEnv> {
 
   /** Recent chat send times per connection id (in-memory flood guard). */
   private chatSends = new Map<string, number[]>();
+
+  // --- AI invites ---------------------------------------------------------
+
+  // Who may mint, list and revoke AI invites: a person at the table (not a
+  // spectator, not an AI). In D&D, once a person holds the DM seat, only
+  // that DM; while an AI holds it, any person can (so the table can always
+  // revoke an AI DM and get the seat back).
+  private canManageAi(att: Attachment): boolean {
+    if (att.ai || att.color === "spectator") return false;
+    if (att.app === "dnd" && !att.dm) {
+      const dm = this.dmSocket(null)?.deserializeAttachment() as Attachment | null | undefined;
+      if (dm && !dm.ai) return false;
+    }
+    return true;
+  }
+
+  private async aiInvites(): Promise<AiInvite[]> {
+    const rows = await this.ctx.storage.list<AiInvite>({ prefix: AI_PREFIX });
+    return [...rows.values()].sort((a, b) => a.createdAt - b.createdAt);
+  }
+
+  private async findAiInvite(secret: string | null): Promise<AiInvite | null> {
+    if (!secret) return null;
+    return (await this.aiInvites()).find((i) => i.secret === secret) ?? null;
+  }
+
+  private async sendAiInvites(ws: WebSocket): Promise<void> {
+    const room = (await this.ctx.storage.get<string>(CODE_KEY)) ?? "";
+    this.send(ws, { t: "aiInvites", invites: (await this.aiInvites()).map((i) => aiPublic(i, room)) });
+  }
+
+  private async createAiInvite(ws: WebSocket, att: Attachment, msg: { role?: unknown; name?: unknown; board?: unknown }): Promise<void> {
+    if (!this.canManageAi(att)) return this.opDenied(ws, "aiInviteCreate", att.ai ? "ai-role" : "not-allowed");
+    const role: AiRole = msg.role === "dm" ? "dm" : "player";
+    if (role === "dm") {
+      if (att.app !== "dnd") return this.opDenied(ws, "aiInviteCreate", "not-dnd");
+      // Handing the DM seat to an AI is the DM's call alone (it skips the
+      // campaign-code check a person would face).
+      if (!att.dm) return this.opDenied(ws, "aiInviteCreate", "not-dm");
+    }
+    const existing = await this.aiInvites();
+    if (existing.length >= AI_MAX_INVITES) return this.opDenied(ws, "aiInviteCreate", "ai-too-many");
+    const name = str(msg.name, 24).trim() || (role === "dm" ? "AI DM" : "AI player");
+    const inv: AiInvite = {
+      id: randomId(), secret: randomSecret(), role, name,
+      board: role === "dm" || msg.board === true, by: att.name, createdAt: Date.now(),
+    };
+    await this.ctx.storage.put(AI_PREFIX + inv.id, inv);
+    await this.sendAiInvites(ws);
+  }
+
+  // Delete an invite and disconnect anyone using it (giving up the DM seat
+  // outright — no grace hold for a revoked AI).
+  private async revokeAiInvite(ws: WebSocket, att: Attachment, id: unknown): Promise<void> {
+    if (!this.canManageAi(att)) return this.opDenied(ws, "aiInviteRevoke", att.ai ? "ai-role" : "not-allowed");
+    if (typeof id !== "string") return;
+    await this.ctx.storage.delete(AI_PREFIX + id);
+    for (const other of this.ctx.getWebSockets()) {
+      const a = other.deserializeAttachment() as Attachment | null;
+      if (a?.ai !== id) continue;
+      if (a.dm) {
+        const rec = await this.ctx.storage.get<DmRecord>(DM_KEY);
+        if (rec?.peerId === a.id) await this.ctx.storage.delete(DM_KEY);
+      }
+      other.serializeAttachment({ id: a.id, color: "spectator", name: a.name, app: a.app, v: a.v });
+      this.send(other, { t: "denied", reason: "ai-invite-revoked" });
+      try { other.close(4001, "AI invite revoked"); } catch { /* noop */ }
+    }
+    this.broadcastPresence(null);
+    await this.sendAiInvites(ws);
+  }
+
+  // Seat an AI that joined with a DM invite, demoting any current holder.
+  private async seatAiDm(ws: WebSocket): Promise<void> {
+    const holder = this.dmSocket(ws);
+    if (holder) {
+      const ha = holder.deserializeAttachment() as Attachment | null;
+      if (ha) {
+        const demoted = { ...ha };
+        delete demoted.dm;
+        holder.serializeAttachment(demoted);
+      }
+      this.send(holder, { t: "dmRevoked", reason: "ai" });
+    }
+    await this.grantDm(ws, null);
+  }
 
   // --- DM seat ----------------------------------------------------------
 

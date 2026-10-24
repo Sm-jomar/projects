@@ -18,6 +18,8 @@ import { CharacterSheetView } from "./CharacterSheetView";
 import { useDndRoom, type OnlineState } from "./dndRoom";
 import { CampaignMapsPanel } from "./CampaignMapLibrary";
 import { RollRequestBanner } from "./RollRequestBanner";
+import { AiInvitePanel, AiSeatBanner } from "../components/AiInvites";
+import { parseAiCode } from "../lib/aiInvite";
 import { useKeyring } from "./useCampaign";
 import { canEdit } from "./campaign";
 import { bestCodeFor } from "./campaignKeyring";
@@ -292,10 +294,17 @@ export function DndTabletop() {
         </div>
       </div>
 
+      {online && room.ai.self && (
+        <AiSeatBanner app="dnd" ai={room.ai} onLeave={room.leaveRoom} error={connected ? undefined : online.error} />
+      )}
       <RollRequestBanner withInvites />
 
       {readOnly && (
-        <div className="dnd-tt-spectating">👁 Spectating — you can watch, pan and zoom, but not change the board.</div>
+        <div className="dnd-tt-spectating">
+          {online?.you?.ai
+            ? "👁 This AI invite can't change the board — it can watch, pan and zoom, chat and roll."
+            : "👁 Spectating — you can watch, pan and zoom, but not change the board."}
+        </div>
       )}
 
       <div className={"dnd-tt-body" + (sideCollapsed ? " side-collapsed" : "")}>
@@ -1003,7 +1012,10 @@ function MultiplayerPanel(props: {
   const host = () => onHost({ blankBoard: boardHasContent && startBlank, campaignCode: runCampaign || undefined });
   const connected = online?.status === "open";
   const failed = online && (online.status === "error" || online.status === "closed");
-  const nameOk = playerName.trim().length > 0;
+  // A whole AI code in the join box joins as that AI, which needs no name.
+  const joinAsAi = !!parseAiCode(joinCode);
+  const nameOk = playerName.trim().length > 0 || joinAsAi;
+  const amAi = !!online?.you?.ai;
   const amSpectator = online?.you?.color === "spectator";
   const myColor = amSpectator ? "#8b94a8" : (online?.you?.color ?? playerColor);
   const avatarFileRef = useRef<HTMLInputElement>(null);
@@ -1091,11 +1103,12 @@ function MultiplayerPanel(props: {
           )}
           <button className="dnd-primary" onClick={host} disabled={!nameOk}>Host a new game</button>
           <div className="dnd-mp-join">
-            <input placeholder="CODE" value={joinCode} maxLength={12}
-                   onChange={(e) => onJoinCodeChange(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""))}
+            <input placeholder="CODE" value={joinCode} maxLength={40} className={joinAsAi ? "ai-code" : undefined}
+                   onChange={(e) => onJoinCodeChange(e.target.value.toUpperCase().replace(/[^A-Z0-9-]/g, ""))}
                    onKeyDown={(e) => { if (e.key === "Enter" && nameOk) onJoin(); }} />
-            <button onClick={onJoin} disabled={joinCode.trim().length < 4 || !nameOk}>Join</button>
+            <button onClick={onJoin} disabled={joinCode.trim().length < 4 || !nameOk}>{joinAsAi ? "Join as AI" : "Join"}</button>
           </div>
+          {joinAsAi && <p className="muted small">That's an AI invite code: you'll join as the AI it admits, to see what it can do.</p>}
           {!nameOk && <p className="muted small">Enter a name to host or join.</p>}
         </>
       )}
@@ -1112,7 +1125,7 @@ function MultiplayerPanel(props: {
             )}
           </div>
 
-          {connected && (
+          {connected && !amAi && (
             <div className="dnd-mp-identity">
               <label className="dnd-tt-field">Your color
                 <input type="color" value={amSpectator ? "#8b94a8" : myColor} disabled={amSpectator}
@@ -1125,9 +1138,9 @@ function MultiplayerPanel(props: {
               </label>
             </div>
           )}
-          {connected && avatarControl}
+          {connected && !amAi && avatarControl}
 
-          {connected && room.proto >= 2 && <DmSeatRow amSpectator={amSpectator} />}
+          {connected && room.proto >= 2 && <DmSeatRow amSpectator={amSpectator || amAi} />}
 
           <div className="dnd-mp-code-row">
             <div className="dnd-mp-code">{online.code}</div>
@@ -1140,13 +1153,15 @@ function MultiplayerPanel(props: {
               online.peers.map((p) => (
                 <span key={p.id} className="dnd-mp-peer">
                   <span className="dnd-mp-peer-dot" style={{ background: p.color === "spectator" ? "#8b94a8" : p.color }} />
-                  {p.name}{p.dm && <span className="dnd-badge-dm">DM</span>}{p.color === "spectator" && " (spectator)"}{online.you?.id === p.id && " (you)"}
+                  {p.name}{p.ai && <span className="ai-tag">AI</span>}{p.dm && <span className="dnd-badge-dm">DM</span>}{p.color === "spectator" && " (spectator)"}{online.you?.id === p.id && " (you)"}
                 </span>
               ))}
           </div>
 
+          {connected && !amAi && room.proto >= 2 && <AiInvitePanel app="dnd" ai={room.ai} you={online.you} peers={online.peers} />}
+
           {failed && <p className="muted small">{online.error ?? "Disconnected — retrying…"}</p>}
-          <button className="danger" onClick={onLeave}>Leave game</button>
+          <button className="danger" onClick={onLeave}>{amAi ? "Leave AI preview" : "Leave game"}</button>
         </>
       )}
     </div>
