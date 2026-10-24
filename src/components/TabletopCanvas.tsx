@@ -304,6 +304,14 @@ export function TabletopCanvas({
         <g transform={`translate(${view.tx} ${view.ty}) scale(${view.scale})`}>
           {/* Mat */}
           <rect x={0} y={0} width={mapW} height={mapH} fill="#1d2832" stroke="#3a4154" strokeWidth={1 / view.scale} />
+          {state.mapImage && (
+            <g>
+              <image href={state.mapImage.url} x={0} y={0} width={mapW} height={mapH}
+                     preserveAspectRatio={state.mapImage.fit === "cover" ? "xMidYMid slice" : "none"} />
+              {state.mapImage.dim > 0 && <rect x={0} y={0} width={mapW} height={mapH} fill="#000" fillOpacity={state.mapImage.dim} />}
+              <rect x={0} y={0} width={mapW} height={mapH} fill="none" stroke="#3a4154" strokeWidth={1 / view.scale} />
+            </g>
+          )}
 
           {/* Deployment zones (under everything else) */}
           {state.deployment && (() => {
@@ -328,7 +336,7 @@ export function TabletopCanvas({
 
           {/* Grid */}
           {showGrid && (
-            <g stroke="#2a3a48" strokeWidth={1 / view.scale}>
+            <g stroke={state.mapImage ? "#000" : "#2a3a48"} strokeOpacity={state.mapImage ? 0.35 : 1} strokeWidth={1 / view.scale}>
               {Array.from({ length: state.map.widthInches + 1 }, (_, i) => (
                 <line key={`vx${i}`} x1={i * UNITS_PER_INCH} y1={0} x2={i * UNITS_PER_INCH} y2={mapH} />
               ))}

@@ -81,6 +81,10 @@ type Props = {
   depth: number;
   groundColor: string;
   groundImageUrl?: string | null;
+  /** "cover" keeps the image's aspect and crops the overhang (default stretch). */
+  groundImageFit?: "stretch" | "cover";
+  /** 0..1: darkens the ground image. */
+  groundImageDim?: number;
   /** Grid line spacing in board units (0/undefined = no grid). */
   gridStep?: number;
   gridColor?: string;
@@ -333,8 +337,15 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
       // Swap the map in once it has loaded (a remote image without CORS
       // headers never does, and the board just keeps its plain colour).
       texture(p.groundImageUrl, (t) => {
+        const img = t.image as HTMLImageElement;
+        if (p.groundImageFit === "cover" && img.width && img.height) {
+          // Show the centred slice of the image that has the board's shape.
+          const k = (img.width / img.height) / (p.width / p.depth);
+          if (k > 1) { t.repeat.set(1 / k, 1); t.offset.set((1 - 1 / k) / 2, 0); }
+          else { t.repeat.set(1, k); t.offset.set(0, (1 - k) / 2); }
+        }
         groundMat.map = t;
-        groundMat.color.set("#ffffff");
+        groundMat.color.setScalar(1 - Math.min(1, Math.max(0, p.groundImageDim ?? 0)));
         groundMat.needsUpdate = true;
       });
     }

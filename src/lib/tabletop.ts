@@ -13,6 +13,18 @@ export const GAME_TYPES: Record<GameType, { label: string; size: MapSize; defaul
   custom:       { label: "Custom",      size: { widthInches: 72, heightInches: 36 }, defaultPoints: 800,  description: "Pick your own size" },
 };
 
+/** A picture laid on the table as the map (a battle mat photo, a printed
+ * map...). Drawn under deployment zones, the grid, terrain and tokens. */
+export type MapImage = {
+  /** JPEG data URL from an upload, or a pasted http(s) URL. */
+  url: string;
+  /** "stretch" fills the board exactly; "cover" keeps the picture's shape
+   * and crops what overhangs the board. */
+  fit: "stretch" | "cover";
+  /** 0..0.8: darkens the picture so pieces stand out on a busy map. */
+  dim: number;
+};
+
 export type TerrainShape = "rect" | "circle";
 
 export type Terrain = {
@@ -162,6 +174,8 @@ export function templatePoints(
 export type TabletopState = {
   gameType: GameType;
   map: MapSize;
+  /** Map picture under everything else, or null for the plain table. */
+  mapImage?: MapImage | null;
   terrain: Terrain[];
   tokens: Token[];
   round: number;
@@ -379,6 +393,13 @@ export function saveTabletop(s: TabletopState): void {
     // Quota exceeded / private browsing — losing autosave isn't fatal.
   }
 }
+
+// Serialized size, measured the way the room server enforces its
+// MAX_STATE_BYTES cap (JSON string length). Leave headroom under 2,000,000.
+export function boardBytes(s: TabletopState): number {
+  return JSON.stringify(s).length;
+}
+export const BOARD_BYTES_SAFE = 1_850_000;
 
 // --- ID helper ------------------------------------------------------------
 export function newId(prefix = "id"): string {

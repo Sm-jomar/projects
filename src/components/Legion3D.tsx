@@ -126,6 +126,9 @@ export default function Legion3D({ state, selectedId, onSelect, showGrid, onUplo
         width={state.map.widthInches}
         depth={state.map.heightInches}
         groundColor="#2a3a46"
+        groundImageUrl={state.mapImage?.url}
+        groundImageFit={state.mapImage?.fit}
+        groundImageDim={state.mapImage?.dim}
         gridStep={showGrid ? 6 : 0}
         gridColor="#4a5f72"
         zones={zones}
