@@ -38,6 +38,9 @@ export type Piece3D = {
   /** Primary and accent colours: body + trim / base rim. */
   color: string;
   accent: string;
+  /** Splits the base rim into these colours (D&D conditions), replacing
+   * the accent; selection then shows as a glow instead of a gold rim. */
+  rimColors?: string[];
   model: PieceModel;
   /** Image shown semi-transparent on the base under the model. */
   iconUrl?: string;
@@ -421,13 +424,32 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
       base.position.y = baseY + baseH / 2;
       base.castShadow = true;
       g.add(base);
-      const rim = new THREE.Mesh(
-        new THREE.TorusGeometry(r * 0.99, Math.max(unit, pc.footprint * 0.035), 8, 48),
-        new THREE.MeshStandardMaterial({ color: sel ? "#ffd24a" : pc.accent, emissive: sel ? "#7a5a00" : "#000", roughness: 0.4 }),
-      );
-      rim.rotation.x = Math.PI / 2;
-      rim.position.y = baseY + baseH;
-      g.add(rim);
+      const rimColors = pc.rimColors?.length ? pc.rimColors : null;
+      if (rimColors) {
+        // One arc of torus per colour, thicker than the plain rim so the
+        // colours read from across the table.
+        const rimG = new THREE.Group();
+        const arc = (2 * Math.PI) / rimColors.length;
+        rimColors.forEach((c, i) => {
+          const seg = new THREE.Mesh(
+            new THREE.TorusGeometry(r * 0.99, Math.max(unit, pc.footprint * 0.06), 8, Math.max(8, Math.round(48 / rimColors.length)), arc),
+            new THREE.MeshStandardMaterial({ color: c, emissive: c, emissiveIntensity: sel ? 0.6 : 0.25, roughness: 0.4 }),
+          );
+          seg.rotation.z = i * arc;
+          rimG.add(seg);
+        });
+        rimG.rotation.x = Math.PI / 2;
+        rimG.position.y = baseY + baseH;
+        g.add(rimG);
+      } else {
+        const rim = new THREE.Mesh(
+          new THREE.TorusGeometry(r * 0.99, Math.max(unit, pc.footprint * 0.035), 8, 48),
+          new THREE.MeshStandardMaterial({ color: sel ? "#ffd24a" : pc.accent, emissive: sel ? "#7a5a00" : "#000", roughness: 0.4 }),
+        );
+        rim.rotation.x = Math.PI / 2;
+        rim.position.y = baseY + baseH;
+        g.add(rim);
+      }
 
       // Semi-transparent unit icon on top of the base, under the model.
       if (pc.iconUrl) {

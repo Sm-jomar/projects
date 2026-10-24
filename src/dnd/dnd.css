@@ -892,3 +892,20 @@
 @media (max-width: 820px) {
   .dnd-tt-body > .chat-dock { position: fixed; right: 14px; }
 }
+
+/* ----- Conditions (token inspector) ----- */
+.dnd-cond { display: flex; flex-direction: column; gap: 2px; margin: 4px 0 8px; }
+.dnd-cond-head { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 2px; }
+.dnd-cond-head b { color: var(--text); }
+.dnd-cond-row { position: relative; display: flex; align-items: center; gap: 6px; min-height: 24px; font-size: 13px; padding: 1px 4px; border-radius: 5px; }
+.dnd-cond-row.on { background: var(--panel-2); }
+.dnd-cond-label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.dnd-cond-label input { margin: 0; }
+.dnd-cond-swatch { width: 12px; height: 12px; border-radius: 50%; flex: none; box-shadow: 0 0 0 1px #0008; }
+.dnd-cond-via { margin-left: auto; }
+.dnd-cond-level { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; }
+.dnd-cond-level button { min-width: 0; width: 22px; height: 22px; padding: 0; }
+.dnd-cond-exh { margin: 2px 0 0; }
+.dnd-cond-more { align-self: flex-start; margin-top: 4px; }
+.dnd-tt-init-conds { display: inline-flex; gap: 2px; }
+.dnd-tt-init-conds i { width: 8px; height: 8px; border-radius: 50%; }

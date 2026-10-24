@@ -21,7 +21,8 @@ import {
 import { listArmies } from "../lib/storage";
 import { unitById } from "../data/catalog";
 import { endPhaseStatus, showsUnitStatus, WOUND_INFO, WOUND_URL } from "../lib/statusTokens";
-import { InfoDot, StatusTokenPanel } from "./StatusTokenPanel";
+import { StatusTokenPanel } from "./StatusTokenPanel";
+import { InfoDot } from "./InfoDot";
 import { cardForUnit } from "../lib/cardLookup";
 import { FACTIONS } from "../lib/factions";
 import type { SavedArmy, Unit } from "../lib/types";
