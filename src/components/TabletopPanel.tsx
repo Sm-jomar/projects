@@ -115,6 +115,8 @@ export function TabletopPanel({ onClose }: Props) {
   const [showGrid, setShowGrid] = useState(true);
   const [view3d, setView3d] = useState(false);
   const modelFileRef = useRef<HTMLInputElement | null>(null);
+  // A unit under direct control in 3D is mid-run (see Legion3D's onMoveToken).
+  const runningRef = useRef(false);
   const [modelBusy, setModelBusy] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   // Upload result/error, tied to the piece it was for.
@@ -787,7 +789,18 @@ export function TabletopPanel({ onClose }: Props) {
                     <Legion3D state={state} selectedId={selectedId} onSelect={setSelectedId} showGrid={showGrid}
                               onUploadModel={readOnly ? undefined : () => modelFileRef.current?.click()}
                               step={snap || 1}
-                              onMoveToken={readOnly ? undefined : (id, x, y) => {
+                              onMoveToken={readOnly ? undefined : (id, x, y, run) => {
+                                if (run) {
+                                  // A unit under direct control moves freely. Its
+                                  // run is one undo step: the first report saves
+                                  // history, the rest just update the board. A
+                                  // unit that shows a facing arrow keeps it turned.
+                                  const moved = moveToken(state, id, x, y);
+                                  const next = { ...moved, tokens: moved.tokens.map((t) => t.id === id && t.rotation != null ? { ...t, rotation: run.facing } : t) };
+                                  if (runningRef.current) setState(next); else commit(next);
+                                  runningRef.current = run.live;
+                                  return;
+                                }
                                 const sn = (n: number) => snap ? Math.round(n / snap) * snap : n;
                                 commit(moveToken(state, id, sn(x), sn(y)));
                               }} />

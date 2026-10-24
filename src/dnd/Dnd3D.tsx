@@ -110,11 +110,12 @@ export default function Dnd3D({ state, selectedId, onSelect, fog, onUploadModel,
         pieces={pieces}
         selectedId={selectedId}
         onSelect={onSelect}
-        onMove={onMoveToken && ((id, x, y) => {
+        onMove={onMoveToken && ((id, x, y, run) => {
           const tk = state.tokens.find((t) => t.id === id);
           if (!tk) return;
-          // Snap to the half cell, like dragging on the 2D map.
-          const snap = (n: number) => Math.round(n * 2) / 2;
+          // Snap to the half cell, like dragging on the 2D map (a token
+          // being run around only snaps once it stops).
+          const snap = (n: number) => run?.live ? n : Math.round(n * 2) / 2;
           onMoveToken(id, snap(x - tk.size / 2), snap(y - tk.size / 2));
         })}
         measure={(id, dx, dy) => measureMove(state.tokens.find((t) => t.id === id), dx, dy)}
