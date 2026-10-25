@@ -5,7 +5,7 @@ import {
 } from "./dndTabletop";
 import { RoomClient, generateRoomCode, type RoomHandlers } from "../lib/roomClient";
 import { appendLog, logId, type LogActor } from "../lib/auditLog";
-import type { DndCharacter } from "./dndTypes";
+import { sheetForSharing, type DndCharacter } from "./dndTypes";
 import { loadCharacter } from "./dndStorage";
 import {
   DndRoomCtx, rollId,
@@ -182,7 +182,7 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
           ...s,
           profiles: {
             ...(s.profiles ?? {}),
-            [you.id]: { name: you.name, color: you.color === "spectator" ? "#8b94a8" : you.color, charId: character.id, character },
+            [you.id]: { name: you.name, color: you.color === "spectator" ? "#8b94a8" : you.color, charId: character.id, character: sheetForSharing(character) },
           },
         };
       });
@@ -500,7 +500,7 @@ export function DndRoomProvider({ children }: { children: React.ReactNode }) {
           name: you.name,
           color: you.color === "spectator" ? "#8b94a8" : you.color,
           charId: character.id,
-          character,
+          character: sheetForSharing(character),
         };
       } else {
         delete profiles[myId];

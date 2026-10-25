@@ -912,3 +912,22 @@
 .dnd-cond-more { align-self: flex-start; margin-top: 4px; }
 .dnd-tt-init-conds { display: inline-flex; gap: 2px; }
 .dnd-tt-init-conds i { width: 8px; height: 8px; border-radius: 50%; }
+
+/* Tabletop character tray: saved sheets to drag onto the map */
+.dnd-tt-chars-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.dnd-tt-chars { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.dnd-tt-char {
+  display: flex; align-items: center; gap: 8px; padding: 4px 6px;
+  border: 1px solid var(--border); border-radius: 6px; background: var(--bg); cursor: grab;
+}
+.dnd-tt-char:active { cursor: grabbing; }
+.dnd-tt-char.placed { opacity: 0.65; }
+.dnd-tt-char-dot {
+  width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%; background: #4a86c8; color: #fff;
+  display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;
+}
+.dnd-tt-char-info { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.dnd-tt-char-name { font-size: 12px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dnd-tt-char-info .small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dnd-tt-char button { padding: 2px 6px; font-size: 11px; flex-shrink: 0; }
+.dnd-tt-char-add { width: 26px; font-size: 14px !important; }

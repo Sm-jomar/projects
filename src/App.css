@@ -2323,3 +2323,25 @@ input, select {
 .tt-mission-cards { display: flex; gap: 6px; margin: 8px 0; }
 .tt-mission-cards a { flex: 1 1 0; min-width: 0; }
 .tt-mission-cards img { width: 100%; display: block; border-radius: 6px; border: 1px solid #3a4154; }
+
+/* Deploy tray: squads grouped by rank */
+.tt-roster-rank { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+.tt-roster-rank-head {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.tt-roster-rank-head .muted { margin-left: auto; text-transform: none; font-weight: 500; }
+.tt-rank-off { color: #e67a6f !important; }
+.tt-rank-pip { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.tt-rank-pip.rank-commander { background: #e6c35c; }
+.tt-rank-pip.rank-operative { background: #c58be6; }
+.tt-rank-pip.rank-corps { background: #6fa8e6; }
+.tt-rank-pip.rank-special-forces { background: #6fd09b; }
+.tt-rank-pip.rank-support { background: #e6a15c; }
+.tt-rank-pip.rank-heavy { background: #e67a6f; }
+.tt-roster-rank .tt-roster { max-height: none; overflow: visible; }
+.tt-roster-minis { display: flex; flex-wrap: wrap; align-items: center; gap: 3px; }
+.tt-mini-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); opacity: 0.7; }
+.tt-mini-dot.lead { background: #ffd24a; opacity: 1; }
+.tt-mini-dot.extra { background: #6fd09b; opacity: 1; }
+.tt-roster-row.deployed { opacity: 0.5; cursor: default; }

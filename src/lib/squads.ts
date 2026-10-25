@@ -221,3 +221,75 @@ export function normalizeSquads(tokens: Token[], gone?: Token): Token[] {
   }
   return out;
 }
+
+// --- Deploying a list entry as a squad ------------------------------------
+// An army-list entry becomes one squad: the unit's printed miniatures plus
+// one per upgrade that adds a mini (heavy weapons and personnel), dropped
+// as a base-locked cluster around the point the player let go.
+
+type SquadUpgrade = { id: string; name: string; type: string; adds_miniature?: boolean };
+
+/** Whether an upgrade puts another mini in the unit. Older catalog rows
+ * flag it; Tabletop Admiral rows don't, so fall back on the slot type. */
+export function addsMiniature(u: SquadUpgrade): boolean {
+  return u.adds_miniature ?? (u.type === "heavy-weapon" || u.type === "personnel");
+}
+
+/** The minis a list entry fields, leader first: the unit's own minis, then
+ * one per mini-adding upgrade (named after the upgrade). */
+export function squadMinis(
+  unit: { name: string; miniatures: number },
+  upgrades: SquadUpgrade[],
+): { label: string; badge?: string }[] {
+  const own = Array.from({ length: Math.max(1, unit.miniatures || 1) }, () => ({ label: unit.name }));
+  const extra = upgrades.filter(addsMiniature).map((u) => ({
+    label: u.name,
+    badge: u.type === "heavy-weapon" ? "HW" : "P",
+  }));
+  return [...own, ...extra];
+}
+
+/** Centres for `n` bases of diameter `size` packed around (0, 0): the
+ * points of a hex lattice nearest the middle, so every base touches the
+ * one it grew from and the squad starts base locked. */
+export function squadFormation(n: number, size: number): Pt[] {
+  const pts: Pt[] = [];
+  const reach = Math.ceil(Math.sqrt(n)) + 1;
+  for (let j = -reach; j <= reach; j++) {
+    for (let i = -reach; i <= reach; i++) {
+      pts.push({ x: (i + j / 2) * size, y: (j * Math.sqrt(3) / 2) * size });
+    }
+  }
+  // Nearest first; ties go clockwise from the top so the cluster grows evenly.
+  const ang = (p: Pt) => (Math.atan2(p.x, -p.y) + 2 * Math.PI) % (2 * Math.PI);
+  pts.sort((a, b) => Math.hypot(a.x, a.y) - Math.hypot(b.x, b.y) || ang(a) - ang(b));
+  return pts.slice(0, n);
+}
+
+/** Lay out a squad's tokens around `at` (centre, inches), kept on the map.
+ * The first token leads. Tokens get fresh ids and, for more than one mini,
+ * a shared squad id. */
+export function deploySquad(state: TabletopState, minis: Partial<Token>[], at: Pt): TabletopState {
+  if (!minis.length) return state;
+  const size = minis[0]!.size ?? 1;
+  const spots = squadFormation(minis.length, size);
+  const xs = spots.map((p) => p.x), ys = spots.map((p) => p.y);
+  const r = size / 2;
+  // Slide the whole cluster back onto the table if it hangs off an edge.
+  const W = state.map.widthInches, H = state.map.heightInches;
+  const cx = Math.min(Math.max(at.x, r - Math.min(...xs)), W - r - Math.max(...xs));
+  const cy = Math.min(Math.max(at.y, r - Math.min(...ys)), H - r - Math.max(...ys));
+  const squadId = minis.length > 1 ? newId("sq") : undefined;
+  const added: Token[] = minis.map((m, i) => ({
+    kind: "unit",
+    label: "Unit",
+    color: "neutral",
+    ...m,
+    id: newId("tk"),
+    size,
+    x: cx + spots[i]!.x - r,
+    y: cy + spots[i]!.y - r,
+    ...(squadId ? { squadId, squadLead: i === 0 } : {}),
+  }));
+  return { ...state, tokens: [...state.tokens, ...added] };
+}
