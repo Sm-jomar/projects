@@ -3,6 +3,7 @@
 import { logId, type LogActor, type LogEntry } from "./auditLog";
 import { STATUS_TOKENS, type StatusCounts } from "./statusTokens";
 import type { TableMusic } from "./media";
+import { missionById, missionTerritories, type MissionId } from "./missions";
 
 export type GameType = "skirmish" | "standard" | "grand-army" | "custom";
 
@@ -186,6 +187,11 @@ export type TabletopState = {
   round: number;
   vp: { blue: number; red: number };
   deployment: DeploymentKey | null;
+  /** Battle Card mission (Objective + Map Card); when set, its Territories
+   * replace the deployment preset. */
+  mission?: MissionId | null;
+  /** Secondary Objective Card name (reference only; no fixed tokens). */
+  secondary?: string | null;
   /** Only one template at a time — like having one template in hand. */
   moveTemplate: MoveTemplate | null;
   /** Command-card hand state per side. Each entry tracks pip + played. */
@@ -362,6 +368,30 @@ export function deploymentZones(
         red: { x: W * 0.6, y: H * 0.6, w: W * 0.4, h: H * 0.4 },
       };
   }
+}
+
+/** Blue and red Territories to shade on the mat: the mission's Map Card
+ * when one is chosen, else the deployment preset, else none. */
+export function territories(s: Pick<TabletopState, "deployment" | "mission" | "map">): { blue: Zone[]; red: Zone[] } | null {
+  const m = missionById(s.mission);
+  if (m) return missionTerritories(m, s.map);
+  if (!s.deployment) return null;
+  const z = deploymentZones(s.deployment, s.map);
+  return { blue: [z.blue], red: [z.red] };
+}
+
+// --- Range ------------------------------------------------------------------
+// Legion's Range Tool is built from 6" segments: Range 1 is up to 6",
+// Range 2 up to 12" ... Range 5 up to 30", plus a 3" Half-Range Tool.
+export const RANGE_INCHES = 6;
+export const MAX_RANGE = 5;
+
+/** The Range band a distance falls in, e.g. "range ½", "range 3",
+ * "beyond range 5". */
+export function rangeBand(inches: number): string {
+  if (inches <= RANGE_INCHES / 2) return "range ½";
+  const r = Math.ceil(inches / RANGE_INCHES - 1e-9);
+  return r > MAX_RANGE ? `beyond range ${MAX_RANGE}` : `range ${r}`;
 }
 
 // --- Persistence ------------------------------------------------------------

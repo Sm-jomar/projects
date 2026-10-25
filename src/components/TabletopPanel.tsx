@@ -28,6 +28,7 @@ import { listArmies } from "../lib/storage";
 import { unitById } from "../data/catalog";
 import { endPhaseStatus, showsUnitStatus, WOUND_INFO, WOUND_URL } from "../lib/statusTokens";
 import { StatusTokenPanel } from "./StatusTokenPanel";
+import { MissionSection } from "./MissionSection";
 import { InfoDot } from "./InfoDot";
 import { cardForUnit } from "../lib/cardLookup";
 import { FACTIONS } from "../lib/factions";
@@ -1048,17 +1049,20 @@ export function TabletopPanel({ onClose }: Props) {
                   <p className="muted small">The picture is laid under the board as the map, for every player and in 3D. A pasted link only shows in 3D if its host allows it.</p>
                 </section>
 
+                <MissionSection state={state} onCommit={commit} />
+
                 <section>
                   <h3>Deployment zones</h3>
+                  {state.mission && <p className="muted small">The mission's Territories are shown. Pick a preset to use it instead.</p>}
                   <div className="tt-faction-pills">
-                    <button className={"tt-faction-pill" + (state.deployment === null ? " active" : "")}
-                            onClick={() => commit({ ...state, deployment: null })}>
+                    <button className={"tt-faction-pill" + (!state.mission && state.deployment === null ? " active" : "")}
+                            onClick={() => commit({ ...state, mission: null, deployment: null })}>
                       None
                     </button>
                     {(Object.keys(DEPLOYMENTS) as DeploymentKey[]).map((k) => (
                       <button key={k}
-                              className={"tt-faction-pill" + (state.deployment === k ? " active" : "")}
-                              onClick={() => commit({ ...state, deployment: k })}>
+                              className={"tt-faction-pill" + (!state.mission && state.deployment === k ? " active" : "")}
+                              onClick={() => commit({ ...state, mission: null, deployment: k })}>
                         {DEPLOYMENTS[k]}
                       </button>
                     ))}

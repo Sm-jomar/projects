@@ -3,7 +3,7 @@
 
 import Board3D, { type Block3D, type FigureStyle, type MoveMeasure, type Piece3D, type PieceModel } from "./Board3D";
 import {
-  deploymentZones, terrainClears, terrainElevation, FACTION_STROKE, TEMPLATE_SEGMENT_INCHES,
+  territories, terrainClears, terrainElevation, FACTION_STROKE, TEMPLATE_SEGMENT_INCHES,
   type FactionColor, type TabletopState, type Terrain, type Token,
 } from "../lib/tabletop";
 import { unitById } from "../data/catalog";
@@ -113,13 +113,11 @@ export default function Legion3D({ state, selectedId, onSelect, showGrid, onUplo
     };
   });
 
-  const zones = state.deployment ? (() => {
-    const z = deploymentZones(state.deployment, state.map);
-    return [
-      { x: z.blue.x, y: z.blue.y, w: z.blue.w, d: z.blue.h, color: "#3a78c2" },
-      { x: z.red.x, y: z.red.y, w: z.red.w, d: z.red.h, color: "#c24a3a" },
-    ];
-  })() : [];
+  const terr = territories(state);
+  const zones = terr ? [
+    ...terr.blue.map((z) => ({ x: z.x, y: z.y, w: z.w, d: z.h, color: "#3a78c2" })),
+    ...terr.red.map((z) => ({ x: z.x, y: z.y, w: z.w, d: z.h, color: "#c24a3a" })),
+  ] : [];
 
   return (
     <>

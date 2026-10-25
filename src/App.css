@@ -2317,3 +2317,9 @@ input, select {
 .tt-tok-more { width: 100%; margin-top: 6px; font-size: 12px; }
 .tt-tok-row, .tt-tok-order, .tt-counter-row { position: relative; }
 .tt-tok-icon { width: 20px; height: 20px; flex: none; object-fit: contain; }
+
+/* Mission picker (Battle Card objective + map) */
+.tt-mission-detail p { margin: 6px 0; }
+.tt-mission-cards { display: flex; gap: 6px; margin: 8px 0; }
+.tt-mission-cards a { flex: 1 1 0; min-width: 0; }
+.tt-mission-cards img { width: 100%; display: block; border-radius: 6px; border: 1px solid #3a4154; }
