@@ -5,7 +5,8 @@ import { SquadMarkers } from "./SquadOverlay";
 import { StatusChips } from "./StatusChips";
 import { statusChips } from "../lib/statusTokens";
 import {
-  deploymentZones, templateAnchor, templatePoints, TEMPLATE_WIDTH_INCHES,
+  territories, templateAnchor, templatePoints, TEMPLATE_WIDTH_INCHES,
+  rangeBand, RANGE_INCHES, MAX_RANGE,
 } from "../lib/tabletop";
 
 // ----- Visual constants ---------------------------------------------------
@@ -28,6 +29,8 @@ const TERRAIN_STROKE: Record<Terrain["kind"], string> = {
   barricade: "#9a7444",
   objective: "#ffd24a",
 };
+
+const POI_STROKE = "#5fe0d0";
 
 const FACTION_FILL: Record<FactionColor, string> = {
   rebels:      "#a14026",
@@ -315,23 +318,28 @@ export function TabletopCanvas({
             </g>
           )}
 
-          {/* Deployment zones (under everything else) */}
-          {state.deployment && (() => {
-            const z = deploymentZones(state.deployment, state.map);
+          {/* Deployment zones / mission Territories (under everything else) */}
+          {(() => {
+            const z = territories(state);
+            if (!z) return null;
             const U = UNITS_PER_INCH;
             const dash = `${5 / view.scale} ${4 / view.scale}`;
+            const side = (zones: typeof z.blue, fill: string, stroke: string, text: string, label: string) =>
+              zones.map((r, i) => (
+                <g key={`${label}${i}`}>
+                  <rect x={r.x * U} y={r.y * U} width={r.w * U} height={r.h * U}
+                        fill={fill} fillOpacity={0.12} stroke={stroke} strokeOpacity={0.5}
+                        strokeDasharray={dash} strokeWidth={1.5 / view.scale} />
+                  {i === 0 && (
+                    <text x={(r.x + 0.5) * U} y={(r.y + 0.5) * U + 12 / view.scale} fontSize={12 / view.scale}
+                          fill={text} fillOpacity={0.7} fontWeight={700}>{label}</text>
+                  )}
+                </g>
+              ));
             return (
               <g>
-                <rect x={z.blue.x * U} y={z.blue.y * U} width={z.blue.w * U} height={z.blue.h * U}
-                      fill="#3a78c2" fillOpacity={0.12} stroke="#5a9ae2" strokeOpacity={0.5}
-                      strokeDasharray={dash} strokeWidth={1.5 / view.scale} />
-                <text x={(z.blue.x + 0.5) * U} y={(z.blue.y + 1.2) * U} fontSize={12 / view.scale}
-                      fill="#9bc1ec" fillOpacity={0.7} fontWeight={700}>BLUE</text>
-                <rect x={z.red.x * U} y={z.red.y * U} width={z.red.w * U} height={z.red.h * U}
-                      fill="#c24a3a" fillOpacity={0.12} stroke="#e2735a" strokeOpacity={0.5}
-                      strokeDasharray={dash} strokeWidth={1.5 / view.scale} />
-                <text x={(z.red.x + 0.5) * U} y={(z.red.y + 1.2) * U} fontSize={12 / view.scale}
-                      fill="#ffb0a0" fillOpacity={0.7} fontWeight={700}>RED</text>
+                {side(z.blue, "#3a78c2", "#5a9ae2", "#9bc1ec", "BLUE")}
+                {side(z.red, "#c24a3a", "#e2735a", "#ffb0a0", "RED")}
               </g>
             );
           })()}
@@ -348,16 +356,29 @@ export function TabletopCanvas({
             </g>
           )}
 
-          {/* Range bands from selected token (visual aid for measurement) */}
+          {/* Range bands from selected token: Half-Range then Range 1-5,
+              6" apiece, measured from the edge of the base. */}
           {selectedId && state.tokens.find((t) => t.id === selectedId) && (() => {
             const tk = state.tokens.find((t) => t.id === selectedId)!;
             const cx = (tk.x + tk.size / 2) * UNITS_PER_INCH;
             const cy = (tk.y + tk.size / 2) * UNITS_PER_INCH;
+            const base = tk.size / 2;
+            const bands = [{ label: "½", inches: RANGE_INCHES / 2 },
+              ...Array.from({ length: MAX_RANGE }, (_, i) => ({ label: String(i + 1), inches: (i + 1) * RANGE_INCHES }))];
             return (
-              <g fill="none" stroke="#ffd24a" strokeOpacity={0.18} strokeDasharray={`${4 / view.scale} ${4 / view.scale}`} strokeWidth={1 / view.scale}>
-                {[6, 12, 18, 24].map((inches) => (
-                  <circle key={inches} cx={cx} cy={cy} r={inches * UNITS_PER_INCH} />
-                ))}
+              <g pointerEvents="none" className="tt-range-rings">
+                {bands.map((b) => {
+                  const r = (base + b.inches) * UNITS_PER_INCH;
+                  return (
+                    <g key={b.label}>
+                      <circle cx={cx} cy={cy} r={r} fill="none" stroke="#ffd24a"
+                              strokeOpacity={b.label === "½" ? 0.12 : 0.22}
+                              strokeDasharray={`${4 / view.scale} ${4 / view.scale}`} strokeWidth={1 / view.scale} />
+                      <text x={cx} y={cy - r + 10 / view.scale} textAnchor="middle" fontSize={9 / view.scale}
+                            fill="#ffd24a" fillOpacity={0.55} fontWeight={700}>{b.label}</text>
+                    </g>
+                  );
+                })}
               </g>
             );
           })()}
@@ -404,6 +425,7 @@ export function TabletopCanvas({
             const cx = px + sz / 2;
             const cy = py + sz / 2;
             const hasPortrait = !!tk.portraitUrl;
+            const isPoi = tk.kind === "objective" && !hasPortrait;
             const badgeR = 5 / view.scale;
             const badgeFont = 7 / view.scale;
             return (
@@ -414,8 +436,8 @@ export function TabletopCanvas({
                 {/* Body dims once activated; badges stay full-opacity. */}
                 <g opacity={tk.activated ? 0.45 : 1}>
                   <circle cx={cx} cy={cy} r={sz / 2 - 1 / view.scale}
-                          fill={hasPortrait ? "#0e0f12" : FACTION_FILL[tk.color]}
-                          stroke={selectedId === tk.id ? "#ffd24a" : FACTION_STROKE[tk.color]}
+                          fill={hasPortrait || isPoi ? "#0e0f12" : FACTION_FILL[tk.color]}
+                          stroke={selectedId === tk.id ? "#ffd24a" : isPoi ? POI_STROKE : FACTION_STROKE[tk.color]}
                           strokeWidth={(selectedId === tk.id ? 2.5 : 1.5) / view.scale} />
                   {hasPortrait && (
                     // Card art cropped to a circle. Slice-fit anchored to the
@@ -426,7 +448,18 @@ export function TabletopCanvas({
                            clipPath={`url(#tt-clip-${tk.id})`}
                            pointerEvents="none" />
                   )}
-                  {!hasPortrait && (
+                  {isPoi && (
+                    // Objective token: the POI crosshair from the Legion token.
+                    <g stroke={POI_STROKE} strokeWidth={1.5 / view.scale} fill="none" pointerEvents="none">
+                      <circle cx={cx} cy={cy} r={sz * 0.3} />
+                      <circle cx={cx} cy={cy} r={sz * 0.08} fill={POI_STROKE} stroke="none" />
+                      <line x1={cx - sz * 0.42} y1={cy} x2={cx - sz * 0.18} y2={cy} />
+                      <line x1={cx + sz * 0.18} y1={cy} x2={cx + sz * 0.42} y2={cy} />
+                      <line x1={cx} y1={cy - sz * 0.42} x2={cx} y2={cy - sz * 0.18} />
+                      <line x1={cx} y1={cy + sz * 0.18} x2={cx} y2={cy + sz * 0.42} />
+                    </g>
+                  )}
+                  {!hasPortrait && !isPoi && (
                     <text x={cx} y={cy + 4 / view.scale}
                           textAnchor="middle" fontSize={10 / view.scale}
                           fill="#0e0f12" fontWeight={700}>{tk.label.slice(0, 3)}</text>
@@ -465,8 +498,8 @@ export function TabletopCanvas({
                     <text x={px + sz - 2 / view.scale} y={py + sz - 2 / view.scale + badgeFont * 0.4} textAnchor="middle" fontSize={badgeFont} fill="#ffb0b0" fontWeight={700}>{tk.wounds}</text>
                   </g>
                 )}
-                {/* Name label under the selected token */}
-                {selectedId === tk.id && (
+                {/* Name label under the selected token (always for objectives) */}
+                {(selectedId === tk.id || isPoi) && (
                   <text x={cx} y={py + sz + (!tk.squadId && statusChips(tk).length ? Math.max(0.5 * UNITS_PER_INCH, 13 / view.scale) : 0) + 11 / view.scale}
                         textAnchor="middle" fontSize={9 / view.scale}
                         fill="#ffd24a" fontWeight={600}
@@ -564,18 +597,17 @@ export function TabletopCanvas({
             const x2 = drag.endX * UNITS_PER_INCH;
             const y2 = drag.endY * UNITS_PER_INCH;
             const inches = Math.hypot(drag.endX - drag.startX, drag.endY - drag.startY);
-            const range = inches <= 6 ? 1 : inches <= 12 ? 2 : inches <= 18 ? 3 : inches <= 24 ? 4 : 5;
             return (
               <g>
                 <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#ffd24a" strokeWidth={2 / view.scale} />
                 <circle cx={x1} cy={y1} r={3 / view.scale} fill="#ffd24a" />
                 <circle cx={x2} cy={y2} r={3 / view.scale} fill="#ffd24a" />
-                <rect x={(x1 + x2) / 2 - 30 / view.scale} y={(y1 + y2) / 2 - 22 / view.scale}
-                      width={60 / view.scale} height={18 / view.scale}
+                <rect x={(x1 + x2) / 2 - 48 / view.scale} y={(y1 + y2) / 2 - 22 / view.scale}
+                      width={96 / view.scale} height={18 / view.scale}
                       rx={3 / view.scale} fill="#0e0f12" stroke="#ffd24a" strokeWidth={1 / view.scale} />
                 <text x={(x1 + x2) / 2} y={(y1 + y2) / 2 - 9 / view.scale}
                       textAnchor="middle" fontSize={11 / view.scale} fill="#ffd24a" fontWeight={700}>
-                  {inches.toFixed(1)}" · range {range}
+                  {inches.toFixed(1)}" · {rangeBand(inches)}
                 </text>
               </g>
             );
