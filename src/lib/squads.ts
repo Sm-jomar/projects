@@ -227,28 +227,39 @@ export function normalizeSquads(tokens: Token[], gone?: Token): Token[] {
 // one per upgrade that adds a mini (heavy weapons and personnel), dropped
 // as a base-locked cluster around the point the player let go.
 
-type SquadUpgrade = { id: string; name: string; type: string; adds_miniature?: boolean };
+type SquadUpgrade = {
+  id: string; name: string; type: string;
+  adds_miniature?: boolean; adds_miniatures?: number; adds_leader?: boolean;
+};
 
-/** Whether an upgrade puts another mini in the unit. Older catalog rows
- * flag it; Tabletop Admiral rows don't, so fall back on the slot type. */
-export function addsMiniature(u: SquadUpgrade): boolean {
-  return u.adds_miniature ?? (u.type === "heavy-weapon" || u.type === "personnel");
+const MINI_SLOTS = ["heavy-weapon", "personnel", "squad-leader"];
+const SLOT_BADGE: Record<string, string> = { "heavy-weapon": "HW", personnel: "P", "squad-leader": "L" };
+
+/** How many minis an upgrade puts in the unit. Imported counts come from
+ * the card text; failing that, heavy weapons, personnel and squad leaders
+ * add one. */
+export function minisAdded(u: SquadUpgrade): number {
+  if (u.adds_miniatures != null) return u.adds_miniatures;
+  return (u.adds_miniature ?? MINI_SLOTS.includes(u.type)) ? 1 : 0;
 }
 
-/** The minis a list entry fields, leader first: the unit's own minis, then
- * one per mini-adding upgrade (named after the upgrade). */
+/** The minis a list entry fields, leader first: the unit's own minis plus
+ * those its upgrades add (named after the upgrade). A Leader upgrade's
+ * mini (Jedi Guardian, Clone Captain, ...) leads the squad. */
 export function squadMinis(
   unit: { name: string; miniatures: number },
   upgrades: SquadUpgrade[],
 ): { label: string; badge?: string }[] {
   const own = Array.from({ length: Math.max(0, unit.miniatures) }, () => ({ label: unit.name }));
-  const extra = upgrades.filter(addsMiniature).map((u) => ({
-    label: u.name,
-    badge: u.type === "heavy-weapon" ? "HW" : "P",
-  }));
+  const lead: { label: string; badge?: string }[] = [];
+  const extra: { label: string; badge?: string }[] = [];
+  for (const u of upgrades) {
+    const minis = Array.from({ length: minisAdded(u) }, () => ({ label: u.name, badge: SLOT_BADGE[u.type] ?? "+" }));
+    (u.adds_leader ? lead : extra).push(...minis);
+  }
   // A unit printed with 0 minis (The Bad Batch) is made of its upgrades;
   // without any it still needs a piece on the table.
-  const minis = [...own, ...extra];
+  const minis = [...lead, ...own, ...extra];
   return minis.length ? minis : [{ label: unit.name }];
 }
 

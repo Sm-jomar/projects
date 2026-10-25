@@ -67,6 +67,10 @@ export type Upgrade = {
   text?: string;
   restricted_to_unit?: { id: string }[];
   adds_miniature?: boolean;
+  /** How many minis the upgrade adds ("Add N ... miniatures"), when known. */
+  adds_miniatures?: number;
+  /** The added mini has the Leader keyword: it becomes the unit leader. */
+  adds_leader?: boolean;
   adds_upgrade_slots?: UpgradeSlots;
   is_exhaustible?: boolean;
   keywords?: Record<string, string | number>;

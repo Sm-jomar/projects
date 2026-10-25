@@ -2344,4 +2344,5 @@ input, select {
 .tt-mini-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); opacity: 0.7; }
 .tt-mini-dot.lead { background: #ffd24a; opacity: 1; }
 .tt-mini-dot.extra { background: #6fd09b; opacity: 1; }
+.tt-mini-dot.lead.extra { background: #ffd24a; box-shadow: 0 0 0 1px #6fd09b; }
 .tt-roster-row.deployed { opacity: 0.5; cursor: default; }

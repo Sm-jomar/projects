@@ -4,6 +4,7 @@ import { SEED_UNITS } from "./catalog.seed";
 import overridesRaw from "./catalog-overrides.json";
 import ttaRaw from "./tabletop-admiral.json";
 import miniaturesRaw from "./unit-miniatures.json";
+import upgradeMinisRaw from "./upgrade-miniatures.json";
 
 const base = baseRaw as unknown as Catalog;
 
@@ -49,9 +50,17 @@ const MINIATURES = miniaturesRaw as Record<string, number>;
 const units = applyOverrides(SEED_UNITS, TTA.units)
   .concat(TTA.new_units)
   .map((u) => (u.id in MINIATURES ? { ...u, miniatures: MINIATURES[u.id]! } : u));
-const upgrades = applyOverrides((base.upgrades ?? []) as Upgrade[], TTA.upgrades).concat(
-  TTA.new_upgrades,
-);
+// Minis added by heavy weapon, personnel and squad leader upgrades, from
+// the same Legion Helper import ("Add N ... miniature" on the card).
+const UPGRADE_MINIS = upgradeMinisRaw as Record<string, { adds: number; leader?: boolean }>;
+
+const upgrades = applyOverrides((base.upgrades ?? []) as Upgrade[], TTA.upgrades)
+  .concat(TTA.new_upgrades)
+  .map((u) => {
+    const m = UPGRADE_MINIS[u.id];
+    if (!m) return u;
+    return { ...u, adds_miniature: m.adds > 0, adds_miniatures: m.adds, ...(m.leader ? { adds_leader: true } : {}) };
+  });
 
 export const CATALOG: Catalog = {
   version: base.version,

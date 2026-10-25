@@ -1,0 +1,547 @@
+{
+ "2-1-b-medical-droid": {
+  "adds": 1
+ },
+ "agent-kallus": {
+  "adds": 1,
+  "leader": true
+ },
+ "ahsoka-tano-jedi-padawan": {
+  "adds": 1,
+  "leader": true
+ },
+ "arf-trooper-duo": {
+  "adds": 2
+ },
+ "asajj-ventress": {
+  "adds": 1,
+  "leader": true
+ },
+ "astromech": {
+  "adds": 1
+ },
+ "astromech-droid": {
+  "adds": 1
+ },
+ "axe-ewok": {
+  "adds": 1
+ },
+ "axe-woves": {
+  "adds": 1,
+  "leader": true
+ },
+ "b1-battle-droid": {
+  "adds": 1
+ },
+ "b1-battle-droid-squad": {
+  "adds": 7
+ },
+ "b1-security-droid": {
+  "adds": 1
+ },
+ "b2-acm-battle-droid": {
+  "adds": 1
+ },
+ "b2-ha-battle-droid": {
+  "adds": 1
+ },
+ "b2-ha-rocket-droid": {
+  "adds": 1
+ },
+ "b2-super-battle-droid": {
+  "adds": 1
+ },
+ "b2-super-battle-droid-squad": {
+  "adds": 4
+ },
+ "b2-super-rocket-battle-droid": {
+  "adds": 1
+ },
+ "battle-shield-wookiee": {
+  "adds": 1
+ },
+ "black-sun-enforcer": {
+  "adds": 1
+ },
+ "black-sun-vigo": {
+  "adds": 1,
+  "leader": true
+ },
+ "bo-katan-kryze": {
+  "adds": 1,
+  "leader": true
+ },
+ "boil": {
+  "adds": 1,
+  "leader": true
+ },
+ "bowcaster-wookiee": {
+  "adds": 1
+ },
+ "bx-series-droid-sniper": {
+  "adds": 1
+ },
+ "chewbacca": {
+  "adds": 1,
+  "leader": true
+ },
+ "clone-captain": {
+  "adds": 1,
+  "leader": true
+ },
+ "clone-captain-rex": {
+  "adds": 1,
+  "leader": true
+ },
+ "clone-commander": {
+  "adds": 1,
+  "leader": true
+ },
+ "clone-commander-cody": {
+  "adds": 1,
+  "leader": true
+ },
+ "clone-comms-technician": {
+  "adds": 1
+ },
+ "clone-engineer": {
+  "adds": 1
+ },
+ "clone-marksman": {
+  "adds": 1
+ },
+ "clone-medic": {
+  "adds": 1
+ },
+ "clone-specialist": {
+  "adds": 1
+ },
+ "clone-trooper-infantry": {
+  "adds": 1
+ },
+ "clone-trooper-infantry-squad": {
+  "adds": 5
+ },
+ "clone-trooper-marksmen-squad": {
+  "adds": 5
+ },
+ "crosshair": {
+  "adds": 1
+ },
+ "dc-15x-arc-trooper-gunner": {
+  "adds": 1
+ },
+ "dc-15x-arc-trooper-sniper": {
+  "adds": 1
+ },
+ "del-meeko": {
+  "adds": 1
+ },
+ "dh-447-sniper": {
+  "adds": 1
+ },
+ "din-djarin": {
+  "adds": 1,
+  "leader": true
+ },
+ "dioxis-mine-saboteur": {
+  "adds": 1
+ },
+ "dlt-19-d-trooper": {
+  "adds": 1
+ },
+ "dlt-19-stormtrooper": {
+  "adds": 1
+ },
+ "dlt-19-x-sniper": {
+  "adds": 1
+ },
+ "dlt-20a-range-trooper": {
+  "adds": 1
+ },
+ "dlt-20a-trooper": {
+  "adds": 1
+ },
+ "dp-23-clone-trooper": {
+  "adds": 1
+ },
+ "dt-f-16": {
+  "adds": 1,
+  "leader": true
+ },
+ "e-5c-b1-battle-droid": {
+  "adds": 1
+ },
+ "e-5s-b1-battle-droid": {
+  "adds": 1
+ },
+ "e-60r-b1-battle-droid": {
+  "adds": 1
+ },
+ "echo-arc-marksman": {
+  "adds": 1,
+  "leader": true
+ },
+ "echo-clone-force-99": {
+  "adds": 1
+ },
+ "electro-whip-magnaguard": {
+  "adds": 1
+ },
+ "electro-whip-soldier": {
+  "adds": 1
+ },
+ "electrostaff-pirate": {
+  "adds": 1
+ },
+ "ev-series-medical-droid": {
+  "adds": 1
+ },
+ "ewok-skirmisher-squad": {
+  "adds": 4
+ },
+ "ewok-slinger-squad": {
+  "adds": 4
+ },
+ "ewok-trapper": {
+  "adds": 1
+ },
+ "fifth-brother": {
+  "adds": 1,
+  "leader": true
+ },
+ "fives-squad-leader": {
+  "adds": 1,
+  "leader": true
+ },
+ "flametrooper": {
+  "adds": 1
+ },
+ "fleet-trooper": {
+  "adds": 1
+ },
+ "fleet-trooper-squad": {
+  "adds": 5
+ },
+ "force-pike-warrior": {
+  "adds": 1
+ },
+ "fx-9-medical-droid": {
+  "adds": 1
+ },
+ "galaar-90-sniper-rifle": {
+  "adds": 1
+ },
+ "gar-saxon": {
+  "adds": 1,
+  "leader": true
+ },
+ "general-grievous": {
+  "adds": 1,
+  "leader": true
+ },
+ "geonosian-warrior": {
+  "adds": 1
+ },
+ "geonosian-warrior-squad": {
+  "adds": 5
+ },
+ "gideon-hask": {
+  "adds": 1,
+  "leader": true
+ },
+ "heavy-aqua-droid": {
+  "adds": 1
+ },
+ "hh-12-stormtrooper": {
+  "adds": 1
+ },
+ "hunter-heavy-weapon": {
+  "adds": 1,
+  "leader": true
+ },
+ "ig-100-magnaguard": {
+  "adds": 1
+ },
+ "imperial-comms-technician": {
+  "adds": 1
+ },
+ "imperial-dark-trooper": {
+  "adds": 1
+ },
+ "imperial-officer": {
+  "adds": 1,
+  "leader": true
+ },
+ "imperial-probe-droid": {
+  "adds": 1
+ },
+ "jedi-guardian": {
+  "adds": 1,
+  "leader": true
+ },
+ "jyn-erso": {
+  "adds": 1,
+  "leader": true
+ },
+ "ki-adi-mundi": {
+  "adds": 1,
+  "leader": true
+ },
+ "kraken": {
+  "adds": 1,
+  "leader": true
+ },
+ "kx-series-security-droids": {
+  "adds": 2
+ },
+ "long-gun-wookiee": {
+  "adds": 1
+ },
+ "long-rifle-pirate": {
+  "adds": 1
+ },
+ "luke-skywalker": {
+  "adds": 1,
+  "leader": true
+ },
+ "mace-windu": {
+  "adds": 1,
+  "leader": true
+ },
+ "mag-det-enforcer": {
+  "adds": 1
+ },
+ "mandalorian-super-commando": {
+  "adds": 1
+ },
+ "mertalizer-dark-trooper": {
+  "adds": 1
+ },
+ "micro-grenade-launcher": {
+  "adds": 1
+ },
+ "mortar-clone-trooper": {
+  "adds": 1
+ },
+ "mpl-57-barrage-trooper": {
+  "adds": 1
+ },
+ "mpl-57-ion-trooper": {
+  "adds": 1
+ },
+ "obi-wan-kenobi": {
+  "adds": 1,
+  "leader": true
+ },
+ "oom-series-battle-droid": {
+  "adds": 1,
+  "leader": true
+ },
+ "p13-m-disruptor-soldier": {
+  "adds": 1
+ },
+ "paz-vizsla": {
+  "adds": 1,
+  "leader": true
+ },
+ "pk-series-worker-droid": {
+  "adds": 1
+ },
+ "plo-koon-squad-leader": {
+  "adds": 1,
+  "leader": true
+ },
+ "proton-charge-saboteur": {
+  "adds": 1
+ },
+ "pyke-syndicate-capo": {
+  "adds": 1,
+  "leader": true
+ },
+ "pyke-syndicate-foot-soldier": {
+  "adds": 1
+ },
+ "pyke-syndicate-foot-soldier-squad": {
+  "adds": 5
+ },
+ "r4-astromech": {
+  "adds": 1
+ },
+ "radiation-cannon-b1-battle-droid": {
+  "adds": 1
+ },
+ "range-trooper": {
+  "adds": 1
+ },
+ "rebel-comms-technician": {
+  "adds": 1
+ },
+ "rebel-marksman": {
+  "adds": 1
+ },
+ "rebel-officer": {
+  "adds": 1,
+  "leader": true
+ },
+ "rebel-trooper": {
+  "adds": 1
+ },
+ "rebel-trooper-captain": {
+  "adds": 1,
+  "leader": true
+ },
+ "rebel-trooper-specialist": {
+  "adds": 1
+ },
+ "rebel-trooper-squad": {
+  "adds": 5
+ },
+ "rebel-veteran": {
+  "adds": 1
+ },
+ "rebel-veteran-squad": {
+  "adds": 5
+ },
+ "rook-kast": {
+  "adds": 1,
+  "leader": true
+ },
+ "rook-kast-heavy-weapon": {
+  "adds": 1,
+  "leader": true
+ },
+ "rps-6-arf-trooper": {
+  "adds": 1
+ },
+ "rps-6-clone-trooper": {
+  "adds": 1
+ },
+ "rps-6-magnaguard": {
+  "adds": 1
+ },
+ "rt-97c-stormtrooper": {
+  "adds": 1
+ },
+ "sabine-wren": {
+  "adds": 1,
+  "leader": true
+ },
+ "scatter-gun-enforcer": {
+  "adds": 1
+ },
+ "scatter-gun-trooper": {
+  "adds": 1
+ },
+ "seventh-sister": {
+  "adds": 1,
+  "leader": true
+ },
+ "shaak-ti": {
+  "adds": 1,
+  "leader": true
+ },
+ "shoretrooper": {
+  "adds": 1
+ },
+ "shoretrooper-squad": {
+  "adds": 5
+ },
+ "shukur-05-repeater": {
+  "adds": 1
+ },
+ "snowtrooper": {
+  "adds": 1
+ },
+ "snowtrooper-squad": {
+  "adds": 5
+ },
+ "sonic-cannon-warrior": {
+  "adds": 1
+ },
+ "sonic-charge-saboteur": {
+  "adds": 1
+ },
+ "stormtrooper": {
+  "adds": 1
+ },
+ "stormtrooper-captain": {
+  "adds": 1,
+  "leader": true
+ },
+ "stormtrooper-marksman": {
+  "adds": 1
+ },
+ "stormtrooper-specialist": {
+  "adds": 1
+ },
+ "stormtrooper-squad": {
+  "adds": 5
+ },
+ "super-commando-gunslinger": {
+  "adds": 1
+ },
+ "super-commando-marksman": {
+  "adds": 1
+ },
+ "sx-21-trooper": {
+  "adds": 1
+ },
+ "t-21-special-forces-trooper": {
+  "adds": 1
+ },
+ "t-21-stormtrooper": {
+  "adds": 1
+ },
+ "t-21a-range-trooper": {
+  "adds": 1
+ },
+ "t-21b-shoretrooper": {
+  "adds": 1
+ },
+ "t-7-ion-snowtrooper": {
+  "adds": 1
+ },
+ "t-series-tactical-droid": {
+  "adds": 1,
+  "leader": true
+ },
+ "tech": {
+  "adds": 1
+ },
+ "the-armorer": {
+  "adds": 1,
+  "leader": true
+ },
+ "tristan-wren-personnel": {
+  "adds": 1,
+  "leader": true
+ },
+ "ursa-wren-personnel": {
+  "adds": 1,
+  "leader": true
+ },
+ "viper-recon-droid": {
+  "adds": 1
+ },
+ "waxer": {
+  "adds": 1,
+  "leader": true
+ },
+ "weequay-captain": {
+  "adds": 1,
+  "leader": true
+ },
+ "weequay-pirate-squad": {
+  "adds": 3
+ },
+ "wrecker": {
+  "adds": 1
+ },
+ "z-6-clone-trooper": {
+  "adds": 1
+ },
+ "z-6-trooper": {
+  "adds": 1
+ }
+}
