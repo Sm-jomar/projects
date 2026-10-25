@@ -1,12 +1,17 @@
-"""Pull each unit's miniature count (the number in the top-right corner of
-the unit card) from Legion Helper and write src/data/unit-miniatures.json.
+"""Pull miniature counts from Legion Helper: each unit's own minis (the
+number in the top-right corner of the unit card) into
+src/data/unit-miniatures.json, and the minis each heavy weapon, personnel
+and squad leader upgrade adds ("Add N ... miniature") into
+src/data/upgrade-miniatures.json.
 
-    npx esbuild scripts/dump_units.ts --bundle --platform=node | node > /tmp/units.json
-    python3 scripts/import_legion_helper_minis.py /tmp/units.json
+    npx esbuild scripts/dump_units.ts --bundle --platform=node | node > /tmp/catalog.json
+    python3 scripts/import_legion_helper_minis.py /tmp/catalog.json
 
-Legion Helper (https://legion.takras.net) has one page per unit card, and
-each says "Miniatures N". Pages are matched to our units by name, subtitle
-and faction. MANUAL pins units with no page there (older printings).
+Legion Helper (https://legion.takras.net) has one page per card. Unit pages
+say "Miniatures N" and are matched to our units by name, subtitle and
+faction; MANUAL pins units with no page there (older printings). Upgrade
+pages are matched by name and slot; an upgrade with no page keeps the
+catalog's own guess (heavy weapons and personnel add one mini).
 """
 
 import json
@@ -17,6 +22,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 SITE = "https://legion.takras.net"
 OUT = "src/data/unit-miniatures.json"
+UPGRADES_OUT = "src/data/upgrade-miniatures.json"
+SLOTS = {"Heavy": "heavy-weapon", "Personnel": "personnel", "Squad Leader": "squad-leader"}
 
 FACTIONS = {
     "Galactic Republic": "republic", "Rebel Alliance": "rebels", "Galactic Empire": "imperials",
@@ -59,9 +66,32 @@ def page(url: str):
     return url.rstrip("/").rsplit("/", 1)[1], int(minis.group(1)), FACTIONS.get(faction.group(1))
 
 
-def main() -> None:
-    units = json.load(open(sys.argv[1]))
-    urls = re.findall(rf"<loc>({SITE}/cards/units/[^<]+)</loc>", get(f"{SITE}/sitemap.xml"))
+def text_of(url: str) -> str:
+    html = re.sub(r"<script.*?</script>|<style.*?</style>", "", get(url), flags=re.S)
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html))
+
+
+def upgrade_page(url: str):
+    text = text_of(url)
+    m = re.search(r"Back to Legion Helper (.+?) is an? (.+?) upgrade card", text)
+    if not m or m.group(2) not in SLOTS:
+        return None
+    # The title is printed twice ("Echo Echo is a ..."); keep one copy.
+    title = m.group(1)
+    half = title[: len(title) // 2].strip()
+    name = half if title == f"{half} {half}" else title
+    adds = sum(int(n) for n in re.findall(r"Add (\d+) [^.]*?min[ia]*tures?\b", text, flags=re.I))
+    # The Leader keyword makes the added mini the unit leader.
+    leader = " Leader A miniature with the Leader keyword" in text
+    return {"name": name.strip("• "), "type": SLOTS[m.group(2)], "adds": adds, "leader": leader}
+
+
+def norm(s: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", s.lower())
+
+
+def units_main(units: list, sitemap: str) -> None:
+    urls = re.findall(rf"<loc>({SITE}/cards/units/[^<]+)</loc>", sitemap)
     with ThreadPoolExecutor(8) as ex:
         pages = {p[0]: p[1:] for p in ex.map(page, urls) if p}
 
@@ -81,6 +111,34 @@ def main() -> None:
     json.dump(dict(sorted(out.items())), open(OUT, "w"), indent=1)
     open(OUT, "a").write("\n")
     print(f"wrote {len(out)} units to {OUT}; kept catalog value for {len(unmatched)}: {', '.join(unmatched)}")
+
+
+def upgrades_main(upgrades: list, sitemap: str) -> None:
+    urls = re.findall(rf"<loc>({SITE}/cards/upgrades/[^<]+)</loc>", sitemap)
+    with ThreadPoolExecutor(8) as ex:
+        pages = [p for p in ex.map(upgrade_page, urls) if p]
+
+    out: dict[str, dict] = {}
+    unmatched = []
+    for u in upgrades:
+        if u["type"] not in SLOTS.values():
+            continue
+        found = {(p["adds"], p["leader"]) for p in pages if p["type"] == u["type"] and norm(p["name"]) == norm(u["name"])}
+        if len(found) == 1:
+            adds, leader = found.pop()
+            out[u["id"]] = {"adds": adds, **({"leader": True} if leader else {})}
+        else:
+            unmatched.append(u["id"])
+    json.dump(dict(sorted(out.items())), open(UPGRADES_OUT, "w"), indent=1)
+    open(UPGRADES_OUT, "a").write("\n")
+    print(f"wrote {len(out)} upgrades to {UPGRADES_OUT}; no page for {len(unmatched)}: {', '.join(unmatched)}")
+
+
+def main() -> None:
+    catalog = json.load(open(sys.argv[1]))
+    sitemap = get(f"{SITE}/sitemap.xml")
+    units_main(catalog["units"], sitemap)
+    upgrades_main(catalog["upgrades"], sitemap)
 
 
 if __name__ == "__main__":
