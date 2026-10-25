@@ -241,12 +241,15 @@ export function squadMinis(
   unit: { name: string; miniatures: number },
   upgrades: SquadUpgrade[],
 ): { label: string; badge?: string }[] {
-  const own = Array.from({ length: Math.max(1, unit.miniatures || 1) }, () => ({ label: unit.name }));
+  const own = Array.from({ length: Math.max(0, unit.miniatures) }, () => ({ label: unit.name }));
   const extra = upgrades.filter(addsMiniature).map((u) => ({
     label: u.name,
     badge: u.type === "heavy-weapon" ? "HW" : "P",
   }));
-  return [...own, ...extra];
+  // A unit printed with 0 minis (The Bad Batch) is made of its upgrades;
+  // without any it still needs a piece on the table.
+  const minis = [...own, ...extra];
+  return minis.length ? minis : [{ label: unit.name }];
 }
 
 /** Centres for `n` bases of diameter `size` packed around (0, 0): the
