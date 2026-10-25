@@ -1017,7 +1017,7 @@ export function TabletopPanel({ onClose }: Props) {
                               <ul className="tt-roster">
                                 {rows.map((r) => {
                                   const placed = placedByEntry[r.entryId] ?? 0;
-                                  const extra = r.minis.slice(Math.max(1, r.unit.miniatures || 1));
+                                  const extra = r.minis.filter((m) => m.badge);
                                   return (
                                     <li key={r.entryId}
                                         className={`tt-roster-row${placed ? " deployed" : ""}`}

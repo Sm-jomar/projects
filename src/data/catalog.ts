@@ -3,6 +3,7 @@ import baseRaw from "./catalog.base.json";
 import { SEED_UNITS } from "./catalog.seed";
 import overridesRaw from "./catalog-overrides.json";
 import ttaRaw from "./tabletop-admiral.json";
+import miniaturesRaw from "./unit-miniatures.json";
 
 const base = baseRaw as unknown as Catalog;
 
@@ -40,7 +41,14 @@ type TtaLayer = {
 };
 const TTA = ttaRaw as unknown as TtaLayer;
 
-const units = applyOverrides(SEED_UNITS, TTA.units).concat(TTA.new_units);
+// Miniatures per unit, as printed in the top-right corner of each unit
+// card, from Legion Helper (scripts/import_legion_helper_minis.py). The
+// seed and Tabletop Admiral leave many units at 1.
+const MINIATURES = miniaturesRaw as Record<string, number>;
+
+const units = applyOverrides(SEED_UNITS, TTA.units)
+  .concat(TTA.new_units)
+  .map((u) => (u.id in MINIATURES ? { ...u, miniatures: MINIATURES[u.id]! } : u));
 const upgrades = applyOverrides((base.upgrades ?? []) as Upgrade[], TTA.upgrades).concat(
   TTA.new_upgrades,
 );

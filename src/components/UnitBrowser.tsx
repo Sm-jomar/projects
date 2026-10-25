@@ -136,7 +136,7 @@ export function UnitBrowser({
                   {RANK_LABEL[u.rank]} · {cost} pts
                   {adjusted && <span className="adj-hint"> (was {u.points})</span>}
                   {" · "}
-                  {u.miniatures} mini{u.miniatures > 1 ? "s" : ""}
+                  {u.miniatures} mini{u.miniatures !== 1 ? "s" : ""}
                 </div>
               </div>
               <button
