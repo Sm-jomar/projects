@@ -16,15 +16,9 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { decodeModel } from "../lib/stlModel";
+import { buildModel, type PieceModel } from "./pieceModels";
 
-export type FigureStyle = "rebel" | "imperial" | "clone" | "droid" | "merc" | "pawn";
-
-export type PieceModel =
-  | { kind: "figure"; style: FigureStyle }
-  | { kind: "vehicle"; style: FigureStyle; repulsor: boolean }
-  | { kind: "emplacement"; style: FigureStyle }
-  | { kind: "marker" }
-  | { kind: "stl"; data: string };
+export type { FigureBuild, FigureSpec, FigureStyle, MountKind, PieceModel, VehicleFrame } from "./pieceModels";
 
 export type Piece3D = {
   id: string;
@@ -819,7 +813,7 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
     pg.rig.scale.y = 1 + Math.sin(t * 2.4) * 0.02 * (1 - w);
     pg.rig.traverse((o) => {
       const s = o.userData.swing as number | undefined;
-      if (s) o.rotation.x = Math.sin(control!.phase) * (run ? 0.9 : 0.6) * w * s;
+      if (s) o.rotation.x = (o.userData.swingBase ?? 0) + Math.sin(control!.phase) * (run ? 0.9 : 0.6) * w * s;
     });
 
     // Camera follows the piece.
@@ -1145,215 +1139,6 @@ function footing(blocks: Block3D[], x: number, y: number, lift: number): { stand
   // On a floor, the piece stands on it (any lift up to it is used up
   // getting there); anything above its top is still flight.
   return { standOn: floor, baseY: Math.max(alt, floor) };
-}
-
-// --- Piece models -----------------------------------------------------------
-// Built from primitives at unit size (footprint 1) and scaled to fit.
-
-const STYLE_COLORS: Record<FigureStyle, { body: string; trim: string; dark: string }> = {
-  rebel:    { body: "#b59a6a", trim: "#6b5a3a", dark: "#3a3226" },  // tan fatigues, helmet
-  imperial: { body: "#eceff2", trim: "#1b1d22", dark: "#2a2d33" },  // stormtrooper white
-  clone:    { body: "#eef0f2", trim: "#d0701e", dark: "#1b1d22" },  // clone white + orange
-  droid:    { body: "#c9b48a", trim: "#7a6a4a", dark: "#3d3528" },  // B1 battle droid tan
-  merc:     { body: "#6a4e32", trim: "#c79a54", dark: "#2a2018" },  // hooded cloak
-  pawn:     { body: "#9aa3b2", trim: "#596273", dark: "#2a2f3a" },
-};
-
-function buildModel(pc: Piece3D, stl: (d: string) => THREE.BufferGeometry | null): THREE.Object3D {
-  const m = pc.model;
-  const g = new THREE.Group();
-  if (m.kind === "stl") {
-    const geom = stl(m.data);
-    if (geom) {
-      // Double-sided: plenty of STLs have a few faces wound the wrong way,
-      // which back-face culling would show as holes.
-      const mesh = new THREE.Mesh(geom, new THREE.MeshStandardMaterial({
-        color: pc.color, roughness: 0.6, metalness: 0.05, side: THREE.DoubleSide,
-        // Cast shadows from back faces only, or a double-sided mesh shades
-        // itself with streaky shadow acne.
-        shadowSide: THREE.BackSide,
-      }));
-      mesh.castShadow = true;
-      mesh.receiveShadow = true;
-      mesh.scale.setScalar(pc.footprint * 0.95);
-      g.add(mesh);
-      return g;
-    }
-    return buildModel({ ...pc, model: { kind: "figure", style: "pawn" } }, stl);
-  }
-  if (m.kind === "marker") {
-    const disc = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.12, 32),
-      new THREE.MeshStandardMaterial({ color: pc.color, emissive: pc.color, emissiveIntensity: 0.25 }));
-    disc.position.y = 0.06;
-    g.add(disc);
-    g.scale.setScalar(pc.footprint);
-    shadows(g);
-    return g;
-  }
-
-  const c = STYLE_COLORS[m.style];
-  const body = std(m.style === "pawn" ? pc.color : c.body);
-  const trim = std(m.style === "pawn" ? pc.accent : c.trim);
-  const dark = std(c.dark);
-
-  if (m.kind === "vehicle") {
-    // Hull + turret; repulsors get a sleeker, longer hull with engine pods.
-    const hull = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.22, 0.92), std(pc.color));
-    hull.position.y = 0.2;
-    g.add(hull);
-    const deck = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.06, 0.7), trim);
-    deck.position.y = 0.34;
-    g.add(deck);
-    if (m.repulsor) {
-      hull.scale.set(0.8, 0.7, 1.05);
-      for (const s of [-1, 1]) {
-        const pod = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.1, 0.5, 12), dark);
-        pod.rotation.x = Math.PI / 2;
-        pod.position.set(s * 0.3, 0.18, 0.18);
-        g.add(pod);
-      }
-      const seat = new THREE.Mesh(new THREE.SphereGeometry(0.11, 12, 10), body);
-      seat.position.set(0, 0.42, 0.05);
-      g.add(seat);
-    } else {
-      for (const s of [-1, 1]) {
-        const tread = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.18, 0.96), dark);
-        tread.position.set(s * 0.36, 0.1, 0);
-        g.add(tread);
-      }
-      const turret = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.2, 0.14, 16), trim);
-      turret.position.y = 0.44;
-      g.add(turret);
-      const gun = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.45, 8), dark);
-      gun.rotation.x = Math.PI / 2;
-      gun.position.set(0, 0.46, -0.3);
-      g.add(gun);
-    }
-    fit(g, pc.footprint, pc.modelHeight);
-    return g;
-  }
-
-  if (m.kind === "emplacement") {
-    const block = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.25, 0.5), std(pc.color));
-    block.position.y = 0.125;
-    g.add(block);
-    const gun = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.6, 8), dark);
-    gun.rotation.x = Math.PI / 2;
-    gun.position.set(0, 0.32, -0.2);
-    g.add(gun);
-    const crew = figure(body, trim, dark, m.style);
-    crew.scale.setScalar(0.55);
-    crew.position.set(0, 0.25, 0.15);
-    g.add(crew);
-    fit(g, pc.footprint, pc.modelHeight);
-    return g;
-  }
-
-  g.add(figure(body, trim, dark, m.style));
-  fit(g, pc.footprint, pc.modelHeight);
-  return g;
-}
-
-// A ~1-unit-tall trooper. Each faction style changes the silhouette so a
-// glance tells you whose unit it is.
-function figure(
-  body: THREE.Material, trim: THREE.Material, dark: THREE.Material, style: FigureStyle,
-): THREE.Group {
-  const g = new THREE.Group();
-  const add = (geo: THREE.BufferGeometry, mat: THREE.Material, x: number, y: number, z: number) => {
-    const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); g.add(m); return m;
-  };
-
-  if (style === "pawn") {
-    add(new THREE.CylinderGeometry(0.28, 0.36, 0.14, 24), body, 0, 0.07, 0);
-    add(new THREE.CylinderGeometry(0.12, 0.24, 0.55, 24), body, 0, 0.42, 0);
-    add(new THREE.SphereGeometry(0.2, 20, 16), body, 0, 0.82, 0);
-    add(new THREE.TorusGeometry(0.2, 0.03, 8, 24), trim, 0, 0.66, 0).rotation.x = Math.PI / 2;
-    return g;
-  }
-
-  if (style === "merc") {
-    // Hooded cloak: a cone body with a head tucked into the hood.
-    add(new THREE.ConeGeometry(0.3, 0.78, 20), body, 0, 0.39, 0);
-    add(new THREE.SphereGeometry(0.15, 16, 12), dark, 0, 0.8, -0.02);
-    const hood = add(new THREE.SphereGeometry(0.19, 16, 12, 0, Math.PI * 2, 0, Math.PI * 0.6), body, 0, 0.82, 0.02);
-    hood.rotation.x = -0.25;
-    add(new THREE.BoxGeometry(0.36, 0.05, 0.05), trim, 0, 0.52, -0.2); // belt
-    const rifle = add(new THREE.CylinderGeometry(0.025, 0.025, 0.6, 8), trim, 0.22, 0.55, -0.1);
-    rifle.rotation.x = 1.1;
-    return g;
-  }
-
-  if (style === "droid") {
-    // B1: thin limbs, narrow torso, long forward-leaning head.
-    for (const s of [-1, 1]) {
-      add(new THREE.CylinderGeometry(0.035, 0.035, 0.42, 8).translate(0, -0.21, 0), body, s * 0.08, 0.42, 0).userData.swing = s;
-      const arm = add(new THREE.CylinderGeometry(0.03, 0.03, 0.34, 8).translate(0, -0.17, 0), body, s * 0.17, 0.69, -0.02);
-      arm.rotation.z = s * 0.15;
-      arm.userData.swing = -s;
-    }
-    add(new THREE.BoxGeometry(0.24, 0.2, 0.1), body, 0, 0.56, 0);
-    add(new THREE.CylinderGeometry(0.025, 0.025, 0.16, 8), body, 0, 0.72, 0);
-    const head = add(new THREE.CapsuleGeometry(0.06, 0.2, 4, 12), body, 0, 0.84, -0.06);
-    head.rotation.x = Math.PI / 2 - 0.35;
-    add(new THREE.SphereGeometry(0.05, 10, 8), trim, 0, 0.83, 0.05); // backpack
-    const blaster = add(new THREE.BoxGeometry(0.04, 0.04, 0.3), dark, 0.17, 0.42, -0.15);
-    blaster.rotation.x = 0.2;
-    return g;
-  }
-
-  // Humanoid troopers: rebel, imperial, clone.
-  // Limbs hang from the hip / shoulder so the walk cycle can swing them.
-  for (const s of [-1, 1]) {
-    add(new THREE.CylinderGeometry(0.07, 0.065, 0.4, 10).translate(0, -0.2, 0), style === "rebel" ? trim : body, s * 0.09, 0.4, 0).userData.swing = s;
-    const arm = add(new THREE.CylinderGeometry(0.055, 0.05, 0.34, 10).translate(0, -0.17, 0), body, s * 0.2, 0.72, -0.02);
-    arm.rotation.z = s * 0.12;
-    arm.userData.swing = -s;
-  }
-  add(new THREE.BoxGeometry(0.34, 0.36, 0.2), body, 0, 0.58, 0);
-  add(new THREE.BoxGeometry(0.36, 0.06, 0.22), style === "imperial" ? dark : trim, 0, 0.42, 0); // belt
-  const blaster = add(new THREE.BoxGeometry(0.05, 0.07, 0.34), dark, 0.13, 0.55, -0.2);
-  blaster.rotation.x = 0.15;
-
-  if (style === "rebel") {
-    add(new THREE.SphereGeometry(0.13, 16, 12), std("#c99a7a"), 0, 0.88, 0);
-    // Rounded helmet with a brim, and a big field pack.
-    add(new THREE.SphereGeometry(0.145, 16, 10, 0, Math.PI * 2, 0, Math.PI / 2), trim, 0, 0.9, 0);
-    add(new THREE.CylinderGeometry(0.19, 0.19, 0.02, 20), trim, 0, 0.9, 0);
-    add(new THREE.BoxGeometry(0.28, 0.3, 0.14), dark, 0, 0.6, 0.16);
-  } else if (style === "imperial") {
-    // Domed stormtrooper helmet with a dark visor band.
-    add(new THREE.SphereGeometry(0.15, 18, 14), body, 0, 0.9, 0);
-    add(new THREE.BoxGeometry(0.2, 0.05, 0.08), dark, 0, 0.91, -0.11);
-    add(new THREE.BoxGeometry(0.09, 0.06, 0.06), dark, 0, 0.84, -0.13);
-    add(new THREE.BoxGeometry(0.22, 0.1, 0.08), body, 0, 0.62, 0.13); // backpack
-  } else {
-    // Clone: helmet with a T-visor, crest stripe and shoulder pauldron.
-    add(new THREE.SphereGeometry(0.15, 18, 14), body, 0, 0.9, 0);
-    add(new THREE.BoxGeometry(0.2, 0.04, 0.06), dark, 0, 0.93, -0.12);
-    add(new THREE.BoxGeometry(0.05, 0.12, 0.06), dark, 0, 0.87, -0.12);
-    add(new THREE.BoxGeometry(0.03, 0.04, 0.3), trim, 0, 1.04, 0);
-    const pauldron = add(new THREE.SphereGeometry(0.09, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2), trim, -0.2, 0.74, 0);
-    pauldron.rotation.z = 0.4;
-  }
-  return g;
-}
-
-function std(color: string): THREE.MeshStandardMaterial {
-  return new THREE.MeshStandardMaterial({ color, roughness: 0.6 });
-}
-
-function shadows(g: THREE.Object3D) {
-  g.traverse((o) => { if ((o as THREE.Mesh).isMesh) { o.castShadow = true; o.receiveShadow = true; } });
-}
-
-// Scale a unit-sized model so its footprint matches and its height is
-// modelHeight, whichever is tighter.
-function fit(g: THREE.Group, footprint: number, modelHeight: number) {
-  shadows(g);
-  const size = new THREE.Box3().setFromObject(g).getSize(new THREE.Vector3());
-  const s = Math.min((footprint * 0.9) / Math.max(size.x, size.z, 1e-3), modelHeight / Math.max(size.y, 1e-3));
-  g.scale.setScalar(s);
 }
 
 function seeded(seed: string): () => number {

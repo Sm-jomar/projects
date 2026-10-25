@@ -1,12 +1,15 @@
 // Legion board → 3D scene. Lazy-loaded so three.js stays out of the main
 // bundle until someone flips the board into 3D.
 
-import Board3D, { type Block3D, type FigureStyle, type MoveMeasure, type Piece3D, type PieceModel } from "./Board3D";
+import Board3D, {
+  type Block3D, type FigureSpec, type FigureStyle, type MoveMeasure, type Piece3D, type PieceModel, type VehicleFrame,
+} from "./Board3D";
 import {
   territories, terrainClears, terrainElevation, FACTION_STROKE, TEMPLATE_SEGMENT_INCHES,
   type FactionColor, type TabletopState, type Terrain, type Token,
 } from "../lib/tabletop";
 import { unitById } from "../data/catalog";
+import type { Unit } from "../lib/types";
 
 // Each faction's pieces take the shape of that faction's iconic trooper.
 const FACTION_STYLE: Record<FactionColor, FigureStyle> = {
@@ -40,11 +43,81 @@ function modelFor(tk: Token): { model: PieceModel; height: number } {
   const style = FACTION_STYLE[tk.color];
   if (tk.kind !== "unit") return { model: { kind: "marker" }, height: tk.size * 0.15 };
   const u = tk.unitId ? unitById(tk.unitId) : undefined;
-  if (u?.type === "ground-vehicle") return { model: { kind: "vehicle", style, repulsor: false }, height: tk.size * 0.6 };
-  if (u?.type === "repulsor-vehicle") return { model: { kind: "vehicle", style, repulsor: true }, height: tk.size * 0.45 };
-  if (u?.type === "emplacement-trooper") return { model: { kind: "emplacement", style }, height: tk.size * 0.6 };
-  if (u?.type === "creature-trooper") return { model: { kind: "figure", style }, height: tk.size * 1.4 };
-  return { model: { kind: "figure", style }, height: tk.size * 1.3 };
+  if (!u) return { model: { kind: "figure", style }, height: tk.size * 1.3 };
+  const shape = unitShape(u, style);
+  return { model: shape.model, height: tk.size * shape.height };
+}
+
+const BLUE = "#4aa8ff", GREEN = "#5aff6a", RED = "#ff3a3a", WHITE = "#e8f4ff";
+
+// Default model for a unit, picked from its name, type and rank. Height is
+// relative to the base size.
+function unitShape(u: Unit, style: FigureStyle): { model: PieceModel; height: number } {
+  const n = u.name;
+  const sub = u.unit_subtype ?? "";
+  const vehicle = (frame: VehicleFrame, height: number, spec?: FigureSpec) =>
+    ({ model: { kind: "vehicle", style, repulsor: u.type === "repulsor-vehicle", frame, pilot: spec } as PieceModel, height });
+
+  if (/Mounted Jedi/.test(u.sub_title ?? "")) return { model: { kind: "rider", style, mount: "boga", pilot: { build: "robed", sabers: [BLUE] } }, height: 1.5 };
+  if (u.type === "ground-vehicle" || u.type === "repulsor-vehicle") {
+    if (/AT-ST/.test(n)) return vehicle("walker", 1.5);
+    if (/AT-RT/.test(n)) return vehicle("scout-walker", 1.4);
+    if (/Speeder Bike|STAP|BARC|Swoop/.test(n)) return vehicle("bike", 0.75);
+    if (/Airspeeder|Fluttercraft/.test(n)) return vehicle("airspeeder", 0.4);
+    if (/LAAT/.test(n)) return vehicle("gunship", 0.5);
+    if (/Crab Droid|Spider Droid/.test(n)) return vehicle("crawler", 0.75);
+    if (/Landspeeder|Speeder Truck/.test(n)) return vehicle("landspeeder", 0.5);
+    if (/Chewbacca/.test(n)) return vehicle("landspeeder", 0.5, { build: "wookiee" });
+    if (/AAT|Speeder Tank|TX-130|Support Platform/.test(n) || u.type === "repulsor-vehicle") return vehicle("hover-tank", 0.45);
+    return vehicle("tank", 0.6);
+  }
+  if (u.type === "emplacement-trooper" || sub === "emplacement-trooper") return { model: { kind: "emplacement", style }, height: 0.6 };
+  if (/Tauntaun/.test(n)) return { model: { kind: "rider", style, mount: "tauntaun", pilot: {} }, height: 1.7 };
+  if (/Dewback/.test(n)) return { model: { kind: "rider", style, mount: "dewback", pilot: {} }, height: 1.3 };
+
+  const commander = u.rank === "commander";
+  const fig = (spec: FigureSpec, height = 1.3) => ({ model: { kind: "figure", style, commander, ...spec } as PieceModel, height });
+
+  // Force users.
+  if (/Yoda/.test(n)) return fig({ build: "robed", sabers: [GREEN], palette: { body: "#b8a88a" } }, 0.75);
+  if (/Vader/.test(n)) return fig({ build: "vader", sabers: [RED], commander: false }, 1.45);
+  if (/Grievous/.test(n)) return fig({ build: "tall-droid", sabers: [BLUE, GREEN], palette: { body: "#d8d2c0" }, commander: false }, 1.5);
+  if (/Ahsoka/.test(n)) return fig({ build: "robed", sabers: u.faction === "rebels" ? [WHITE, WHITE] : [GREEN, "#d8ff5a"], palette: { body: "#a8622e", trim: "#3a5a8a" }, commander: false });
+  if (u.force_alignment === "light") {
+    const green = /Luke|Jedi Knight$/.test(n);
+    return fig({ build: "robed", sabers: [green ? GREEN : BLUE], palette: /Luke/.test(n) ? { body: "#2a2a2e", trim: "#1a1a1d" } : undefined, commander: false });
+  }
+  if (u.force_alignment === "dark") {
+    const sith = { body: "#1f1b1e", trim: "#3a1416", dark: "#0e0c0e" };
+    if (/Maul/.test(n)) return fig({ build: "robed", sabers: [RED], doubleSaber: true, palette: sith, commander: false });
+    if (/Ventress/.test(n)) return fig({ build: "robed", sabers: [RED, RED], palette: sith, commander: false });
+    if (/Brother|Sister/.test(n)) return fig({ build: "robed", sabers: [RED], doubleSaber: true, palette: { body: "#2c2f36", trim: "#14161a", dark: "#0b0c0e" }, commander: false });
+    return fig({ build: "robed", sabers: [RED], palette: sith, commander: false });
+  }
+
+  // Species and droids with a shape of their own.
+  if (/Wookiee|Chewbacca/.test(n)) return fig({ build: "wookiee" }, 1.6);
+  if (/Ewok|Wicket|Logray/.test(n)) return fig({ build: "ewok", commander: false }, 0.8);
+  if (/Geonosian|Poggle|Sun Fac/.test(n)) return fig({ build: "insect" }, 1.3);
+  if (/R2-D2/.test(n)) return fig({ build: "astromech", commander: false }, 0.8);
+  if (/Droideka/.test(n)) return fig({ build: "droideka", commander: false }, 1.0);
+  if (/Probe Droid/.test(n)) return fig({ build: "probe", commander: false }, 1.1);
+  if (/B2/.test(n)) return fig({ build: "b2", jetpack: /Rocket/.test(n) }, 1.3);
+  if (/C-3PO/.test(n)) return fig({ build: "tall-droid", palette: { body: "#d8b04a", trim: "#9a7a2a" } });
+  if (/K-2SO/.test(n)) return fig({ build: "tall-droid", palette: { body: "#2a2c30" } }, 1.5);
+  if (/Dark Troopers/.test(n)) return fig({ build: "tall-droid", palette: { body: "#1e2024", trim: "#3a3d44" } }, 1.4);
+  if (/MagnaGuard/.test(n)) return fig({ build: "tall-droid", sabers: ["#c060ff"], palette: { body: "#3a2e26" } }, 1.45);
+  if (/Tactical|Kalani|Kraken/.test(n)) return fig({ build: "tall-droid", palette: { body: "#6c7a8f", trim: "#3a4250" } }, 1.4);
+  if (sub === "droid-trooper" && !/B1|BX|Aqua|Iden/.test(n)) return fig({ build: "tall-droid" }, 1.4);
+  if (sub === "droid-trooper" && /B1|BX|Aqua/.test(n)) return { model: { kind: "figure", style: "droid", commander }, height: 1.3 };
+  if (sub === "mandalorian-trooper" || /Mandalorian/.test(n)) return fig({ build: "mando" });
+
+  // Clones look like clones whoever fields them.
+  if (sub === "clone-trooper") return { model: { kind: "figure", style: "clone", commander }, height: 1.3 };
+  // Named characters and officers go bare-headed; troopers wear the faction kit.
+  if (u.is_unique || /Officer|Agent|Vigo|Capo/.test(n)) return fig({ build: "hero" });
+  if (/Death Troopers/.test(n)) return fig({ palette: { body: "#202227", trim: "#0e0f12", dark: "#3a3d44" } });
+  return fig({});
 }
 
 // How far a unit moved against its speed: a full move is one movement
