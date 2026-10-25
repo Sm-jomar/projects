@@ -133,6 +133,9 @@ export type Token = {
   /** Status tokens (aim, dodge, ion, ...) by kind, see lib/statusTokens.
    * Suppression is kept in `suppression` above. Squad members share them. */
   status?: StatusCounts;
+  /** The army-list entry this mini was deployed from (ArmyEntry.entryId),
+   * so the deploy tray knows which squads are already on the table. */
+  armyEntryId?: string;
 };
 
 // --- Movement templates ---------------------------------------------------
@@ -262,7 +265,14 @@ export function diffLegion(prev: TabletopState, next: TabletopState, actor: LogA
 
   for (const t of next.tokens) {
     const p = prevById.get(t.id);
-    if (!p) { out.push(mk("add", `added ${t.label || "a token"}`)); continue; }
+    if (!p) {
+      // A squad deployed in one go is logged once, on its leader.
+      const fresh = t.squadId ? next.tokens.filter((o) => o.squadId === t.squadId && !prevById.has(o.id)) : [];
+      if (fresh.length > 1) {
+        if (t.squadLead) out.push(mk("add", `deployed ${t.label || "a squad"} (${fresh.length} minis)`));
+      } else out.push(mk("add", `added ${t.label || "a token"}`));
+      continue;
+    }
     if (p.x !== t.x || p.y !== t.y) {
       out.push(mk("move", `moved ${t.label || "a token"}`, {
         from: { x: p.x, y: p.y }, to: { x: t.x, y: t.y }, size: t.size, color: FACTION_STROKE[t.color],
@@ -507,18 +517,14 @@ export function defaultUnitElevation(unit: UnitLike): number {
   return 0;
 }
 
-export function addTokenForUnit(
-  state: TabletopState,
-  unit: UnitLike,
-  portraitUrl: string | null,
-  position?: { x: number; y: number },
-): TabletopState {
-  const size = unitBaseSize(unit);
+/** Token fields for one mini of a catalog unit: label, faction colour,
+ * base size, card portrait, facing for vehicles and hover height. */
+export function unitTokenFields(unit: UnitLike, portraitUrl: string | null): Partial<Token> {
   const partial: Partial<Token> = {
     unitId: unit.id,
     label: unit.name,
     color: unit.faction as FactionColor,
-    size,
+    size: unitBaseSize(unit),
   };
   if (portraitUrl) partial.portraitUrl = portraitUrl;
   // Vehicles care about facing; give them an arrow from the start.
@@ -527,6 +533,17 @@ export function addTokenForUnit(
   }
   const lift = defaultUnitElevation(unit);
   if (lift) partial.elevation = lift;
+  return partial;
+}
+
+export function addTokenForUnit(
+  state: TabletopState,
+  unit: UnitLike,
+  portraitUrl: string | null,
+  position?: { x: number; y: number },
+): TabletopState {
+  const partial = unitTokenFields(unit, portraitUrl);
+  const size = partial.size!;
   if (position) { partial.x = position.x - size / 2; partial.y = position.y - size / 2; }
   return addToken(state, partial);
 }

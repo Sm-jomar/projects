@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { TabletopCanvas, type Tool } from "./TabletopCanvas";
 import { DiceRoller } from "./DiceRoller";
 import {
-  GAME_TYPES, DEPLOYMENTS, newTabletop, terrainElevation, pruneModels, addToken, addTerrain, addTokenForUnit,
+  GAME_TYPES, DEPLOYMENTS, newTabletop, terrainElevation, pruneModels, addToken, addTerrain, unitTokenFields,
   loadTabletop, saveTabletop, newId, newCommandHand, tokenSide, diffLegion, boardBytes, BOARD_BYTES_SAFE,
   templateAnchor, templatePoints,
   type GameType, type TabletopState, type Terrain, type Token, type FactionColor,
@@ -22,17 +22,18 @@ import { useMediaPlayback, useMediaToggle } from "./useMediaPlayer";
 import { parseTableMusic } from "../lib/media";
 import {
   moveToken, startSquad, joinSquad, leaveSquad, makeLeader, disbandSquad, regroupSquad,
-  normalizeSquads, listSquads, squadMembers, unlockedIds,
+  normalizeSquads, listSquads, squadMembers, unlockedIds, squadMinis, deploySquad,
 } from "../lib/squads";
-import { listArmies } from "../lib/storage";
-import { unitById } from "../data/catalog";
+import { listArmies, saveArmy } from "../lib/storage";
+import { unitById, upgradeById } from "../data/catalog";
+import { TtaImportModal } from "./TtaImportModal";
 import { endPhaseStatus, showsUnitStatus, WOUND_INFO, WOUND_URL } from "../lib/statusTokens";
 import { StatusTokenPanel } from "./StatusTokenPanel";
 import { MissionSection } from "./MissionSection";
 import { InfoDot } from "./InfoDot";
 import { cardForUnit } from "../lib/cardLookup";
-import { FACTIONS } from "../lib/factions";
-import type { SavedArmy, Unit } from "../lib/types";
+import { FACTIONS, RANK_LABEL, RANK_LIMITS, RANK_ORDER } from "../lib/factions";
+import type { Rank, SavedArmy, Unit, Upgrade } from "../lib/types";
 import {
   RoomClient, generateRoomCode,
   type ConnStatus, type Peer, type RoomHandlers, type PlayerColor,
@@ -84,13 +85,17 @@ const HISTORY_LIMIT = 50;
 // Remembers the player's display name between sessions.
 const NAME_KEY = "legion-tabletop.playername";
 const PRIVATE_KEY = "legion-tabletop.privategame";
+// The list last loaded into the deploy tray, so it's still there next time.
+const ARMY_KEY = "legion-tabletop.army";
 
 // One roster entry resolved from a SavedArmy: links the saved entry ID
-// (slot) to the catalog Unit and its card image URL.
+// (slot) to the catalog Unit, its card image URL, and the minis it fields
+// (the unit's own plus any heavy weapon / personnel upgrades).
 type RosterEntry = {
   entryId: string;
   unit: Unit;
   portraitUrl: string | null;
+  minis: { label: string; badge?: string }[];
 };
 
 function resolveRoster(army: SavedArmy): { entries: RosterEntry[]; unmatched: number } {
@@ -99,9 +104,21 @@ function resolveRoster(army: SavedArmy): { entries: RosterEntry[]; unmatched: nu
   for (const e of army.entries) {
     const u = unitById(e.unitId);
     if (!u) { unmatched++; continue; }
-    entries.push({ entryId: e.entryId, unit: u, portraitUrl: cardForUnit(u) });
+    const ups = (e.upgrades ?? []).map(upgradeById).filter((x): x is Upgrade => !!x);
+    entries.push({ entryId: e.entryId, unit: u, portraitUrl: cardForUnit(u), minis: squadMinis(u, ups) });
   }
+  // Tray order follows the list builder: commanders first, heavies last.
+  entries.sort((a, b) => RANK_ORDER.indexOf(a.unit.rank) - RANK_ORDER.indexOf(b.unit.rank));
   return { entries, unmatched };
+}
+
+function readArmyId(): string | null {
+  try { return localStorage.getItem(ARMY_KEY); } catch { return null; }
+}
+function writeArmyId(id: string | null) {
+  try {
+    if (id) localStorage.setItem(ARMY_KEY, id); else localStorage.removeItem(ARMY_KEY);
+  } catch { /* storage unavailable */ }
 }
 
 // Display color for a Legion player in the audit log (blue/red/spectator).
@@ -392,7 +409,11 @@ export function TabletopPanel({ onClose }: Props) {
   // saved-army list straight into initial state — no effect needed.
   const [armies, setArmies] = useState<SavedArmy[]>(() => listArmies());
   const [armyPickerOpen, setArmyPickerOpen] = useState(false);
-  const [loadedArmy, setLoadedArmy] = useState<SavedArmy | null>(null);
+  const [loadedArmy, setLoadedArmy] = useState<SavedArmy | null>(() => {
+    const id = readArmyId();
+    return (id && armies.find((a) => a.id === id)) || null;
+  });
+  const [ttaOpen, setTtaOpen] = useState(false);
   const [opponentFaction, setOpponentFaction] = useState<FactionColor>("imperials");
 
   function openArmyPicker() {
@@ -406,13 +427,18 @@ export function TabletopPanel({ onClose }: Props) {
     () => loadedArmy ? resolveRoster(loadedArmy) : { entries: [], unmatched: 0 },
     [loadedArmy],
   );
-  // Count of tokens already placed for each unit, so the row can show
-  // "(2 on board)".
-  const placedByUnit: Record<string, number> = useMemo(() => {
+  // Minis already on the table for each list entry, so a deployed squad's
+  // row shows as placed.
+  const placedByEntry: Record<string, number> = useMemo(() => {
     const m: Record<string, number> = {};
-    for (const t of state.tokens) if (t.unitId) m[t.unitId] = (m[t.unitId] ?? 0) + 1;
+    for (const t of state.tokens) if (t.armyEntryId) m[t.armyEntryId] = (m[t.armyEntryId] ?? 0) + 1;
     return m;
   }, [state.tokens]);
+  const rosterByRank = useMemo(() => {
+    const m = new Map<Rank, RosterEntry[]>();
+    for (const r of roster) m.set(r.unit.rank, [...(m.get(r.unit.rank) ?? []), r]);
+    return m;
+  }, [roster]);
 
   function setGameType(gt: GameType) {
     const size = gt === "custom" ? { widthInches: customW, heightInches: customH } : GAME_TYPES[gt].size;
@@ -460,17 +486,22 @@ export function TabletopPanel({ onClose }: Props) {
     commit(addToken(state, { color, label: color === "neutral" ? "Unit" : "Opp" }));
   }
 
-  function placeUnitAtCenter(r: RosterEntry) {
-    commit(addTokenForUnit(state, r.unit, r.portraitUrl));
+  /** Put a list entry on the table as one base-locked squad centred on
+   * `at` (inches), or the middle of the board. */
+  function deployEntry(r: RosterEntry, at?: { x: number; y: number }) {
+    const base = { ...unitTokenFields(r.unit, r.portraitUrl), ...(r.entryId ? { armyEntryId: r.entryId } : {}) };
+    const minis = r.minis.map((m) => ({ ...base, label: m.label, ...(m.badge ? { badge: m.badge } : {}) }));
+    commit(deploySquad(state, minis, at ?? { x: state.map.widthInches / 2, y: state.map.heightInches / 2 }));
   }
 
   function onDropPayload(payload: string, at: { x: number; y: number }) {
     try {
-      const data = JSON.parse(payload) as { unitId: string };
-      const u = unitById(data.unitId);
+      const data = JSON.parse(payload) as { unitId?: string; entryId?: string };
+      const r = data.entryId ? roster.find((x) => x.entryId === data.entryId) : undefined;
+      if (r) { deployEntry(r, at); return; }
+      const u = data.unitId ? unitById(data.unitId) : undefined;
       if (!u) return;
-      const portrait = cardForUnit(u);
-      commit(addTokenForUnit(state, u, portrait, at));
+      deployEntry({ entryId: "", unit: u, portraitUrl: cardForUnit(u), minis: squadMinis(u, []) }, at);
     } catch {
       // Ignore — payload wasn't ours.
     }
@@ -478,6 +509,7 @@ export function TabletopPanel({ onClose }: Props) {
 
   function loadArmy(a: SavedArmy) {
     setLoadedArmy(a);
+    writeArmyId(a.id);
     setArmyPickerOpen(false);
     // Default opponent color to a different faction.
     if (a.faction === opponentFaction) {
@@ -914,13 +946,27 @@ export function TabletopPanel({ onClose }: Props) {
                       </div>
                       <div className="tt-army-loaded-actions">
                         <button onClick={() => openArmyPicker()}>Change</button>
-                        <button className="ghost-btn" onClick={() => setLoadedArmy(null)}>Clear</button>
+                        <button className="ghost-btn" onClick={() => { setLoadedArmy(null); writeArmyId(null); }}>Clear</button>
                       </div>
                     </div>
                   ) : (
                     <button className="tt-palette-btn" onClick={() => openArmyPicker()}>
                       {armies.length === 0 ? "No saved lists" : `Choose from ${armies.length} saved list${armies.length === 1 ? "" : "s"}…`}
                     </button>
+                  )}
+                  <button className="tt-palette-btn" onClick={() => setTtaOpen(true)}>Import a list…</button>
+                  {ttaOpen && (
+                    <TtaImportModal
+                      title="Import a list to deploy"
+                      actionLabel="Import and deploy"
+                      onClose={() => setTtaOpen(false)}
+                      onImport={({ army }) => {
+                        saveArmy(army);
+                        setArmies(listArmies());
+                        setTtaOpen(false);
+                        loadArmy(army);
+                      }}
+                    />
                   )}
                   {armyPickerOpen && (
                     <ul className="tt-army-picker">
@@ -954,39 +1000,67 @@ export function TabletopPanel({ onClose }: Props) {
                       </p>
                     ) : (
                       <>
-                        <ul className="tt-roster">
-                          {roster.map((r) => {
-                            const placed = placedByUnit[r.unit.id] ?? 0;
-                            return (
-                              <li key={r.entryId}
-                                  className="tt-roster-row"
-                                  draggable
-                                  onDragStart={(e) => {
-                                    e.dataTransfer.setData("application/x-legion-token", JSON.stringify({ unitId: r.unit.id }));
-                                    e.dataTransfer.effectAllowed = "copy";
-                                  }}>
-                                <div className="tt-roster-portrait"
-                                     style={r.portraitUrl ? { backgroundImage: `url(${r.portraitUrl})` } : undefined}>
-                                  {!r.portraitUrl && r.unit.name.slice(0, 2)}
-                                </div>
-                                <div className="tt-roster-info">
-                                  <span className="tt-roster-name">{r.unit.name}</span>
-                                  <span className="muted small">
-                                    {r.unit.rank}{placed > 0 ? ` · ${placed} on board` : ""}
-                                  </span>
-                                </div>
-                                <button className="tt-roster-add" onClick={() => placeUnitAtCenter(r)} title="Deploy to center of board">＋</button>
-                              </li>
-                            );
-                          })}
-                        </ul>
+                        {RANK_ORDER.filter((rank) => rosterByRank.has(rank)).map((rank) => {
+                          const rows = rosterByRank.get(rank)!;
+                          const lim = RANK_LIMITS[rank];
+                          const off = rows.length < lim.min || rows.length > lim.max;
+                          return (
+                            <div key={rank} className="tt-roster-rank">
+                              <div className="tt-roster-rank-head">
+                                <span className={`tt-rank-pip rank-${rank}`} />
+                                <span>{RANK_LABEL[rank]}</span>
+                                <span className={`muted small${off ? " tt-rank-off" : ""}`}
+                                      title={`A list fields ${lim.min}–${lim.max} ${RANK_LABEL[rank]} units`}>
+                                  {rows.length} / {lim.min}–{lim.max}
+                                </span>
+                              </div>
+                              <ul className="tt-roster">
+                                {rows.map((r) => {
+                                  const placed = placedByEntry[r.entryId] ?? 0;
+                                  const extra = r.minis.slice(Math.max(1, r.unit.miniatures || 1));
+                                  return (
+                                    <li key={r.entryId}
+                                        className={`tt-roster-row${placed ? " deployed" : ""}`}
+                                        draggable={!placed}
+                                        title={placed ? "Already on the table" : "Drag the squad onto the board"}
+                                        onDragStart={(e) => {
+                                          e.dataTransfer.setData("application/x-legion-token", JSON.stringify({ entryId: r.entryId }));
+                                          e.dataTransfer.effectAllowed = "copy";
+                                        }}>
+                                      <div className="tt-roster-portrait"
+                                           style={r.portraitUrl ? { backgroundImage: `url(${r.portraitUrl})` } : undefined}>
+                                        {!r.portraitUrl && r.unit.name.slice(0, 2)}
+                                      </div>
+                                      <div className="tt-roster-info">
+                                        <span className="tt-roster-name">{r.unit.name}</span>
+                                        <span className="tt-roster-minis" aria-label={`${r.minis.length} miniatures`}>
+                                          {r.minis.map((m, i) => (
+                                            <span key={i} className={`tt-mini-dot${i === 0 ? " lead" : ""}${m.badge ? " extra" : ""}`} title={m.label} />
+                                          ))}
+                                          <span className="muted small">
+                                            {r.minis.length} mini{r.minis.length === 1 ? "" : "s"}
+                                            {extra.length > 0 && ` · +${extra.map((m) => m.label).join(", ")}`}
+                                            {placed > 0 && " · on board"}
+                                          </span>
+                                        </span>
+                                      </div>
+                                      <button className="tt-roster-add" disabled={placed > 0}
+                                              onClick={() => deployEntry(r)} title="Deploy the squad to the center of the board">＋</button>
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+                            </div>
+                          );
+                        })}
                         {unmatched > 0 && (
                           <p className="muted small">
                             {unmatched} unit{unmatched === 1 ? "" : "s"} in this list couldn't be matched to the catalog.
                           </p>
                         )}
                         <p className="muted small tt-hint">
-                          Drag a unit onto the board, or tap <b>＋</b> to deploy at the center.
+                          Each unit is a squad with its full mini count. Drag it onto the board to deploy
+                          the whole squad base locked, or tap <b>＋</b> to deploy at the center.
                         </p>
                       </>
                     )}

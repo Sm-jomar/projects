@@ -4,6 +4,9 @@ import {
   type DndTabletopState, type DndTerrain, type DndToken,
 } from "./dndTabletop";
 import { useCharacters } from "./useCharacters";
+import { loadCharacter, saveCharacter } from "./dndStorage";
+import { CharacterModelControls, ImportSheetsButton } from "./CharacterFiles";
+import { importSummary } from "./characterImport";
 import type { PlayerProfile } from "./dndTabletop";
 import { dndPlayUrl, roomsAvailableHere } from "../lib/appRouting";
 import type { LogEntry } from "../lib/auditLog";
@@ -151,7 +154,9 @@ export function DndTabletop() {
     setSelectedId(tk.id);
   }
 
-  function addFromCharacter(charId: string) {
+  /** Place a saved character as a PC token, centred on `at` (cells) when
+   * it was dropped on the board. Its STL miniature comes along. */
+  function addFromCharacter(charId: string, at?: { x: number; y: number }) {
     const c = chars.find((x) => x.id === charId);
     if (!c) return;
     addToken({
@@ -162,8 +167,11 @@ export function DndTabletop() {
       hpCurrent: (c.hpCurrent || c.hpMax) || undefined,
       speed: parseInt(c.speed, 10) || undefined,
       color: "#4a86c8",
+      ...(c.modelStl ? { modelStl: c.modelStl, modelName: c.modelName } : {}),
+      ...(at ? { x: Math.round((at.x - 0.5) * 2) / 2, y: Math.round((at.y - 0.5) * 2) / 2 } : {}),
     });
   }
+  const onBoardChars = new Set(state.tokens.map((t) => t.charId).filter(Boolean));
 
   async function onMapFile(e: React.ChangeEvent<HTMLInputElement>) {
     const f = e.target.files?.[0];
@@ -228,6 +236,10 @@ export function DndTabletop() {
         updateTerrain(id, { modelStl: m.data, modelName: f.name, d, height });
       } else {
         updateToken(id, { modelStl: m.data, modelName: f.name });
+        // A PC placed from one of my sheets keeps the model on the sheet too.
+        const charId = selected?.charId;
+        const sheet = charId ? loadCharacter(charId) : undefined;
+        if (sheet) saveCharacter({ ...sheet, modelStl: m.data, modelName: f.name });
       }
       setWarn(m.shared ? null : `Couldn't reach the model server, so ${f.name} was trimmed to ${m.triangles.toLocaleString()} triangles to fit the board.`);
       setView3d(true);
@@ -328,6 +340,7 @@ export function DndTabletop() {
             selectedId={selectedId}
             onSelect={setSelectedId}
             onMoveToken={(id, x, y) => updateToken(id, { x, y })}
+            onDropCharacter={readOnly ? undefined : addFromCharacter}
             onMoveTerrain={(id, x, y) => updateTerrain(id, { x, y })}
             ghost={ghost && fogView?.mode === "player" && !fogView.vision.some((p) => pointInPolygon({ x: ghost.to.x + (ghost.size ?? 1) / 2, y: ghost.to.y + (ghost.size ?? 1) / 2 }, p)) ? null : ghost}
           />
@@ -432,12 +445,35 @@ export function DndTabletop() {
 
           <section>
             <h3>Add tokens</h3>
-            <label className="dnd-tt-field">From a character sheet
-              <select value="" onChange={(e) => { if (e.target.value) { addFromCharacter(e.target.value); e.target.value = ""; } }}>
-                <option value="">Choose character…</option>
-                {chars.map((c) => <option key={c.id} value={c.id}>{c.name || "Unnamed"} {c.className ? `(${c.className})` : ""}</option>)}
-              </select>
-            </label>
+            <div className="dnd-tt-chars-head">
+              <span className="dnd-tt-field">Characters</span>
+              <ImportSheetsButton onImported={(cs, errs) => setWarn(importSummary(cs, errs))} />
+            </div>
+            {chars.length > 0 && (
+              <ul className="dnd-tt-chars">
+                {chars.map((c) => (
+                  <li key={c.id} className={"dnd-tt-char" + (onBoardChars.has(c.id) ? " placed" : "")}
+                      draggable={!readOnly}
+                      title={readOnly ? undefined : "Drag onto the board"}
+                      onDragStart={(e) => {
+                        e.dataTransfer.setData("application/x-dnd-character", c.id);
+                        e.dataTransfer.effectAllowed = "copy";
+                      }}>
+                    <span className="dnd-tt-char-dot">{initials(c.name || "PC")}</span>
+                    <span className="dnd-tt-char-info">
+                      <span className="dnd-tt-char-name">{c.name || "Unnamed"}</span>
+                      <span className="muted small">
+                        {[c.className, c.race].filter(Boolean).join(" · ") || "—"}
+                        {c.modelName ? ` · ▲ ${c.modelName}` : ""}
+                        {onBoardChars.has(c.id) ? " · on board" : ""}
+                      </span>
+                    </span>
+                    {!readOnly && <CharacterModelControls character={c} compact onNote={setWarn} />}
+                    {!readOnly && <button className="dnd-tt-char-add" onClick={() => addFromCharacter(c.id)} title="Place at the centre of the map">＋</button>}
+                  </li>
+                ))}
+              </ul>
+            )}
             <div className="dnd-tt-row">
               <button onClick={() => addToken({ name: "Monster", kind: "monster", color: "#c84a4a" })}>+ Monster</button>
               <button onClick={() => addToken({ name: "Marker", kind: "marker", size: 1, color: "#c8a34a" })}>+ Marker</button>
@@ -448,7 +484,9 @@ export function DndTabletop() {
                 })}>+ My token</button>
               )}
             </div>
-            {chars.length === 0 && <p className="muted small">No saved characters yet — build one in Character Sheets.</p>}
+            {chars.length === 0
+              ? <p className="muted small">No saved characters yet. Import a sheet (JSON or a filled-in 5e PDF), or build one in Character Sheets.</p>
+              : <p className="muted small">Drag a character onto the map. A character’s STL rides along into the 3D view.</p>}
           </section>
 
           <section>
@@ -694,12 +732,14 @@ type DragState =
   | { kind: "terrain"; id: string; offX: number; offY: number }
   | { kind: "pan"; sx: number; sy: number; tx: number; ty: number };
 
-function DungeonCanvas({ state, fog, selectedId, onSelect, onMoveToken, onMoveTerrain, ghost }: {
+function DungeonCanvas({ state, fog, selectedId, onSelect, onMoveToken, onDropCharacter, onMoveTerrain, ghost }: {
   state: DndTabletopState;
   fog: FogView | null;
   selectedId: string | null;
   onSelect: (id: string | null) => void;
   onMoveToken: (id: string, x: number, y: number) => void;
+  /** A character dragged in from the tray, dropped at `at` (cells). */
+  onDropCharacter?: (charId: string, at: { x: number; y: number }) => void;
   onMoveTerrain: (id: string, x: number, y: number) => void;
   ghost: LogEntry["move"] | null;
 }) {
@@ -791,6 +831,20 @@ function DungeonCanvas({ state, fog, selectedId, onSelect, onMoveToken, onMoveTe
   }
   function onPointerUp() { setDrag({ kind: "none" }); }
 
+  const CHAR_MIME = "application/x-dnd-character";
+  function onDragOver(e: React.DragEvent) {
+    if (onDropCharacter && e.dataTransfer.types.includes(CHAR_MIME)) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "copy";
+    }
+  }
+  function onDrop(e: React.DragEvent) {
+    const id = onDropCharacter && e.dataTransfer.getData(CHAR_MIME);
+    if (!id) return;
+    e.preventDefault();
+    onDropCharacter(id, toCell(e.clientX, e.clientY));
+  }
+
   // React registers wheel listeners as passive, so page-scroll suppression
   // needs a native non-passive listener.
   useEffect(() => {
@@ -842,7 +896,7 @@ function DungeonCanvas({ state, fog, selectedId, onSelect, onMoveToken, onMoveTe
   return (
     <div className="dnd-tt-canvas" ref={wrapRef}
          onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp}
-         onWheel={onWheel}>
+         onWheel={onWheel} onDragOver={onDragOver} onDrop={onDrop}>
       <svg width="100%" height="100%">
         <g transform={`translate(${view.tx} ${view.ty}) scale(${view.scale})`}>
           <rect x={0} y={0} width={W} height={H} fill="#12151b" stroke="#2a2f3c" strokeWidth={1 / view.scale} />

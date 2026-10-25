@@ -134,7 +134,24 @@ export type DndCharacter = {
   // still load; the editor fills defaults on open.
   spellbook?: Spell[];
   spellSlots?: SpellSlot[];
+
+  // Miniature for the tabletop: an uploaded STL (lib/stlModel encoding,
+  // normally a small "stlref:" pointer to the model store). Tokens placed
+  // from this sheet carry it into the 3D view.
+  modelStl?: string;
+  modelName?: string;
 };
+
+/** The sheet as it travels to other players in a game: an inline STL
+ * (the model server was unreachable at upload) is too big to share, so
+ * only a model-store reference goes along. */
+export function sheetForSharing(c: DndCharacter): DndCharacter {
+  if (!c.modelStl || c.modelStl.startsWith("stlref:")) return c;
+  const rest = { ...c };
+  delete rest.modelStl;
+  delete rest.modelName;
+  return rest;
+}
 
 export function abilityModifier(score: number): number {
   return Math.floor((score - 10) / 2);
