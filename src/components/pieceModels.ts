@@ -46,6 +46,8 @@ export type FigureSpec = {
   jetpack?: boolean;
   /** Overrides the build's own colours. */
   palette?: Partial<Palette>;
+  /** Which of the squad's sculpted poses this mini takes (0 = at the ready). */
+  pose?: number;
 };
 
 export type VehicleFrame =
@@ -76,6 +78,8 @@ export type ModelPiece = {
   color: string;
   accent: string;
   model: PieceModel;
+  /** The piece's id; it picks a pose so a squad's minis aren't all alike. */
+  id?: string;
 };
 
 type Palette = { body: string; trim: string; dark: string };
@@ -143,13 +147,21 @@ export function buildModel(pc: ModelPiece, stl: (d: string) => THREE.BufferGeome
   }
 
   const team = { color: pc.color, accent: pc.accent };
-  if (m.kind === "figure") g.add(figure(m.style, m, team));
+  if (m.kind === "figure") g.add(figure(m.style, { pose: poseOf(pc.id), ...m }, team));
   else if (m.kind === "rider") g.add(rider(m.style, m.mount, m.pilot, team));
   else if (m.kind === "vehicle") g.add(vehicle(m.style, m.frame ?? (m.repulsor ? "hover-tank" : "tank"), m.pilot, team));
   else g.add(emplacement(m.style, team));
   bake(g);
   fit(g, pc.footprint, pc.modelHeight);
   return g;
+}
+
+// Like a boxed squad, each mini gets one of a few poses, picked from its id.
+function poseOf(id: string | undefined): number {
+  if (!id) return 0;
+  let h = 0;
+  for (let i = 0; i < id.length; i++) h = (Math.imul(h, 31) + id.charCodeAt(i)) | 0;
+  return Math.abs(h) % 3;
 }
 
 type Team = { color: string; accent: string };
@@ -378,7 +390,7 @@ function rig(g: THREE.Group, r: Rig): [Arm, Arm] {
   if (!r.noLegs) pair((s) => {
     const hip = pivot(g, s * r.hipX, r.hipY, 0, s);
     hip.userData.leg = true;
-    const foot = (r.foot ?? 1) * 1.15;
+    const foot = r.foot ?? 1;
     const ankle = 0.045 * foot;
     const L1 = r.hipY * 0.48, L2 = r.hipY - L1 - ankle;
     put(hip, limb(r.thigh, r.thigh * 0.78, L1), r.legMat);
@@ -513,6 +525,20 @@ function arm(armR: Arm, armL: Arm, spec: FigureSpec, m: Mats, rifleOf?: () => TH
     hold(armR, pistol(m), 0.15);
     pose(armL, 0.08, 0.3, 0.12);
     armR.pivot.userData.swing = -0.3;
+  } else if (spec.pose === 1) {
+    // Aiming: stock in the shoulder, sighting down the barrel.
+    pose(armR, 0.6, 1.9, -0.15);
+    hold(armR, rifleOf(), -PI / 2);
+    pose(armL, 1.4, 0.2, -0.45);
+    armR.pivot.userData.swing = -0.08;
+    armL.pivot.userData.swing = 0.08;
+  } else if (spec.pose === 2) {
+    // Advancing: rifle held across the chest, muzzle up.
+    pose(armR, 0.3, 1.2, -0.15);
+    hold(armR, rifleOf(), -0.75);
+    pose(armL, 0.75, 1.25, -0.5);
+    armR.pivot.userData.swing = -0.15;
+    armL.pivot.userData.swing = 0.15;
   } else {
     // Rifle at the ready: right hand on the grip, left on the barrel.
     pose(armR, 0.35, 1.1, -0.2);
@@ -521,6 +547,19 @@ function arm(armR: Arm, armL: Arm, spec: FigureSpec, m: Mats, rifleOf?: () => TH
     armR.pivot.userData.swing = -0.2;
     armL.pivot.userData.swing = 0.2;
   }
+}
+
+// Legs mid-stride or braced, so the walk cycle swings about that stance.
+function stance(g: THREE.Object3D, pose: number | undefined) {
+  if (!pose) return;
+  const [fwd, back, bend] = pose === 1 ? [0.18, -0.22, -0.12] : [0.32, -0.3, -0.35];
+  g.traverse((o) => {
+    if (!o.userData.leg) return;
+    const front = o.position.x < 0;
+    o.userData.swingBase = o.rotation.x = front ? fwd : back;
+    const knee = o.userData.knee as THREE.Object3D | undefined;
+    if (knee && !front) knee.rotation.x = bend;
+  });
 }
 
 function cape(g: THREE.Object3D, mat: Mat, top: number, width: number, z: number, length = top - 0.04) {
@@ -541,9 +580,14 @@ function jetpack(g: THREE.Object3D, m: Mats, y: number, z: number) {
 }
 
 export function figure(style: FigureStyle, spec: FigureSpec, team: Team): THREE.Group {
-  const build = spec.build ?? "trooper";
+  const g = build(style, spec, team);
+  if (!spec.commander && !spec.sabers?.length) stance(g, spec.pose);
+  return g;
+}
+
+function build(style: FigureStyle, spec: FigureSpec, team: Team): THREE.Group {
   const m = mats(style, spec, team);
-  switch (build) {
+  switch (spec.build ?? "trooper") {
     case "hero": return hero(m, spec, team);
     case "robed": return robed(m, spec);
     case "yoda": return yoda(m, spec);
@@ -564,11 +608,11 @@ export function figure(style: FigureStyle, spec: FigureSpec, team: Team): THREE.
 
 // Shared humanoid proportions.
 const HIP = 0.45, SH = 0.75, HEAD = 0.875;
-// Animated-show proportions: oversized heads and hands, a broad chest over
-// a narrow waist.
-const BIG_HEAD = 1.22, BIG_HANDS = 1.25;
+// Heroic-scale miniature proportions, like the Legion sculpts: heads and
+// hands a touch large, a broad chest over a narrow waist.
+const BIG_HEAD = 1.05, BIG_HANDS = 1.05;
 
-// A head group at height y, scaled up the cartoon way and sat on the neck.
+// A head group at height y, scaled up a little and sat on the neck.
 function headGroup(g: THREE.Object3D, y: number): THREE.Group {
   const h = grp(g, 0, y + 0.022, 0);
   h.scale.setScalar(BIG_HEAD);
@@ -624,7 +668,8 @@ function trooper(style: FigureStyle, m: Mats, spec: FigureSpec, team: Team): THR
   } else if (style === "imperial") {
     // White plates over the black body glove.
     put(g, lathe([[0.1, SH - 0.2], [0.135, SH - 0.13], [0.138, SH - 0.05], [0.115, SH], [0.06, SH + 0.025]], { depth: 0.7, smooth: 14 }), body); // chest
-    for (const y of [HIP + 0.1, HIP + 0.14]) put(g, rbox(0.11, 0.03, 0.06, 0.01), body, 0, y, -0.035); // ab plates
+    put(g, rbox(0.13, 0.11, 0.06, 0.02), body, 0, HIP + 0.12, -0.04); // ab plate
+    for (const y of [HIP + 0.1, HIP + 0.14]) put(g, rbox(0.09, 0.006, 0.01, 0.002), m.dark, 0, y, -0.072).userData.noInk = true; // ab ridges
     put(g, lathe([[0.1, HIP - 0.035], [0.112, HIP - 0.01], [0.11, HIP + 0.04], [0.098, HIP + 0.05]], { depth: 0.72, smooth: 10 }), body); // belt
     pair((s) => put(g, rbox(0.035, 0.035, 0.03, 0.008), body, s * 0.05, HIP + 0.01, -0.08)); // belt boxes
     put(g, cyl(0.025, 0.025, 0.07, 10), m.metal, -0.06, HIP + 0.005, 0.07, 0, 0, PI / 2); // detonator
@@ -658,17 +703,28 @@ function head(g: THREE.Object3D, m: Mats, y: number, hair?: Mat) {
   put(h, lathe([[0, -0.092], [0.035, -0.088], [0.058, -0.055], [0.07, -0.005], [0.072, 0.035], [0.055, 0.075], [0, 0.092]],
     { depth: 1.12, smooth: 16, seg: 18 }), m.skin);
   pair((s) => put(h, ell(0.012, 0.022, 0.012), m.skin, s * 0.071, -0.005, 0.0)); // ears
-  pair((s) => put(h, ell(0.011, 0.008, 0.006), std("#1a1410"), s * 0.027, 0.012, -0.074));
-  put(h, ell(0.012, 0.018, 0.014), m.skin, 0, -0.008, -0.08); // nose
+  paintedEyes(h, 0.026, 0.006, -0.072, 1, hair);
+  put(h, ell(0.01, 0.016, 0.012), m.skin, 0, -0.014, -0.077).userData.noInk = true; // nose
   if (hair) {
-    put(h, dome(0.078, 0.078, 0.088), hair, 0, 0.022, 0.004);
+    put(h, dome(0.078, 0.07, 0.088), hair, 0, 0.034, 0.006);
     put(h, ell(0.07, 0.072, 0.06), hair, 0, -0.005, 0.03); // back and sides
   }
   return h;
 }
 
+// Eyes as a miniature painter does them: a dark almond in a shallow socket,
+// with brows when there is hair to match.
+function paintedEyes(h: THREE.Object3D, x: number, y: number, z: number, k = 1, brow?: Mat) {
+  const iris = std("#1c140e");
+  pair((s) => {
+    put(h, ell(0.011 * k, 0.006 * k, 0.005 * k), iris, s * x, y, z - 0.002, 0, 0, -s * 0.12).userData.noInk = true;
+    if (brow) put(h, rbox(0.026 * k, 0.006 * k, 0.012 * k, 0.003 * k), brow, s * x, y + 0.016 * k, z - 0.003, 0, 0, -s * 0.12).userData.noInk = true;
+  });
+}
+
 function stormHelmet(g: THREE.Object3D, m: Mats, y: number) {
-  const h = headGroup(g, y);
+  const h = headGroup(g, y - 0.012);
+  h.scale.multiplyScalar(0.9); // helmets sit snug, not oversized
   const black = std("#16171a");
   put(h, dome(0.093, 0.1, 0.1), m.body, 0, 0.005, 0.005); // dome
   // The mask: wide cheeks flaring to a lip, narrowing at the chin.
@@ -682,17 +738,18 @@ function stormHelmet(g: THREE.Object3D, m: Mats, y: number) {
 }
 
 function cloneHelmet(g: THREE.Object3D, m: Mats, y: number, commander: boolean) {
-  const h = headGroup(g, y);
+  const h = headGroup(g, y - 0.012);
+  h.scale.multiplyScalar(0.9); // helmets sit snug, not oversized
   const black = std("#16171a");
   put(h, dome(0.09, 0.1, 0.098), m.body, 0, 0.005, 0.005);
   put(h, lathe([[0.08, -0.095], [0.095, -0.08], [0.095, -0.0], [0.09, 0.01]], { smooth: 10, seg: 22 }), m.body);
   put(h, rbox(0.11, 0.024, 0.02, 0.006), black, 0, 0.01, -0.088); // T-visor
   put(h, rbox(0.032, 0.07, 0.02, 0.006), black, 0, -0.025, -0.09);
   put(h, rbox(0.012, 0.05, 0.016, 0.004), std("#5b6370"), 0, -0.075, -0.095); // vocoder
-  put(h, rbox(0.012, 0.06, 0.15, 0.005), m.trim, 0, 0.1, 0.0); // crest
   pair((s) => put(h, rbox(0.05, 0.012, 0.012, 0.004), m.trim, s * 0.05, 0.05, -0.08, 0, 0, s * 0.3)); // markings
   pair((s) => put(h, cyl(0.02, 0.02, 0.01, 14), std("#8a8f99"), s * 0.093, -0.02, 0, 0, 0, PI / 2));
   if (commander) {
+    put(h, rbox(0.01, 0.025, 0.13, 0.004), m.trim, 0, 0.1, 0.0); // crest
     put(h, cyl(0.007, 0.007, 0.1, 8), m.dark, 0.1, 0.05, -0.0); // rangefinder
     put(h, rbox(0.01, 0.025, 0.04, 0.004), m.dark, 0.1, 0.0, -0.04);
   }
@@ -707,8 +764,10 @@ function hero(m: Mats, spec: FigureSpec, team: Team): THREE.Group {
     legMat: m.dark, bootMat: std("#1e1a16"), armMat: m.body, foreMat: m.body, handMat: m.skin,
   });
   torso(g, m.body, HIP, SH, 0.09, 0.125);
-  put(g, rbox(0.045, 0.17, 0.012, 0.005), std("#d9d2c0"), 0, SH - 0.08, -0.079); // shirt
-  pair((s) => put(g, rbox(0.03, 0.2, 0.014, 0.006), m.body, s * 0.045, SH - 0.08, -0.078, 0.05, 0, s * 0.28)); // lapels
+  // An open jacket: a shirt showing in the V, lapels drawn in a darker tone.
+  put(g, ell(0.045, 0.1, 0.025), std("#d9d2c0"), 0, SH - 0.06, -0.06).userData.noInk = true; // shirt
+  pair((s) => put(g, sweep([[s * 0.05, SH + 0.015, -0.062], [s * 0.04, SH - 0.08, -0.082], [s * 0.008, HIP + 0.09, -0.084]],
+    0.011, 0.007, 10, 6), m.trim).userData.noInk = true); // lapels
   put(g, lathe([[0.096, HIP - 0.01], [0.1, HIP + 0.03]], { depth: 0.72 }), m.trim); // belt
   put(g, rbox(0.035, 0.025, 0.01, 0.004), std("#c8a850"), 0, HIP + 0.01, -0.073); // buckle
   put(g, rbox(0.035, 0.08, 0.04, 0.01), std("#2a2018"), 0.1, HIP - 0.04, 0.0); // holster
@@ -876,14 +935,19 @@ function wookiee(m: Mats, spec: FigureSpec): THREE.Group {
     legMat: m.body, armMat: m.body, foot: 1.2, reach: 1.15,
   });
   // Shaggy torso, longer fur at the hem.
-  put(g, fur(lathe([[0, 0.3], [0.13, 0.31], [0.14, 0.42], [0.13, 0.52], [0.165, 0.68], [0.17, 0.76], [0.12, 0.81], [0.05, 0.83], [0, 0.835]],
-    { depth: 0.75, smooth: 40, seg: 36 }), 0.1), m.body);
-  const h = grp(g, 0, 0.9, -0.01);
-  put(h, fur(ell(0.085, 0.1, 0.09, 22, 18), 0.08), m.body);
-  put(h, fur(dome(0.09, 0.1, 0.095, 0, PI * 0.45, 22), 0.1), m.trim, 0, 0.01, 0.01); // darker crown
-  put(h, ell(0.045, 0.04, 0.05), m.trim, 0, -0.035, -0.07); // muzzle
-  put(h, ell(0.015, 0.01, 0.01), std("#1a1410"), 0, -0.02, -0.115); // nose
-  pair((s) => put(h, ell(0.01, 0.008, 0.006), std("#1a1410"), s * 0.03, 0.02, -0.083));
+  put(g, fur(lathe([[0, 0.26], [0.12, 0.27], [0.14, 0.34], [0.125, 0.48], [0.15, 0.62], [0.16, 0.74], [0.12, 0.81], [0.05, 0.83], [0, 0.835]],
+    { depth: 0.78, smooth: 40, seg: 40 }), 0.2), m.body);
+  // Shaggy shoulder mane and fur cuffs over the arm joints.
+  put(g, fur(lathe([[0.1, 0.66], [0.17, 0.72], [0.15, 0.8], [0.08, 0.85]], { depth: 0.85, smooth: 16, seg: 32 }), 0.28), m.trim);
+  const h = grp(g, 0, 0.92, -0.015);
+  h.scale.setScalar(1.12);
+  put(h, fur(ell(0.085, 0.1, 0.09, 24, 18), 0.14), m.body);
+  put(h, fur(dome(0.095, 0.1, 0.1, 0, PI * 0.45, 24), 0.22), m.trim, 0, 0.015, 0.012); // darker crown
+  pair((s) => put(h, fur(ell(0.04, 0.08, 0.06, 12, 10), 0.3), m.trim, s * 0.07, -0.02, 0.0)); // side mane
+  put(h, ell(0.048, 0.042, 0.05), m.trim, 0, -0.04, -0.07); // muzzle
+  put(h, ell(0.018, 0.012, 0.012), std("#1a1410"), 0, -0.022, -0.117); // nose
+  put(h, sweep([[-0.022, -0.065, -0.105], [0, -0.072, -0.11], [0.022, -0.065, -0.105]], 0.004, 0.004, 8, 4), std("#1a1410")).userData.noInk = true; // mouth
+  paintedEyes(h, 0.03, 0.022, -0.086, 0.9, std("#2a1a10"));
   // Bandolier over the shoulder, ammo pouches along it.
   const band: P3[] = [[0.14, 0.76, -0.04], [0.04, 0.66, -0.12], [-0.08, 0.52, -0.105], [-0.13, 0.42, -0.04]];
   put(g, sweep(band, 0.018, 0.018, 16, 8).scale(1, 1, 1), std("#3a2a1a"));
@@ -1353,16 +1417,25 @@ function vehicle(style: FigureStyle, frame: VehicleFrame, pilot: FigureSpec | un
       break;
     }
     case "gunship": {
-      // LAAT: a long fuselage with a bubble nose, swept wings, ball turrets.
-      put(g, nacelle([[0, 0], [0.1, 0.04], [0.15, 0.2], [0.16, 0.6], [0.12, 0.88], [0.04, 0.95]], { depth: 0.9, smooth: 22, seg: 20 }), hull, 0, 0.36, -0.48);
-      put(g, dome(0.08, 0.06, 0.1), glass(), 0, 0.42, -0.36);
-      put(g, plate([[-0.5, 0.0], [-0.48, 0.12], [-0.1, 0.22], [0.1, 0.22], [0.48, 0.12], [0.5, 0.0], [0.1, -0.08], [-0.1, -0.08]], 0.03, 0.012), trim, 0, 0.44, 0.06);
+      // LAAT: an angular six-sided hull tapering to the tail, a stepped
+      // cockpit nose, high straight wings with tip turrets, open troop bays.
+      put(g, nacelle([[0, 0], [0.09, 0.03], [0.14, 0.16], [0.15, 0.42], [0.13, 0.66], [0.08, 0.88], [0.03, 0.95]],
+        { depth: 0.82, smooth: 14, seg: 6 }).rotateZ(PI / 6), hull, 0, 0.36, -0.5);
+      put(g, nacelle([[0, 0], [0.05, 0.02], [0.07, 0.1], [0.07, 0.18]], { seg: 12 }), glass(), 0, 0.33, -0.56); // chin canopy
+      put(g, dome(0.065, 0.05, 0.1), glass(), 0, 0.45, -0.34); // pilot canopy
+      put(g, rbox(0.2, 0.025, 0.12, 0.01), trim, 0, 0.405, -0.4); // nose stripe
+      put(g, plate([[-0.56, -0.02], [-0.55, 0.1], [-0.12, 0.16], [0.12, 0.16], [0.55, 0.1], [0.56, -0.02], [0.12, -0.08], [-0.12, -0.08]], 0.028, 0.01),
+        trim, 0, 0.47, 0.02);
       pair((s) => {
-        put(g, rbox(0.02, 0.15, 0.3, 0.008), dark, s * 0.155, 0.32, 0.02); // open troop bay
-        put(g, ell(0.05, 0.05, 0.05), glass(), s * 0.42, 0.42, 0.0); // ball turrets
-        put(g, nacelle([[0.02, 0], [0.04, 0.05], [0.04, 0.2]], { seg: 10 }), dark, s * 0.3, 0.47, 0.0);
+        put(g, rbox(0.01, 0.13, 0.24, 0.004), dark, s * 0.13, 0.33, 0.02); // open troop bay
+        put(g, ell(0.045, 0.045, 0.045), glass(), s * 0.56, 0.47, 0.03); // wingtip turrets
+        put(g, nacelle([[0.025, 0], [0.04, 0.04], [0.04, 0.18]], { seg: 10 }), dark, s * 0.3, 0.5, -0.02); // engines
+        glowDisc(s * 0.3, 0.5, 0.165, 0.03);
+        put(g, ell(0.04, 0.04, 0.04), glass(), s * 0.08, 0.27, -0.2); // belly turrets
+        put(g, prism([[0.04, 0], [-0.1, 0], [-0.12, 0.09], [-0.06, 0.09]], 0.02, 0.006), hull, s * 0.05, 0.44, 0.36, 0, 0, s * 0.35); // tail fins
       });
-      put(g, prism([[0.05, 0], [-0.14, 0], [-0.16, 0.1], [-0.08, 0.1]], 0.025, 0.006), hull, 0, 0.44, 0.38);
+      put(g, cyl(0.03, 0.035, 0.035, 12), dark, 0, 0.49, -0.12); // dorsal turret
+      put(g, cyl(0.008, 0.008, 0.12, 6), dark, 0, 0.5, -0.18, PI / 2);
       break;
     }
     case "crawler": {
@@ -1411,20 +1484,9 @@ function emplacement(style: FigureStyle, team: Team): THREE.Group {
 
 // --- Helpers ------------------------------------------------------------------
 
-// The models are cel shaded, like an animated show: light falls in a few
-// flat bands instead of a smooth gradient. Gloss and metal are ignored.
-let bands: THREE.DataTexture | null = null;
-function toonBands(): THREE.DataTexture {
-  if (!bands) {
-    bands = new THREE.DataTexture(new Uint8Array([90, 90, 90, 255, 170, 170, 170, 255, 255, 255, 255, 255]), 3, 1);
-    bands.minFilter = bands.magFilter = THREE.NearestFilter;
-    bands.needsUpdate = true;
-  }
-  return bands;
-}
-
-export function std(color: string): THREE.MeshToonMaterial {
-  return new THREE.MeshToonMaterial({ color, gradientMap: toonBands() });
+// Painted plastic, like a finished miniature: a satin finish, no metal.
+export function std(color: string): THREE.MeshStandardMaterial {
+  return new THREE.MeshStandardMaterial({ color, roughness: 0.55, metalness: 0.05 });
 }
 
 // Glowing bits (blades, shields, eyes, wings) and ink outlines neither cast
@@ -1469,7 +1531,7 @@ function bake(root: THREE.Object3D) {
         b.geos.push(geo);
         b.meshes.push(mesh);
         const mat = mesh.material;
-        if (!c.userData.glow && !mat.transparent && mat.side === THREE.FrontSide) {
+        if (!c.userData.glow && !c.userData.noInk && !mat.transparent && mat.side === THREE.FrontSide) {
           const ink = new THREE.BufferGeometry();
           ink.setAttribute("position", geo.attributes.position);
           inked.push(ink);
@@ -1491,9 +1553,9 @@ function bake(root: THREE.Object3D) {
   visit(root);
 }
 
-const INK = 0.0085;
+const INK = 0.0055;
 
-// A cartoon ink line: the shapes again, pushed out along their smoothed
+// Black lining, as painters do round armour plates: the shapes again, pushed out along their smoothed
 // normals and drawn back faces only in black, so a dark rim shows round the
 // silhouette and wherever one part overlaps another.
 function outline(geos: THREE.BufferGeometry[]): THREE.Mesh {
