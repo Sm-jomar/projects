@@ -79,9 +79,9 @@ function unitShape(u: Unit, style: FigureStyle): { model: PieceModel; height: nu
   const fig = (spec: FigureSpec, height = 1.3) => ({ model: { kind: "figure", style, commander, ...spec } as PieceModel, height });
 
   // Force users.
-  if (/Yoda/.test(n)) return fig({ build: "robed", sabers: [GREEN], palette: { body: "#b8a88a" } }, 0.75);
+  if (/Yoda/.test(n)) return fig({ build: "yoda", sabers: [GREEN], commander: false }, 0.75);
   if (/Vader/.test(n)) return fig({ build: "vader", sabers: [RED], commander: false }, 1.45);
-  if (/Grievous/.test(n)) return fig({ build: "tall-droid", sabers: [BLUE, GREEN], palette: { body: "#d8d2c0" }, commander: false }, 1.5);
+  if (/Grievous/.test(n)) return fig({ build: "grievous", sabers: [BLUE, GREEN, BLUE, GREEN], commander: false }, 1.5);
   if (/Ahsoka/.test(n)) return fig({ build: "robed", sabers: u.faction === "rebels" ? [WHITE, WHITE] : [GREEN, "#d8ff5a"], palette: { body: "#a8622e", trim: "#3a5a8a" }, commander: false });
   if (u.force_alignment === "light") {
     const green = /Luke|Jedi Knight$/.test(n);
@@ -110,7 +110,8 @@ function unitShape(u: Unit, style: FigureStyle): { model: PieceModel; height: nu
   if (/Tactical|Kalani|Kraken/.test(n)) return fig({ build: "tall-droid", palette: { body: "#6c7a8f", trim: "#3a4250" } }, 1.4);
   if (sub === "droid-trooper" && !/B1|BX|Aqua|Iden/.test(n)) return fig({ build: "tall-droid" }, 1.4);
   if (sub === "droid-trooper" && /B1|BX|Aqua/.test(n)) return { model: { kind: "figure", style: "droid", commander }, height: 1.3 };
-  if (sub === "mandalorian-trooper" || /Mandalorian/.test(n)) return fig({ build: "mando" });
+  if (sub === "mandalorian-trooper" || /Mandalorian|Boba Fett|Din Djarin|Gar Saxon|Sabine/.test(n)) return fig({ build: "mando" });
+  if (/IG-(88|11)/.test(n)) return fig({ build: "tall-droid", palette: { body: "#5d6168", trim: "#3a3d44" } }, 1.45);
 
   // Clones look like clones whoever fields them.
   if (sub === "clone-trooper") return { model: { kind: "figure", style: "clone", commander }, height: 1.3 };

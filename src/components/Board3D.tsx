@@ -252,6 +252,8 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
   sun.castShadow = true;
   sun.shadow.mapSize.set(2048, 2048);
   sun.shadow.bias = -0.0005;
+  // The rounded models would otherwise shade themselves with streaky acne.
+  sun.shadow.normalBias = 0.01;
   scene.add(sun);
   scene.add(sun.target);
 
