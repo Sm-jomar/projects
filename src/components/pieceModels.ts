@@ -163,14 +163,9 @@ function mats(style: FigureStyle, spec: FigureSpec, team: Team): Mats {
   if (build === "hero") p = { body: team.color, trim: STYLE_COLORS[style].dark, dark: "#2a2622" };
   if (build === "mando") p = { ...p, trim: team.color };
   p = { ...p, ...spec.palette };
-  // Armour and droid plating is glossier than cloth.
-  const hard = build === "trooper" && (style === "imperial" || style === "clone") || build === "mando" || build === "vader";
-  const plate = /droid|b2|droideka|astromech|probe|grievous/.test(build) || (build === "trooper" && style === "droid");
-  const rough = hard ? 0.35 : plate ? 0.45 : 0.7;
-  const metal = plate ? 0.35 : 0;
   return {
-    body: std(p.body, rough, metal), trim: std(p.trim, rough, metal), dark: std(p.dark, 0.55, metal),
-    skin: std(SKIN, 0.75), metal: std(METAL, 0.35, 0.6), colors: p,
+    body: std(p.body), trim: std(p.trim), dark: std(p.dark),
+    skin: std(SKIN), metal: std(METAL), colors: p,
   };
 }
 
@@ -383,7 +378,7 @@ function rig(g: THREE.Group, r: Rig): [Arm, Arm] {
   if (!r.noLegs) pair((s) => {
     const hip = pivot(g, s * r.hipX, r.hipY, 0, s);
     hip.userData.leg = true;
-    const foot = r.foot ?? 1;
+    const foot = (r.foot ?? 1) * 1.15;
     const ankle = 0.045 * foot;
     const L1 = r.hipY * 0.48, L2 = r.hipY - L1 - ankle;
     put(hip, limb(r.thigh, r.thigh * 0.78, L1), r.legMat);
@@ -397,7 +392,7 @@ function rig(g: THREE.Group, r: Rig): [Arm, Arm] {
       .scale(1, 1, 1.5 * foot).translate(0, 0, -r.shin * 0.45 * foot), boot, 0, -L2 - ankle, 0);
   });
   const arms = [1, -1].map((s) => {
-    const sh = pivot(g, s * r.shoulderX, r.shoulderY, 0, -s);
+    const sh = pivot(g, s * r.shoulderX * 1.1, r.shoulderY, 0, -s);
     const reach = (r.shoulderY - r.hipY) * (r.reach ?? 1.05);
     const U = reach * 0.52, F = reach * 0.42;
     put(sh, limb(r.upper, r.upper * 0.85, U), r.armMat);
@@ -405,7 +400,7 @@ function rig(g: THREE.Group, r: Rig): [Arm, Arm] {
     if (r.jointMat) put(elbow, ell(r.upper * 0.8, r.upper * 0.8, r.upper * 0.8), r.jointMat);
     put(elbow, limb(r.fore, r.fore * 0.78, F), r.foreMat ?? r.armMat);
     const hand = grp(elbow, 0, -F - r.fore * 0.5, 0);
-    put(hand, ell(r.fore * 0.85, r.fore * 1.05, r.fore * 0.95), r.handMat ?? r.foreMat ?? r.armMat);
+    put(hand, ell(r.fore * 0.85 * BIG_HANDS, r.fore * 1.05 * BIG_HANDS, r.fore * 0.95 * BIG_HANDS), r.handMat ?? r.foreMat ?? r.armMat);
     return { pivot: sh, elbow, hand, side: s };
   });
   // A natural stance: arms a touch out and bent.
@@ -434,6 +429,7 @@ function hold(a: Arm, o: THREE.Object3D, pitch: number) {
 /** A torso lathed from waist and chest radii, oval in section. */
 function torso(g: THREE.Object3D, mat: Mat, hipY: number, shoulderY: number, waist: number, chest: number, depth = 0.66) {
   const h = shoulderY - hipY;
+  waist *= 0.88;
   return put(g, lathe([
     [0, hipY - 0.04], [waist * 0.9, hipY - 0.035], [waist * 1.08, hipY + h * 0.05], [waist, hipY + h * 0.35],
     [chest * 0.97, hipY + h * 0.72], [chest, hipY + h * 0.9], [chest * 0.75, shoulderY + 0.012],
@@ -467,7 +463,7 @@ function pistol(m: Mats): THREE.Group {
 function saber(color: string, double = false): THREE.Group {
   const s = new THREE.Group();
   const hilt = double ? 0.17 : 0.1;
-  put(s, cyl(0.02, 0.02, hilt, 10), std(METAL, 0.3, 0.7));
+  put(s, cyl(0.02, 0.02, hilt, 10), std(METAL));
   for (const y of [-hilt * 0.25, hilt * 0.15]) put(s, cyl(0.023, 0.023, 0.018, 10), std("#1a1a1c"), 0, y, 0);
   const core = glow("#ffffff");
   const halo = glow(color, 0.5);
@@ -568,6 +564,16 @@ export function figure(style: FigureStyle, spec: FigureSpec, team: Team): THREE.
 
 // Shared humanoid proportions.
 const HIP = 0.45, SH = 0.75, HEAD = 0.875;
+// Animated-show proportions: oversized heads and hands, a broad chest over
+// a narrow waist.
+const BIG_HEAD = 1.22, BIG_HANDS = 1.25;
+
+// A head group at height y, scaled up the cartoon way and sat on the neck.
+function headGroup(g: THREE.Object3D, y: number): THREE.Group {
+  const h = grp(g, 0, y + 0.022, 0);
+  h.scale.setScalar(BIG_HEAD);
+  return h;
+}
 
 // The faction's own trooper. Each style changes the silhouette so a glance
 // tells you whose unit it is.
@@ -610,11 +616,11 @@ function trooper(style: FigureStyle, m: Mats, spec: FigureSpec, team: Team): THR
       put(g, rbox(0.2, 0.2, 0.09, 0.03), std("#5a4a30"), 0, SH - 0.1, 0.11);
       put(g, cyl(0.04, 0.04, 0.22, 12), std("#7a6a48"), 0, SH - 0.0, 0.12, 0, 0, PI / 2); // bedroll
     }
-    head(g, m, HEAD);
+    const h = head(g, m, HEAD);
     // Helmet: a rounded dome with a turned-down brim.
-    put(g, lathe([[0.112, -0.012], [0.114, -0.004], [0.094, 0.004], [0.094, 0.04], [0.08, 0.08], [0.04, 0.1], [0, 0.104]],
-      { smooth: 18, seg: 24 }), trim, 0, HEAD + 0.035, 0.008);
-    put(g, sweep([[-0.085, HEAD + 0.085, -0.03], [0, HEAD + 0.095, -0.1], [0.085, HEAD + 0.085, -0.03]], 0.012, 0.012, 10, 8), std("#2a2a2a")); // goggles
+    put(h, lathe([[0.112, -0.012], [0.114, -0.004], [0.094, 0.004], [0.094, 0.04], [0.08, 0.08], [0.04, 0.1], [0, 0.104]],
+      { smooth: 18, seg: 24 }), trim, 0, 0.035, 0.008);
+    put(h, sweep([[-0.085, 0.085, -0.03], [0, 0.095, -0.1], [0.085, 0.085, -0.03]], 0.012, 0.012, 10, 8), std("#2a2a2a")); // goggles
   } else if (style === "imperial") {
     // White plates over the black body glove.
     put(g, lathe([[0.1, SH - 0.2], [0.135, SH - 0.13], [0.138, SH - 0.05], [0.115, SH], [0.06, SH + 0.025]], { depth: 0.7, smooth: 14 }), body); // chest
@@ -641,13 +647,13 @@ function trooper(style: FigureStyle, m: Mats, spec: FigureSpec, team: Team): THR
       (kama.material as THREE.MeshStandardMaterial).side = THREE.DoubleSide;
     }
   }
-  if (spec.commander) cape(g, std(team.accent, 0.8), SH + 0.02, 0.3, 0.06, 0.5);
+  if (spec.commander) cape(g, std(team.accent), SH + 0.02, 0.3, 0.06, 0.5);
   return g;
 }
 
 // A bare head: skin, eyes, a nose and hair.
 function head(g: THREE.Object3D, m: Mats, y: number, hair?: Mat) {
-  const h = grp(g, 0, y, 0);
+  const h = headGroup(g, y);
   // An egg, narrowing to the chin.
   put(h, lathe([[0, -0.092], [0.035, -0.088], [0.058, -0.055], [0.07, -0.005], [0.072, 0.035], [0.055, 0.075], [0, 0.092]],
     { depth: 1.12, smooth: 16, seg: 18 }), m.skin);
@@ -662,8 +668,8 @@ function head(g: THREE.Object3D, m: Mats, y: number, hair?: Mat) {
 }
 
 function stormHelmet(g: THREE.Object3D, m: Mats, y: number) {
-  const h = grp(g, 0, y, 0);
-  const black = std("#16171a", 0.3);
+  const h = headGroup(g, y);
+  const black = std("#16171a");
   put(h, dome(0.093, 0.1, 0.1), m.body, 0, 0.005, 0.005); // dome
   // The mask: wide cheeks flaring to a lip, narrowing at the chin.
   put(h, lathe([[0.075, -0.09], [0.098, -0.07], [0.1, -0.02], [0.095, 0.01]], { smooth: 12, seg: 22 }).scale(1, 1, 1.05), m.body, 0, 0, 0);
@@ -676,8 +682,8 @@ function stormHelmet(g: THREE.Object3D, m: Mats, y: number) {
 }
 
 function cloneHelmet(g: THREE.Object3D, m: Mats, y: number, commander: boolean) {
-  const h = grp(g, 0, y, 0);
-  const black = std("#16171a", 0.3);
+  const h = headGroup(g, y);
+  const black = std("#16171a");
   put(h, dome(0.09, 0.1, 0.098), m.body, 0, 0.005, 0.005);
   put(h, lathe([[0.08, -0.095], [0.095, -0.08], [0.095, -0.0], [0.09, 0.01]], { smooth: 10, seg: 22 }), m.body);
   put(h, rbox(0.11, 0.024, 0.02, 0.006), black, 0, 0.01, -0.088); // T-visor
@@ -704,12 +710,12 @@ function hero(m: Mats, spec: FigureSpec, team: Team): THREE.Group {
   put(g, rbox(0.045, 0.17, 0.012, 0.005), std("#d9d2c0"), 0, SH - 0.08, -0.079); // shirt
   pair((s) => put(g, rbox(0.03, 0.2, 0.014, 0.006), m.body, s * 0.045, SH - 0.08, -0.078, 0.05, 0, s * 0.28)); // lapels
   put(g, lathe([[0.096, HIP - 0.01], [0.1, HIP + 0.03]], { depth: 0.72 }), m.trim); // belt
-  put(g, rbox(0.035, 0.025, 0.01, 0.004), std("#c8a850", 0.3, 0.6), 0, HIP + 0.01, -0.073); // buckle
+  put(g, rbox(0.035, 0.025, 0.01, 0.004), std("#c8a850"), 0, HIP + 0.01, -0.073); // buckle
   put(g, rbox(0.035, 0.08, 0.04, 0.01), std("#2a2018"), 0.1, HIP - 0.04, 0.0); // holster
   put(g, cyl(0.035, 0.04, 0.06, 12), m.skin, 0, SH + 0.04, 0);
-  head(g, m, HEAD, std("#3a2a1c", 0.85));
+  head(g, m, HEAD, std("#3a2a1c"));
   arm(armR, armL, spec, m);
-  if (spec.commander) cape(g, std(team.accent, 0.8), SH + 0.02, 0.29, 0.06, 0.5);
+  if (spec.commander) cape(g, std(team.accent), SH + 0.02, 0.29, 0.06, 0.5);
   return g;
 }
 
@@ -726,13 +732,14 @@ function merc(m: Mats, spec: FigureSpec): THREE.Group {
   put(g, lathe([[0.112, HIP], [0.118, HIP + 0.04]], { depth: 0.85 }), m.trim); // sash
   pair((s) => put(g, rbox(0.04, 0.05, 0.03, 0.008), m.dark, s * 0.07, HIP + 0.0, -0.09)); // pouches
   // Face in shadow under a deep hood.
-  put(g, ell(0.065, 0.08, 0.07), std("#1a1512"), 0, HEAD - 0.005, -0.01);
-  const hood = put(g, new THREE.SphereGeometry(1, 20, 12, PI * 1.5 + 0.7, PI * 2 - 1.4, 0, PI * 0.62).scale(0.1, 0.12, 0.11),
-    m.body, 0, HEAD - 0.01, 0.0, 0.25);
+  const hd = headGroup(g, HEAD);
+  put(hd, ell(0.065, 0.08, 0.07), std("#1a1512"), 0, -0.005, -0.01);
+  const hood = put(hd, new THREE.SphereGeometry(1, 20, 12, PI * 1.5 + 0.7, PI * 2 - 1.4, 0, PI * 0.62).scale(0.1, 0.12, 0.11),
+    m.body, 0, -0.01, 0.0, 0.25);
   (hood.material as THREE.MeshStandardMaterial).side = THREE.DoubleSide;
   put(g, sweep([[-0.1, HEAD - 0.06, -0.02], [0, HEAD - 0.13, -0.07], [0.1, HEAD - 0.06, -0.02]], 0.03, 0.03, 10, 8), m.body); // cowl
-  pair((s) => put(g, ell(0.012, 0.008, 0.006), glow("#e0c070"), s * 0.024, HEAD + 0.005, -0.075)); // eye glint
-  if (spec.commander) put(g, ell(0.022, 0.022, 0.01), std("#e0b84a", 0.3, 0.7), 0.05, SH - 0.04, -0.09); // clasp
+  pair((s) => put(hd, ell(0.012, 0.008, 0.006), glow("#e0c070"), s * 0.024, 0.005, -0.075)); // eye glint
+  if (spec.commander) put(g, ell(0.022, 0.022, 0.01), std("#e0b84a"), 0.05, SH - 0.04, -0.09); // clasp
   arm(armR, armL, spec, m, () => rifle(m, 0.5, std("#2a2420")));
   return g;
 }
@@ -758,7 +765,7 @@ function b1(m: Mats, spec: FigureSpec): THREE.Group {
   pair((s) => put(h, ell(0.015, 0.015, 0.012), m.dark, s * 0.032, 0.02, -0.02));
   if (spec.commander) {
     // Command droid: yellow markings and a long antenna.
-    put(g, lathe([[0.075, 0.62], [0.105, 0.66], [0.08, 0.71]], { depth: 0.52, smooth: 8 }), std("#d8b23a", 0.45), 0, 0, -0.006);
+    put(g, lathe([[0.075, 0.62], [0.105, 0.66], [0.08, 0.71]], { depth: 0.52, smooth: 8 }), std("#d8b23a"), 0, 0, -0.006);
     put(h, cyl(0.004, 0.004, 0.2, 6), m.dark, -0.03, 0.1, 0.03);
   }
   arm(armR, armL, spec, m, () => {
@@ -804,7 +811,7 @@ function robed(m: Mats, spec: FigureSpec): THREE.Group {
 // Vader: flared helmet and mask, chest box, cape to the floor.
 function vader(m: Mats, spec: FigureSpec): THREE.Group {
   const g = new THREE.Group();
-  const gloss = std("#121214", 0.2);
+  const gloss = std("#121214");
   const [armR, armL] = rig(g, {
     hipY: HIP, hipX: 0.075, shoulderY: SH, shoulderX: 0.16,
     thigh: 0.058, shin: 0.048, upper: 0.046, fore: 0.042,
@@ -814,22 +821,22 @@ function vader(m: Mats, spec: FigureSpec): THREE.Group {
     [0.13, SH + 0.005], [0.05, SH + 0.03], [0, SH + 0.032]], { depth: 0.8, smooth: 30, seg: 28 }), 8, 0.05, 0, HIP), m.body);
   pair((s) => put(g, dome(0.065, 0.05, 0.07), gloss, s * 0.15, SH - 0.01, 0, 0, 0, -s * 0.3)); // shoulder armour
   put(g, lathe([[0.112, HIP - 0.01], [0.12, HIP + 0.04]], { depth: 0.8 }), gloss); // belt
-  pair((s) => put(g, rbox(0.03, 0.035, 0.012, 0.004), std(METAL, 0.3, 0.6), s * 0.04, HIP + 0.015, -0.1));
-  put(g, rbox(0.1, 0.075, 0.02, 0.006), std("#3a3a40", 0.4, 0.4), 0, SH - 0.1, -0.095); // chest box
+  pair((s) => put(g, rbox(0.03, 0.035, 0.012, 0.004), std(METAL), s * 0.04, HIP + 0.015, -0.1));
+  put(g, rbox(0.1, 0.075, 0.02, 0.006), std("#3a3a40"), 0, SH - 0.1, -0.095); // chest box
   [["#d03a2a", -0.025], ["#3a8ad0", 0], ["#3ac05a", 0.025]].forEach(([c, x]) =>
     put(g, rbox(0.014, 0.014, 0.008, 0.003), glow(c as string), x as number, SH - 0.095, -0.107));
   put(g, cyl(0.04, 0.05, 0.05, 12), gloss, 0, SH + 0.035, 0);
   // Helmet: a domed crown flaring to a wide lip; a triangular faceplate.
-  const h = grp(g, 0, HEAD + 0.01, 0);
+  const h = headGroup(g, HEAD + 0.01);
   put(h, lathe([[0.135, -0.11], [0.13, -0.095], [0.105, -0.06], [0.1, 0.0], [0.095, 0.05], [0.06, 0.095], [0, 0.11]],
     { smooth: 24, seg: 26, phi: PI * 0.22, arc: PI * 1.56 }), gloss);
   const helm = h.children[h.children.length - 1] as THREE.Mesh;
   (helm.material as THREE.MeshStandardMaterial).side = THREE.DoubleSide;
   put(h, ell(0.085, 0.07, 0.08), gloss, 0, -0.02, -0.01); // face
-  pair((s) => put(h, ell(0.03, 0.022, 0.014), std("#2a1a1c", 0.1), s * 0.033, 0.0, -0.083, 0, s * 0.3, s * 0.25)); // eyes
-  put(h, lathe([[0.04, -0.04], [0.012, 0.03]], { seg: 3 }).rotateY(PI / 6), std("#2c2c30", 0.4, 0.3), 0, -0.07, -0.06, -0.35); // nose
-  put(h, lathe([[0, -0.03], [0.03, -0.02], [0.022, 0.02]], { seg: 3 }), std(METAL, 0.3, 0.6), 0, -0.085, -0.075, -0.4); // mouth grille
-  cape(g, std("#0b0b0d", 0.6), SH + 0.03, 0.42, 0.02, SH + 0.03);
+  pair((s) => put(h, ell(0.03, 0.022, 0.014), std("#2a1a1c"), s * 0.033, 0.0, -0.083, 0, s * 0.3, s * 0.25)); // eyes
+  put(h, lathe([[0.04, -0.04], [0.012, 0.03]], { seg: 3 }).rotateY(PI / 6), std("#2c2c30"), 0, -0.07, -0.06, -0.35); // nose
+  put(h, lathe([[0, -0.03], [0.03, -0.02], [0.022, 0.02]], { seg: 3 }), std(METAL), 0, -0.085, -0.075, -0.4); // mouth grille
+  cape(g, std("#0b0b0d"), SH + 0.03, 0.42, 0.02, SH + 0.03);
   arm(armR, armL, { ...spec, commander: false }, m);
   return g;
 }
@@ -849,15 +856,15 @@ function mando(m: Mats, spec: FigureSpec, team: Team): THREE.Group {
   pair((s) => put(g, dome(0.06, 0.05, 0.065), m.trim, s * 0.155, SH - 0.005, 0, 0, 0, -s * 0.4));
   put(g, cyl(0.035, 0.04, 0.06, 12), m.dark, 0, SH + 0.04, 0);
   // Bucket helmet with a T-visor and a rangefinder stalk.
-  const h = grp(g, 0, HEAD + 0.01, 0);
+  const h = headGroup(g, HEAD + 0.01);
   put(h, lathe([[0.08, -0.1], [0.088, -0.08], [0.088, 0.03], [0.07, 0.085], [0, 0.098]], { smooth: 18, seg: 24 }), m.body);
-  put(h, rbox(0.12, 0.026, 0.02, 0.006), std("#121316", 0.2), 0, 0.01, -0.083);
-  put(h, rbox(0.034, 0.075, 0.02, 0.006), std("#121316", 0.2), 0, -0.035, -0.084);
+  put(h, rbox(0.12, 0.026, 0.02, 0.006), std("#121316"), 0, 0.01, -0.083);
+  put(h, rbox(0.034, 0.075, 0.02, 0.006), std("#121316"), 0, -0.035, -0.084);
   put(h, cyl(0.007, 0.007, 0.09, 8), m.dark, 0.085, 0.05, 0);
   put(h, rbox(0.012, 0.022, 0.035, 0.004), m.dark, 0.085, 0.095, -0.015);
   jetpack(g, m, SH - 0.08, 0.1);
   arm(armR, armL, spec, m, () => rifle(m, 0.44, m.trim));
-  if (spec.commander) cape(g, std(team.accent, 0.8), SH + 0.02, 0.3, 0.08, 0.5);
+  if (spec.commander) cape(g, std(team.accent), SH + 0.02, 0.3, 0.08, 0.5);
   return g;
 }
 
@@ -882,14 +889,14 @@ function wookiee(m: Mats, spec: FigureSpec): THREE.Group {
   put(g, sweep(band, 0.018, 0.018, 16, 8).scale(1, 1, 1), std("#3a2a1a"));
   for (const t of [0.25, 0.45, 0.65]) {
     const p = new THREE.CatmullRomCurve3(band.map((v) => new THREE.Vector3(...v))).getPointAt(t);
-    put(g, rbox(0.035, 0.03, 0.02, 0.006), std(METAL, 0.4, 0.5), p.x, p.y, p.z - 0.01, 0, 0, 0.8);
+    put(g, rbox(0.035, 0.03, 0.02, 0.006), std(METAL), p.x, p.y, p.z - 0.01, 0, 0, 0.8);
   }
   arm(armR, armL, spec, m, () => {
     // Bowcaster: a stocky body with a bow across the front.
     const r = new THREE.Group();
     put(r, rbox(0.05, 0.36, 0.06, 0.012), m.dark, 0, 0.1, 0.02);
-    put(r, sweep([[-0.13, 0.26, 0.04], [0, 0.29, 0.05], [0.13, 0.26, 0.04]], 0.01, 0.01, 10, 6), std(METAL, 0.4, 0.5));
-    put(r, cyl(0.012, 0.012, 0.2, 8), std(METAL, 0.4, 0.5), 0, 0.2, 0.06);
+    put(r, sweep([[-0.13, 0.26, 0.04], [0, 0.29, 0.05], [0.13, 0.26, 0.04]], 0.01, 0.01, 10, 6), std(METAL));
+    put(r, cyl(0.012, 0.012, 0.2, 8), std(METAL), 0, 0.2, 0.06);
     return r;
   });
   return g;
@@ -906,7 +913,7 @@ function ewok(m: Mats): THREE.Group {
   const h = grp(g, 0, 0.67, 0);
   put(h, fur(ell(0.17, 0.155, 0.16, 22, 16), 0.03), m.body);
   put(h, ell(0.08, 0.065, 0.06), m.dark, 0, -0.035, -0.12); // face
-  pair((s) => put(h, ell(0.022, 0.024, 0.012), std("#0e0a08", 0.2), s * 0.04, 0.0, -0.15));
+  pair((s) => put(h, ell(0.022, 0.024, 0.012), std("#0e0a08"), s * 0.04, 0.0, -0.15));
   put(h, ell(0.02, 0.015, 0.015), std("#0e0a08"), 0, -0.05, -0.175);
   // Leather hood with ears poking through.
   const hood = put(h, dome(0.18, 0.17, 0.175, 0, PI * 0.55, 22), m.trim, 0, 0.012, 0.015);
@@ -916,7 +923,7 @@ function ewok(m: Mats): THREE.Group {
   pose(armR, 0.45, 0.5, 0.05);
   const spear = new THREE.Group();
   put(spear, cyl(0.013, 0.013, 0.95, 6), std("#5a4028"), 0, 0.2, 0);
-  put(spear, new THREE.ConeGeometry(0.03, 0.09, 6), std(METAL, 0.4, 0.5), 0, 0.71, 0);
+  put(spear, new THREE.ConeGeometry(0.03, 0.09, 6), std(METAL), 0, 0.71, 0);
   put(spear, ell(0.025, 0.03, 0.025), std("#e8e0c8"), 0, 0.64, 0); // binding
   hold(armR, spear, -0.15);
   pose(armL, 0.3, 0.5, 0.15);
@@ -937,7 +944,7 @@ function insect(m: Mats): THREE.Group {
   const h = grp(g, 0, 0.83, -0.05);
   h.rotation.x = 0.35;
   put(h, lathe([[0, -0.05], [0.05, -0.04], [0.06, 0.02], [0.05, 0.1], [0.025, 0.15], [0, 0.16]], { smooth: 16, seg: 16 }), m.body, 0, 0, 0, -0.6);
-  pair((s) => put(h, ell(0.026, 0.03, 0.02), std("#c8a030", 0.2), s * 0.04, 0.0, -0.05)); // eyes
+  pair((s) => put(h, ell(0.026, 0.03, 0.02), std("#c8a030"), s * 0.04, 0.0, -0.05)); // eyes
   put(h, ell(0.03, 0.02, 0.025), m.trim, 0, -0.045, -0.05); // mandibles
   // Folded wings.
   const wing = new THREE.MeshStandardMaterial({ color: "#d8d0b0", transparent: true, opacity: 0.5, side: THREE.DoubleSide, depthWrite: false });
@@ -997,7 +1004,7 @@ function tallDroid(m: Mats, spec: FigureSpec, team: Team, eye = "#ff5a3a"): THRE
   pair((s) => lit(put(h, ell(0.014, 0.014, 0.01), glow(eye), s * 0.025, 0.005, -0.065)));
   put(h, rbox(0.06, 0.012, 0.02, 0.004), m.trim, 0, -0.03, -0.06);
   arm(armR, armL, spec, m, () => rifle(m, 0.5));
-  if (spec.commander) cape(g, std(team.accent, 0.8), 0.78, 0.26, 0.04, 0.5);
+  if (spec.commander) cape(g, std(team.accent), 0.78, 0.26, 0.04, 0.5);
   return g;
 }
 
@@ -1007,9 +1014,9 @@ function grievous(m: Mats, spec: FigureSpec): THREE.Group {
   const sabers = spec.sabers ?? [];
   const g = tallDroid(m, { ...spec, sabers: sabers.slice(0, 2), commander: false }, { color: "", accent: "" }, "#ffd040");
   put(g, lathe([[0.04, 0.6], [0.12, 0.64], [0.13, 0.7], [0.1, 0.75]], { depth: 0.65, smooth: 10 }), m.body); // ribcage plate
-  put(g, rbox(0.1, 0.05, 0.08, 0.02), std("#5a3a4a", 0.6), 0, 0.5, 0); // gut sac
+  put(g, rbox(0.1, 0.05, 0.08, 0.02), std("#5a3a4a"), 0, 0.5, 0); // gut sac
   put(g, sweep([[-0.13, 0.8, 0.02], [0, 0.83, 0.07], [0.13, 0.8, 0.02]], 0.03, 0.03, 12, 8), m.trim); // collar
-  cape(g, std("#2a2830", 0.8), 0.82, 0.3, 0.02, 0.62);
+  cape(g, std("#2a2830"), 0.82, 0.3, 0.02, 0.62);
   const lower = new THREE.Group();
   const [armR, armL] = rig(lower, {
     hipY: 0.47, hipX: 0, shoulderY: 0.7, shoulderX: 0.12, thigh: 0, shin: 0, upper: 0.026, fore: 0.024,
@@ -1024,7 +1031,7 @@ function grievous(m: Mats, spec: FigureSpec): THREE.Group {
 // Yoda: knee high, a big head with long ears, a short robe.
 function yoda(m: Mats, spec: FigureSpec): THREE.Group {
   const g = new THREE.Group();
-  const skin = std("#8aa35a", 0.75);
+  const skin = std("#8aa35a");
   const [armR, armL] = rig(g, {
     hipY: 0.28, hipX: 0, shoulderY: 0.5, shoulderX: 0.12, thigh: 0, shin: 0, upper: 0.04, fore: 0.035,
     legMat: m.body, armMat: m.body, handMat: skin, noLegs: true, reach: 1.3,
@@ -1038,12 +1045,12 @@ function yoda(m: Mats, spec: FigureSpec): THREE.Group {
   put(h, ell(0.12, 0.1, 0.11), skin);
   put(h, ell(0.07, 0.04, 0.05), skin, 0, -0.06, -0.06); // mouth and chin
   pair((s) => {
-    put(h, ell(0.026, 0.022, 0.012), std("#3a2a1a", 0.2), s * 0.045, 0.0, -0.1);
+    put(h, ell(0.026, 0.022, 0.012), std("#3a2a1a"), s * 0.045, 0.0, -0.1);
     put(h, ell(0.035, 0.012, 0.012), skin, s * 0.045, 0.025, -0.095); // brow
     // Ears sweep out and up, tapering to a point.
     put(h, sweep([[s * 0.1, 0.0, 0.01], [s * 0.18, 0.02, 0.02], [s * 0.26, 0.05, 0.03]], 0.035, 0.006, 10, 8).scale(1, 1, 0.5), skin);
   });
-  put(h, dome(0.11, 0.09, 0.105, 0, PI * 0.3), std("#d8d8d0", 0.9), 0, 0.012, 0.01); // wisps of hair
+  put(h, dome(0.11, 0.09, 0.105, 0, PI * 0.3), std("#d8d8d0"), 0, 0.012, 0.01); // wisps of hair
   arm(armR, armL, spec, m);
   // Blade held out to the side so it doesn't hide the face.
   if (armR.hand.children.length > 1) {
@@ -1087,11 +1094,11 @@ function droideka(m: Mats): THREE.Group {
 function astromech(m: Mats): THREE.Group {
   const g = new THREE.Group();
   put(g, lathe([[0.12, 0.12], [0.15, 0.18], [0.155, 0.56], [0.152, 0.6]], { smooth: 8, seg: 24 }), m.body);
-  put(g, dome(0.155, 0.13, 0.155, 0, PI / 2, 24), std(METAL, 0.25, 0.7), 0, 0.6, 0);
+  put(g, dome(0.155, 0.13, 0.155, 0, PI / 2, 24), std(METAL), 0, 0.6, 0);
   put(g, new THREE.TorusGeometry(0.153, 0.008, 6, 28), m.dark, 0, 0.6, 0, PI / 2);
   // Dome panels and eye.
   put(g, rbox(0.07, 0.045, 0.03, 0.008), m.trim, 0, 0.67, -0.13, -0.5);
-  put(g, ell(0.022, 0.022, 0.012), std("#141518", 0.1), 0.05, 0.69, -0.12, -0.5);
+  put(g, ell(0.022, 0.022, 0.012), std("#141518"), 0.05, 0.69, -0.12, -0.5);
   lit(put(g, ell(0.008, 0.008, 0.006), glow("#ff3a2a"), -0.05, 0.66, -0.135));
   for (const [x, y, w, h] of [[0, 0.45, 0.08, 0.14], [-0.07, 0.32, 0.04, 0.12], [0.07, 0.32, 0.04, 0.12], [0, 0.24, 0.12, 0.03]])
     put(g, rbox(w, h, 0.02, 0.006), m.trim, x, y, -0.14);
@@ -1128,10 +1135,10 @@ function probe(m: Mats): THREE.Group {
 
 function rider(style: FigureStyle, mount: MountKind, pilot: FigureSpec | undefined, team: Team): THREE.Group {
   const g = new THREE.Group();
-  const skin = std(mount === "tauntaun" ? "#e4dccb" : mount === "boga" ? "#5f8a4a" : "#8a7a52", 0.8);
-  const belly = std(mount === "tauntaun" ? "#c8bca4" : mount === "boga" ? "#c8b878" : "#b0a070", 0.8);
-  const horn = std("#e8dcc0", 0.5);
-  const leather = std("#5a3a22", 0.7);
+  const skin = std(mount === "tauntaun" ? "#e4dccb" : mount === "boga" ? "#5f8a4a" : "#8a7a52");
+  const belly = std(mount === "tauntaun" ? "#c8bca4" : mount === "boga" ? "#c8b878" : "#b0a070");
+  const horn = std("#e8dcc0");
+  const leather = std("#5a3a22");
   // A jointed leg: thigh, a backward-bent shin, a clawed foot.
   const leg = (x: number, y: number, z: number, len: number, r: number, s: number, digi = false) => {
     const hip = pivot(g, x, y, z, s);
@@ -1178,7 +1185,7 @@ function rider(style: FigureStyle, mount: MountKind, pilot: FigureSpec | undefin
     put(h, ell(0.06, 0.035, 0.08), belly, 0, -0.04, -0.06);
     pair((s) => put(h, ell(0.014, 0.014, 0.01), std("#1a1410"), s * 0.06, 0.025, -0.06));
     if (big) {
-      const frill = put(g, new THREE.CircleGeometry(0.16, 20, 0, PI).rotateZ(-PI / 2).rotateY(PI / 2).scale(1, 1, 0.6), std("#d0763a", 0.8), 0, end[1] + 0.06, end[2] + 0.08);
+      const frill = put(g, new THREE.CircleGeometry(0.16, 20, 0, PI).rotateZ(-PI / 2).rotateY(PI / 2).scale(1, 1, 0.6), std("#d0763a"), 0, end[1] + 0.06, end[2] + 0.08);
       (frill.material as THREE.MeshStandardMaterial).side = THREE.DoubleSide;
       for (let i = 0; i < 6; i++) put(g, new THREE.ConeGeometry(0.02, 0.07, 6), std("#d0763a"), 0, 0.56 - i * 0.012, -0.15 + i * 0.08, -0.2);
     } else {
@@ -1215,10 +1222,10 @@ function seated(style: FigureStyle, pilot: FigureSpec | undefined, team: Team, s
 function vehicle(style: FigureStyle, frame: VehicleFrame, pilot: FigureSpec | undefined, team: Team): THREE.Group {
   const g = new THREE.Group();
   const c = STYLE_COLORS[style];
-  const hull = std(team.color, 0.5, 0.15);
-  const trim = std(style === "pawn" ? team.accent : c.trim, 0.5, 0.15);
-  const dark = std(c.dark, 0.55, 0.2);
-  const metal = std(METAL, 0.35, 0.6);
+  const hull = std(team.color);
+  const trim = std(style === "pawn" ? team.accent : c.trim);
+  const dark = std(c.dark);
+  const metal = std(METAL);
   const engine = glow("#7ad0ff");
   // A gun barrel pointing forward from (x, y, z), with a muzzle.
   const gun = (x: number, y: number, z: number, len: number, r = 0.025) => {
@@ -1263,7 +1270,7 @@ function vehicle(style: FigureStyle, frame: VehicleFrame, pilot: FigureSpec | un
     case "landspeeder": {
       // A rounded tub with a pointed nose, windscreen and three engines.
       put(g, plate([[-0.2, -0.42], [-0.24, -0.1], [-0.22, 0.2], [-0.1, 0.42], [0, 0.46], [0.1, 0.42], [0.22, 0.2], [0.24, -0.1], [0.2, -0.42]], 0.12, 0.04), hull, 0, 0.16, 0);
-      put(g, plate([[-0.16, -0.25], [-0.17, 0.08], [0, 0.12], [0.17, 0.08], [0.16, -0.25]], 0.02, 0.01), std("#2a2420", 0.9), 0, 0.29, 0.04);
+      put(g, plate([[-0.16, -0.25], [-0.17, 0.08], [0, 0.12], [0.17, 0.08], [0.16, -0.25]], 0.02, 0.01), std("#2a2420"), 0, 0.29, 0.04);
       const screen = put(g, lathe([[0.2, 0], [0.19, 0.07]], { phi: PI * 0.72, arc: PI * 0.56, seg: 16 }), glass(), 0, 0.3, 0.05);
       (screen.material as THREE.MeshStandardMaterial).side = THREE.DoubleSide;
       for (const [x, y] of [[-0.25, 0.27], [0.25, 0.27], [0, 0.4]]) {
@@ -1321,7 +1328,7 @@ function vehicle(style: FigureStyle, frame: VehicleFrame, pilot: FigureSpec | un
       } else {
         // Chin-forward head with viewports, cheek guns and a top hatch.
         put(g, prism([[0.26, -0.06], [0.14, -0.12], [-0.18, -0.12], [-0.24, 0.0], [-0.2, 0.11], [0.12, 0.13], [0.24, 0.04]], 0.32, 0.03), hull, 0, 0.84, 0);
-        put(g, rbox(0.24, 0.035, 0.02, 0.01), std("#141518", 0.2), 0, 0.88, -0.24);
+        put(g, rbox(0.24, 0.035, 0.02, 0.01), std("#141518"), 0, 0.88, -0.24);
         put(g, lathe([[0, 0], [0.07, 0], [0.065, 0.03], [0, 0.035]], { seg: 16 }), trim, 0, 0.97, 0.04);
         pair((s) => {
           put(g, rbox(0.06, 0.07, 0.12, 0.015), dark, s * 0.2, 0.84, -0.04);
@@ -1378,15 +1385,15 @@ function vehicle(style: FigureStyle, frame: VehicleFrame, pilot: FigureSpec | un
 
 function emplacement(style: FigureStyle, team: Team): THREE.Group {
   const g = new THREE.Group();
-  const dark = std(STYLE_COLORS[style].dark, 0.5, 0.2);
-  const metal = std(METAL, 0.35, 0.6);
+  const dark = std(STYLE_COLORS[style].dark);
+  const metal = std(METAL);
   // Tripod-mounted heavy blaster with a power generator.
   pair((s) => put(g, sweep([[0, 0.3, -0.1], [s * 0.18, 0.12, -0.18], [s * 0.24, 0.0, -0.2]], 0.015, 0.012, 8, 6), metal));
   put(g, sweep([[0, 0.3, -0.1], [0, 0.12, 0.08], [0, 0.0, 0.12]], 0.015, 0.012, 8, 6), metal);
-  put(g, rbox(0.1, 0.08, 0.2, 0.02), std(team.color, 0.5, 0.15), 0, 0.33, -0.12);
+  put(g, rbox(0.1, 0.08, 0.2, 0.02), std(team.color), 0, 0.33, -0.12);
   put(g, cyl(0.03, 0.025, 0.5, 12), dark, 0, 0.35, -0.42, PI / 2);
   put(g, cyl(0.04, 0.04, 0.06, 12), metal, 0, 0.35, -0.67, PI / 2);
-  put(g, rbox(0.18, 0.14, 0.12, 0.03), std(team.color, 0.5, 0.15), 0.26, 0.07, 0.15);
+  put(g, rbox(0.18, 0.14, 0.12, 0.03), std(team.color), 0.26, 0.07, 0.15);
   put(g, sweep([[0.2, 0.12, 0.1], [0.1, 0.18, 0.0], [0.03, 0.3, -0.08]], 0.01, 0.01, 10, 6), dark); // power cable
   const crew = figure(style, {}, team);
   crew.scale.setScalar(0.62);
@@ -1404,15 +1411,28 @@ function emplacement(style: FigureStyle, team: Team): THREE.Group {
 
 // --- Helpers ------------------------------------------------------------------
 
-export function std(color: string, roughness = 0.6, metalness = 0): THREE.MeshStandardMaterial {
-  return new THREE.MeshStandardMaterial({ color, roughness, metalness });
+// The models are cel shaded, like an animated show: light falls in a few
+// flat bands instead of a smooth gradient. Gloss and metal are ignored.
+let bands: THREE.DataTexture | null = null;
+function toonBands(): THREE.DataTexture {
+  if (!bands) {
+    bands = new THREE.DataTexture(new Uint8Array([90, 90, 90, 255, 170, 170, 170, 255, 255, 255, 255, 255]), 3, 1);
+    bands.minFilter = bands.magFilter = THREE.NearestFilter;
+    bands.needsUpdate = true;
+  }
+  return bands;
 }
 
-// Glowing bits (blades, shields, eyes, wings) neither cast nor take shadows.
+export function std(color: string): THREE.MeshToonMaterial {
+  return new THREE.MeshToonMaterial({ color, gradientMap: toonBands() });
+}
+
+// Glowing bits (blades, shields, eyes, wings) and ink outlines neither cast
+// nor take shadows.
 export function shadows(g: THREE.Object3D) {
   g.traverse((o) => {
     if (!(o as THREE.Mesh).isMesh) return;
-    const lit = !o.userData.glow;
+    const lit = !o.userData.glow && !o.userData.outline;
     o.castShadow = lit;
     o.receiveShadow = lit;
   });
@@ -1434,6 +1454,7 @@ function bake(root: THREE.Object3D) {
     inv.copy(top.matrixWorld).invert();
     const buckets = new Map<string, { mat: THREE.Material; glow: boolean; geos: THREE.BufferGeometry[]; meshes: THREE.Mesh[] }>();
     const pivots: THREE.Object3D[] = [];
+    const inked: THREE.BufferGeometry[] = [];
     const walk = (o: THREE.Object3D) => {
       for (const c of o.children) {
         if (c.userData.swing) { pivots.push(c); continue; }
@@ -1447,6 +1468,12 @@ function bake(root: THREE.Object3D) {
         geo.applyMatrix4(rel.multiplyMatrices(inv, mesh.matrixWorld));
         b.geos.push(geo);
         b.meshes.push(mesh);
+        const mat = mesh.material;
+        if (!c.userData.glow && !mat.transparent && mat.side === THREE.FrontSide) {
+          const ink = new THREE.BufferGeometry();
+          ink.setAttribute("position", geo.attributes.position);
+          inked.push(ink);
+        }
       }
     };
     walk(top);
@@ -1458,9 +1485,27 @@ function bake(root: THREE.Object3D) {
       mesh.userData.glow = b.glow;
       top.add(mesh);
     }
+    if (inked.length) top.add(outline(inked));
     for (const p of pivots) visit(p);
   };
   visit(root);
+}
+
+const INK = 0.0085;
+
+// A cartoon ink line: the shapes again, pushed out along their smoothed
+// normals and drawn back faces only in black, so a dark rim shows round the
+// silhouette and wherever one part overlaps another.
+function outline(geos: THREE.BufferGeometry[]): THREE.Mesh {
+  const g = mergeVertices(mergeGeometries(geos), 1e-4);
+  geos.forEach((x) => x.dispose());
+  g.computeVertexNormals();
+  const p = g.attributes.position, n = g.attributes.normal;
+  for (let i = 0; i < p.count; i++) p.setXYZ(i, p.getX(i) + n.getX(i) * INK, p.getY(i) + n.getY(i) * INK, p.getZ(i) + n.getZ(i) * INK);
+  g.deleteAttribute("normal");
+  const m = new THREE.Mesh(g, new THREE.MeshBasicMaterial({ color: "#0a0a0c", side: THREE.BackSide }));
+  m.userData.outline = true;
+  return m;
 }
 
 // Scale a unit-sized model so its footprint matches and its height is
