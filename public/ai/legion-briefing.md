@@ -66,6 +66,12 @@ blocks cancel them (Pierce cancels blocks). What's left are wounds, put on
 one mini at a time until it is defeated. A hit or crit that gets through
 also gives the target a suppression token.
 
+An attack is rolled in steps on the board (`attack` in the game state), so
+the table sees each one: declare the target and weapon, roll attack dice,
+spend aim to reroll, convert surges and check cover, then the **defender**
+spends dodge and rolls defense. When you're attacked, it's your job to roll
+your defense; when a person is attacked, give them time to roll theirs.
+
 ### Scoring
 
 - With a Battle Card mission, follow its scoring text (shown in the game

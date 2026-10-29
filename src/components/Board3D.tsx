@@ -17,6 +17,8 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { decodeModel } from "../lib/stlModel";
 import { buildModel, type PieceModel } from "./pieceModels";
+import { createFx3D } from "./boardFx3d";
+import type { FxFrame } from "../lib/attackFx";
 
 export type { FigureBuild, FigureSpec, FigureStyle, MountKind, PieceModel, VehicleFrame } from "./pieceModels";
 
@@ -106,6 +108,8 @@ type Props = {
   /** Describe a move of (dx, dy) board units from where the piece started;
    * tone colours the readout (dash = past its speed but within double). */
   measure?: (id: string, dx: number, dy: number) => MoveMeasure;
+  /** Attack effects playing now (bolts, flashes, jolts), board units. */
+  effects?: { frame: (now: number) => FxFrame | null } | null;
 };
 
 export type MoveMeasure = { label: string; tone: "ok" | "dash" | "over" };
@@ -370,6 +374,16 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
   function build(p: Props) {
     if (disposed) return;
     lastProps = p;
+    // A piece that just left the board may be a mini an attack defeated:
+    // keep it a moment so the effects can knock it over.
+    const staying = new Set(p.pieces.map((pc) => pc.id));
+    for (const [id, pg] of pieceGroups) {
+      if (staying.has(id) || dying.has(id)) continue;
+      content.remove(pg.g);
+      pg.g.visible = false;
+      fxPieces.add(pg.g);
+      dying.set(id, { g: pg.g, since: performance.now(), claimed: false, h: pg.rigY + pg.pc.modelHeight * 0.6 });
+    }
     scene.remove(content);
     disposeGroup(content);
     content = new THREE.Group();
@@ -861,11 +875,69 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
     controls.update();
   }
 
+  // --- Attack effects ---------------------------------------------------
+  const fx3d = createFx3D(scene);
+  const fxPieces = new THREE.Group();
+  scene.add(fxPieces);
+  const dying = new Map<string, { g: THREE.Object3D; since: number; claimed: boolean; h: number }>();
+  const jolted = new Set<string>();
+  function tickFx() {
+    const now = performance.now();
+    const fr = lastProps?.effects?.frame(now) ?? null;
+    fx3d.update(fr, {
+      wx, wz,
+      heightOf: (id) => {
+        const pg = pieceGroups.get(id);
+        if (pg) return pg.g.position.y + pg.rigY + pg.pc.modelHeight * 0.6;
+        return dying.get(id)?.h ?? null;
+      },
+    });
+    // Jolts: shove the piece along the shot and tip it back.
+    const jerks = fr?.jerks ?? {};
+    for (const id of [...jolted, ...Object.keys(jerks)]) {
+      const pg = pieceGroups.get(id);
+      if (!pg || id === control?.id || id === drag?.id) { jolted.delete(id); continue; }
+      const j = jerks[id];
+      const dx = j?.dx ?? 0, dy = j?.dy ?? 0, tilt = j?.tilt ?? 0;
+      pg.g.position.x = wx(pg.x + dx);
+      pg.g.position.z = wz(pg.y + dy);
+      // The tip is about the shot's direction, in the piece's own frame.
+      const yaw = pg.g.rotation.y;
+      const wxd = j?.dirX ?? 0, wzd = j?.dirY ?? 0;
+      const lx = wxd * Math.cos(yaw) - wzd * Math.sin(yaw), lz = wxd * Math.sin(yaw) + wzd * Math.cos(yaw);
+      pg.rig.rotation.x = lz * tilt;
+      pg.rig.rotation.z = -lx * tilt;
+      if (j) jolted.add(id); else jolted.delete(id);
+    }
+    // Defeated minis topple and sink away once their last hit lands.
+    const ghosts = new Map((fr?.ghosts ?? []).map((g) => [g.id, g]));
+    for (const [id, d] of dying) {
+      const gh = ghosts.get(id);
+      if (gh) {
+        d.claimed = true;
+        d.g.visible = true;
+        const ang = gh.fall * Math.PI * 0.48;
+        // Fall away from the attacker (the shot's direction).
+        const dir = fr?.jerks[id] ? { x: fr.jerks[id]!.dirX, y: fr.jerks[id]!.dirY } : null;
+        if (dir) (d.g.userData.fallDir = dir);
+        const fd = (d.g.userData.fallDir as { x: number; y: number } | undefined) ?? { x: 1, y: 0 };
+        d.g.rotation.set(fd.y * ang, d.g.rotation.y, -fd.x * ang, "YXZ");
+        d.g.position.y = -(1 - gh.alpha) * d.h * 1.2;
+        d.g.scale.setScalar(0.3 + 0.7 * gh.alpha);
+      } else if (d.claimed || now - d.since > 600) {
+        fxPieces.remove(d.g);
+        disposeGroup(d.g);
+        dying.delete(id);
+      }
+    }
+  }
+
   let raf = 0;
   const loop = () => {
     raf = requestAnimationFrame(loop);
     const dt = Math.min(0.05, clock.getDelta());
     tickControl(dt);
+    tickFx();
     controls.update();
     renderer.render(scene, camera);
     if (labelAt) {
@@ -918,6 +990,8 @@ function createScene(host: HTMLDivElement, onPick: (id: string | null) => void):
       renderer.domElement.removeEventListener("wheel", onWheelAny);
       controls.dispose();
       disposeGroup(content);
+      disposeGroup(fxPieces);
+      fx3d.dispose();
       for (const g of stlGeoms.values()) g?.dispose();
       renderer.dispose();
       renderer.domElement.remove();

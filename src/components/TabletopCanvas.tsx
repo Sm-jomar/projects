@@ -4,6 +4,8 @@ import { moveToken } from "../lib/squads";
 import { SquadMarkers } from "./SquadOverlay";
 import { StatusChips } from "./StatusChips";
 import { statusChips } from "../lib/statusTokens";
+import { useFxFrame, type FxPlay } from "./useAttackFx";
+import type { FxFrame } from "../lib/attackFx";
 import {
   territories, templateAnchor, templatePoints, TEMPLATE_WIDTH_INCHES,
   rangeBand, RANGE_INCHES, MAX_RANGE,
@@ -84,11 +86,13 @@ type Props = {
   readOnly?: boolean;
   /** Ghost-replay highlight of a past move (inches), or null. */
   ghost?: { from: { x: number; y: number }; to: { x: number; y: number }; size?: number; color?: string } | null;
+  /** Blaster effects of an attack playing now. */
+  fx?: FxPlay | null;
 };
 
 export function TabletopCanvas({
   state, onState, tool, snapInches, showGrid, selectedId, onSelect,
-  onDropPayload, onDragStart, onToggleActivated, onTemplateUpdate, readOnly = false, ghost = null,
+  onDropPayload, onDragStart, onToggleActivated, onTemplateUpdate, readOnly = false, ghost = null, fx = null,
 }: Props) {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const svgRef = useRef<SVGSVGElement | null>(null);
@@ -430,6 +434,7 @@ export function TabletopCanvas({
             const badgeFont = 7 / view.scale;
             return (
               <g key={tk.id} data-item="token"
+                 data-token-id={tk.id}
                  onPointerDown={(e) => onItemPointerDown(e, tk, "token")}
                  onDoubleClick={(e) => { e.stopPropagation(); if (!readOnly) onToggleActivated?.(tk.id); }}
                  style={{ cursor: "grab" }}>
@@ -572,6 +577,8 @@ export function TabletopCanvas({
             );
           })()}
 
+          {fx && <FxLayer play={fx} scale={view.scale} />}
+
           {/* Ghost replay: origin, path and destination of a past move. */}
           {ghost && (() => {
             const sz = ghost.size ?? 1;
@@ -621,4 +628,88 @@ export function TabletopCanvas({
       </div>
     </div>
   );
+}
+
+const U = UNITS_PER_INCH;
+
+// Bolts (a soft glow under a bright core), impact flashes and falling minis.
+// Runs its own animation frames so the rest of the board doesn't re-render;
+// the jolted tokens are moved directly.
+function FxLayer({ play, scale }: { play: FxPlay; scale: number }) {
+  const frame = useFxFrame(play);
+  const ref = useRef<SVGGElement | null>(null);
+  const moved = useRef(new Set<string>());
+  useEffect(() => {
+    const svg = ref.current?.ownerSVGElement;
+    if (!svg) return;
+    const jerks = frame?.jerks ?? {};
+    for (const id of new Set([...moved.current, ...Object.keys(jerks)])) {
+      const el = svg.querySelector<SVGGElement>(`[data-token-id="${CSS.escape(id)}"]`);
+      const j = jerks[id];
+      if (el) el.style.transform = j ? jerkTransform(j) : "";
+      if (j) moved.current.add(id); else moved.current.delete(id);
+    }
+  }, [frame]);
+  useEffect(() => () => {
+    // Put everything back if the show is cut short.
+    const svg = ref.current?.ownerSVGElement;
+    for (const id of moved.current) {
+      const el = svg?.querySelector<SVGGElement>(`[data-token-id="${CSS.escape(id)}"]`);
+      if (el) el.style.transform = "";
+    }
+  }, []);
+  if (!frame) return <g ref={ref} />;
+  const px = (n: number) => n / scale;
+  return (
+    <g ref={ref} pointerEvents="none" className="tt-fx">
+      <defs>
+        <filter id="tt-fx-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation={px(2.5)} />
+        </filter>
+      </defs>
+      {frame.ghosts.map((g) => (
+        <g key={g.id} opacity={g.alpha}
+           transform={`translate(${g.x * U} ${g.y * U}) rotate(${g.fall * 70}) scale(${1 - g.fall * 0.35})`}>
+          <clipPath id={`tt-fx-clip-${g.id}`}><circle r={(g.size * U) / 2} /></clipPath>
+          <circle r={(g.size * U) / 2} fill={g.portrait ? "#0e0f12" : FACTION_FILL[g.color as FactionColor] ?? "#444"}
+                  stroke={g.fall > 0 ? "#ff6b4a" : FACTION_STROKE[g.color as FactionColor] ?? "#888"} strokeWidth={px(1.5)} />
+          {g.portrait && (
+            <image href={g.portrait} x={(-g.size * U) / 2} y={(-g.size * U) / 2} width={g.size * U} height={g.size * U}
+                   preserveAspectRatio="xMidYMin slice" clipPath={`url(#tt-fx-clip-${g.id})`} />
+          )}
+          {g.fall > 0 && (
+            <g stroke="#ff6b4a" strokeWidth={px(2)}>
+              <line x1={-g.size * U * 0.3} y1={-g.size * U * 0.3} x2={g.size * U * 0.3} y2={g.size * U * 0.3} />
+              <line x1={g.size * U * 0.3} y1={-g.size * U * 0.3} x2={-g.size * U * 0.3} y2={g.size * U * 0.3} />
+            </g>
+          )}
+        </g>
+      ))}
+      {frame.bolts.map((b, i) => (
+        <g key={`b${i}`}>
+          <line x1={b.x1 * U} y1={b.y1 * U} x2={b.x2 * U} y2={b.y2 * U} stroke={b.color}
+                strokeWidth={px(7)} strokeLinecap="round" opacity={0.75} filter="url(#tt-fx-glow)" />
+          <line x1={b.x1 * U} y1={b.y1 * U} x2={b.x2 * U} y2={b.y2 * U} stroke={b.color}
+                strokeWidth={px(3)} strokeLinecap="round" />
+          <line x1={b.x1 * U} y1={b.y1 * U} x2={b.x2 * U} y2={b.y2 * U} stroke="#fff"
+                strokeWidth={px(1.2)} strokeLinecap="round" opacity={0.9} />
+        </g>
+      ))}
+      {frame.flashes.map((f, i) => (
+        <g key={`f${i}`} opacity={f.alpha}>
+          <circle cx={f.x * U} cy={f.y * U} r={f.r * U * 1.6} fill={f.color} opacity={0.45} filter="url(#tt-fx-glow)" />
+          <circle cx={f.x * U} cy={f.y * U} r={f.r * U * 0.6} fill="#fff" opacity={0.85} />
+          {(f.kind === "block" || f.kind === "armor") && (
+            <circle cx={f.x * U} cy={f.y * U} r={f.r * U * 1.3} fill="none" stroke={f.color} strokeWidth={px(2)} />
+          )}
+        </g>
+      ))}
+    </g>
+  );
+}
+
+/** A jolt: shoved along the shot, tipped and squashed a little. */
+function jerkTransform(j: FxFrame["jerks"][string]): string {
+  const s = 1 - Math.min(0.25, Math.abs(j.tilt) * 0.35);
+  return `translate(${j.dx * U}px, ${j.dy * U}px) rotate(${j.tilt * 25}deg) scale(${s})`;
 }
