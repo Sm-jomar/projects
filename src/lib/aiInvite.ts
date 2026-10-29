@@ -72,6 +72,9 @@ export function aiPermissions(app: RoomApp, role: AiRole, board: boolean): AiPer
       { label: "Play a free side (blue or red), else watch", allowed: true },
       { label: "Move units, terrain and tokens on the board", allowed: canBoard },
       { label: "Roll dice for the table", allowed: true },
+      { label: "Build its own unit list, or use a saved or imported one", allowed: true },
+      { label: "Pick, lock in and reveal its side's command cards", allowed: true },
+      { label: "Draw and give out its side's order tokens", allowed: true },
       { label: "Change its name or side", allowed: false },
       { label: "Create or revoke AI invites", allowed: false },
     ];

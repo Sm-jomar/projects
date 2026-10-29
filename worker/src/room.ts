@@ -314,8 +314,24 @@ export class RoomDO extends DurableObject<RoomEnv> {
         // guard — the client also locks its UI, but this stops a
         // tampered client too.
         if (att.color === "spectator") return;
-        // An AI only changes the board if its invite allows it.
-        if (att.ai && !att.aiBoard) { this.opDenied(ws, "state", "ai-no-board"); return; }
+        // An AI only changes the board if its invite allows it. A Legion AI
+        // player without that still plays its own side's command cards and
+        // order tokens: keep just those parts of its snapshot.
+        if (att.ai && !att.aiBoard) {
+          const stored = await this.ctx.storage.get(STATE_KEY);
+          const merged = att.app === "legion" && (att.color === "blue" || att.color === "red")
+            ? mergeLegionSide(stored, msg.state, att.color) : null;
+          if (!merged) { this.opDenied(ws, "state", "ai-no-board"); return; }
+          const size = JSON.stringify(merged).length;
+          if (size > MAX_STATE_BYTES) {
+            this.send(ws, { t: "stateRejected", reason: "too-large", bytes: size, max: MAX_STATE_BYTES });
+            return;
+          }
+          await this.ctx.storage.put(STATE_KEY, merged);
+          // The sender gets the merged board too, so its board changes undo.
+          this.broadcast({ t: "state", state: merged, from: att.id }, null);
+          break;
+        }
         // Persist + relay. Cap stored size so a bad client can't blow up
         // the object's storage.
         const json = JSON.stringify(msg.state);
@@ -900,4 +916,42 @@ function defaultName(color: string): string {
   if (color === "red") return "Red player";
   if (color === "spectator") return "Spectator";
   return "Player"; // D&D hex-colored editor
+}
+
+type Obj = Record<string, unknown>;
+const isObj = (v: unknown): v is Obj => !!v && typeof v === "object" && !Array.isArray(v);
+
+// Which side a Legion token belongs to (mirrors tokenSide in src/lib/tabletop.ts).
+function legionTokenSide(t: Obj): string {
+  if (t.side === "blue" || t.side === "red") return t.side;
+  if (t.color === "rebels" || t.color === "republic") return "blue";
+  if (t.color === "imperials" || t.color === "separatists") return "red";
+  return "neutral";
+}
+
+/** The stored Legion board with only one side's command hand, order token
+ * pool, priority roll-off and units' order flags taken from `incoming`.
+ * Null when there's no board to merge into. */
+export function mergeLegionSide(stored: unknown, incoming: unknown, side: "blue" | "red"): Obj | null {
+  if (!isObj(stored) || !isObj(incoming)) return null;
+  const out: Obj = { ...stored };
+  const hands = isObj(stored.hands) ? stored.hands : {};
+  const inHands = isObj(incoming.hands) ? incoming.hands : {};
+  if (isObj(inHands[side])) out.hands = { ...hands, [side]: inHands[side] };
+  const orders = isObj(stored.orders) ? stored.orders : { blue: null, red: null, turn: null };
+  if (isObj(incoming.orders)) {
+    const o = incoming.orders;
+    const turn = o.turn === "blue" || o.turn === "red" ? o.turn : null;
+    out.orders = { ...orders, [side]: isObj(o[side]) ? o[side] : null, turn };
+  }
+  if ("priorityRoll" in incoming) out.priorityRoll = isObj(incoming.priorityRoll) ? incoming.priorityRoll : null;
+  if (Array.isArray(stored.tokens) && Array.isArray(incoming.tokens)) {
+    const ordered = new Map<unknown, boolean>();
+    for (const t of incoming.tokens) if (isObj(t)) ordered.set(t.id, t.ordered === true);
+    out.tokens = stored.tokens.map((t) => {
+      if (!isObj(t) || legionTokenSide(t) !== side || !ordered.has(t.id)) return t;
+      return { ...t, ordered: ordered.get(t.id) };
+    });
+  }
+  return out;
 }

@@ -42,7 +42,14 @@ Revoking deletes the invite, disconnects anyone using it (`denied`
 | Change its name or colour/side | ✕ | ✕ | ✕ |
 | Create or revoke AI invites | ✕ | ✕ | ✕ |
 
-A Legion AI takes a free side (blue, then red), else watches. The labels
+A Legion AI takes a free side (blue, then red), else watches. Even without
+"move pieces" it plays its own side: it can build its own unit list (the
+tabletop offers **Build my own list ↗**, or it picks a saved or imported
+one), pick and lock in command cards, and draw and give out order tokens.
+The room keeps only those parts of such an AI's board snapshot (its
+side's `hands`, `orders`, the `orders.turn`, `priorityRoll` and the
+`ordered` flag on its own units; `mergeLegionSide` in `room.ts`) and sends
+the merged board back to everyone, the AI included. The labels
 shown in the app come from `aiPermissions()` in `src/lib/aiInvite.ts`;
 keep them in step with the checks in `room.ts`.
 
@@ -70,6 +77,29 @@ Client → server (people only):
 Refusals are `{t:"opDenied", op, reason}` with reasons `not-allowed`,
 `not-dm`, `not-dnd`, `ai-role`, `ai-fixed`, `ai-no-board` and
 `ai-too-many` (texts in `AI_DENIED_TEXT`).
+
+## Command cards and order tokens (Legion)
+
+All of it lives in the board snapshot (`TabletopState`, see
+`src/lib/tabletop.ts`):
+
+- `hands.blue` / `hands.red`: `{cards, thisRound, locked?, listName?}`.
+  Each card is `{pips, played, id?, name?}`; `id` is a command card from
+  `src/data/command-cards.json` when the hand was picked for a list
+  (six cards, two of each pip value, plus Standing Orders), and missing
+  for the plain 1,1,2,2,3,3,4 pip deck.
+- Each round a side picks a card, then sets `locked: true` with
+  `thisRound: null`. The chosen index stays with that player (the app keeps
+  it in localStorage); nothing in the board says which card it is. Once
+  both sides are locked, each side sets its own `thisRound` to reveal.
+  An adapter must do the same: lock first, reveal only after the other
+  side is locked.
+- Priority: fewer pips wins (`prioritySide` in `src/lib/orderPool.ts`).
+  On a tie, `priorityRoll: {blue, red}` holds the roll-off.
+- End round discards each revealed card (`played: true`) except Standing
+  Orders, which goes back to hand, and clears `locked`/`thisRound`.
+- `orders`: each side's order token pool and whose draw it is (see
+  `src/lib/orderPool.ts`).
 
 ## Not built yet
 

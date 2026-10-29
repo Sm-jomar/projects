@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import {
-  COMMAND_BY_ID, HAND_PIPS, PER_PIP, STANDING_ORDERS, cardsForFaction, meetsRequirement,
+  COMMAND_BY_ID, HAND_PIPS, PER_PIP, STANDING_ORDERS, cardsForFaction, handComplete, meetsRequirement,
   type CommandCardDef, type HandArmy,
 } from "../lib/commandCards";
 import { CardText } from "./UnitRules";
@@ -61,11 +61,14 @@ export function CommandHandPanel({ army, cards, onChange }: {
   );
 }
 
-function CommandPicker({ army, cards, onChange, onClose }: {
+export function CommandPicker({ army, cards, onChange, onClose, onDone, doneLabel }: {
   army: HandArmy;
   cards: string[];
   onChange: (ids: string[]) => void;
   onClose: () => void;
+  /** Shows a confirm button, enabled once the hand is complete. */
+  onDone?: () => void;
+  doneLabel?: string;
 }) {
   const [openId, setOpenId] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
@@ -118,6 +121,12 @@ function CommandPicker({ army, cards, onChange, onClose }: {
         </div>
         <footer className="cmd-picker-foot muted small">
           Card text from Legion Helper. "?" marks a card whose requirement (a clan or affiliation) we can't check for you.
+          {onDone && (
+            <button className="primary cmd-picker-done" disabled={!handComplete(cards)} onClick={onDone}
+              title={handComplete(cards) ? "" : "Pick two cards of each pip value first"}>
+              {doneLabel ?? "Done"}
+            </button>
+          )}
         </footer>
       </div>
     </div>
