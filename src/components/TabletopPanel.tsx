@@ -38,6 +38,10 @@ import { OrderPools } from "./OrderPoolPanel";
 import { CommandHands } from "./CommandHandFan";
 import { buildPool, restartPools, setPool, type Side } from "../lib/orderPool";
 import { InfoDot } from "./InfoDot";
+import { AttackPanel, type AttackDraft } from "./AttackPanel";
+import { useAttackFx } from "./useAttackFx";
+import { boardUnits, canStartAttack, unitOfToken } from "../lib/attack";
+import { logId } from "../lib/auditLog";
 import { cardForUnit } from "../lib/cardLookup";
 import { endRound as endRoundState } from "../lib/round";
 import { FACTIONS, RANK_LABEL, RANK_LIMITS, RANK_ORDER } from "../lib/factions";
@@ -725,6 +729,36 @@ export function TabletopPanel({ onClose }: Props) {
   const canControlOrders = (side: Side) =>
     (!readOnly || cardsOnly) && (online?.status !== "open" || online.you?.color === side);
 
+  // --- Attacks ---------------------------------------------------------------
+  // The attacker's side rolls attack dice and aims, the defender's side
+  // dodges and rolls defense. Online, a side someone else holds (a person
+  // or an AI seat) takes its own steps; an empty side can be played by
+  // whoever is here.
+  const [attackDraft, setAttackDraft] = useState<AttackDraft | null>(null);
+  const attackFx = useAttackFx(state.attack);
+  const canActAttack = (side: Side) => !readOnly && (online?.status !== "open" || online.you?.color === side ||
+    !online.peers.some((p) => p.color === side && p.id !== online.you?.id));
+  const waitingOn = (side: Side) => {
+    const p = online?.peers.find((x) => x.color === side);
+    return p ? `${p.name || (side === "blue" ? "Blue" : "Red")}${p.ai ? " (AI)" : ""}` : side === "blue" ? "Blue" : "Red";
+  };
+  function commitAttack(next: TabletopState) {
+    const a = next.attack;
+    if (a?.stage === "done" && a.text && state.attack?.stage !== "done") {
+      next = { ...next, log: appendLog(next.log, [{ id: logId(), ts: Date.now(), actor: actorRef.current, kind: "dice", text: a.text }]) };
+    }
+    commit(next);
+  }
+  // While picking a target, clicking an enemy unit targets it.
+  function selectOnBoard(id: string | null) {
+    if (attackDraft && id) {
+      const u = unitOfToken(state, id);
+      const att = boardUnits(state).find((x) => x.key === attackDraft.attackerKey);
+      if (u && att && u.side !== att.side) { setAttackDraft({ ...attackDraft, defenderKey: u.key, weapons: null }); return; }
+    }
+    setSelectedId(id);
+  }
+
   function resetGame() {
     if (!confirm("Reset round to 1, zero both VP scores, ready all units, clear all wounds and tokens, and put every command card back in hand? The board layout stays.")) return;
     commit({
@@ -738,6 +772,7 @@ export function TabletopPanel({ onClose }: Props) {
       priorityRoll: null,
       orders: restartPools(state.orders),
       result: null,
+      attack: null,
     });
   }
 
@@ -917,7 +952,8 @@ export function TabletopPanel({ onClose }: Props) {
               {view3d ? (
                 <div className="tt-canvas-wrap board3d-host">
                   <Suspense fallback={<div className="board3d board3d-loading">Loading 3D view…</div>}>
-                    <Legion3D state={state} selectedId={selectedId} onSelect={setSelectedId} showGrid={showGrid}
+                    <Legion3D state={state} selectedId={selectedId} onSelect={selectOnBoard} showGrid={showGrid}
+                              effects={attackFx.play}
                               onUploadModel={readOnly ? undefined : () => modelFileRef.current?.click()}
                               step={snap || 1}
                               onMoveToken={readOnly ? undefined : (id, x, y, run) => {
@@ -945,15 +981,35 @@ export function TabletopPanel({ onClose }: Props) {
                 snapInches={snap}
                 showGrid={showGrid}
                 selectedId={selectedId}
-                onSelect={setSelectedId}
+                onSelect={selectOnBoard}
                 onDropPayload={onDropPayload}
                 onDragStart={() => pushHistory(state)}
                 onToggleActivated={toggleActivated}
                 onTemplateUpdate={updateTemplate}
                 readOnly={readOnly}
                 ghost={ghost}
+                fx={attackFx.play}
               />
               )}
+
+              {/* The attack sequence: declare, roll, aim, dodge, defend. */}
+              {(() => {
+                const selUnit = selectedToken ? unitOfToken(state, selectedToken.id) : undefined;
+                const busy = !!state.attack && state.attack.stage !== "done";
+                const offer = !attackDraft && !busy && selUnit && canStartAttack(state, selUnit) && canActAttack(selUnit.side);
+                return (
+                  <div className="tt-attack-dock">
+                    {offer && (
+                      <button className="tt-attack-start" onClick={() => setAttackDraft({ attackerKey: selUnit!.key, defenderKey: null, weapons: null })}
+                              title="Declare an attack with this unit">
+                        ⚔ Attack with {selUnit!.name}
+                      </button>
+                    )}
+                    <AttackPanel state={state} draft={attackDraft} onDraft={setAttackDraft} onCommit={commitAttack}
+                                 canAct={canActAttack} waitingOn={waitingOn} byName={actor.name} onReplay={attackFx.replay} />
+                  </div>
+                );
+              })()}
 
               {/* Command card hands docked beneath the canvas: pick a
                   hand for your list, then each round lock in a card face

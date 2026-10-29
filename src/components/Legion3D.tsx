@@ -10,6 +10,7 @@ import {
 } from "../lib/tabletop";
 import { unitById } from "../data/catalog";
 import type { Unit } from "../lib/types";
+import type { FxFrame } from "../lib/attackFx";
 
 // Each faction's pieces take the shape of that faction's iconic trooper.
 const FACTION_STYLE: Record<FactionColor, FigureStyle> = {
@@ -134,7 +135,7 @@ function measureMove(tk: Token | undefined, dx: number, dy: number): MoveMeasure
   return { label: `${text} · out of range`, tone: "over" };
 }
 
-export default function Legion3D({ state, selectedId, onSelect, showGrid, onUploadModel, onMoveToken, step }: {
+export default function Legion3D({ state, selectedId, onSelect, showGrid, onUploadModel, onMoveToken, step, effects }: {
   state: TabletopState;
   selectedId: string | null;
   onSelect: (id: string | null) => void;
@@ -146,6 +147,8 @@ export default function Legion3D({ state, selectedId, onSelect, showGrid, onUplo
   onMoveToken?: (id: string, x: number, y: number, run?: { facing: number; live: boolean }) => void;
   /** D-pad step in inches. */
   step?: number;
+  /** An attack's blaster effects playing now. */
+  effects?: { frame: (now: number) => FxFrame | null } | null;
 }) {
   const model = (id?: string) => (id ? state.models?.[id]?.data : undefined);
   const selected = state.tokens.find((t) => t.id === selectedId);
@@ -215,6 +218,7 @@ export default function Legion3D({ state, selectedId, onSelect, showGrid, onUplo
           if (tk) onMoveToken(id, x - tk.size / 2, y - tk.size / 2, run);
         })}
         measure={(id, dx, dy) => measureMove(state.tokens.find((t) => t.id === id), dx, dy)}
+        effects={effects}
       />
       {(selected || selTerrain) && (
         <div className="board3d-info small">

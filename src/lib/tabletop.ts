@@ -6,6 +6,7 @@ import type { TableMusic } from "./media";
 import { missionById, missionTerritories, type MissionId } from "./missions";
 import type { OrderPools } from "./orderPool";
 import { RANK_LABEL } from "./factions";
+import type { AttackSeq } from "./attack";
 import { COMMAND_BY_ID, STANDING_ORDERS, type CommandCardDef } from "./commandCards";
 
 export type GameType = "skirmish" | "standard" | "grand-army" | "custom";
@@ -212,6 +213,8 @@ export type TabletopState = {
   orders?: OrderPools;
   /** Roll-off for priority when both revealed cards have the same pips. */
   priorityRoll?: { blue: number; red: number } | null;
+  /** The attack being rolled now, or the last one (see lib/attack). */
+  attack?: AttackSeq | null;
   /** Set when the game is over (round 6 ended or a side was wiped out). */
   result?: GameResult | null;
 };

@@ -121,6 +121,8 @@ export class AiSeat<S> {
     if (!step) {
       const over = !!this.opts.adapter.over?.(this.state);
       this.setStatus({ activity: over ? "Game over" : "Waiting for the other side", over });
+      const wake = over ? null : this.opts.adapter.wakeIn?.(this.state);
+      if (wake != null) this.schedule(wake);
       return;
     }
     this.busy = true;

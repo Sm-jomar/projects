@@ -61,6 +61,9 @@ export interface GameAdapter<S> {
   next(state: S, ctx: SeatContext): AiStep<S> | null;
   /** Audit-log the change the seat just made, if the game keeps a log. */
   log?(prev: S, next: S, actorName: string): S;
+  /** While waiting (next gave null): ms until the seat should look again
+   * even if nothing changes, e.g. to stop waiting on a player. */
+  wakeIn?(state: S): number | null;
   /** True once the game is over. */
   over?(state: S): boolean;
 }

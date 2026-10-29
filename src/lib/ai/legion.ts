@@ -23,42 +23,23 @@ import {
   otherSide, type Side,
 } from "../orderPool";
 import { endRound } from "../round";
-import { diffLegion, bothLocked, isStandingOrders, territories, tokenSide, type TabletopState, type Token } from "../tabletop";
+import { diffLegion, bothLocked, isStandingOrders, territories, type TabletopState, type Token } from "../tabletop";
 import { appendLog } from "../auditLog";
 import type { Unit, Weapon } from "../types";
 import type { AiApplied, AiOption, AiStep, GameAdapter, SeatContext } from "./types";
 import { deployArmy, poolFromBoard, starterArmy, armyPoints, type ArmyChoice, FACTION_NAME } from "./legionArmy";
-import { attackPool, expectedWounds, rangeOf, resolveAttack, weaponReaches, RANGE_INCHES } from "./legionCombat";
+import { attackPool, expectedWounds, rangeOf, weaponReaches, RANGE_INCHES } from "./legionCombat";
+import {
+  aimRerollStep, boardUnits, declareAttack, maxDodge, rerollable, rollAttackStep, rollDefenseStep,
+  setDodgeStep, toDefenseStep, weaponsOf, type BoardUnit,
+} from "../attack";
 import { center, coverAgainst, dist, planMove, terrainCenter, terrainDistance, unitGap, type Pt } from "./legionGeometry";
 
 export const LAST_ROUND = 6;
 const SIDE_NAME: Record<Side, string> = { blue: "Blue", red: "Red" };
 const SEGMENT = 2.5; // inches per speed (see TEMPLATE_SEGMENT_INCHES)
 
-/** One unit on the table: a list entry's minis (or a lone token). */
-export type BoardUnit = { key: string; entryId?: string; side: Side; tokens: Token[]; lead: Token; unit: Unit | undefined; name: string };
-
-export function boardUnits(s: TabletopState): BoardUnit[] {
-  const groups = new Map<string, Token[]>();
-  for (const t of s.tokens) {
-    if (t.kind !== "unit") continue;
-    const side = tokenSide(t);
-    if (side === "neutral") continue;
-    const key = t.armyEntryId ?? (t.squadId ? `sq:${t.squadId}` : `tk:${t.id}`);
-    groups.set(key, [...(groups.get(key) ?? []), t]);
-  }
-  const names = new Map<string, number>();
-  const out: BoardUnit[] = [];
-  for (const [key, tokens] of groups) {
-    const lead = tokens.find((t) => t.squadLead) ?? tokens[0]!;
-    const unit = lead.unitId ? unitById(lead.unitId) : undefined;
-    const base = unit?.name ?? lead.label ?? "Unit";
-    const n = (names.get(base) ?? 0) + 1;
-    names.set(base, n);
-    out.push({ key, entryId: tokens[0]!.armyEntryId, side: tokenSide(lead) as Side, tokens, lead, unit, name: n > 1 ? `${base} ${n}` : base });
-  }
-  return out;
-}
+export { boardUnits, type BoardUnit };
 
 const unitsOf = (s: TabletopState, side: Side) => boardUnits(s).filter((u) => u.side === side);
 const objectives = (s: TabletopState) => s.tokens.filter((t) => t.kind === "objective");
@@ -110,10 +91,6 @@ export function scoreRound(s: TabletopState): { vp: Record<Side, number>; lines:
   return { vp, lines };
 }
 
-function weaponsOf(u: Unit | undefined): Weapon[] {
-  return (u?.weapons ?? []).filter((w) => w.dice && (w.dice.red || w.dice.black || w.dice.white));
-}
-
 /** The best weapon this unit can fire at that one now, if any. */
 function bestShot(s: TabletopState, me: BoardUnit, foe: BoardUnit): { w: Weapon; score: number; dice: number } | null {
   let best: { w: Weapon; score: number; dice: number } | null = null;
@@ -139,6 +116,11 @@ export class LegionAdapter implements GameAdapter<TabletopState> {
   private pick: { round: number; index: number } | null = null;
   private act: Activation | null = null;
   private lessonDone = false;
+  /** Attacks this seat declared, and the last one it reported. */
+  private declared = new Set<string>();
+  private announced: string | null = null;
+  /** The seat's name, for "declared by". */
+  private name = "AI";
   private side: Side | null = null;
   private readonly army: ArmyChoice | null;
 
@@ -157,6 +139,7 @@ export class LegionAdapter implements GameAdapter<TabletopState> {
     const side = ctx.you.color as Side;
     if (side !== "blue" && side !== "red") return null;
     this.side = side;
+    this.name = ctx.you.name || "AI";
     const foe = otherSide(side);
     if (s.result) return this.lessonStep(s, side);
     const pools = poolsOf(s);
@@ -169,6 +152,13 @@ export class LegionAdapter implements GameAdapter<TabletopState> {
       return this.setupStep(s, side);
     }
     if (!pools[foe]) return null;
+
+    // --- An attack being rolled -----------------------------------------
+    if (s.attack && s.attack.stage !== "done") return this.attackStep(s, side, ctx);
+    if (s.attack?.stage === "done" && s.attack.attacker.side === side && this.announced !== s.attack.id && this.declared.has(s.attack.id)) {
+      const a = s.attack;
+      return { label: "Report the attack", apply: (st) => { this.announced = a.id; return { state: st, chat: [a.text ?? "", ...a.notes.filter((n) => /VP/.test(n))].filter(Boolean) }; } };
+    }
 
     // A side with nothing left on the table has lost.
     const alive = (sd: Side) => unitsOf(s, sd).length > 0;
@@ -361,22 +351,13 @@ export class LegionAdapter implements GameAdapter<TabletopState> {
         act.attacked = true;
         const cur = unitsOf(st, side).find((u) => u.key === me.key) ?? me;
         const tgt = unitsOf(st, otherSide(side)).find((u) => u.key === f.key) ?? f;
-        const r = resolveAttack(st, { tokens: cur.tokens, unit: cur.unit!, name: cur.name }, { tokens: tgt.tokens, unit: tgt.unit, name: tgt.name }, shot!.w);
-        let next = r.state;
-        const chat = [r.text];
-        if (r.wiped) {
-          // Its order token leaves the game; with no objectives on the
-          // table, a defeated unit is worth 1 VP.
-          const fo = poolsOf(next)[otherSide(side)];
-          if (fo && tgt.entryId) {
-            next = { ...next, orders: { ...poolsOf(next), [otherSide(side)]: { ...fo, tokens: fo.tokens.map((t) => t.entryId === tgt.entryId ? { ...t, out: true } : t) } } };
-          }
-          if (objectives(next).length === 0) {
-            next = { ...next, vp: { ...next.vp, [side]: next.vp[side] + 1 } };
-            chat.push(`${SIDE_NAME[side]} +1 VP for defeating ${tgt.name}.`);
-          }
-        }
-        return { state: next, chat };
+        // Declared here; the dice are rolled in the steps that follow
+        // (see attackStep), the same way a person at the table does it.
+        const minis = attackPool(shot!.w, cur.tokens, tgt.tokens).minis;
+        return {
+          state: declareAttack(st, cur, tgt, [{ name: shot!.w.name, minis }], this.name),
+          chat: [`${cur.name} attacks ${tgt.name} with ${shot!.w.name}.`],
+        };
       }));
     }
 
@@ -454,6 +435,54 @@ export class LegionAdapter implements GameAdapter<TabletopState> {
       observe: () => this.observe(s, side, me),
       apply: (st, choice) => (doers.get(choice ?? "end") ?? doers.get("end")!)(st),
     };
+  }
+
+  /** Seconds to wait for a person to roll their defense before the AI
+   * rolls it for them. */
+  static readonly DEFENSE_WAIT_MS = 25000;
+
+  wakeIn(s: TabletopState): number | null {
+    const a = s.attack;
+    if (!a || a.stage !== "defend" || a.defender.side === this.side) return null;
+    return Math.max(500, a.ts + LegionAdapter.DEFENSE_WAIT_MS - Date.now() + 100);
+  }
+
+  // Each step of the attack sequence is its own move, so the table sees
+  // the dice come up one stage at a time.
+  private attackStep(s: TabletopState, side: Side, ctx: SeatContext): AiStep<TabletopState> | null {
+    const a = s.attack!;
+    if (a.stage === "declared" && a.attacker.side === side) {
+      this.declared.add(a.id);
+      return { label: "Roll attack dice", apply: (st) => ({ state: rollAttackStep(st) }) };
+    }
+    if (a.stage === "rolled" && a.attacker.side === side) {
+      const want = a.dice.filter((d) => rerollable(a, d, s)).length;
+      if (a.aimLeft > 0 && want > 0) {
+        return { label: "Spend aim to reroll", apply: (st) => ({ state: aimRerollStep(st), chat: [`${a.attacker.name} spends an aim token to reroll ${Math.min(want, a.rerollsPerAim)} dice.`] }) };
+      }
+      return { label: "Convert surges and check cover", apply: (st) => ({ state: toDefenseStep(st) }) };
+    }
+    if (a.stage === "defend") {
+      const mine = a.defender.side === side;
+      // A person defending rolls their own dice; after a while (or with
+      // nobody in that seat) the attacking AI rolls for them.
+      const person = ctx.peers.some((p) => p.color === a.defender.side && !p.ai);
+      const seated = ctx.peers.some((p) => p.color === a.defender.side);
+      const late = Date.now() - a.ts > LegionAdapter.DEFENSE_WAIT_MS;
+      if (!mine && !(a.attacker.side === side && (!seated || (person && late)))) return null;
+      const dodge = maxDodge(a);
+      return {
+        label: "Roll defense",
+        apply: (st) => {
+          const out = rollDefenseStep(dodge ? setDodgeStep(st, dodge) : st);
+          return { state: out, chat: [
+            ...(mine && dodge ? [`${a.defender.name} spends ${dodge === 1 ? "a dodge token" : `${dodge} dodge tokens`}.`] : []),
+            ...(!mine ? [`(Rolling defense for ${a.defender.name}.)`] : []),
+          ] };
+        },
+      };
+    }
+    return null;
   }
 
   private endRoundStep(s: TabletopState): AiStep<TabletopState> {
