@@ -1620,6 +1620,97 @@ input, select {
   width: auto;
 }
 
+/* ----- Order token pools ----- */
+.tt-orders {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 10px 8px;
+  background: var(--panel-2);
+  border-top: 1px solid var(--border);
+}
+.tt-orders-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.tt-pool {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  padding: 3px 6px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+}
+.tt-pool-turn { border-color: var(--accent); }
+.tt-pool-side {
+  min-width: 34px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.tt-hand-blue .tt-pool-side { color: #9bc1ec; }
+.tt-hand-red .tt-pool-side { color: #ff8a80; }
+.tt-pool-stack {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  font-size: 12px;
+  width: auto;
+}
+.tt-pool-back { color: var(--accent); font-size: 14px; }
+.tt-pool-left, .tt-pool-used, .tt-pool-drawn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.tt-pool-drawn {
+  flex-basis: 100%;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: var(--bg);
+}
+.tt-pool-target { width: auto; }
+.tt-pool-tools { margin-left: auto; display: inline-flex; gap: 2px; }
+.tt-pool-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.tt-pool-chip.out { opacity: 0.5; text-decoration: line-through; }
+/* An order token: a round chip in the rank's colour. */
+.tt-otok {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 22px;
+  padding: 0 4px;
+  border-radius: 11px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #111;
+  background: #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.35);
+}
+.tt-otok sub { font-size: 8px; margin-left: 1px; }
+.tt-otok-down { opacity: 0.85; }
+.tt-otok-big { min-width: 40px; height: 32px; border-radius: 16px; font-size: 12px; box-shadow: 0 0 0 2px var(--accent); }
+.tt-otok.rank-commander { background: #f2c94c; }
+.tt-otok.rank-operative { background: #e0a3f0; }
+.tt-otok.rank-corps { background: #8fd18f; }
+.tt-otok.rank-special-forces { background: #7ec8e3; }
+.tt-otok.rank-support { background: #f2a65a; }
+.tt-otok.rank-heavy { background: #e57373; }
+
 /* ----- Dice roller ----- */
 .dice-roller {
   display: flex;

@@ -30,6 +30,8 @@ import { TtaImportModal } from "./TtaImportModal";
 import { endPhaseStatus, showsUnitStatus, WOUND_INFO, WOUND_URL } from "../lib/statusTokens";
 import { StatusTokenPanel } from "./StatusTokenPanel";
 import { MissionSection } from "./MissionSection";
+import { OrderPools } from "./OrderPoolPanel";
+import { buildPool, resetPools, restartPools, setPool, type Side } from "../lib/orderPool";
 import { InfoDot } from "./InfoDot";
 import { cardForUnit } from "../lib/cardLookup";
 import { FACTIONS, RANK_LABEL, RANK_LIMITS, RANK_ORDER } from "../lib/factions";
@@ -692,8 +694,20 @@ export function TabletopPanel({ onClose }: Props) {
       round: state.round + 1,
       tokens: state.tokens.map((t) => endPhaseStatus({ ...t, activated: false, ordered: false })),
       hands: { blue: sweep(state.hands.blue), red: sweep(state.hands.red) },
+      // Every order token goes back in the pool, shuffled.
+      orders: resetPools(state.orders),
     });
   }
+
+  // --- Order token pool -------------------------------------------------------
+  function takeOrderTokens(side: Side) {
+    if (!loadedArmy || roster.length === 0) return;
+    const pool = buildPool(loadedArmy.name || "Untitled",
+      roster.map((r) => ({ entryId: r.entryId, rank: r.unit.rank, unitName: r.unit.name })));
+    commit(setPool(state, side, pool));
+  }
+  const canControlOrders = (side: Side) =>
+    !readOnly && (online?.status !== "open" || online.you?.color === side);
 
   function resetGame() {
     if (!confirm("Reset round to 1, zero both VP scores, ready all units, clear all wounds and tokens, and shuffle both command decks? The board layout stays.")) return;
@@ -704,6 +718,7 @@ export function TabletopPanel({ onClose }: Props) {
       moveTemplate: null,
       tokens: state.tokens.map((t) => ({ ...t, activated: false, ordered: false, wounds: 0, suppression: 0, status: undefined })),
       hands: { blue: newCommandHand(), red: newCommandHand() },
+      orders: restartPools(state.orders),
     });
   }
 
@@ -917,6 +932,9 @@ export function TabletopPanel({ onClose }: Props) {
                   onPickRound={pickThisRound}
                   onReset={resetHand} />
               </div>
+              <OrderPools state={state} onCommit={commit} canControl={canControlOrders}
+                myList={loadedArmy && roster.length ? { name: loadedArmy.name || "Untitled", count: roster.length } : null}
+                onUseMyList={takeOrderTokens} />
             </div>
           </div>
 
