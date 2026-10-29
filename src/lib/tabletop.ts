@@ -4,6 +4,8 @@ import { logId, type LogActor, type LogEntry } from "./auditLog";
 import { STATUS_TOKENS, type StatusCounts } from "./statusTokens";
 import type { TableMusic } from "./media";
 import { missionById, missionTerritories, type MissionId } from "./missions";
+import type { OrderPools } from "./orderPool";
+import { RANK_LABEL } from "./factions";
 
 export type GameType = "skirmish" | "standard" | "grand-army" | "custom";
 
@@ -205,6 +207,8 @@ export type TabletopState = {
   models?: Record<string, BoardModel>;
   /** Table music: the YouTube playlist both players hear. */
   music?: TableMusic | null;
+  /** Each player's order token pool (see lib/orderPool). */
+  orders?: OrderPools;
 };
 
 /** Drop models no token or terrain refers to any more. */
@@ -299,6 +303,19 @@ export function diffLegion(prev: TabletopState, next: TabletopState, actor: LogA
   if (prev.vp.blue !== next.vp.blue) out.push(mk("vp", `Blue VP → ${next.vp.blue}`));
   if (prev.vp.red !== next.vp.red) out.push(mk("vp", `Red VP → ${next.vp.red}`));
   if (prev.round !== next.round) out.push(mk("round", `advanced to round ${next.round}`));
+  for (const side of ["blue", "red"] as const) {
+    const was = new Map((prev.orders?.[side]?.tokens ?? []).map((t) => [t.id, t]));
+    for (const t of next.orders?.[side]?.tokens ?? []) {
+      const p = was.get(t.id);
+      if (!p) continue;
+      const name = side === "blue" ? "Blue" : "Red";
+      if (t.used && !p.used) {
+        const unit = next.orders![side]!.tokens.find((o) => o.entryId === t.assignedTo)?.unitName ?? "a unit";
+        out.push(mk("turn", `${name} drew a ${RANK_LABEL[t.rank]} order token for ${unit}`));
+      }
+      if (t.out && !p.out) out.push(mk("turn", `${name} took a ${RANK_LABEL[t.rank]} order token out of the game`));
+    }
+  }
   return out;
 }
 

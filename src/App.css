@@ -1620,6 +1620,106 @@ input, select {
   width: auto;
 }
 
+/* ----- Order token pools ----- */
+.tt-orders {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 10px 8px;
+  background: var(--panel-2);
+  border-top: 1px solid var(--border);
+}
+.tt-orders-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.tt-pool {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  padding: 3px 6px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+}
+.tt-pool-turn { border-color: var(--accent); }
+.tt-pool-side {
+  min-width: 34px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.tt-hand-blue .tt-pool-side { color: #9bc1ec; }
+.tt-hand-red .tt-pool-side { color: #ff8a80; }
+.tt-pool-stack {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  font-size: 12px;
+  width: auto;
+}
+.tt-pool-back { width: 18px; height: 18px; }
+.tt-pool-left, .tt-pool-used, .tt-pool-drawn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.tt-pool-drawn {
+  flex-basis: 100%;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: var(--bg);
+}
+.tt-pool-target { width: auto; }
+.tt-pool-tools { margin-left: auto; display: inline-flex; gap: 2px; }
+.tt-pool-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.tt-pool-chip.out { opacity: 0.5; text-decoration: line-through; }
+/* An order token: the rank icon on a round token, like the printed ones. */
+.tt-otok {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #4a4f59, #1d1f24 75%);
+  border: 2px solid #8a8f99;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.tt-otok img { max-width: 72%; max-height: 72%; }
+.tt-otok sub {
+  position: absolute;
+  right: -6px;
+  bottom: -4px;
+  min-width: 14px;
+  height: 14px;
+  line-height: 14px;
+  border-radius: 7px;
+  font-size: 9px;
+  font-weight: 800;
+  text-align: center;
+  color: var(--bg);
+  background: var(--text);
+}
+.tt-otok-down { opacity: 0.9; }
+.tt-otok-big { width: 52px; height: 52px; border-color: var(--accent); box-shadow: 0 0 0 2px rgba(255, 210, 74, 0.3); }
+.tt-hand-blue .tt-otok { border-color: #6fa8e6; }
+.tt-hand-red .tt-otok { border-color: #e67a6f; }
+.tt-hand-blue .tt-otok-big, .tt-hand-red .tt-otok-big { border-color: var(--accent); }
+
 /* ----- Dice roller ----- */
 .dice-roller {
   display: flex;
