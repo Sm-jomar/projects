@@ -4,11 +4,23 @@
 import { RANK_LABEL, RANK_ORDER } from "../lib/factions";
 import {
   assignDrawn, canDraw, discardDrawn, drawToken, eligibleEntries, entryTokens, inPool,
-  poolsOf, prioritySide, RANK_SHORT, returnDrawn, setPool, shufflePool, whoDraws, type Side,
+  poolsOf, prioritySide, returnDrawn, setPool, shufflePool, whoDraws, type Side,
 } from "../lib/orderPool";
 import type { TabletopState } from "../lib/tabletop";
+import type { Rank } from "../lib/types";
 
 const SIDE_NAME: Record<Side, string> = { blue: "Blue", red: "Red" };
+
+/** An order token face up: the rank's icon on a round token. */
+function RankToken({ rank, big, count, down }: { rank: Rank; big?: boolean; count?: number; down?: boolean }) {
+  return (
+    <span className={"tt-otok" + (big ? " tt-otok-big" : "") + (down ? " tt-otok-down" : "")}
+      title={count ? `${count} ${RANK_LABEL[rank]}` : RANK_LABEL[rank]}>
+      <img src={`/tokens/rank-${rank}.png`} alt={RANK_LABEL[rank]} />
+      {count != null && count > 1 && <sub>{count}</sub>}
+    </span>
+  );
+}
 
 export function OrderPools(props: {
   state: TabletopState;
@@ -79,22 +91,20 @@ function PoolRow({ side, state, onCommit, canControl, myList, onUseMyList, turn 
       <button className="tt-pool-stack" disabled={!mine || !canDraw(state, side)}
         onClick={() => onCommit(drawToken(state, side))}
         title={down.length ? "Draw a token at random" : "Pool is empty"}>
-        <span className="tt-pool-back" aria-hidden>◈</span>
+        <img className="tt-pool-back" src="/tokens/order.png" alt="" aria-hidden />
         Draw <b>{down.length}</b>
       </button>
       <button className="ghost-btn small" disabled={!mine || down.length < 2}
         onClick={() => onCommit(shufflePool(state, side))} title="Shuffle the face-down tokens">⤨ Shuffle</button>
       <span className="tt-pool-left" title="Face-down tokens left in the pool, by rank">
         {byRank.length ? byRank.map(([r, n]) => (
-          <span key={r} className={"tt-otok tt-otok-down rank-" + r} title={`${n} ${RANK_LABEL[r]}`}>
-            {RANK_SHORT[r]}{n > 1 && <sub>×{n}</sub>}
-          </span>
+          <RankToken key={r} rank={r} count={n} down />
         )) : <span className="muted small">pool empty</span>}
       </span>
 
       {drawn && (
         <div className="tt-pool-drawn">
-          <span className={"tt-otok tt-otok-big rank-" + drawn.rank}>{RANK_SHORT[drawn.rank]}</span>
+          <RankToken rank={drawn.rank} big />
           <span className="small">Drew <b>{RANK_LABEL[drawn.rank]}</b>{mine ? " — give it to:" : ", choosing a unit…"}</span>
           {mine && targets.map((t) => {
             const onBoard = entryTokens(state, t.entryId).length > 0;
@@ -119,13 +129,13 @@ function PoolRow({ side, state, onCommit, canControl, myList, onUseMyList, turn 
         <div className="tt-pool-used">
           {used.map((t) => (
             <span key={t.id} className="tt-pool-chip" title={`${RANK_LABEL[t.rank]} order this round`}>
-              <span className={"tt-otok rank-" + t.rank}>{RANK_SHORT[t.rank]}</span>
+              <RankToken rank={t.rank} />
               {p.tokens.find((x) => x.entryId === t.assignedTo)?.unitName ?? "unit"}
             </span>
           ))}
           {out.map((t) => (
             <span key={t.id} className="tt-pool-chip out" title="Out of the game">
-              <span className={"tt-otok rank-" + t.rank}>{RANK_SHORT[t.rank]}</span>out
+              <RankToken rank={t.rank} />out
             </span>
           ))}
         </div>

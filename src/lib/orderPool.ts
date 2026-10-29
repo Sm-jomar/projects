@@ -43,15 +43,6 @@ export type OrderPools = {
   turn: Side | null;
 };
 
-export const RANK_SHORT: Record<Rank, string> = {
-  commander: "CMD",
-  operative: "OPR",
-  corps: "CRP",
-  "special-forces": "SF",
-  support: "SUP",
-  heavy: "HVY",
-};
-
 export const otherSide = (s: Side): Side => (s === "blue" ? "red" : "blue");
 
 export function emptyPools(): OrderPools {
