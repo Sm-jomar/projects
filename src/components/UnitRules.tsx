@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Unit } from "../lib/types";
+import type { Unit, Upgrade, Weapon } from "../lib/types";
 import {
   entryForKeyword, rulesUrl, weaponKeywords, weaponRange, RULES_SITE, type RulesEntry,
 } from "../lib/rules";
@@ -61,27 +61,48 @@ export function UnitRules({ unit }: { unit: Unit }) {
           {keywords.map((k) => <KeywordChip key={k} keyword={k} glossary={glossary} />)}
         </div>
       )}
-      {weapons.length > 0 && (
-        <ul className="rules-weapons">
-          {weapons.map((w, i) => (
-            <li key={i}>
-              <div className="rules-weapon-head">
-                <span className="rules-weapon-name">{w.name}</span>
-                <span className="muted small">{weaponRange(w)}</span>
-                <Dice dice={w.dice} />
-              </div>
-              {weaponKeywords(w).length > 0 && (
-                <div className="rules-keywords">
-                  {weaponKeywords(w).map((k) => <KeywordChip key={k} keyword={k} glossary={glossary} />)}
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
+      {weapons.length > 0 && <WeaponList weapons={weapons} glossary={glossary} />}
       <div className="rules-source muted">
         Card text from <a href={RULES_SITE} target="_blank" rel="noreferrer">Legion Helper</a>
       </div>
     </div>
   );
+}
+
+export function WeaponList({ weapons, glossary }: { weapons: Weapon[]; glossary: RulesEntry[] | null }) {
+  return (
+    <ul className="rules-weapons">
+      {weapons.map((w, i) => (
+        <li key={i}>
+          <div className="rules-weapon-head">
+            <span className="rules-weapon-name">{w.name}</span>
+            <span className="muted small">{weaponRange(w)}</span>
+            <Dice dice={w.dice} />
+          </div>
+          {weaponKeywords(w).length > 0 && (
+            <div className="rules-keywords">
+              {weaponKeywords(w).map((k) => <KeywordChip key={k} keyword={k} glossary={glossary} />)}
+            </div>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** Card text (and weapon) of an upgrade or command card. */
+export function CardText({ text, requirement, weapon }: { text?: string; requirement?: string; weapon?: Weapon }) {
+  const glossary = useGlossary();
+  if (!text && !weapon) return null;
+  return (
+    <div className="unit-rules card-text">
+      {requirement && <div className="muted small">{requirement}</div>}
+      {text && <p className="card-text-body">{text}</p>}
+      {weapon && <WeaponList weapons={[weapon]} glossary={glossary} />}
+    </div>
+  );
+}
+
+export function UpgradeText({ upgrade }: { upgrade: Upgrade }) {
+  return <CardText text={upgrade.text} requirement={upgrade.requirement_text} weapon={upgrade.weapon} />;
 }

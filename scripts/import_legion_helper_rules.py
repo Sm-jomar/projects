@@ -81,7 +81,7 @@ ICONS = {
 }
 
 
-def keyword_list(htmls: list[str]) -> list[str]:
+def keyword_list(htmls: list[str], weapon: bool = False) -> list[str]:
     """Card keywords as printed: 'Armor 5', 'Weak Point 1: Rear', 'Impact 3'.
     Legion Helper writes weapon magnitudes as 'Impact x 3', doubles some
     words ('Long shot Shot') and has a few typos ('Marksman. Victory or
@@ -91,8 +91,12 @@ def keyword_list(htmls: list[str]) -> list[str]:
         h = re.sub(r'<img[^>]*?title="([^"]*)"[^>]*>', lambda m: f" {ICONS.get(m.group(1), m.group(1))} ", h)
         t = re.sub(r"[\w]+", lambda m: ICONS.get(m.group(0), m.group(0)), to_text(h))
         t = re.sub(r",(?=\S)", ", ", t)
+        # "Fixed Front, Rear" -> "Fixed: Front/Rear"
+        t = re.sub(r"(?i)fixed:? ((?:front|rear|sides)(?:, (?:front|rear|sides))*)",
+                   lambda m: "Fixed: " + "/".join(a.capitalize() for a in m.group(1).split(", ")), t)
         # "Recharge 1, Shielded 1" is two keywords; "Equip: Del Meeko, Gideon Hask" is one.
-        for k in re.split(r"\. |, (?=[A-Z][^:]*$)" if ":" not in t else r"\. ", t):
+        # Weapon keywords are a plain comma list.
+        for k in re.split(r"\. |, " if weapon else r"\. |, (?=[A-Z][^:]*$)" if ":" not in t else r"\. ", t):
             k = re.sub(r"\s+", " ", re.sub(r" x (\d)", r" \1", k)).strip(" .,")
             k = re.sub(r"(\w+) (\w+) (\w+)$", lambda m: f"{m.group(1)} {m.group(3)}" if m.group(2).lower() == m.group(3).lower() else m.group(0), k)
             k = k.replace("Non- ", "Non-")
@@ -112,6 +116,9 @@ def parse_range(r: str) -> dict:
         r = "melee"
     if r.lower() == "melee":
         return {"min_range": 0, "max_range": 0}
+    m = re.match(r"(?i)^area-(\d+)$", r)
+    if m:
+        return {"min_range": 0, "max_range": int(m.group(1)), "area_of_effect": int(m.group(1))}
     m = re.match(r"^(\d+)\s*-\s*(\d+)$", r)
     if m:
         return {"min_range": int(m.group(1)), "max_range": int(m.group(2))}
@@ -122,6 +129,18 @@ def parse_range(r: str) -> dict:
     if m:
         return {"min_range": int(m.group(1)), "max_range": int(m.group(1))}
     raise ValueError(f"range {r!r}")
+
+
+def parse_weapon(w: str) -> dict:
+    """One weapon block (after its `<div class="weapon">`) as a Weapon."""
+    name = to_text(re.search(r'class="weaponName[^"]*">(.*?)</span>', w).group(1))
+    rng = to_text(re.search(r'class="weaponRange[^"]*">(.*?)</span>', w).group(1))
+    dice = {c: len(re.findall(rf"die_{c}\b", w)) for c in ("red", "black", "white")}
+    weapon = {"name": name, "dice": {c: n for c, n in dice.items() if n}, **parse_range(rng)}
+    kw = re.search(r'class="weaponKeywords">(.*?)</span>', w)
+    if kw:
+        weapon["keywords"] = keyword_list([kw.group(1)], weapon=True)
+    return weapon
 
 
 def unit_page(url: str):
@@ -137,16 +156,7 @@ def unit_page(url: str):
         j = end
     kw_html = raw[i:j] if i >= 0 else ""
     keywords = keyword_list(re.findall(r"<li>(.*?)</li>", kw_html))
-    weapons = []
-    for w in re.split(r'<div class="weapon">', raw[j:end if end > 0 else None])[1:]:
-        name = to_text(re.search(r'class="weaponName">(.*?)</span>', w).group(1))
-        rng = to_text(re.search(r'class="weaponRange">(.*?)</span>', w).group(1))
-        dice = {c: len(re.findall(rf"die_{c}\b", w)) for c in ("red", "black", "white")}
-        weapon = {"name": name, "dice": {c: n for c, n in dice.items() if n}, **parse_range(rng)}
-        kw = re.search(r'class="weaponKeywords">(.*?)</span>', w)
-        if kw:
-            weapon["keywords"] = keyword_list([kw.group(1)])
-        weapons.append(weapon)
+    weapons = [parse_weapon(w) for w in re.split(r'<div class="weapon">', raw[j:end if end > 0 else None])[1:]]
     return url.rstrip("/").rsplit("/", 1)[1], FACTIONS.get(faction.group(1)), {"keywords": keywords, "weapons": weapons}
 
 

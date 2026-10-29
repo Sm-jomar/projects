@@ -1,0 +1,3246 @@
+{
+ "2-1-b-medical-droid": {
+  "requirement": "Rebel Corps Trooper Only",
+  "text": "Add 1 2-1B Medical Droid miniature.\nNoncombatant.\n[Free action] Treat 1: Capacity 2."
+ },
+ "88i-twin-light-blaster": {
+  "requirement": "AT-ST Only",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Fixed",
+    "Impact 1"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "88i Twin Light Blaster"
+  }
+ },
+ "a-300-rifle-gunner": {
+  "requirement": "X-34 Landspeeder Only",
+  "weapon": {
+   "dice": {
+    "white": 2
+   },
+   "max_range": 3,
+   "min_range": 1,
+   "name": "A300 Blaster Rifle"
+  }
+ },
+ "a280-rifle-config": {
+  "requirement": "Cassian Andor Only",
+  "text": "Reconfigure.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1
+   },
+   "keywords": [
+    "Cumbersome",
+    "High Velocity",
+    "Pierce 1"
+   ],
+   "max_range": 6,
+   "min_range": 1,
+   "name": "A280 Rifle"
+  }
+ },
+ "aayla-secura": {
+  "requirement": "Saber-class Tank Only",
+  "text": "This unit gains Field Commander and Inspire 2."
+ },
+ "adaptive-combat-network": {
+  "requirement": "Droid Trooper Only",
+  "text": "When another unit equipped with Adaptive Combat Network suffers 1 or more Wounds, you may [Exhaust] this card. If you do, this unit gains 1 Aim token.\nAt the start of the End Phase, ready this card."
+ },
+ "ag-2g-quad-laser": {
+  "requirement": "A-A5 Speeder Truck Only",
+  "weapon": {
+   "dice": {
+    "black": 6
+   },
+   "keywords": [
+    "Impact 2"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "AG-2G Quad Laser Cannon"
+  }
+ },
+ "agent-kallus": {
+  "requirement": "Imperial Corps or Imperial Special Forces Unit Only",
+  "text": "Add 1 Agent Kallus miniature.\nLeader.\nThis unit increases its courage by 1 and gains Demoralize 1 and 1 Heavy upgrade icon.\n[Exhaust, free action] Choose an enemy unit Engaged with this unit. The chosen unit gains 2 Immobilize tokens.\nSidearm: Ranged.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "white": 1
+   },
+   "keywords": [
+    "Long Shot"
+   ],
+   "max_range": 2,
+   "min_range": 0,
+   "name": "J-19 Bo-Rifle"
+  }
+ },
+ "agile-climber": {
+  "text": "Trooper Only. white defense die Only.\nWhen this unit starts a Climb, you may [Exhaust] this card. If you do, this unit uses the Movement tool matching its Speed during this Climb, instead of the Speed-1 tool."
+ },
+ "ahsoka-tano-jedi-padawan": {
+  "requirement": "Clone Trooper Only",
+  "text": "Add 1 Ahsoka Tano, Jedi Padawan miniature.\nLeader. Sidearm: Melee, Ranged.\nThis unit gains Block, Charge, and Independent: Dodge 1.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "white": 2
+   },
+   "keywords": [
+    "Critical 1",
+    "Impact 2",
+    "Pierce 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Ahsoka's Lightsabers"
+  }
+ },
+ "anger": {
+  "requirement": "Dark Side Only",
+  "text": "When this unit suffers 1 or more Wounds, after the effect is resolved, it gains 1 Aim token."
+ },
+ "annul": {
+  "text": "When an enemy unit within Range 2 of this unit uses a Force upgrade that is not Annul, if this unit is not Suppressed, this unit may gain up to 3 Suppression tokens. For each Suppression token gained in this way, roll 1 red defense die.\nIf the roll contains any [block] or [defense surge] results, cancel the effect of the enemy Force upgrade."
+ },
+ "arf-trooper-duo": {
+  "requirement": "ARF Troopers Only",
+  "text": "Add 2 ARF Trooper miniatures.\nCache: Surge 1."
+ },
+ "armor-piercing-shells": {
+  "text": "Cycle.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "red": 1
+   },
+   "keywords": [
+    "Fixed",
+    "Impact 3"
+   ],
+   "max_range": 3,
+   "min_range": 2,
+   "name": "Armor-Piercing Shells"
+  }
+ },
+ "asajj-ventress": {
+  "text": "B1 Battle Droids or Special Forces BX-Commando Droids Only.\nAdd 1 Asajj Ventress miniature.\nThis unit loses AI and gains 1 Heavy upgrade icon, Charge, and Demoralize 1.\nWhen this unit attacks, during the Form Attack Pool step, it may upgrade up to 4 of its attack dice if the defending unit is Suppressed or Panicked.\nLeader. Sidearm: Melee, Ranged.",
+  "weapon": {
+   "dice": {
+    "black": 4
+   },
+   "keywords": [
+    "Critical 1",
+    "Impact 1",
+    "Pierce 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Asajj's Lightsaber"
+  }
+ },
+ "ascension-cables": {
+  "text": "[Exhaust, free action] This unit gains Scale until the end of its Activation."
+ },
+ "astromech": {
+  "requirement": "Rebel Sleeper Cell Only",
+  "text": "Add 1 Astromech miniature.\nNoncombatant.\nWhen this unit ends a Move within Range 1 of 1 or more Objective tokens, it gains 1 Dodge token."
+ },
+ "astromech-droid": {
+  "text": "Rebel Corps Trooper Only.\nAdd 1 Astromech Droid miniature.\nNoncombatant.\n[Free action] Repair 1: Capacity 2."
+ },
+ "at-rt-flamethrower": {
+  "requirement": "AT-RT Only",
+  "weapon": {
+   "dice": {
+    "black": 2
+   },
+   "keywords": [
+    "Fixed: Front",
+    "Blast",
+    "Spray"
+   ],
+   "max_range": 1,
+   "min_range": 0,
+   "name": "Flamethrower"
+  }
+ },
+ "at-rt-laser-cannon": {
+  "requirement": "AT-RT Only",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "red": 1
+   },
+   "keywords": [
+    "Fixed: Front",
+    "Impact 3"
+   ],
+   "max_range": 4,
+   "min_range": 2,
+   "name": "Laser Cannon"
+  }
+ },
+ "at-rt-rotary-blaster": {
+  "requirement": "AT-RT Only",
+  "weapon": {
+   "dice": {
+    "black": 5
+   },
+   "keywords": [
+    "Fixed: Front"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "Rotary Blaster"
+  }
+ },
+ "at-st-mortar-launcher": {
+  "requirement": "AT-ST Only",
+  "weapon": {
+   "dice": {
+    "white": 3
+   },
+   "keywords": [
+    "Fixed: Front",
+    "Suppressive"
+   ],
+   "max_range": 6,
+   "min_range": 4,
+   "name": "AT-ST Mortar Launcher"
+  }
+ },
+ "attack-protocols": {
+  "requirement": "Vehicle Only",
+  "text": "This unit gains AI: Aim and Precise 2."
+ },
+ "ax-108-ground-buzzer": {
+  "requirement": "T-47 Airspeeder Only",
+  "weapon": {
+   "dice": {
+    "black": 4
+   },
+   "keywords": [
+    "Fixed: Rear"
+   ],
+   "max_range": 2,
+   "min_range": 1,
+   "name": "Ax-108 \"Ground Buzzer\""
+  }
+ },
+ "axe-ewok": {
+  "requirement": "Ewok Slingers or Ewok Skirmishers Only",
+  "text": "Add 1 Axe Ewok miniature.",
+  "weapon": {
+   "dice": {
+    "red": 1
+   },
+   "keywords": [
+    "Impact 1",
+    "Pierce 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Stone Axe"
+  }
+ },
+ "axe-woves": {
+  "text": "Clan Kryze Only.\nAdd 1 Axe Woves miniature.\nLeader.\nThis unit gains Independent: Aim 1 or Dodge 1 and Infiltrate."
+ },
+ "b1-battle-droid": {
+  "requirement": "B1 Battle Droids Only",
+  "text": "Add 1 B1 Battle Droid miniature."
+ },
+ "b1-battle-droid-squad": {
+  "requirement": "B1 Battle Droids Only",
+  "text": "Add 7 B1 Battle Droid miniatures.\nThis unit gains Indomitable. This unit has this keyword even if these miniatures are defeated.\nThis unit is in cohesion if all miniatures are within Range 1 of the unit leader instead of within Range ½. This unit has this rule even if these miniatures are defeated.\nThis unit cannot be Deployed or issued Orders using the Transport keyword."
+ },
+ "b1-security-droid": {
+  "requirement": "B1 Battle Droids Only",
+  "text": "Add 1 B1 Security Droid miniature.\nAt the start of this unit's Activation, you may [Exhaust] this card. If you do, this unit loses AI: Attack until the end of its Activation."
+ },
+ "b2-acm-battle-droid": {
+  "requirement": "B2 Super Battle Droids Only",
+  "text": "Add 1 B2-ACM Battle Droid miniature.",
+  "weapon": {
+   "dice": {
+    "red": 3
+   },
+   "max_range": 2,
+   "min_range": 1,
+   "name": "Heavy Arm cannon"
+  }
+ },
+ "b2-ha-battle-droid": {
+  "requirement": "B2 Super Battle Droids Only",
+  "text": "Add 1 B2-HA Battle Droid miniature.",
+  "weapon": {
+   "dice": {
+    "red": 2,
+    "white": 1
+   },
+   "keywords": [
+    "Blast",
+    "Cycle",
+    "Impact 2"
+   ],
+   "max_range": 3,
+   "min_range": 2,
+   "name": "B2-HA Cannon"
+  }
+ },
+ "b2-ha-rocket-droid": {
+  "requirement": "B2 Super Rocket Battle Droids Only",
+  "text": "Add 1 B2-HA B2 Super Rocket Battle Droid Miniature.\nCycle.",
+  "weapon": {
+   "dice": {
+    "red": 2,
+    "white": 1
+   },
+   "keywords": [
+    "Blast",
+    "Impact 2"
+   ],
+   "max_range": 3,
+   "min_range": 2,
+   "name": "B2-HA"
+  }
+ },
+ "b2-super-battle-droid": {
+  "requirement": "B2 Super Battle Droids Only",
+  "text": "Add 1 B2 Super Battle Droid miniature."
+ },
+ "b2-super-battle-droid-squad": {
+  "requirement": "B2 Super Battle Droids Only",
+  "text": "Add 4 B2 Super Battle Droid miniatures.\nThis unit gains Indomitable. This unit has this keyword even if these miniatures are defeated.\nThis unit is in cohesion if all miniatures are within Range 1 of the unit leader instead of within Range ½. This unit has this rule even if these miniatures are defeated.\nThis unit cannot be Deployed or issued Orders using the Transport keyword.."
+ },
+ "b2-super-rocket-battle-droid": {
+  "requirement": "B2 Super Rocket Battle Droids Only",
+  "text": "Add 1 B2 Super Rocket Battle Droid miniature."
+ },
+ "backworld-medic": {
+  "requirement": "A-A5 Speeder Truck Only",
+  "text": "[Action] Choose an allied non-Droid Trooper unit within Range 1 of this unit and in LOS. Remove 1 Wound or Poison token from or restore 1 defeated miniature to the chosen unit. Then roll 2 white defense dice. The chosen unit gains 1 Suppression token for each [block] and [defense surge] result rolled.."
+ },
+ "barc-ion-gunner": {
+  "requirement": "BARC Speeder Only",
+  "text": "This unit reduces its maximum Speed by 1.",
+  "weapon": {
+   "dice": {
+    "black": 3,
+    "white": 1
+   },
+   "keywords": [
+    "Fixed: Front/Rear",
+    "Critical 1",
+    "Impact 1",
+    "Ion 1"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "Ion Rifle"
+  }
+ },
+ "barc-rps-6-gunner": {
+  "requirement": "BARC Speeder Only",
+  "text": "This unit reduces its maximum Speed by 1.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Impact 2"
+   ],
+   "max_range": 4,
+   "min_range": 2,
+   "name": "RPS-6 Rocket Launcher"
+  }
+ },
+ "barc-twin-laser-gunner": {
+  "requirement": "BARC Speeder Only",
+  "text": "This unit reduces its maximum Speed by 1.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "white": 2
+   },
+   "keywords": [
+    "Fixed: Front/Rear"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "Twin Laser Cannon"
+  }
+ },
+ "baron-rudor": {
+  "text": "Imperial Repulsor Vehicle Only.\nThis unit gains Marksman.\nAfter this unit makes a Recover action, it gains 1 Aim token."
+ },
+ "barrage-generator": {
+  "text": "When this unit makes an attack with a Ranged weapon that has Fixed, during the Form Attack Pool step you may [Exhaust] this card. If you do, add 2 white attack dice to the Attack Pool and the Attack Pool gains Suppressive."
+ },
+ "battlemind": {
+  "text": "When this unit or an allied Trooper unit within Range 1 attacks, you may [Exhaust] this card.\nIf you do, upgrade 2 of the attacking unitʼs attack dice.\nAt the end of this unitʼs Activation, you may ready this card."
+ },
+ "beam-turret": {
+  "requirement": "Saber-class Tank Only",
+  "weapon": {
+   "dice": {
+    "red": 2
+   },
+   "keywords": [
+    "Beam 2"
+   ],
+   "max_range": 4,
+   "min_range": 1,
+   "name": "Beam Cannon"
+  }
+ },
+ "beskar-spear": {
+  "requirement": "Din Djarin Only",
+  "text": "This unit gains Duelist.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 2
+   },
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Beskar Spear"
+  }
+ },
+ "black-sun-crew": {
+  "requirement": "WLO-5 Speeder Tank Only",
+  "text": "This unit loses the Raider Affiliation and gains the Black Sun Affiliation.\nAt the start of the Activation Phase, this unit gains 1 Aim token or 1 Dodge token if there are 1 or more other allied Black Sun units within Range 1 of this unit."
+ },
+ "black-sun-enforcer": {
+  "requirement": "Black Sun Enforcers Only",
+  "text": "Add 1 Black Sun Enforcer miniature.\nThis unit gains Cache: Dodge 1.\nThis unit has this keyword even if this miniature is defeated."
+ },
+ "black-sun-vigo": {
+  "requirement": "Black Sun Enforcers Only",
+  "text": "Add 1 Black Sun Vigo miniature.\nLeader.\nThis unit increases its courage by 1 and gains Independent: Surge 1."
+ },
+ "bo-katan-kryze": {
+  "text": "Clan Kryze Only.\nAdd 1 Bo-Katan Kryze miniature.\nLeader.\nAt the start of this unitʼs Activation, you may [Exhaust] this card. If you do, this unit removes any number of Suppression tokens and gains Charge until the end of its Activation."
+ },
+ "boil": {
+  "text": "Corps Clone Trooper Only.\nAdd 1 Boil miniature.\nLeader.\nThis unit gains Guardian 1 and Scout 1."
+ },
+ "boil-personnel": {
+  "text": "Corps Clone Trooper Only.\nAdd 1 Boil miniature.\nLeader.\nThis unit gains Guardian 1 and Scout 1."
+ },
+ "bounty-programming": {
+  "requirement": "IG-11 Only",
+  "text": "This unit gains Bounty and AI: Aim, Attack.\nIf this unit chooses a Commander as the target of Bounty, this unit's weapons gain Pierce 1.\nIf this unit chooses an Operative as the target of Bounty, this unit's weapon gain Suppressive."
+ },
+ "bowcaster-wookiee": {
+  "requirement": "Wookiee Warriors Only",
+  "text": "Add 1 Bowcaster Wookiee miniature.",
+  "weapon": {
+   "dice": {
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Impact 1",
+    "Pierce 1"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "Bowcaster"
+  }
+ },
+ "bunker-buster-shells": {
+  "text": "Cycle.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "white": 3
+   },
+   "keywords": [
+    "Fixed",
+    "Blast",
+    "Scatter"
+   ],
+   "max_range": 2,
+   "min_range": 1,
+   "name": "Bunker Buster Shells"
+  }
+ },
+ "burst-of-speed": {
+  "text": "At the start of this unit's Activation, you may [Expend] this card to treat this unitʼs maximum Speed as 3 until the end of the Round. If you do, during the End Phase, this unit gains 1 Immobilize token."
+ },
+ "bx-deflector-shields": {
+  "requirement": "BX-Series Droid Commandos Only",
+  "text": "This unit gains Shielded 2 and Recharge 2."
+ },
+ "bx-series-droid-sniper": {
+  "requirement": "BX-Series Droid Commandos, Strike Team Only",
+  "text": "Add 1 BX-Series Droid Sniper miniature.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "white": 2
+   },
+   "keywords": [
+    "High Velocity",
+    "Overwhelm",
+    "Sniper Team"
+   ],
+   "max_range": 5,
+   "min_range": 2,
+   "name": "BX Sniper Rifle"
+  }
+ },
+ "bx-vibroswords": {
+  "requirement": "BX-Series Droid Commandos Only",
+  "text": "This unit gains Charge.",
+  "weapon": {
+   "dice": {
+    "red": 1,
+    "white": 1
+   },
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Vibroswords"
+  }
+ },
+ "call-to-arms": {
+  "text": "Ewok Trooper Only.\n[Exhaust, free action] This unit gains Charge until the end of the Round. This unit gains 1 Suppression token."
+ },
+ "caught-in-a-web": {
+  "requirement": "Admiral Trench Only",
+  "text": "[Action] Choose up to 2 enemy units within Range 5 and in LOS. Each chosen unit gains 1 Ploy token. Admiral Trench may make this Action twice per Activation.\nWhen an enemy Trooper unit within Range 5 and in LOS that has 1 or more Ploy tokens attacks an allied unit, you may spend 1 of those tokens. If you do, after the attack is resolved, the enemy unit gains 2 Suppression tokens."
+ },
+ "champion-of-the-watch": {
+  "text": "Commander Mandalorian Trooper or Operative Mandalorian Trooper Only.\nThis unit changes its Affiliation to Clan Covert.\nThis unit gains This is the Way: Aim 1 or Dodge 1."
+ },
+ "chewbacca": {
+  "requirement": "Wookiee Trooper Only",
+  "text": "Add 1 Chewbacca miniature.\nWhen this unit attacks, during the Form Attack Pool step, choose 1 of this unitʼs Attack Pools. This unit may upgrade 1 attack dice in that Attack Pool for each miniature adding a weapon to the chosen Attack Pool.\nWhen this unit defends, for each miniature in this unit, you may upgrade 1 of this unitʼs defense dice.\nLeader.",
+  "weapon": {
+   "dice": {
+    "red": 1,
+    "white": 2
+   },
+   "keywords": [
+    "Impact 1"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "Chewbacca's Bowcaster"
+  }
+ },
+ "children-of-the-watch": {
+  "requirement": "Mandalorian Trooper Only",
+  "text": "This unit changes its Affiliation to Clan Covert.\nIf this unit is a Mandalorian Warrior unit, it gains This Is the Way: Dodge 1.\nIf this unit is a Mandalorian Warriors (Fire Support) unit, it gains This Is the Way: Aim 1 instead."
+ },
+ "clairvoyance": {
+  "text": "When this unit attacks, it may [Expend] this card during the Reroll Dice step. If it does, it rerolls all of its attack dice, then converts any [hit surge] results as normal. You may not further modify the attack roll.\nWhen this unit defends, it may [Expend] this card during the Reroll Dice step. If it does, it rerolls all of its defense dice, then converts any [defense surge] results as normal. You may not further modify the defense roll."
+ },
+ "clan-kryze": {
+  "requirement": "Mandalorian Trooper Only",
+  "text": "This unit changes its Affiliation to Clan Kryze.\nThis unit gain Mandalorians Are\nStronger Together."
+ },
+ "clan-saxon": {
+  "requirement": "Mandalorian Trooper Only",
+  "text": "This unit changes its affiliation to Clan Saxon.\nThis unit gains Victory or Death."
+ },
+ "clan-wren": {
+  "requirement": "Mandalorian Trooper Only",
+  "text": "This unit changes its affiliation to Clan Wren.\nThis unit gains We Fight for Our Family."
+ },
+ "clone-captain": {
+  "requirement": "Clone Trooper Only",
+  "text": "Add 1 Clone Captain miniature.\nLeader.\nThis unit gains Outmaneuver and Defend 1."
+ },
+ "clone-captain-rex": {
+  "text": "Republic Corps Clone Trooper Only.\nAdd 1 Clone Captain Rex miniature.\nLeader.\nThis unit increases its courage by 1 and gains 1 Command and 1 Training upgrade icon. When this unit defeats an enemy unit with an attack, after the Attack action is resolved, this unit may make 1 free action.",
+  "weapon": {
+   "dice": {
+    "red": 2
+   },
+   "max_range": 2,
+   "min_range": 0,
+   "name": "Dual Hand Blasters"
+  }
+ },
+ "clone-commander": {
+  "requirement": "Clone Trooper Only",
+  "text": "Add 1 Clone Commander miniature.\nLeader.\nThis unit gains Inspire 1 and Reliable 1."
+ },
+ "clone-commander-cody": {
+  "requirement": "ARF Troopers or Clone Trooper Marksmen Only",
+  "text": "Add 1 Clone Commander Cody miniature.\nThis unit gains Mechanized Infantry and Precise 1.\nLeader.",
+  "weapon": {
+   "dice": {
+    "red": 1,
+    "white": 2
+   },
+   "keywords": [
+    "Impact 1"
+   ],
+   "max_range": 4,
+   "min_range": 1,
+   "name": "Cody's DC-15 Rifle"
+  }
+ },
+ "clone-commander-fox": {
+  "text": "Republic LAAT/le Patrol Transport Only.\nThis unit gains Field Commander.\n[Free action] Choose an allied Trooper unit within Range 2 of this unit. The chosen unit gains 1 Surge token and may remove 1 Suppression token."
+ },
+ "clone-commander-personnel": {
+  "requirement": "Clone Trooper Only",
+  "text": "Add 1 Clone Commander miniature.\nLeader.\nThis unit gains Inspire 1 and Reliable 1."
+ },
+ "clone-comms-technician": {
+  "text": "Corps Clone Trooper Only.\nAdd 1 Clone Comms Technician miniature.\nThis unit gains Fire Support."
+ },
+ "clone-engineer": {
+  "text": "Corps Clone Trooper Only.\nAdd 1 Clone Engineer miniature.\nThis unit gains [Free action] Repair 1: Capacity 1."
+ },
+ "clone-marksman": {
+  "requirement": "Clone Trooper Marksmen Only",
+  "text": "Add 1 Clone Trooper Marksman miniature."
+ },
+ "clone-medic": {
+  "requirement": "Clone Trooper Only",
+  "text": "Add 1 Clone Medic miniature.\n[Free action] Treat 1: Capacity 1."
+ },
+ "clone-medic-personnel": {
+  "requirement": "Clone Trooper Only",
+  "text": "Add 1 Clone Medic miniature.\n[Free action] Treat 1: Capacity 1."
+ },
+ "clone-shock-trooper-pilot": {
+  "text": "Republic Heavy Only.\nWhen this unit makes an Attack action, after the action is resolved, you may choose 1 allied unit within Range 1 of this unit. If you do, the chosen unit gains 1 Surge token."
+ },
+ "clone-specialist": {
+  "text": "Corps Clone Trooper Only.\nAdd 1 Clone Specialist miniature.\nThis unit gains 1 Gear upgrade icon.\n[Exhaust, free action] Gain 1 Aim token, 1 Dodge token, or 1 Surge token."
+ },
+ "clone-trooper-infantry": {
+  "requirement": "Clone Trooper Infantry Only",
+  "text": "Add 1 Clone Trooper Infantry miniature."
+ },
+ "clone-trooper-infantry-squad": {
+  "requirement": "Clone Trooper Infantry Only",
+  "text": "Add 5 Clone Trooper Infantry miniatures.\nThis unit gains Indomitable. This unit has this keyword even if these miniatures are defeated.\nThis unit is in cohesion if all miniatures are within Range 1 of the unit leader instead of within Range ½. This unit has this rule even if these miniatures are defeated.\nThis unit cannot be Deployed or issued Orders using the Transport keyword."
+ },
+ "clone-trooper-marksmen-squad": {
+  "requirement": "Clone Trooper Marksmen Only",
+  "text": "Add 5 Clone Trooper Marksmen miniatures.\nThis unit gains Indomitable. This unit has this keyword even if these miniatures are defeated.\nThis unit is in cohesion if all miniatures are within Range 1 of the unit leader instead of within Range ½. This unit has this rule even if these miniatures are defeated.\nThis unit cannot be Deployed or issued Orders using the Transport keyword."
+ },
+ "combat-shields": {
+  "text": "Non- Commander Non- Operative Mandalorian Trooper Only.\nThis unit gains Shielded 2."
+ },
+ "command-and-control-uplink": {
+  "requirement": "Imperial Agent or Imperial Officer Only",
+  "text": "During the Command Phase, after revealing Command Cards but before determining Priority, you may [Expend] this card.If you do, you may treat your revealed Command Card as 1 pip lower until the end of the Round."
+ },
+ "command-control-array": {
+  "requirement": "Vehicle Only",
+  "text": "When this unit uses Coordinate, it may issue an Order to a unit within Range 2 instead of within Range 1."
+ },
+ "comms-jammer": {
+  "text": "Enemy units within Range 1 of this unit cannot be issued Orders, unless they are issuing an Order to themselves."
+ },
+ "concussion-grenades": {
+  "weapon": {
+   "dice": {
+    "black": 1
+   },
+   "keywords": [
+    "Blast"
+   ],
+   "min_range": 1,
+   "name": "Concussion Grenade"
+  }
+ },
+ "cr-24-flame-rifle": {
+  "requirement": "Dewback Rider Only",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Blast",
+    "Spray"
+   ],
+   "max_range": 1,
+   "min_range": 0,
+   "name": "CR-24 Flame Rifle"
+  }
+ },
+ "crosshair": {
+  "requirement": "The Bad Batch Only",
+  "text": "Add 1 Crosshair miniature.\nThis unit gains Precise 1.\nWhile an Attack Pool contains only this weapon, the Attack Pool gains Critical 1.",
+  "weapon": {
+   "dice": {
+    "red": 1
+   },
+   "keywords": [
+    "High Velocity",
+    "Pierce 1"
+   ],
+   "max_range": 5,
+   "min_range": 1,
+   "name": "Firepuncher Rifle"
+  }
+ },
+ "dc-15x-arc-trooper-gunner": {
+  "text": "Special Forces ARC Troopers Only.\nAdd 1 DC-15x ARC Trooper Gunner miniature.",
+  "weapon": {
+   "dice": {
+    "black": 3,
+    "white": 1
+   },
+   "keywords": [
+    "Overwhelm"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "DC-15x Blaster Rifle"
+  }
+ },
+ "dc-15x-arc-trooper-sniper": {
+  "requirement": "ARC Troopers, Strike Team Only",
+  "text": "Add 1 DC-15x ARC Trooper Sniper miniature.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "white": 2
+   },
+   "keywords": [
+    "High Velocity",
+    "Overwhelm",
+    "Sniper Team"
+   ],
+   "max_range": 5,
+   "min_range": 2,
+   "name": "DC-15x Sniper Rifle"
+  }
+ },
+ "defend-in-depth": {
+  "requirement": "Imperial Agent or Imperial Officer Only",
+  "text": "During the End Phase, choose 1 allied Trooper unit within Range 1 of this unit.\nThe chosen unit does not remove 1 Aim token.\nThis unit gains Aid: Emplacement Trooper Unit, Prepared Position, and [Action] Spotter 1."
+ },
+ "defense-protocols": {
+  "requirement": "Vehicle Only",
+  "text": "This unit gains Nimble, Outmaneuver, and AI: Dodge."
+ },
+ "del-meeko": {
+  "text": "Imperial Special Forces or Imperial Corps Trooper Only.\nAdd 1 Del Meeko miniature.\n[Free action] Repair 2: Capacity 1.",
+  "weapon": {
+   "dice": {
+    "black": 2
+   },
+   "keywords": [
+    "High Velocity",
+    "Lethal 1"
+   ],
+   "max_range": 5,
+   "min_range": 1,
+   "name": "Del's DLT-19x"
+  }
+ },
+ "despair": {
+  "requirement": "Dark Side Only",
+  "text": "Enemy units Engaged with this unit downgrade 1 of their defense dice when defending.\nAdditionally, after this unit makes a Melee attack, each other enemy unit within Range ½ of the defending unit gains 1 Suppression token."
+ },
+ "dh-447-sniper": {
+  "requirement": "Rebel Commandos, Strike Team Only",
+  "text": "Add 1 DH-447 Sniper miniature.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "white": 2
+   },
+   "keywords": [
+    "High Velocity",
+    "Overwhelm",
+    "Sniper Team"
+   ],
+   "max_range": 5,
+   "min_range": 2,
+   "name": "DH-447 Sniper Rifle"
+  }
+ },
+ "din-djarin": {
+  "text": "Clan Covert Only.\nAdd 1 Din Djarin miniature.\nOnce per Round, when this unit is chosen as a target of theThis is the Way keyword, it gains 1 Surge token.\nLeader.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1
+   },
+   "keywords": [
+    "Lethal 1"
+   ],
+   "max_range": 2,
+   "min_range": 0,
+   "name": "Din's Blaster Pistol"
+  }
+ },
+ "din-s-amban-rifle": {
+  "requirement": "Din Djarin Only",
+  "text": "[Action] [Action] If this unit is not Engaged, it may make a Speed-1 Move. Then, choose an enemy unit in LOS and roll 1 red attack die. If the result is a [hit] or [crit], the chosen unit suffers 1 Wound and gains 1 Suppression token.",
+  "weapon": {
+   "dice": {
+    "black": 3
+   },
+   "keywords": [
+    "Immobilize 2",
+    "Suppressive"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Amban Rifle"
+  }
+ },
+ "din-s-jetpack": {
+  "requirement": "Din Djarin Only",
+  "text": "Increase this unit's Speed by 1.\nThis unit gains [Action] Jump 2."
+ },
+ "dioxis-mine-saboteur": {
+  "requirement": "BX-Series Droid Commandos Only",
+  "text": "Add 1 Dioxis Mine Saboteur miniature.\nWhen this weapon is added to an Attack Pool, other Ranged weapons in that Attack Pool gain Assault 1.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Blast",
+    "Poison 1"
+   ],
+   "max_range": 1,
+   "min_range": 0,
+   "name": "Dioxis Mine"
+  }
+ },
+ "dlt-19-d-trooper": {
+  "requirement": "Imperial Death Troopers Only",
+  "text": "Add 1 DLT-19D Trooper miniature.",
+  "weapon": {
+   "dice": {
+    "red": 2,
+    "white": 1
+   },
+   "keywords": [
+    "Impact 1"
+   ],
+   "max_range": 4,
+   "min_range": 1,
+   "name": "DLT-19D Blaster Rifle"
+  }
+ },
+ "dlt-19-stormtrooper": {
+  "requirement": "Stormtroopers Only",
+  "text": "Add 1 DLT-19 Stormtrooper miniature.",
+  "weapon": {
+   "dice": {
+    "red": 2
+   },
+   "keywords": [
+    "Impact 1"
+   ],
+   "max_range": 4,
+   "min_range": 1,
+   "name": "DLT-19 Blaster Rifle"
+  }
+ },
+ "dlt-19-x-sniper": {
+  "requirement": "Scout Troopers, Strike Team Only",
+  "text": "Add 1 DLT-19x Sniper miniature.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "white": 2
+   },
+   "keywords": [
+    "High Velocity",
+    "Overwhelm",
+    "Sniper Team"
+   ],
+   "max_range": 5,
+   "min_range": 2,
+   "name": "DLT-19x Sniper Rifle"
+  }
+ },
+ "dlt-20a-range-trooper": {
+  "requirement": "Range Troopers Only",
+  "text": "Add 1 DLT-20A Range Trooper miniature.",
+  "weapon": {
+   "dice": {
+    "red": 2
+   },
+   "keywords": [
+    "Impact 2"
+   ],
+   "max_range": 5,
+   "min_range": 1,
+   "name": "DLT-20A Blaster Rifle"
+  }
+ },
+ "dlt-20a-trooper": {
+  "requirement": "Rebel Troopers Only",
+  "text": "Add 1 DLT-20A Trooper miniature.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "white": 1
+   },
+   "keywords": [
+    "Critical 1"
+   ],
+   "max_range": 4,
+   "min_range": 1,
+   "name": "DLT-20A Blaster Rifle"
+  }
+ },
+ "door-gunners": {
+  "requirement": "Unit with Transport Only",
+  "text": "Units may equip this card even if they do not have a Crew upgrade slot on their unit card.\nAfter this unit makes an Attack action during its Activation, if it did not add this weapon to an Attack Pool during that Attack action, it may make a free Attack action using only this weapon, even though it has already made an Attack action this Turn.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "white": 2
+   },
+   "keywords": [
+    "Fixed"
+   ],
+   "max_range": 2,
+   "min_range": 1,
+   "name": "Mounted Blaster"
+  }
+ },
+ "double-bladed-lightsaber": {
+  "requirement": "Jedi Knight or Jedi Knight General Only",
+  "text": "If this unit has Charge, it gains Tactical 1.\nIf it does not, this unit gains Charge instead..",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "red": 1,
+    "white": 3
+   },
+   "keywords": [
+    "Ram 1",
+    "Impact 2",
+    "Pierce 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Double-Bladed Lightsaber"
+  }
+ },
+ "dp-23-clone-trooper": {
+  "requirement": "Clone Trooper Infantry Only",
+  "text": "Add 1 DP-23 Clone Trooper miniature.",
+  "weapon": {
+   "dice": {
+    "red": 2
+   },
+   "keywords": [
+    "Pierce 1"
+   ],
+   "max_range": 2,
+   "min_range": 0,
+   "name": "DP-23 Blaster"
+  }
+ },
+ "dt-f-16": {
+  "requirement": "Imperial Death Troopers Only",
+  "text": "Add 1 DT-F16 miniature.\nThis unit gains Compel.\nLeader.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "white": 1
+   },
+   "max_range": 3,
+   "min_range": 1,
+   "name": "E-11D Blaster Rifle"
+  }
+ },
+ "duck-and-cover": {
+  "text": "When this unit is defending against a Ranged attack, at the start of the Apply Dodge and Cover step, it may gain 1 Suppression token."
+ },
+ "dug-in": {
+  "requirement": "Emplacement Trooper or Trooper Unit with Prepared Position Only",
+  "text": "Units may equip this card even if they do not have a Training upgrade slot on their unit card.\nWhile this unit is completely within Allied Territory and while it does not have a facedown Order token, this unit rolls red defense dice instead of white defense dice when rolling its Cover Pool."
+ },
+ "e-5c-b1-battle-droid": {
+  "requirement": "B1 Battle Droids Only",
+  "text": "Add 1 E-5C B1 Battle Droid miniature.",
+  "weapon": {
+   "dice": {
+    "black": 3
+   },
+   "max_range": 3,
+   "min_range": 1,
+   "name": "E-5C Blaster Rifle"
+  }
+ },
+ "e-5s-b1-battle-droid": {
+  "requirement": "B1 Battle Droids Only",
+  "text": "Add 1 E-5s B1 Battle Droid miniature.",
+  "weapon": {
+   "dice": {
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Critical 1"
+   ],
+   "max_range": 4,
+   "min_range": 1,
+   "name": "E-5s Sniper Rifle"
+  }
+ },
+ "e-60r-b1-battle-droid": {
+  "requirement": "B1 Battle Droids Only",
+  "text": "Add 1 E-60R B1 Battle Droid miniature.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Cumbersome",
+    "Impact 2"
+   ],
+   "max_range": 4,
+   "min_range": 2,
+   "name": "E-60R Rocket Launcher"
+  }
+ },
+ "echo-arc-marksman": {
+  "text": "Corps or Special Forces Clone Trooper Only.\nAdd 1 Echo miniature.\nLeader.\nThis unit gains Reliable 1.",
+  "weapon": {
+   "dice": {
+    "red": 2
+   },
+   "keywords": [
+    "Critical 1",
+    "Lethal 1",
+    "Immune: Deflect"
+   ],
+   "max_range": 5,
+   "min_range": 1,
+   "name": "Echo's DC-15x"
+  }
+ },
+ "echo-clone-force-99": {
+  "requirement": "The Bad Batch Only",
+  "text": "Add 1 Echo miniature.\nThis unit gains Reliable 3."
+ },
+ "electro-gauntlets": {
+  "requirement": "Cad Bane Only",
+  "text": "While this unit is Engaged, it can make Moves as normal if any unit it is Enganged with has 1 or more Immobilize tokens.",
+  "weapon": {
+   "dice": {
+    "red": 4
+   },
+   "keywords": [
+    "Immobilize 3",
+    "Suppressive"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Electro Gauntlets"
+  }
+ },
+ "electro-whip-magnaguard": {
+  "requirement": "IG-100 MagnaGuard Only",
+  "text": "Add 1 Electro-Whip MagnaGuard miniature.",
+  "weapon": {
+   "dice": {
+    "red": 2
+   },
+   "keywords": [
+    "Immobilize 1",
+    "Versatile"
+   ],
+   "max_range": 1,
+   "min_range": 0,
+   "name": "Electro-Whip"
+  }
+ },
+ "electro-whip-soldier": {
+  "requirement": "Pyke Syndicate Foot Soldiers Only",
+  "text": "Add 1 Electro-Whip Soldier miniature.",
+  "weapon": {
+   "dice": {
+    "red": 2
+   },
+   "keywords": [
+    "Immobilize 1",
+    "Suppressive"
+   ],
+   "max_range": 1,
+   "min_range": 0,
+   "name": "Electro-Whip"
+  }
+ },
+ "electrobinoculars": {
+  "text": "This unit gains [Action] Spotter 1.\nB1 Battle Droids units can equip this card even though they do not have a Gear upgrade slot."
+ },
+ "electrostaff": {
+  "requirement": "Super Tactical Command Droid Only",
+  "text": "This unit gains Charge and Immune: Melee Pierce.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "red": 2,
+    "white": 2
+   },
+   "keywords": [
+    "Critical 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Electrostaff"
+  }
+ },
+ "electrostaff-pirate": {
+  "requirement": "Weequay Pirates Only",
+  "text": "Add 1 Electrostaff Pirate minature.\nThis unit gains Immune: Melee Pierce.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1
+   },
+   "keywords": [
+    "Sidearm Melee"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Electrostaff"
+  }
+ },
+ "emergency-stims": {
+  "text": "When this unit would suffer 1 or more Wounds from an enemy attack, you may [Exhaust] this card to prevent suffering up to 2 of those Wounds and place an equal number of Wound tokens on this card instead. If you do, at the end of this unit's next Activation, this unit removes each Wound token from this card and suffers Wounds equal to the number of Wound tokens removed."
+ },
+ "emergency-transponder": {
+  "text": "At the start of this unit's Activation, if it was activated with an Order token from the Order Pool, you may [Expend] this card. If you do, this unit gains 1 Aim token, gains 1 Dodge token, or removes 1 Suppression token."
+ },
+ "emp-droid-poppers": {
+  "weapon": {
+   "dice": {
+    "black": 1
+   },
+   "keywords": [
+    "Ion 1"
+   ],
+   "min_range": 1,
+   "name": "EMP \"Droid Poppers\""
+  }
+ },
+ "endurance": {
+  "text": "This unit may remove 1 Suppression token at the end of the Activation Phase."
+ },
+ "engagement-protocols": {
+  "requirement": "Vehicle Only",
+  "text": "This unit gains AI: Attack, Move."
+ },
+ "enhanced-combat-subroutines": {
+  "requirement": "Super Tactical Command Droid Only",
+  "text": "This unit gains Sharpshooter 1. When this unit attacks, the Attack Pool gains Lethal 1."
+ },
+ "environmental-gear": {
+  "text": "This unit gains Unhindered."
+ },
+ "ev-series-medical-droid": {
+  "text": "Separatist Droid Trooper Only.\nAdd 1 EV-Series Medical Droid miniature.\nNoncombatant.\nThis unit gains [Free action] Treat 1: Capacity 2."
+ },
+ "ewok-skirmisher-squad": {
+  "requirement": "Ewok Skirmishers Only",
+  "text": "Add 4 Ewok Skirmisher miniatures.\nThis unit gains Indomitable. This unit has this keyword even if these miniatures are defeated.\nThis unit is in cohesion if all miniatures are within Range 1 of the unit leader instead of within Range ½. This unit has this rule even if these miniatures are defeated.\nThis unit cannot be Deployed or issued Orders using the Transport keyword."
+ },
+ "ewok-slinger-squad": {
+  "requirement": "Ewok Slingers Only",
+  "text": "Add 4 Ewok Slinger miniatures.\nThis unit gains Indomitable. This unit has this keyword even if these miniatures are defeated.\nThis unit is in cohesion if all miniatures are within Range 1 of the unit leader instead of within Range ½. This unit has this rule even if these miniatures are defeated.\nThis unit cannot be Deployed or issued Orders using the Transport keyword."
+ },
+ "ewok-trapper": {
+  "requirement": "Ewok Slingers or Ewok Skirmishers Only",
+  "text": "Add 1 Ewok Trapper miniature.\nThis unit gains 1 Training upgrade icon."
+ },
+ "expanded-databanks": {
+  "requirement": "Super Tactical Command Droid Only",
+  "text": "This unit gains 1 Programming upgrade slot."
+ },
+ "extra-supplies": {
+  "text": "At the end of this unit's Activation you may [Expend] this card. If you do, ready 1 of this unit's non- Force upgrades."
+ },
+ "fear": {
+  "requirement": "Dark Side Only",
+  "text": "This unit gains Demoralize 1."
+ },
+ "fifth-brother": {
+  "requirement": "Stormtrooper Riot Squad Only",
+  "text": "Add 1 Fifth Brother miniature.\nThis unit gains Spur.\nLeader. Sidearm: Melee, Ranged.",
+  "weapon": {
+   "dice": {
+    "black": 3
+   },
+   "keywords": [
+    "Impact 1",
+    "Pierce 1",
+    "Ram 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Spinning Lightsaber"
+  }
+ },
+ "fire-control": {
+  "text": "When another allied unit within Range 1 makes a Ranged attack against an enemy unit in LOS of this unit, upgrade 2 of the attacking unitʼs attack dice."
+ },
+ "first-seargant-arbmab": {
+  "text": "Imperial Ground Vehicle Only.\nThis unit gains Tactical 1."
+ },
+ "fives": {
+  "requirement": "Clone Trooper Only",
+  "text": "Add 1 Fives miniature.\nThis unitʼs courage is increased by 1.\nLeader.\nThis unit gains Charge and Coordinate: Clone Trooper.",
+  "weapon": {
+   "dice": {
+    "black": 3
+   },
+   "max_range": 3,
+   "min_range": 0,
+   "name": "Five's Blasters"
+  }
+ },
+ "fives-squad-leader": {
+  "requirement": "Clone Trooper Only",
+  "text": "Add 1 Fives miniature.\nThis unitʼs courage is increased by 1.\nLeader.\nThis unit gains Charge and Coordinate: Clone Trooper.",
+  "weapon": {
+   "dice": {
+    "black": 3
+   },
+   "max_range": 3,
+   "min_range": 0,
+   "name": "Five's Blasters"
+  }
+ },
+ "flame-projector": {
+  "requirement": "Mandalorian Trooper Only",
+  "text": "When this unit attacks, 1 miniature in this unit may use the weapon below.",
+  "weapon": {
+   "dice": {
+    "red": 1
+   },
+   "keywords": [
+    "Blast",
+    "Spray",
+    "Suppressive"
+   ],
+   "max_range": 1,
+   "min_range": 0,
+   "name": "Flame Projector"
+  }
+ },
+ "flametrooper": {
+  "requirement": "Snowtroopers Only",
+  "text": "Add 1 Flametrooper miniature.",
+  "weapon": {
+   "dice": {
+    "black": 1
+   },
+   "keywords": [
+    "Blast",
+    "Spray"
+   ],
+   "max_range": 1,
+   "min_range": 0,
+   "name": "Flamethrower"
+  }
+ },
+ "fleet-trooper": {
+  "requirement": "Fleet Troopers Only",
+  "text": "Add 1 Fleet Trooper miniature."
+ },
+ "fleet-trooper-squad": {
+  "requirement": "Fleet Troopers Only",
+  "text": "Add 5 Fleet Trooper miniatures.\nThis unit gains Indomitable. This unit has this keyword even if these miniatures are defeated.\nThis unit is in cohesion if all miniatures are within Range 1 of the unit leader instead of within Range ½. This unit has this rule even if these miniatures are defeated.\nThis unit cannot be Deployed or issued Orders using theTransport keyword."
+ },
+ "force-absorb": {
+  "requirement": "Light Side Only",
+  "text": "When an allied unit within Range 1 of this unit defends against a Ranged attack, during the Modify Attack Dice step, you may [Exhaust] this card. If you do, cancel 1 [hit] result in the Attack Pool.\nAt the start of this unitʼs Activation, you may ready this card."
+ },
+ "force-agility": {
+  "text": "At the start of this unitʼs Activation, you may [Expend] this card. If you do, this unit gains Disengage this Round."
+ },
+ "force-barrier": {
+  "text": "When another allied Trooper unit within Range 1 of this unit defends against a Ranged attack, during the Modify Attack Dice step, you may [Exhaust] this card to cancel either 1 [crit] result or up to 2 [hit] results.."
+ },
+ "force-choke": {
+  "requirement": "Dark Side Only",
+  "text": "[Exhaust, free action] Choose a non- Commander, non- Operative enemy Trooper unit within Range 1 of this unit.\nThe chosen unit suffers 1 Wound."
+ },
+ "force-drain": {
+  "requirement": "Dark Side Only",
+  "text": "[Exhaust, free action] Choose an enemy unit Engaged with this unit and roll 3 black attack dice. For each [hit] rolled, the enemy unit gains 1 Suppression token. After the effect is resolved, if the enemy unit is Panicked, it gains 1 Poison token and this unit removes 1 Wound token. If the enemy unit is Suppressed but not Panicked, it gains 1 Immobilize token."
+ },
+ "force-enhanced-defense": {
+  "text": "This unit gains Shielded 1.\nAt the start of this unitʼs Activation, it may flip up to 1 of its inactive Shield tokens."
+ },
+ "force-guidance": {
+  "text": "[Exhaust, free action] Choose up to 2 allied units within Range 2 of this unit. Each chosen unit gains 1 Surge token."
+ },
+ "force-push": {
+  "text": "[Exhaust, free action] Choose an enemy Trooper unit within Range 1 of this unit. The chosen unit makes a Speed-1 Move, even if it is Engaged.\nYou resolve this Move."
+ },
+ "force-reflexes": {
+  "text": "[Exhaust, free action] This unit gains 1 Dodge token."
+ },
+ "forest-dwellers": {
+  "text": "Ewok Troopers Only.\nThis unit gains Scout 1.\nAt the start of the first Activation Phase, this unit gains 1 Dodge token."
+ },
+ "fragmentation-grenades": {
+  "text": "While this weapon is in the Attack Pool, this unit gains \" [hit surge]: [crit] \".",
+  "weapon": {
+   "dice": {
+    "red": 1
+   },
+   "min_range": 1,
+   "name": "Frag Grenade"
+  }
+ },
+ "frenzied-gunner": {
+  "text": "Raider Heavy Only.\nWhen this unit makes a Ranged attack, during the Form Attack Pool step, you may roll 1 red defense die. On a blank result, add 1 white attack die to the Attack Pool. On a [block] result, add 1 black die to the Attack Pool. On a [defense surge] result, add 1 red die to the Attack Pool."
+ },
+ "fx-9-medical-droid": {
+  "text": "Imperial Corps Trooper Only.\nAdd 1 FX-9 Medical Droid miniature.\nNoncombatant.\n[Free action] Treat 1: Capacity 2."
+ },
+ "galaar-15-carbines": {
+  "text": "Clan Kryze, Creedless, Clan Wren, or Clan Saxon Mandalorian Warriors Only",
+  "weapon": {
+   "dice": {
+    "black": 1
+   },
+   "max_range": 3,
+   "min_range": 1,
+   "name": "GALAAR-15 Carbine"
+  }
+ },
+ "galaar-90-sniper-rifle": {
+  "text": "Special Forces or Support Mandalorian Trooper Only.\nAdd 1 GALAAR-90 Sniper miniature.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1
+   },
+   "keywords": [
+    "Lethal 1"
+   ],
+   "max_range": 4,
+   "min_range": 1,
+   "name": "GALAAR-90 Sniper Rifle"
+  }
+ },
+ "gang-boss": {
+  "text": "Raider Heavy Only.\nThis unit gains Command Vehicle 2.\nOnly Raider units may benefit from this unitʼs Command Vehicle X keyword."
+ },
+ "gar-saxon": {
+  "text": "Clan Saxon Only.\nAdd 1 Gar Saxon miniature.\nThis unit gains Compel.\nLeader.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "High Velocity",
+    "Lethal 1"
+   ],
+   "max_range": 5,
+   "min_range": 1,
+   "name": "GALAR-90 Sniper Rifle"
+  }
+ },
+ "general-grievous": {
+  "requirement": "B1 Battle Droids or IG-100 MagnaGuard Only",
+  "text": "Add 1 General Grievous miniature.\nThis unit loses AI and gains 1 Heavy upgrade icon.\nWhen this unit attacks, during the Form Attack Pool step, you may upgrade up to 3 of its attack dice. If you do, this unit gains 1 Suppression token.\nLeader. Sidearm: Melee, Ranged.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Critical 1",
+    "Impact 1",
+    "Pierce 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Trophy Lightsabers"
+  }
+ },
+ "general-of-the-republic": {
+  "requirement": "Jedi Knight General Only",
+  "text": "This unit gains 1 Command upgrade slot.\nThis unit gains [Action] Bolster 2, Direct: Clone Trooper, and Inspire 1."
+ },
+ "general-weiss": {
+  "text": "Imperial Ground Vehicle Only.\nThis unit gains Arsenal 2 and Field Commander."
+ },
+ "geonosian-warrior": {
+  "requirement": "Geonosian Warriors Only",
+  "text": "Add 1 Geonosian Warrior miniature."
+ },
+ "geonosian-warrior-squad": {
+  "requirement": "Geonosian Warriors Only",
+  "text": "Add 5 Geonosian Warriors miniatures.\nThis unit gains Indomitable. This unit has this keyword even if these miniatures are defeated.\nThis unit is in cohesion if all miniatures are within Range 1 of the unit leader instead of within Range ½. This unit has this rule even if these miniatures are defeated.\nThis unit cannot be Deployed or issued Orders using the Transport keyword."
+ },
+ "gideon-hask": {
+  "text": "Imperial Special Forcesor Imperial Corps Trooper Only.\nAdd 1 Gideon Hask miniature.\nLeader.\nThis unit increases its courage By 1. This unit gains Coordinate: Corps Trooper.",
+  "weapon": {
+   "dice": {
+    "red": 2
+   },
+   "max_range": 3,
+   "min_range": 1,
+   "name": "Gideon's E-11"
+  }
+ },
+ "gnasp-bombardier": {
+  "requirement": "Raddaugh Gnasp Fluttercraft Only",
+  "weapon": {
+   "dice": {
+    "red": 2,
+    "white": 2
+   },
+   "keywords": [
+    "Overrun 2",
+    "Suppressive"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Thermal Detonators"
+  }
+ },
+ "gnasp-gunner": {
+  "requirement": "Raddaugh Gnasp Fluttercraft Only",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "red": 2
+   },
+   "keywords": [
+    "Fixed: Rear",
+    "Impact 1",
+    "Pierce 1"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "Heavy Bowcaster"
+  }
+ },
+ "go-for-broke": {
+  "requirement": "Trooper Only",
+  "text": "During the Remove Tokens step, if this unit has 1 or more Suppression tokens, it may choose to not remove Suppression tokens.\nIf it does not remove any Suppression token, choose 1 green token on this unit. The chosen token is not removed."
+ },
+ "governor-pryce": {
+  "text": "Imperial Heavy Only.\nThis unit gains Field Commander.\n[Free action] Choose an allied Trooper unit within Range 2 of this unit.\nThe chosen unit gains 1 Aim token and 1 Suppression token."
+ },
+ "grappling-hooks": {
+  "text": "This unit gains Expert Climber."
+ },
+ "hacked-comms-unit": {
+  "text": "During the Issue Orders step of the Command Phase, after an enemy unit within Range 1 of this unit is issued an Order, this unit may issue an Order to itself."
+ },
+ "hatred": {
+  "requirement": "Dark Side Only",
+  "text": "[Free action] This unit may suffer up to 3 Wounds.\nWhen this unit makes a Melee attack, it may upgrade 1 of its attack dice for each Wound token it has."
+ },
+ "heavy-aqua-droid": {
+  "requirement": "Aqua Droids Only",
+  "text": "Add 1 Heavy Aqua Droid miniature.",
+  "weapon": {
+   "dice": {
+    "red": 2,
+    "white": 1
+   },
+   "keywords": [
+    "Impact 2"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "Heavy Blaster"
+  }
+ },
+ "heavy-arm-cannon": {
+  "requirement": "Super Tactical Command Droid Only",
+  "weapon": {
+   "dice": {
+    "red": 2,
+    "white": 3
+   },
+   "keywords": [
+    "Suppressive"
+   ],
+   "max_range": 2,
+   "min_range": 1,
+   "name": "Heavy Arm Cannon"
+  }
+ },
+ "heavy-laser-cannon": {
+  "requirement": "LM-432 Crab Droid Only",
+  "weapon": {
+   "dice": {
+    "black": 5
+   },
+   "keywords": [
+    "Fixed: Front",
+    "Impact 3"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "Heavy Laser Cannon"
+  }
+ },
+ "heavy-laser-retrofit": {
+  "requirement": "A-A5 Speeder Truck Only",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Critical 1"
+   ],
+   "max_range": 4,
+   "min_range": 1,
+   "name": "Heavy Laser Cannon"
+  }
+ },
+ "helping-hand": {
+  "requirement": "Light Side Only",
+  "text": "When another allied Trooper unit within Range 1 of this unit would make a Move action, you may [Exhaust] this card. If you do, the allied unit instead makes a [Action] Jump 1 action and gains 1 Dodge token.\nAt the end of this unitʼs Activation, ready this card."
+ },
+ "herbal-medicine": {
+  "requirement": "Logray Only",
+  "text": "[Exhaust, free action] Choose an allied Ewok Trooper unit within Range 1 and in LOS. Remove 1 Wound from or restore 1 defeated miniature to the chosen unit."
+ },
+ "hh-12-stormtrooper": {
+  "requirement": "Stormtroopers Only",
+  "text": "Add 1 HH-12 Stormtrooper miniature.",
+  "weapon": {
+   "dice": {
+    "black": 3
+   },
+   "keywords": [
+    "Cumbersome",
+    "Impact 3"
+   ],
+   "max_range": 4,
+   "min_range": 2,
+   "name": "HH-12 Rocket Launcher"
+  }
+ },
+ "high-energy-shells": {
+  "text": "Cycle.",
+  "weapon": {
+   "dice": {
+    "red": 2,
+    "white": 1
+   },
+   "keywords": [
+    "Fixed: Front",
+    "Critical 1",
+    "High Velocity"
+   ],
+   "max_range": 4,
+   "min_range": 2,
+   "name": "High-Energy Shells"
+  }
+ },
+ "high-speed-tracking": {
+  "text": "When this unit attacks a Flying Vehicle unit, during the Form Attack Pool step of that attack, that Attack Pool gains Blast."
+ },
+ "hit-the-dirt": {
+  "text": "Non-Droid Trooper Only.\nTrooper Only. white defense die Only.\nUnits may equip this card even if they do not have a Training upgrade slot on their Unit Card.\nWhen this unit defends against a Ranged attack, during the Apply Dodge and Cover step, you may [Expend] this card. If you do, this unit rolls red defense dice instead of white defense dice when rolling its Cover Pool for this attack."
+ },
+ "hope": {
+  "requirement": "Light Side Only",
+  "text": "This unit gains Inspire 1."
+ },
+ "hotshot-pilot": {
+  "text": "Rebel Repulsor Vehicle Only.\nThis unit gains Sharpshooter 1."
+ },
+ "hq-uplink": {
+  "text": "During the Issue Orders step of the Command Phase, you may [Exhaust] this card.\nIf you do, this unit may issue an Order to itself."
+ },
+ "hunter": {
+  "requirement": "The Bad Batch Only",
+  "text": "Add 1 Hunter miniature.\nLeader.\n[Free action] Choose a non- Commander or non- Operative enemy Trooper unit within Range 1 and in LOS.\nRoll 1 black attack die. On a [hit] or [crit] result, that unit suffers 1 Wound."
+ },
+ "hunter-heavy-weapon": {
+  "requirement": "The Bad Batch Only",
+  "text": "Add 1 Hunter miniature.\nLeader.\n[Free action] Choose a non- Commander or non- Operative enemy Trooper unit within Range 1 and in LOS.\nRoll 1 black attack die. On a [hit] or [crit] result, that unit suffers 1 Wound."
+ },
+ "ig-100-magnaguard": {
+  "requirement": "IG-100 MagnaGuard Only",
+  "text": "Add 1 IG-100 MagnaGuard miniature."
+ },
+ "impact-grenades": {
+  "weapon": {
+   "dice": {
+    "black": 1
+   },
+   "keywords": [
+    "Impact 4"
+   ],
+   "max_range": 1,
+   "min_range": 0,
+   "name": "Impact Grenade"
+  }
+ },
+ "imperial-comms-technician": {
+  "text": "Imperial Corps Trooper Only.\nAdd 1 Imperial Comms Technician miniature.\nThis unit gains 1 Comms upgrade icon. This unit must equip at least 1 Comms upgrade."
+ },
+ "imperial-dark-trooper": {
+  "requirement": "Imperial Dark Troopers Only",
+  "text": "Add 1 Imperial Dark Trooper miniature."
+ },
+ "imperial-hammers-elite-armor-pilot": {
+  "text": "Imperial Ground Vehicle Only.\nThis unit gains [hit surge]: [hit]."
+ },
+ "imperial-march": {
+  "text": "Imperial Corps Only.\nUnits may equip this card even if they do not have a Training upgrade slot on their unit card.\nWhen this unit makes a second Move action during its Activation, increase its Speed by 1 during that Move action.\nAdditionally, when this unit makes a Move action during its Activation, you may [Expend] this card. If you do, this unit gains Charge until the end of its Activation."
+ },
+ "imperial-officer": {
+  "text": "Imperial Corps Trooper Only.\nAdd 1 Imperial Officer miniature.\nLeader.\nThis unit increases its courage by 1.\nThis unit gains Inspire 1."
+ },
+ "imperial-probe-droid": {
+  "text": "Imperial Only. Corps, Special Forces or Support Only.\nAdd 1 Imperial Probe Droid miniature.\nIf this unit is a Corps unit, it gains 1 Heavy upgrade icon.\nWhen this unit declares an attack against an enemy unit that has 1 or more Observation tokens, during the Declare Defenders step, you may spend 1 of those Observation tokens and this [Exhaust] card. If you do, this unit gains 1 Aim token.\n[Exhaust, free action] Observe 1.\nAt the start of each End Phase, ready this card.\nNoncombatant."
+ },
+ "imperial-tie-pilot": {
+  "text": "Imperial Repulsor Vehicle Only.\nThis unit increases its maximum Speed by 1."
+ },
+ "improvised-orders": {
+  "text": "During the Activation Phase, after you draw an Order token from your Order Pool, you may [Exhaust] this card. If you do, draw a second Order token from your Order Pool and choose 1 of the drawn Order tokens to use. Then shuffle the other Order token back into your Order Pool."
+ },
+ "infantry-support": {
+  "requirement": "Vehicle Only",
+  "text": "When an allied Trooper unit within Range 1 of this unit is issued an Order, this unit may issue an Order to itself."
+ },
+ "inquisitorius-training": {
+  "requirement": "Fifth Brother or Seventh Sister Only",
+  "text": "This unit gains Demoralize 1. When an enemy unit within Range 1 exhausts a Force upgrade, you may roll a red defense die. On a [block] or [defense surge] result, cancel that upgradeʼs effect. The upgrade remains exhausted."
+ },
+ "insatiable-curiosity": {
+  "requirement": "Ewok Slingers or Ewok Skirmishers Only",
+  "text": "[Free action] This unit may [Expend] this card to choose an enemy Trooper unit in base contact with this unit's unit leader. If the chosen unit has 1 or more Heavy or Gear upgrades equipped, discard 1 of those non-unique or limited upgrades. Then this unit suffers 1 Wound."
+ },
+ "inspiring-presence": {
+  "text": "Allied units within Range 4 of this unit may use its courage when checking if they are Panicked.\nThis range can be reduced by other effects."
+ },
+ "into-the-fray": {
+  "text": "During the Activation Phase, when an enemy unit starts its Activation within Range 1 of this unit, this unit may gain 1 Surge token."
+ },
+ "jedi-consular": {
+  "requirement": "Jedi Knight or Jedi Knight General Only",
+  "text": "This unit gains 1 Force upgrade slot and Steady.",
+  "weapon": {
+   "dice": {
+    "black": 3
+   },
+   "keywords": [
+    "Blast",
+    "Impact 2"
+   ],
+   "max_range": 2,
+   "min_range": 1,
+   "name": "Force Blast"
+  }
+ },
+ "jedi-guardian": {
+  "text": "Special Forces Clone Trooper Only.\nAdd 1 Jedi Guardian miniature.\nThis unit gains Charge.\nLeader.\nSidearm: Melee, Ranged.",
+  "weapon": {
+   "dice": {
+    "red": 2
+   },
+   "keywords": [
+    "Impact 2",
+    "Pierce 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Lightsaber"
+  }
+ },
+ "jedi-mind-trick": {
+  "requirement": "Light Side Only",
+  "text": "[Exhaust, free action] Choose a non- Commander, non- Operative enemy Trooper unit within Range 2 of this unit.\nThe chosen unit gains 2 Suppression tokens."
+ },
+ "jedi-negotiator": {
+  "requirement": "Jedi Knight or Jedi Knight General Only",
+  "text": "This unit gains 1 Training upgrade slot.",
+  "weapon": {
+   "dice": {
+    "white": 1
+   },
+   "keywords": [
+    "Blast",
+    "Spray",
+    "Suppressive"
+   ],
+   "max_range": 2,
+   "min_range": 1,
+   "name": "Force Shove"
+  }
+ },
+ "jedi-training-force-adept": {
+  "requirement": "Jedi Knight or Jedi Knight General Only",
+  "text": "This unit gains [Action] Jump 2 and 1 Force upgrade slot. When this unit would [Expend] 1 or more Force upgrades, [Exhaust] those upgrades instead."
+ },
+ "jedi-training-master-duelist": {
+  "requirement": "Jedi Knight or Jedi Knight General Only",
+  "text": "If this unit has Block, it gains Outmaneuver. If it does not, this unit gains Block instead. This unitʼs Melee weapons gains Critical 1.\nThis unit gains [Action] Jump 1."
+ },
+ "jedi-training-peacekeeping-mission": {
+  "requirement": "Jedi Knight or Jedi Knight General Only",
+  "text": "This unit gains Prepared Position, Reliable 2, and Sentinel."
+ },
+ "jedi-training-tactical-acumen": {
+  "requirement": "Jedi Knight or Jedi Knight General Only",
+  "text": "This unit gains [Action] Guidance: Corps Trooper."
+ },
+ "jetpack-rockets": {
+  "requirement": "Mandalorian Trooper Only Non-Mandalorian Initiates Only",
+  "weapon": {
+   "dice": {
+    "black": 4
+   },
+   "keywords": [
+    "Anti materiel 4",
+    "Impact 4"
+   ],
+   "max_range": 4,
+   "min_range": 3,
+   "name": "Jetpack Rockets"
+  }
+ },
+ "jetpack-rockets-grenades": {
+  "requirement": "Mandalorian Trooper Only Non-Mandalorian Initiates Only",
+  "weapon": {
+   "dice": {
+    "black": 4
+   },
+   "keywords": [
+    "Anti materiel 4",
+    "Impact 4"
+   ],
+   "max_range": 4,
+   "min_range": 3,
+   "name": "Jetpack Rockets"
+  }
+ },
+ "jyn-erso": {
+  "text": "Guerilla Troopers, Special Forces Rebel Commandos, or Rebel Troopers Only.\nAdd 1 Jyn Erso miniature.\nThis unit gains Danger Sense 2, Dauntless, and gains 1 Heavy upgrade icon.\nLeader. Sidearm: Melee, Ranged.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Suppressive"
+   ],
+   "max_range": 2,
+   "min_range": 0,
+   "name": "Rebellious"
+  }
+ },
+ "jyn-s-se-14-blaster": {
+  "requirement": "K-2SO Only",
+  "text": "If you include Jyn Erso in your army,.\nreduce this card's points by 5.",
+  "weapon": {
+   "dice": {
+    "white": 5
+   },
+   "keywords": [
+    "Pierce 1",
+    "Suppressive"
+   ],
+   "max_range": 2,
+   "min_range": 1,
+   "name": "SE-14 Blaster"
+  }
+ },
+ "katarn-pattern-armor": {
+  "requirement": "Clone Commandos Only",
+  "text": "When this unit would suffer 1 or more Wounds from a non-Melee attack, you may [Expend] this card. If you do, this unit suffers 1 Wound instead."
+ },
+ "ki-adi-mundi": {
+  "requirement": "Clone Trooper Only",
+  "text": "Add 1 Ki-Adi-Mundi miniature.\nLeader. Sidearm: Melee, Ranged.\nThis unit gains Immune: Melee Pierce.\n[Exhaust, free action] Choose another allied unit within Range 1.\nThis unit and the chosen unit may each remove up to 1 Suppression token. For each Suppression token removed in this way, this unit gains 1 Surge token.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 2
+   },
+   "keywords": [
+    "Impact 2",
+    "Pierce 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Mundi's Lightsaber"
+  }
+ },
+ "kraken": {
+  "text": "Separatist Corps Droid Trooper Only.\nAdd 1 Kraken miniature.\nLeader.\nThis unit gains 1 Heavy upgrade icon.\nThis unit loses AI.\nWhen this unit attacks, it may upgrade 1 attack die for each miniature from this unit that was previously defeated.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "white": 1
+   },
+   "max_range": 3,
+   "min_range": 0,
+   "name": "Kraken's Blaster"
+  }
+ },
+ "kx-series-security-droids": {
+  "requirement": "Stormtrooper Riot Squad Only",
+  "text": "Add 2 KX-Series Security Droid miniatures.",
+  "weapon": {
+   "dice": {
+    "red": 1
+   },
+   "keywords": [
+    "Impact 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Oppress"
+  }
+ },
+ "lead-by-example": {
+  "text": "This unit gains Inspire 2."
+ },
+ "lightsaber": {
+  "requirement": "Jedi Knight or Jedi Knight General Only",
+  "text": "This unit gains Block.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 2,
+    "white": 3
+   },
+   "keywords": [
+    "Critical 1",
+    "Impact 2",
+    "Pierce 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Lightsaber"
+  }
+ },
+ "limiter-override": {
+  "requirement": "Super Tactical Command Droid Only",
+  "text": "[Exhaust, free action] Choose another allied unit that has the AI keyword within Range 2 of this unit. Choose and resolve 1 of the following effects:\nRemove up to 3 Suppression tokens or up to 1 Immobilize token from the chosen unit.\nThe chosen unit gains 1 Aim token or 1 Dodge token.\nReady 1 of the chosen unit's exhausted Upgrade Cards."
+ },
+ "linked-targeting-array": {
+  "requirement": "Emplacement Trooper or Vehicle Only",
+  "text": "This unit gains Target 1."
+ },
+ "lok-durd": {
+  "requirement": "AAT Battle Tank Only",
+  "text": "This unit loses AI: Attack.\n[Exhaust, free action] This unitʼs weapons gains Suppressive until the end of its Activation."
+ },
+ "long-gun-wookiee": {
+  "requirement": "Wookiee Warriors Only",
+  "text": "Add 1 Long Gun Wookiee miniature.",
+  "weapon": {
+   "dice": {
+    "black": 2
+   },
+   "keywords": [
+    "Suppressive"
+   ],
+   "max_range": 4,
+   "min_range": 1,
+   "name": "Long Gun"
+  }
+ },
+ "long-rifle-pirate": {
+  "requirement": "Weequay Pirates Only",
+  "text": "Add 1 Long Rifle Pirate miniature.",
+  "weapon": {
+   "dice": {
+    "red": 1,
+    "white": 2
+   },
+   "keywords": [
+    "Lethal 1"
+   ],
+   "max_range": 4,
+   "min_range": 1,
+   "name": "Long Rifle"
+  }
+ },
+ "luke-skywalker": {
+  "requirement": "Rebel Troopers or Rebel Veterans Only",
+  "text": "Add 1 Luke Skywalker miniature.\nThis unit increases its courage by 1 and gains 1 Heavy upgrade icon.\nWhen this unit attacks, after the effect is resolved, you may choose an allied unit within Range 2. The chosen unit removes up to 2 Suppression tokens.\nLeader. Sidearm: Melee.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "red": 1
+   },
+   "keywords": [
+    "Critical 1",
+    "Impact 1",
+    "Pierce 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Anakin's Lightsaber"
+  }
+ },
+ "lying-in-wait": {
+  "requirement": "Trooper Unit with Infiltrate or Prepared Position Only",
+  "text": "While this unit does not have an Order token, it has Low Profile."
+ },
+ "m-45-ion-blaster": {
+  "requirement": "X-34 Landspeeder Only",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "white": 2
+   },
+   "keywords": [
+    "Fixed",
+    "Critical 1",
+    "Impact 1",
+    "Ion 1"
+   ],
+   "max_range": 4,
+   "min_range": 1,
+   "name": "M-45 Ion Blaster"
+  }
+ },
+ "mace-windu": {
+  "requirement": "Clone Trooper Only",
+  "text": "Add 1 Mace Windu miniature.\nLeader. Sidearm: Melee, Ranged.\nThis unit gains Compel: Corps Trooper and Immune: Melee Pierce.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "red": 2
+   },
+   "keywords": [
+    "Impact 2",
+    "Pierce 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Windu's Lightsaber"
+  }
+ },
+ "mag-det-enforcer": {
+  "requirement": "Black Sun Enforcers Only",
+  "text": "Add 1 Mag-Det Enforcer miniature.",
+  "weapon": {
+   "dice": {
+    "black": 3
+   },
+   "keywords": [
+    "Blast",
+    "Impact 3"
+   ],
+   "max_range": 1,
+   "min_range": 0,
+   "name": "Mag-Detpack"
+  }
+ },
+ "mandalorian-super-commando": {
+  "requirement": "Mandalorian Super Commandos, Maul Loyalists Only",
+  "text": "Add 1 Mandalorian Super Commando miniature.\nThis unit gains Cache: Surge 2.\nThis unit has this keyword even if this miniature is defeated."
+ },
+ "mark-ii-medium-blaster": {
+  "requirement": "X-34 Landspeeder Only",
+  "weapon": {
+   "dice": {
+    "black": 4
+   },
+   "keywords": [
+    "Fixed: Front"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "Mark II Medium Blaster"
+  }
+ },
+ "mertalizer-dark-trooper": {
+  "requirement": "Imperial Dark Troopers Only",
+  "text": "Add 1 Mertalizer Dark Trooper miniature.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 2
+   },
+   "keywords": [
+    "Suppressive"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Mertalizer"
+  }
+ },
+ "micro-grenade-launcher": {
+  "requirement": "Mandalorian Trooper Only",
+  "text": "Add 1 Micro-Grenade Launcher Mandalorian miniature.\nCycle.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "white": 2
+   },
+   "keywords": [
+    "Blast",
+    "Impact 1"
+   ],
+   "max_range": 2,
+   "min_range": 1,
+   "name": "Micro-Grenade Launcher"
+  }
+ },
+ "mission-objective": {
+  "requirement": "Trooper Only",
+  "text": "When this unit attacks an enemy unit that is holding or Contesting 1 or more Objective tokens, during the Reroll Attack Dice step, you may [Exhaust] this card. If you do, this unit rerolls 1 attack die.\nAt the start of this unit's Activation, ready this card."
+ },
+ "mo-dk-power-harpoon": {
+  "requirement": "T-47 Airspeeder Only",
+  "weapon": {
+   "dice": {
+    "red": 1
+   },
+   "keywords": [
+    "Fixed",
+    "Impact 1",
+    "Tow Cable"
+   ],
+   "max_range": 2,
+   "min_range": 1,
+   "name": "Mo/Dk Power Harpoon"
+  }
+ },
+ "mobility-upgrade": {
+  "requirement": "Super Tactical Command Droid Only",
+  "text": "This unit gains Scale and Steady."
+ },
+ "mortar-clone-trooper": {
+  "requirement": "Clone Trooper Infantry or Clone Trooper Marksmen Only",
+  "text": "Add 1 Mortar Clone Trooper miniature.",
+  "weapon": {
+   "dice": {
+    "black": 2
+   },
+   "keywords": [
+    "Critical 1",
+    "Cumbersome",
+    "Suppressive"
+   ],
+   "max_range": 4,
+   "min_range": 2,
+   "name": "Mortar"
+  }
+ },
+ "mpl-57-barrage-trooper": {
+  "requirement": "Fleet Troopers Only",
+  "text": "Add 1 MPL-57 Barrage Trooper miniature.\nCycle.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "white": 2
+   },
+   "keywords": [
+    "Blast",
+    "Impact 2"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "MPL-57 Barrage"
+  }
+ },
+ "mpl-57-ion-trooper": {
+  "requirement": "Rebel Troopers Only",
+  "text": "Add 1 MPL-57 Ion Trooper miniature.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "white": 1
+   },
+   "keywords": [
+    "Critical 1",
+    "Impact 1",
+    "Ion 1"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "MPL-57 Ion Blaster"
+  }
+ },
+ "nanny-programming": {
+  "requirement": "IG-11 Only",
+  "text": "While building an army, an allied Grogu gains Counterpart: IG-11.\nThis unit gains AI: Dodge, Move."
+ },
+ "nose-mounted-flamethrower": {
+  "requirement": "DSD1 Dwarf Spider Droid Only",
+  "weapon": {
+   "dice": {
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Fixed",
+    "Blast",
+    "Spray"
+   ],
+   "max_range": 1,
+   "min_range": 0,
+   "name": "Flamethrower"
+  }
+ },
+ "nose-mounted-ion-blaster": {
+  "requirement": "DSD1 Dwarf Spider Droid Only",
+  "weapon": {
+   "dice": {
+    "black": 3,
+    "white": 3
+   },
+   "keywords": [
+    "Fixed",
+    "Critical 1",
+    "Impact 2",
+    "Ion 1"
+   ],
+   "max_range": 4,
+   "min_range": 2,
+   "name": "Ion Blaster"
+  }
+ },
+ "nose-mounted-laser-cannon": {
+  "requirement": "DSD1 Dwarf Spider Droid Only",
+  "weapon": {
+   "dice": {
+    "black": 3,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Fixed",
+    "Critical 1"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "Laser Cannon"
+  }
+ },
+ "obi-wan-kenobi": {
+  "requirement": "ARF Troopers Only",
+  "text": "Add 1 Obi-Wan Kenobi miniature.\nThis unit gains Immune: Pierce.\nWhen this unit defends against a Ranged attack, during the Reroll Defense Dice step, you may [Exhaust] this card. If you do, this unit rerolls all of its defense dice.\nLeader. Sidearm Melee, Ranged.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Critical 1",
+    "Impact 1",
+    "Pierce 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Kenobi's Lightsaber"
+  }
+ },
+ "offensive-push": {
+  "text": "[Exhaust, free action] During its next Move action this Activation, this unit gains Tactical 1."
+ },
+ "on-the-hunt": {
+  "text": "When this unit is attacking a Trooper unit that has 1 or more Wound tokens, during the Roll Attack Dice step, this unit may gain 1 Aim token."
+ },
+ "onboard-comms-channel": {
+  "requirement": "Vehicle Only",
+  "text": "This unit gains Coordinate:Trooper."
+ },
+ "onward-to-victory": {
+  "requirement": "Logray Only",
+  "text": "At the start of the Activation Phase, you may [Exhaust] this card. If you do, at the start of the next End Phase, discard this card. While this card is exhausted, each time an enemy unit is defeated, after the effect is resolved, 1 allied Ewok Trooper unit may make a Speed-1 Move."
+ },
+ "oom-series-battle-droid": {
+  "requirement": "B1 Battle Droids Only",
+  "text": "Add 1 OOM-Series Battle Droid miniature.\nLeader.\nWhen this unit uses Coordinate it can issue an Order to a unit within Range 2 instead.\nof within Range 1."
+ },
+ "oom-series-droid-pilot": {
+  "requirement": "AAT Battle Tank Only",
+  "text": "This unit gains Coordinate: Droid Trooper."
+ },
+ "optimized-task-flow": {
+  "requirement": "Super Tactical Command Droid Only",
+  "text": "This unit gains Direct: AI Unit."
+ },
+ "outer-rim-speeder-jockey": {
+  "text": "Rebel Repulsor Vehicle Only.\nThis unit gains Cover 1."
+ },
+ "overcharged-blaster-packs": {
+  "text": "When this unit attacks, during the Form Attack Pool step, you may [Expend] this card.\nIf you do, that Attack Pool gains Anti-Personnel 2 and Overwhelm."
+ },
+ "overcharged-generator": {
+  "text": "When this unit makes an attack with a Ranged weapon that has Fixed, during the Form Attack Pool step you may [Exhaust] this card. If you do, add 1 black attack dice to the Attack Pool and the Attack Pool gains Impact 1."
+ },
+ "overclock": {
+  "requirement": "Super Tactical Command Droid Only",
+  "text": "[Exhaust, free action] Choose another allied unit that has the AI keyword within Range 2 of this unit. The chosen unit makes a Speed-2 Move, then gains 1 Immobilize token."
+ },
+ "overwatch": {
+  "text": "This unit gains Sentinel."
+ },
+ "p13-m-disruptor-soldier": {
+  "requirement": "Pyke Syndicate Foot Soldiers Only",
+  "text": "Add 1 P13-M Disruptor Soldier miniature.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "red": 1
+   },
+   "keywords": [
+    "Impact 1"
+   ],
+   "max_range": 4,
+   "min_range": 1,
+   "name": "P13-M Disruptor"
+  }
+ },
+ "paz-vizsla": {
+  "text": "Clan Covert Only.\nAdd 1 Paz Vizsla miniature.\nLeader.\nThis unit gains This is the Way: Aim 1.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "red": 1,
+    "white": 3
+   },
+   "keywords": [
+    "Overwhelm"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "Repeating Blaster"
+  }
+ },
+ "personal-combat-shield": {
+  "text": "Commander Mandalorian Trooper or Operative Mandalorian Trooper Only.\nThis unit gains Shielded 1 and Recharge 1.\nDuring the End Phase, if this unit did not flip any active Shield tokens this Round, it may flip up to 1 of its inactive Shield tokens."
+ },
+ "pintle-mounted-dlt-19": {
+  "requirement": "TX-225 GAVw Occupier Tank Only",
+  "weapon": {
+   "dice": {
+    "red": 2
+   },
+   "keywords": [
+    "Impact 1"
+   ],
+   "max_range": 4,
+   "min_range": 1,
+   "name": "DLT-19 Blaster Rifle"
+  }
+ },
+ "pintle-mounted-rt-97c": {
+  "requirement": "TX-225 GAVw Occupier Tank Only",
+  "weapon": {
+   "dice": {
+    "red": 1,
+    "white": 3
+   },
+   "max_range": 4,
+   "min_range": 1,
+   "name": "RT-97C Blaster Rifle"
+  }
+ },
+ "pirate-captain": {
+  "requirement": "WLO-5 Speeder Tank Only",
+  "text": "[Free action] Choose 1 Raider unit within Range 1 of this unit.\nThe chosen unit removes 1 Suppression token or gains 1 Dodge token."
+ },
+ "pk-series-worker-droid": {
+  "text": "Separatist Droid Trooper Only.\nAdd 1 PK-Series Worker Droid miniature.\nNoncombatant.\nThis unit gains [Free action] Repair 1: Capacity 2."
+ },
+ "platoon-commander": {
+  "requirement": "Imperial Agent Only",
+  "text": "During Setup, choose 1 allied Corps Trooper unit. The chosen unit gains Retinue: Imperial Agent.\nWhile this unit is Engaged, it gains [hit surge]: [crit] and [defense surge]: [block] if it does not have it.\nThis unit gains Sharpshooter 1."
+ },
+ "plo-koon": {
+  "requirement": "Saber-class Tank Only",
+  "text": "[Exhaust, free action] This unit gains Agile 2 until the end of its Activation."
+ },
+ "plo-koon-squad-leader": {
+  "requirement": "Clone Trooper Only",
+  "text": "Add 1 Plo Koon miniature.\nLeader. Sidearm: Melee, Ranged.\nWhen this unit defends against an attack, you may [Exhaust] this card during the Modify Dice step.\nIf you do, cancel up to 2 [hit] results. At the start of this unitʼs Activation, ready this card.\nThis unit gains Immune: Melee Pierce.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "red": 1
+   },
+   "keywords": [
+    "Impact 2",
+    "Pierce 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Plo Koon's Lightsaber"
+  }
+ },
+ "portable-scanner": {
+  "text": "This unit gains [Action] Take Cover 1.\nB1 Battle Droids units can equip this card even though they do not have a Gear upgrade slot."
+ },
+ "prepared-supplies": {
+  "text": "Cache: Dodge 1."
+ },
+ "programmed-loyalty": {
+  "requirement": "Imperial Dark Troopers Only",
+  "text": "This unit can only be issued Orders by a Commander unit. This unit gains Retinue: Commander."
+ },
+ "protector": {
+  "text": "When this unit uses Guardian X, you may [Exhaust] this card to cancel [crit] results with Guardian X as if they were [hit] results.\nReady this card during the End Phase."
+ },
+ "proton-charge-saboteur": {
+  "requirement": "Rebel Commandos Only",
+  "text": "Add 1 Proton Charge Saboteur miniature.\nWhen this weapon is added to an Attack Pool, other Ranged weapons in that Attack Pool gain Assault 1.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Blast",
+    "Impact 6"
+   ],
+   "max_range": 1,
+   "min_range": 0,
+   "name": "Proton Charge"
+  }
+ },
+ "pyke-syndicate-capo": {
+  "requirement": "Pyke Syndicate Foot Soldiers Only",
+  "text": "Add 1 Pyke Syndicate Capo miniature.\nLeader.\nThis unit increases its courage by 1 and gains Independent: Surge 1."
+ },
+ "pyke-syndicate-crew": {
+  "requirement": "WLO-5 Speeder Tank Only",
+  "text": "This unit loses the Raider Affiliation and gains the Pyke Syndicate Affiliation.\nAt the start of the Activation Phase, this unit gains 1 Aim token or 1 Dodge token if there are 1 or more other allied Pyke Syndicate units within Range 1 of this unit."
+ },
+ "pyke-syndicate-foot-soldier": {
+  "requirement": "Pyke Syndicate Foot Soldiers Only",
+  "text": "Add 1 Pyke Syndicate Foot Soldier miniature.\nThis unit gains Cache: Aim 1.\nThis unit has this keyword even if this miniature is defeated."
+ },
+ "pyke-syndicate-foot-soldier-squad": {
+  "requirement": "Pyke Syndicate Foot Soldiers Only",
+  "text": "Add 5 Pyke Syndicate Foot Soldier miniatures.\nThis unit gains Indomitable and 1 Heavy upgrade icon.\nThis unit is in cohesion if all miniatures in the unit are within Range 1 of the unit leader instead of Range ½.\nThis unit has these rules even if these miniatures are defeated."
+ },
+ "r4-astromech": {
+  "text": "Imperial Corps Trooper Only.\nAdd 1 R4 Astromech miniature.\nNoncombatant.\nThis unit gains [Free action] Repair 1: Capacity 2."
+ },
+ "radiation-cannon-b1-battle-droid": {
+  "requirement": "B1 Battle Droids Only",
+  "text": "Add 1 Radiation Cannon B1 Battle Droid miniature.",
+  "weapon": {
+   "dice": {
+    "red": 2
+   },
+   "keywords": [
+    "Poison 1"
+   ],
+   "max_range": 2,
+   "min_range": 1,
+   "name": "Radiation Cannon"
+  }
+ },
+ "raiding-party-leader": {
+  "text": "Raider Heavy Only.\nThis unit gains Allies of Convenience and Field Commander.\nAllied Raider Vehicle units gain Demoralize 1."
+ },
+ "range-trooper": {
+  "requirement": "Range Troopers Only",
+  "text": "Add 1 Range Trooper miniature."
+ },
+ "rebel-comms-technician": {
+  "text": "Rebel Corps Trooper Only.\nAdd 1 Rebel Comms Technician miniature.\nThis unit gains 1 Comms upgrade icon. This unit must equip at least 1 Comms upgrade."
+ },
+ "rebel-marksman": {
+  "requirement": "Rebel Sleeper Cell Only",
+  "text": "Add 1 Rebel Marksman miniature.\n[Action] If this unit is not Engaged, choose an unengaged enemy Trooper unit in LOS and roll 1 red attack die. If the result is a [crit] or [hit surge], the chosen unit suffers 1 Wound and gains 1 Suppression token."
+ },
+ "rebel-officer": {
+  "text": "Rebel Corps Trooper Only.\nAdd 1 Rebel Officer miniature.\nLeader.\nThis unit increases its courage by 1 and gains Inspire 1."
+ },
+ "rebel-trooper": {
+  "requirement": "Rebel Troopers Only",
+  "text": "Add 1 Rebel Trooper miniature."
+ },
+ "rebel-trooper-captain": {
+  "requirement": "Rebel Troopers Only",
+  "text": "Add 1 Rebel Trooper Captain miniature.\nLeader.\nThis unit gains 1 Training upgrade icon.\nAt the start of this unit's Activation, you may [Exhaust] this card. If you do, this unit cannot remove Suppression tokens or be Suppressed during this Activation."
+ },
+ "rebel-trooper-specialist": {
+  "requirement": "Rebel Troopers Only",
+  "text": "Add 1 Rebel Trooper Specialist miniature.\nThis unit gains 1 Gear upgrade icon.\n[Exhaust, free action] This unit gains 1 Dodge token or 1 Surge token."
+ },
+ "rebel-trooper-squad": {
+  "requirement": "Rebel Troopers Only",
+  "text": "Add 5 Rebel Trooper miniatures.\nThis unit gainsIndomitable. This unit has this keyword even if these miniatures are defeated.\nThis unit is in cohesion if all miniatures are within Range 1 of the unit leader instead of within Range ½. This unit has this rule even if these miniatures are defeated.\nThis unit cannot be Deployed or issued Orders using the Transport keyword.."
+ },
+ "rebel-veteran": {
+  "requirement": "Rebel Veterans Only",
+  "text": "Add 1 Rebel Veteran miniature."
+ },
+ "rebel-veteran-squad": {
+  "requirement": "Rebel Veterans Only",
+  "text": "Add 5 Rebel Veteran miniatures.\nThis unit gains Indomitable. This unit has this keyword even if these miniatures are defeated.\nThis unit is in cohesion if all miniatures are within Range 1 of the unit leader instead of within Range ½. This unit has this rule even if these miniatures are defeated.\nThis unit cannot be Deployed or issued Orders using the Transport keyword.."
+ },
+ "recon-intel": {
+  "text": "This unit gains Scout 1."
+ },
+ "reluctant-hero": {
+  "requirement": "Rebel Agent Only",
+  "text": "When this unit makes an Attack action, during the Form Attack Pool step, 1 of its Attack Pools gains Critical 1 for each Suppression token it has.\nThis unit gains Infiltrate and Relentless."
+ },
+ "repeating-blaster": {
+  "requirement": "Rebel Agent or Rebel Officer Only",
+  "text": "Reduce this unit's maximum Speed by 1.\nThis unit gains Precise 2.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "red": 1,
+    "white": 3
+   },
+   "keywords": [
+    "Critical 1",
+    "Impact 1",
+    "Long Shot"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "Repeating Blaster"
+  }
+ },
+ "rook-kast": {
+  "text": "Clan Saxon Only.\nAdd 1 Rook Kast miniature.\nThis unit gains Retinue: Clan Saxon Commander.\nLeader."
+ },
+ "rook-kast-heavy-weapon": {
+  "requirement": "Mandalorian Super Commandos Only",
+  "text": "Add 1 Rook Kast miniature.\nLeader.\nThis unit gains Retinue: Maul.",
+  "weapon": {
+   "dice": {
+    "red": 2,
+    "white": 2
+   },
+   "max_range": 2,
+   "min_range": 0,
+   "name": "Rook's Blaster Pistols"
+  }
+ },
+ "rps-6-arf-trooper": {
+  "requirement": "ARF Troopers Only",
+  "text": "Add 1 RPS-6 ARF Trooper miniature.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Cumbersome",
+    "Impact 2"
+   ],
+   "max_range": 4,
+   "min_range": 2,
+   "name": "RPS-6"
+  }
+ },
+ "rps-6-clone-trooper": {
+  "requirement": "Clone Trooper Infantry or Clone Trooper Marksmen Only",
+  "text": "Add 1 RPS-6 Clone Trooper miniature.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Cumbersome",
+    "Impact 2"
+   ],
+   "max_range": 4,
+   "min_range": 2,
+   "name": "RPS-6 Rocket Launcher"
+  }
+ },
+ "rps-6-magnaguard": {
+  "requirement": "IG-100 MagnaGuard Only",
+  "text": "Add 1 RPS-6 MagnaGuard miniature.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Critical 1",
+    "Impact 2"
+   ],
+   "max_range": 4,
+   "min_range": 2,
+   "name": "RPS-6"
+  }
+ },
+ "rps-6-rocket-gunner": {
+  "requirement": "X-34 Landspeeder Only",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Impact 2"
+   ],
+   "max_range": 4,
+   "min_range": 2,
+   "name": "RPS-6 Rocket Launcher"
+  }
+ },
+ "rt-97c-blaster-rifle": {
+  "requirement": "Dewback Rider Only",
+  "weapon": {
+   "dice": {
+    "red": 1,
+    "white": 3
+   },
+   "max_range": 4,
+   "min_range": 1,
+   "name": "RT-97C Blaster Rifle"
+  }
+ },
+ "rt-97c-stormtrooper": {
+  "requirement": "Stormtroopers Only",
+  "text": "Add 1 RT-97C Stormtrooper miniature.",
+  "weapon": {
+   "dice": {
+    "red": 1,
+    "white": 3
+   },
+   "max_range": 4,
+   "min_range": 1,
+   "name": "RT-97C Blaster Rifle"
+  }
+ },
+ "ryder-azadi": {
+  "text": "Rebel Repulsor Vehicle Only.\nWhen this unit makes a Move, you may [Exhaust] this card to increase or decrease its maximum Speed by 1."
+ },
+ "saber-throw": {
+  "text": "When this unit makes an attack with this weapon, during the Form Attack Pool step, choose 1 of this unit's Melee weapons.\nThe weapon dice for this weapon are equal to half of the chosen weapon's total dice, rounding up, and the Attack Pool gains the chosen weapon's weapon keywords.",
+  "weapon": {
+   "dice": {},
+   "max_range": 2,
+   "min_range": 1,
+   "name": "Thrown Lightsaber"
+  }
+ },
+ "sabine-wren": {
+  "text": "Clan Wren Only.\nAdd 1 Sabine Wren miniature.\n[Free action] If there are no allied Graffiti tokens on the battlefield, place 1 allied Graffiti token within Range 1 and in LOS of this unit, touching a piece of non-area terrain.\nLeader."
+ },
+ "saxon-s-galar-90-rifle": {
+  "requirement": "Gar Saxon Only",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "High Velocity",
+    "Lethal 1",
+    "Long Shot"
+   ],
+   "max_range": 4,
+   "min_range": 1,
+   "name": "Galar-90 Sniper Rifle"
+  }
+ },
+ "saxon-s-jetpack-rockets": {
+  "requirement": "Gar Saxon, Militant Commandeer Only",
+  "text": "Cycle.",
+  "weapon": {
+   "dice": {
+    "red": 3
+   },
+   "keywords": [
+    "Blast",
+    "Impact 2"
+   ],
+   "max_range": 3,
+   "min_range": 2,
+   "name": "Jetpack Rockets"
+  }
+ },
+ "scatter-gun-enforcer": {
+  "requirement": "Black Sun Enforcers Only",
+  "text": "Add 1 Scatter Gun Enforcer miniature.",
+  "weapon": {
+   "dice": {
+    "red": 2
+   },
+   "keywords": [
+    "Pierce 1"
+   ],
+   "max_range": 2,
+   "min_range": 0,
+   "name": "Scatter Gun"
+  }
+ },
+ "scatter-gun-trooper": {
+  "requirement": "Fleet Troopers Only",
+  "text": "Add 1 Scatter Gun Trooper miniature.",
+  "weapon": {
+   "dice": {
+    "red": 2
+   },
+   "keywords": [
+    "Pierce 1"
+   ],
+   "max_range": 2,
+   "min_range": 0,
+   "name": "Scatter Gun"
+  }
+ },
+ "secret-ingredients": {
+  "requirement": "Logray Only",
+  "text": "At the start of each Round, put 1 Aim token or 1 Dodge token on this card. At the start of this unit's Activation, it may remove any number of tokens from this card to gain an equal number of matching tokens.\nAdditionally, after this unit uses Aid, it may remove 1 Suppression token."
+ },
+ "security-detail": {
+  "requirement": "Imperial Death Troopers Only",
+  "text": "This unit gains Guardian 2: Imperial High Command and Retinue: Imperial Commander."
+ },
+ "seek-and-destroy": {
+  "requirement": "Super Tactical Command Droid Only",
+  "text": "This unit gains 1 Training upgrade slot.\nThis unit gains Demoralize 1, Marksman, and Target 1."
+ },
+ "seeker-droid": {
+  "requirement": "Imperial Agent or Imperial Officer Only",
+  "text": "This unit gains Recharge 1, Shielded 1, and [Free action] Observe 1."
+ },
+ "seize-the-initiative": {
+  "text": "Commander or Operative Only.\nDuring the Issue Orders step of the Command Phase, you may [Expend] this card. If you do, this unit issues an Order to itself."
+ },
+ "seventh-sister": {
+  "requirement": "Imperial Special Forces Only",
+  "text": "Add 1 Seventh Sister miniature.\nThis unit gains Demoralize 1.\nLeader. Sidearm: Melee, Ranged.",
+  "weapon": {
+   "dice": {
+    "red": 2
+   },
+   "keywords": [
+    "Impact 1",
+    "Pierce 1"
+   ],
+   "max_range": 2,
+   "min_range": 0,
+   "name": "Spinning Lightsaber"
+  }
+ },
+ "shaak-ti": {
+  "text": "This card can only be included in a Republic army.\nLeader. Sidearm: Melee, Ranged.\nAdd 1 Shaak Ti miniature.\nThis unit gains Cache: Aim 1 and loses Self-Preservation. Allied Republic units can issue this unit Orders, even if they do not have the same Affiliation. This unit gains Immune: Melee Pierce.",
+  "weapon": {
+   "dice": {
+    "red": 2
+   },
+   "keywords": [
+    "Impact 2",
+    "Pierce 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Shaak Ti's Lightsaber"
+  }
+ },
+ "shoretrooper": {
+  "requirement": "Shoretroopers Only",
+  "text": "Add 1 Shoretrooper miniature."
+ },
+ "shoretrooper-squad": {
+  "requirement": "Shoretroopers Only",
+  "text": "Add 5 Shoretrooper miniatures.\nThis unit gains Indomitable. This unit has this keyword even if these miniatures are defeated.\nThis unit is in cohesion if all miniatures are within Range 1 of the unit leader instead of within Range ½. This unit has this rule even if these miniatures are defeated.\nThis unit cannot be Deployed or issued Orders using the Transport keyword."
+ },
+ "shriv-suurgav": {
+  "text": "Rebel Heavy Only.\nThis unit gains Field Commander.\n[Free action] Choose an allied Trooper unit within Range 2 of this unit.\nThe chosen unit gains 1 Dodge token and may gain 1 Suppression."
+ },
+ "shukur-05-repeater": {
+  "requirement": "Mandalorian Trooper Only",
+  "text": "Add 1 SHUKUR-05 Mandalorian miniature.",
+  "weapon": {
+   "dice": {
+    "black": 3
+   },
+   "keywords": [
+    "Overwhelm"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "SHUKUR-05 Repeater"
+  }
+ },
+ "situational-awareness": {
+  "text": "This unit gains Outmaneuver."
+ },
+ "sliced-comms": {
+  "requirement": "Super Tactical Command Droid Only",
+  "text": "[Exhaust, free action] Choose an enemy unit within Range 2 and in LOS of this unit. The chosen unit gains 2 Suppression tokens. If the chosen unit has a faceup Order token, shuffle that Order token back into your opponent's Order Pool."
+ },
+ "smoke-grenades": {
+  "text": "During this unit's Activation, you may [Expend] this card. If you do, this unit makes a [Free action] Smoke 1 action."
+ },
+ "snowtrooper": {
+  "requirement": "Snowtroopers Only",
+  "text": "Add 1 Snowtrooper miniature."
+ },
+ "snowtrooper-squad": {
+  "requirement": "Snowtroopers Only",
+  "text": "Add 5 Snowtrooper miniatures.\nThis unit gains Indomitable. This unit has this keyword even if these miniatures are defeated.\nThis unit is in cohesion if all miniatures are within Range 1 of the unit leader instead of within Range ½. This unit has this rule even if these miniatures are defeated.\nThis unit cannot be Deployed or issued Orders using the Transport keyword."
+ },
+ "sonic-cannon-warrior": {
+  "requirement": "Geonosian Warriors Only",
+  "text": "Add 1 Sonic Cannon Warrior miniature.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Impact 1",
+    "Scatter"
+   ],
+   "max_range": 2,
+   "min_range": 1,
+   "name": "Sonic Cannon"
+  }
+ },
+ "sonic-charge-saboteur": {
+  "requirement": "Scout Troopers Only",
+  "text": "Add 1 Sonic Charge Saboteur miniature.\nWhen this weapon is added to an Attack Pool, other Ranged weapons in that Attack Pool gain Assault 1.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "red": 1,
+    "white": 1
+   },
+   "keywords": [
+    "Blast",
+    "Impact 4",
+    "Suppressive"
+   ],
+   "max_range": 1,
+   "min_range": 0,
+   "name": "Sonic Charge"
+  }
+ },
+ "sonic-imploders": {
+  "weapon": {
+   "dice": {
+    "black": 1
+   },
+   "keywords": [
+    "Suppressive"
+   ],
+   "min_range": 1,
+   "name": "Sonic Imploder"
+  }
+ },
+ "spotter-uplink": {
+  "text": "When another allied unit declares a Ranged attack against an enemy unit within Range 1 and in LOS of this unit, if this unit is not in melee, the attacking unit gains Sharpshooter 1."
+ },
+ "squadron-leader": {
+  "requirement": "Vehicle Only",
+  "text": "During Setup, each allied unit with the same name as this unit gains a Squadron token.\nWhen an allied unit with a Squadron token within Range 1 of this unit attacks, during the Reroll Attack Dice step, it may reroll 1 of its attack dice for each other allied unit within Range 1 that has a Squadron token."
+ },
+ "stormtrooper": {
+  "requirement": "Stormtroopers Only",
+  "text": "Add 1 Stormtrooper miniature."
+ },
+ "stormtrooper-captain": {
+  "requirement": "Stormtroopers Only",
+  "text": "Add 1 Stormtrooper Captain miniature.\nThis unit gains a Training upgrade icon.\nAt the start of this unit's Activation, you may [Exhaust] this card. If you do, this unit cannot remove Suppression tokens or be Suppressed during this Activation.\nLeader."
+ },
+ "stormtrooper-marksman": {
+  "requirement": "Stormtrooper Riot Squad Only",
+  "text": "Add 1 Stormtrooper Marksman miniature.\n[Action] If this unit is not Engaged, choose an unengaged enemy Trooper unit in LOS and roll 1 red attack die. If the result is a [crit] or [hit surge], the chosen unit suffers 1 Wound and gains 1 Suppression token."
+ },
+ "stormtrooper-specialist": {
+  "requirement": "Stormtroopers Only",
+  "text": "Add 1 Stormtrooper Specialist miniature.\nThis unit gains a Gear upgrade icon.\n[Exhaust, free action] This unit gains 1 Aim token or 1 Surge token."
+ },
+ "stormtrooper-squad": {
+  "requirement": "Stormtroopers Only",
+  "text": "Add 5 Stormtrooper miniatures.\nThis unit gains Indomitable. This unit has this keyword even if these miniatures are defeated.\nThis unit is in cohesion if all miniatures are within Range 1 of the unit leader instead of within Range ½. This unit has this rule even if these miniatures are defeated.\nThis unit cannot be Deployed or issued Orders using theTransport keyword."
+ },
+ "strategic-programming": {
+  "requirement": "Super Tactical Command Droid Only",
+  "text": "This unit gains [Action] Strategize 1."
+ },
+ "strict-orders": {
+  "text": "During theActivation Phase, when an allied unit that has a faceup Order token starts its Rally step, it may choose to remove 1 Suppression token instead of rolling dice."
+ },
+ "strike-and-fade": {
+  "requirement": "Unit with Speeder X Only",
+  "text": "Units may equip this card even if they do not have a Training upgrade slot on their unit card.\nAfter this unit makes an Attack action, you may [Exhaust] this card. If you do, this unit makes a Move action."
+ },
+ "strike-team-leader": {
+  "text": "Operative Only.\nDuring Setup, this unit may choose an allied Special Forces unit that has the same Affiliation or Faction as this unit.\nAt the start of each Activation Phase, the chosen unit gains 1 Aim token or 1 Dodge token if it is within Range 2 of this unit.\nAdditionally, the chosen unit may provide Backup to this unit."
+ },
+ "strong-in-the-force": {
+  "text": "This card may only be equipped by a unit that has 1 or more Force upgrade icons.\nThis unit gains Independent: Aim or Dodge."
+ },
+ "stuck-in": {
+  "requirement": "Trooper Only",
+  "text": "At the end of this unitʼs Activation, if it is Contesting 1 or more POIs, this unit gains 1 Dodge token."
+ },
+ "stun-baton": {
+  "requirement": "Imperial Agent or Imperial Officer Only",
+  "text": "This unit gains Demoralize 1.",
+  "weapon": {
+   "dice": {
+    "black": 5,
+    "red": 1
+   },
+   "keywords": [
+    "Immobilize 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Stun Baton"
+  }
+ },
+ "superior-equipment": {
+  "text": "Non- Commander Non- Operative Unit Only.\nWhen this unit defends against an enemy Ranged attack, upgrade 2 of its defense dice."
+ },
+ "sx-21-trooper": {
+  "requirement": "Rebel Troopers Only",
+  "text": "Add 1 SX-21 Trooper miniature.",
+  "weapon": {
+   "dice": {
+    "red": 2,
+    "white": 2
+   },
+   "keywords": [
+    "Impact 1"
+   ],
+   "max_range": 2,
+   "min_range": 1,
+   "name": "SX-21 Scatter Blaster"
+  }
+ },
+ "t-21-blaster-rifle": {
+  "requirement": "Dewback Rider Only",
+  "weapon": {
+   "dice": {
+    "white": 4
+   },
+   "keywords": [
+    "Critical 2"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "T-21 Blaster Rifle"
+  }
+ },
+ "t-21-special-forces-trooper": {
+  "requirement": "Imperial Special Forces Only",
+  "text": "Add 1 T-21 Trooper miniature.",
+  "weapon": {
+   "dice": {
+    "white": 4
+   },
+   "keywords": [
+    "Critical 2"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "T-21 Repeating Blaster"
+  }
+ },
+ "t-21-stormtrooper": {
+  "requirement": "Stormtroopers Only",
+  "text": "Add 1 T-21 Stormtrooper miniature.",
+  "weapon": {
+   "dice": {
+    "white": 4
+   },
+   "keywords": [
+    "Critical 2"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "T-21 Repeating Blaster"
+  }
+ },
+ "t-21a-range-trooper": {
+  "requirement": "Range Troopers Only",
+  "text": "Add 1 T-21A Range Trooper miniature.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "white": 2
+   },
+   "keywords": [
+    "Suppressive"
+   ],
+   "max_range": 4,
+   "min_range": 1,
+   "name": "T-21A Repeating Blaster"
+  }
+ },
+ "t-21b-shoretrooper": {
+  "requirement": "Shoretroopers Only",
+  "text": "Add 1 T-21B Shoretrooper miniature.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "white": 2
+   },
+   "keywords": [
+    "Critical 1"
+   ],
+   "max_range": 4,
+   "min_range": 1,
+   "name": "T-21B Repeating Blaster"
+  }
+ },
+ "t-7-ion-snowtrooper": {
+  "requirement": "Snowtroopers Only",
+  "text": "Add 1 T-7 Ion Rifle Snowtrooper miniature.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "white": 1
+   },
+   "keywords": [
+    "Critical 1",
+    "Impact 1",
+    "Ion 1"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "T-7 Ion Rifle"
+  }
+ },
+ "t-series-tactical-droid": {
+  "text": "Separatist Droid Trooper Only.\nAdd 1 T-Series Tactical Droid miniature.\nLeader. Sidearm: Ranged.\nThis unit gains Reliable 1.\nThis unit loses AI: Attack.",
+  "weapon": {
+   "dice": {
+    "red": 1
+   },
+   "max_range": 3,
+   "min_range": 1,
+   "name": "E-5 Blaster Rifle"
+  }
+ },
+ "t-series-tactical-droid-pilot": {
+  "requirement": "AAT Battle Tank Only",
+  "text": "This unit loses AI: Attack.\nThis unit gains Field Commander."
+ },
+ "tank-hunting-munitions": {
+  "text": "When this unit attacks, during the Form Attack Pool step, you may [Expend] this card.\nIf you do, that Attack Pool gains Anti-Materiel 2 and Impact 2."
+ },
+ "targeting-relay": {
+  "requirement": "Super Tactical Command Droid Only",
+  "text": "[Exhaust, free action] Each enemy unit within Range 4 and in LOS of this unit gains 1 Observation token."
+ },
+ "targeting-scopes": {
+  "text": "This unit gains Precise 1."
+ },
+ "tech": {
+  "requirement": "The Bad Batch Only",
+  "text": "Add 1 Tech miniature.\nThis unit gains Tactical 1 and Cache: Aim 1 and Dodge 1."
+ },
+ "tenacity": {
+  "text": "When this unit makes a Melee attack, during the Form Attack Pool step, if it has 1 or more Wound tokens or if it had 1 or more of its miniatures be defeated, it may add 1 red attack die to its Attack Pools.."
+ },
+ "terror": {
+  "requirement": "Dark Side Only",
+  "text": "While this unit is not Engaged, when an enemy unit within Range 2 and in LOS of of this unit makes a Ranged attack targeting another allied unit, the attacking unit gains 1 Suppression token after that attack is resolved."
+ },
+ "the-armorer": {
+  "text": "Clan Covert Only.\nAdd 1 The Armorer miniature.\nLeader.\nThis unit increases its courage value by 1 and gains Reliable 2.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "red": 2
+   },
+   "keywords": [
+    "Pierce 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Hammer and Tongs"
+  }
+ },
+ "thermal-detonator": {
+  "requirement": "Rebel Agent or Rebel Officer Only",
+  "weapon": {
+   "dice": {
+    "red": 4
+   },
+   "keywords": [
+    "Blast",
+    "Impact 4"
+   ],
+   "max_range": 1,
+   "min_range": 0,
+   "name": "Thermal Detonator"
+  }
+ },
+ "tip-of-the-spear": {
+  "requirement": "Imperial Agent or Imperial Officer Only",
+  "text": "When this unit is issued an Order, an allied unit within Range 1 may remove up to 1 Suppression token.\nThis unit gains Aid: Imperial Trooper Unit, Direct: Corps Trooper Unit, and Tactical 1."
+ },
+ "tranquility": {
+  "requirement": "Light Side Only",
+  "text": "After another allied unit within Range 2 of this unit Rallies, but before its Make Actions step, you may [Exhaust] this card. If you do, roll a number of white defense dice equal to this unitʼs courage.\nFor each [block] and [defense surge] result rolled, this unit and the allied unit remove 1 Suppression token.\nWhen you would [Exhaust] this card, you may instead [Expend] it. If you do, roll red defense dice instead of white defense dice when resolving this card's effect."
+ },
+ "tristan-wren": {
+  "text": "Clan Saxon or Clan Wren Only.\nAdd 1 Tristan Wren miniature.\nThis unit gains Precise 2.\nAllied Commander units may issue Orders to this unit regardless of Affiliation.\nLeader."
+ },
+ "tristan-wren-personnel": {
+  "text": "Clan Saxon or Clan Wren Only.\nAdd 1 Tristan Wren miniature.\nThis unit gains Precise 2.\nAllied Commander units may issue Orders to this unit regardless of Affiliation.\nLeader."
+ },
+ "trusted-agent": {
+  "text": "During the Issue Orders step of the Command Phase, you may [Expend] this card.\nIf you do, choose an allied Operative unit. This unit may issue an Order to the chosen unit, regardless of Affiliation."
+ },
+ "twin-beam-cannons": {
+  "requirement": "Infantry Support Platform Only",
+  "weapon": {
+   "dice": {
+    "red": 2,
+    "white": 2
+   },
+   "keywords": [
+    "Fixed",
+    "Beam 2"
+   ],
+   "max_range": 4,
+   "min_range": 1,
+   "name": "Twin Beam Cannons"
+  }
+ },
+ "twin-laser-turret": {
+  "requirement": "Saber-class Tank Only",
+  "weapon": {
+   "dice": {
+    "black": 3
+   },
+   "keywords": [
+    "Critical 1"
+   ],
+   "max_range": 3,
+   "min_range": 1,
+   "name": "Twin Laser Cannon"
+  }
+ },
+ "twin-lightsabers": {
+  "requirement": "Jedi Knight or Jedi Knight General Only",
+  "weapon": {
+   "dice": {
+    "black": 4,
+    "white": 4
+   },
+   "keywords": [
+    "High Velocity",
+    "Impact 2",
+    "Pierce 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Twin Lightsabers"
+  }
+ },
+ "twin-missile-pods": {
+  "requirement": "Infantry Support Platform Only",
+  "text": "At the start of this unit's Activation, you may halve this weapon's dice and keyword values until the end of its Activation. If you do, this unit gains Gunslinger until the end of its Activation.",
+  "weapon": {
+   "dice": {
+    "red": 4
+   },
+   "keywords": [
+    "Fixed",
+    "Impact 2"
+   ],
+   "max_range": 4,
+   "min_range": 2,
+   "name": "Blaster Cannons"
+  }
+ },
+ "tyrannical-taskmaster": {
+  "requirement": "Super Tactical Command Droid Only",
+  "text": "This unit gains 1 Programming upgrade slot.\nAt the end of this unitʼs Activation, ready up to 1 of itʼs exhausted Programming Upgrade Cards."
+ },
+ "underworld-connections": {
+  "text": "This unit gains Allies of Convenience."
+ },
+ "unorthodox-tactician": {
+  "requirement": "A-A5 Speeder Truck Only",
+  "text": "At the start of this unit's Activation, roll 3 red defense dice. For each [block] or [defense surge] result, choose a different allied unit within Range 3. Each chosen unit gains 1 Aim token."
+ },
+ "unseen-saboteur": {
+  "requirement": "Rebel Agent or Rebel Officer Only",
+  "text": "During Setup, choose another allied non- Commander non- Operative Trooper unit. The chosen unit gains Prepared Position.\nThis unit gains Low Profile and Prepared Position."
+ },
+ "unstable-astromech": {
+  "requirement": "A-A5 Speeder Truck or X-34 Landspeeder Only",
+  "text": "At the end of this unit's Activation, you may [Expend] this card. If you do, this unit may make an attack or Move. Then, after the effect is resolved, roll 3 black attack dice. This unit suffers 1 Wound for each [hit] and [crit] result rolled."
+ },
+ "up-close-and-personal": {
+  "text": "When this unit makes a Ranged attack against an enemy unit within Range 2, after that attack is resolved, this unit gains 1 Dodge token."
+ },
+ "ursa-wren": {
+  "text": "Clan Wren Only.\nAdd 1 Ursa Wren miniature.\nThis unit increases its courage value by 1 and gains Defend 1.\nLeader."
+ },
+ "ursa-wren-personnel": {
+  "text": "Clan Wren Only.\nAdd 1 Ursa Wren miniature.\nThis unit increases its courage value by 1 and gains Defend 1.\nLeader."
+ },
+ "veteran-clone-pilot": {
+  "text": "Republic Heavy Only.\nWhen this unit or an allied Clone Trooper unit within Range 1 and in LOS of this unit declares an attack or is declared as the defender of an attack, you may [Exhaust] this card. If you do, until the attack is resolved, this unit and that allied Clone Trooper unit may spend each other's Aim tokens, Dodge tokens and Surge tokens.\nDuring the End Phase, ready this card."
+ },
+ "vibro-axe": {
+  "requirement": "Rebel Agent or Rebel Officer Only",
+  "text": "This unit gains Charge.",
+  "weapon": {
+   "dice": {
+    "black": 3,
+    "red": 1
+   },
+   "keywords": [
+    "Impact 1",
+    "Lethal 1"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Vibro Axe"
+  }
+ },
+ "vigilance": {
+  "text": "At the start of the Remove Tokens step, choose either 1 allied Trooper unit within Range 2 of this unit or up to 2 allied Corps Trooper units within Range 2 of this unit. Each chosen unit does not remove up to 1 Dodge token."
+ },
+ "viper-recon-droid": {
+  "text": "Separatist Droid Trooper Only.\nAdd 1 Viper Recon Droid miniature.\nSidearm: Melee, Ranged.\nThis unit gains [Action] Observe 2.",
+  "weapon": {
+   "dice": {
+    "white": 2
+   },
+   "max_range": 2,
+   "min_range": 1,
+   "name": "Recon Blaster"
+  }
+ },
+ "waxer": {
+  "text": "Corps Clone Trooper Only.\nAdd 1 Waxer miniature.\nLeader.\nThis unit gains Disciplined 1 and Scout 1."
+ },
+ "waxer-personnel": {
+  "text": "Corps Clone Trooper Only.\nAdd 1 Waxer miniature.\nLeader.\nThis unit gains Disciplined 1 and Scout 1."
+ },
+ "wedge-antilles": {
+  "text": "Rebel Repulsor Vehicle Only.\nThis unit gains Field Commander.\n[Exhaust, free action] This unit makes a Pivot."
+ },
+ "weequay-captain": {
+  "requirement": "Weequay Pirates Only",
+  "text": "Add 1 Weequay Captain miniature.\nLeader.\nAt the start of this unitʼs Activation, you may [Exhaust] this card. If you do, this unit cannot remove Suppression tokens or be Suppressed during its Activation.",
+  "weapon": {
+   "dice": {
+    "red": 1
+   },
+   "max_range": 2,
+   "min_range": 0,
+   "name": "Bravado"
+  }
+ },
+ "weequay-crew": {
+  "requirement": "WLO-5 Speeder Tank Only",
+  "text": "At the start of the Activation Phase, this unit gains 1 Aim token or 1 Dodge token if there are 1 or more other allied Raider units within Range 1 of this unit."
+ },
+ "weequay-pirate-squad": {
+  "requirement": "Weequay Pirates Only",
+  "text": "Add 3 Weequay Pirate miniatures.\nThis unit gains Indomitable. This unit has this keyword even if these miniatures are defeated.\nThis unit is in cohesion if all miniatures are within Range 1 of the unit leader instead of within Range ½. This unit has this rule even if these miniatures are defeated.\nThis unit cannot be Deployed or issued Orders using the Transport keyword unless the unit with Transport has the same Affiliation as this unit."
+ },
+ "whipcord-launcher": {
+  "text": "Commander Mandalorian Trooper or Operative Mandalorian Trooper Only.\n[Action] Choose an enemy Trooper unit within Range 1 and in LOS and [Expend] this card. The chosen unit gains 2 Immobilize tokens and 2 Suppression tokens."
+ },
+ "wrecker": {
+  "requirement": "The Bad Batch Only",
+  "text": "Add 1 Wrecker miniature.\nWhile this miniature is on the battlefield, Omega Counterparts in this unit cannot be assigned Wounds.",
+  "weapon": {
+   "dice": {
+    "black": 1,
+    "red": 1,
+    "white": 1
+   },
+   "max_range": 2,
+   "min_range": 0,
+   "name": "Wrecker's Blaster"
+  }
+ },
+ "z-6-clone-trooper": {
+  "requirement": "Clone Trooper Infantry Only",
+  "text": "Add 1 Z-6 Clone Trooper miniature.",
+  "weapon": {
+   "dice": {
+    "white": 6
+   },
+   "max_range": 3,
+   "min_range": 1,
+   "name": "Z-6 Rotary Blaser"
+  }
+ },
+ "z-6-riot-baton": {
+  "requirement": "Imperial Agent or Imperial Officer Only",
+  "text": "This unit gains Immune: Melee Pierce.",
+  "weapon": {
+   "dice": {
+    "black": 2,
+    "red": 2
+   },
+   "keywords": [
+    "Suppressive"
+   ],
+   "max_range": 0,
+   "min_range": 0,
+   "name": "Z-6 Riot Baton"
+  }
+ },
+ "z-6-trooper": {
+  "requirement": "Rebel Troopers Only",
+  "text": "Add 1 Z-6 Trooper miniature.",
+  "weapon": {
+   "dice": {
+    "white": 6
+   },
+   "max_range": 3,
+   "min_range": 1,
+   "name": "Z-6 Rotary Blaster"
+  }
+ }
+}

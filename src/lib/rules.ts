@@ -70,6 +70,7 @@ export function weaponKeywords(w: Weapon): string[] {
 }
 
 export function weaponRange(w: Weapon): string {
+  if (w.area_of_effect) return `Area ${w.area_of_effect}`;
   if (w.max_range === 0) return "Melee";
   const min = w.min_range === 0 ? "Melee" : String(w.min_range);
   if (w.max_range == null) return `${min}+`;

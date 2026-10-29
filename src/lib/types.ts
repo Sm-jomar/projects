@@ -80,6 +80,8 @@ export type Upgrade = {
   keywords_for_unit?: Record<string, string | number>;
   weapon?: Weapon;
   waves?: string[];
+  /** Printed restriction, e.g. "Stormtroopers Only" (Legion Helper). */
+  requirement_text?: string;
   /** Faction-only upgrade (e.g. Clone Captain Rex is Republic only). */
   faction?: FactionId;
   restricted_to_rank?: Rank[];
@@ -153,6 +155,9 @@ export type SavedArmy = {
   pointsCap: number;
   pointsMode?: "printed" | "v2_6" | "revamp";
   entries: ArmyEntry[];
+  /** Command hand: ids from src/data/command-cards.json (Standing Orders
+   * is always in the hand and isn't stored). */
+  commandCards?: string[];
   updatedAt: number;
 };
 
