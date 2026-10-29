@@ -50,8 +50,12 @@ const TTA = ttaRaw as unknown as TtaLayer;
 const MINIATURES = miniaturesRaw as Record<string, number>;
 
 // Keywords and weapons as printed on each unit card, from Legion Helper
-// (scripts/import_legion_helper_rules.py).
-const UNIT_RULES = unitRulesRaw as unknown as Record<string, Pick<Unit, "keywords" | "weapons">>;
+// (scripts/import_legion_helper_rules.py), plus the defense die and surges
+// of Revamp-only units, which Tabletop Admiral leaves out.
+const UNIT_RULES = unitRulesRaw as unknown as Record<
+  string,
+  Pick<Unit, "keywords" | "weapons"> & Partial<Pick<Unit, "defense" | "has_defense_surge" | "attack_surge">>
+>;
 
 const units = applyOverrides(SEED_UNITS, TTA.units)
   .concat(TTA.new_units)

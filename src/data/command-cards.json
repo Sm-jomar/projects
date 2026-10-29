@@ -7,7 +7,8 @@
   "requirement": {
    "units": [
     [
-     "rebels-han-solo"
+     "rebels-han-solo",
+     "rebels-han-solo-reluctant-hero"
     ]
    ]
   },
@@ -20,7 +21,11 @@
   "pips": 1,
   "orders": "Bo-Katan Kryze",
   "requirement": {
-   "text": "Bo-Katan Kryze"
+   "units": [
+    [
+     "mercenary-bo-katan-kryze-savior-of-mandalore"
+    ]
+   ]
   },
   "requirementText": "Bo-Katan Kryze",
   "text": "At the start of Bo-Katan Kryzeʼs next Activation, she may make a Recover action.\nBo-Katan Kryze gains Barrage and Relentless this Round. Additionally, while Bo-Katan Kryze is Engaged this Round, her weapons gain Pierce 1."
@@ -92,7 +97,11 @@
   "pips": 1,
   "orders": "1 Unit",
   "requirement": {
-   "text": "Grand Admiral Thrawn"
+   "units": [
+    [
+     "imperials-grand-admiral-thrawn-imperial-high-command"
+    ]
+   ]
   },
   "requirementText": "Grand Admiral Thrawn",
   "text": "At the start of the Activation Phase, choose an enemy unit. If the chosen unit does not have a faceup Order token, assign it a faceup Order token from your opponent's Order Pool, if able.\nThe first time your opponent chooses to activate a unit this Round, they may choose to activate the chosen unit. If they do not, the chosen unit may not activate using a faceup Order token until your Opponent has no Order tokens in their Order Pool or on Command Cards, and has no other units with faceup Order tokens."
@@ -453,7 +462,8 @@
    "units": [
     [
      "rebels-luke-skywalker-jedi-knight",
-     "republic-jedi-knight"
+     "republic-jedi-knight",
+     "republic-jedi-knight-mounted-jedi-general"
     ],
     [
      "republic-jedi-knight-general"
@@ -495,7 +505,11 @@
   "pips": 1,
   "orders": "Paz Vizsla",
   "requirement": {
-   "text": "Paz Vizsla"
+   "units": [
+    [
+     "mercenary-paz-vizsla-proud-warrior"
+    ]
+   ]
   },
   "requirementText": "Paz Vizsla",
   "text": "Permanent. This card may only be selected if Paz Vizsla is within Range 2 of 2 or more enemy units.\nPaz Vizsla changes is courage to \"–\", gains 1 Standby token, gains Stationary, and his weapons gain Versatile. Additionally, when Paz Vizsla spends a Standby token, after the effect is resolved, he may suffer 1 Wound. If he does, he gains 1 Standby token."
@@ -552,7 +566,11 @@
   "pips": 1,
   "orders": "1 Unit",
   "requirement": {
-   "text": "General Tagge"
+   "units": [
+    [
+     "imperials-general-tagge-imperial-high-command"
+    ]
+   ]
   },
   "requirementText": "General Tagge",
   "text": "General Tagge may remove any number of tokens from Logistical Prowess to gain the matching tokens.\nAt the start of the Activation Phase, General Tagge may make a Speed-2 move."
@@ -580,7 +598,8 @@
   "requirement": {
    "units": [
     [
-     "separatists-general-grievous-sinister-cyborg"
+     "separatists-general-grievous-sinister-cyborg",
+     "separatists-general-grievous-wheel-bike-warlord"
     ]
    ]
   },
@@ -803,7 +822,11 @@
   "pips": 1,
   "orders": "No Units",
   "requirement": {
-   "text": "Grand Moff Tarkin"
+   "units": [
+    [
+     "imperials-grand-moff-tarkin-imperial-high-command"
+    ]
+   ]
   },
   "requirementText": "Grand Moff Tarkin",
   "text": "You must Divulge this card.\nDivulge: Resolve Setup Effects step.\nPermanent. Darth Vader gains Guardian 4: Grand Moff Tarkin and can benefit from Backup. While defending, Grand Moff Tarkin can benefit from Backup provided by Darth Vader even if the attacking unitʼs unit leader is within Range 2 of Grand Moff Tarkin.\nWhile Grand Moff Tarkin is Contesting an Objective token that is not in allied Territory, allied Trooper units within Range 2 of him have Disciplined 1."
@@ -825,7 +848,11 @@
   "pips": 1,
   "orders": "1 Mandalorian Hunter",
   "requirement": {
-   "text": "Mandalorian Hunter"
+   "units": [
+    [
+     "mercenary-mandalorian-hunter"
+    ]
+   ]
   },
   "requirementText": "Mandalorian Hunter",
   "text": "When a unit is issued an Order with this card attacks this Round, the defending unit may not spend any Dodge or Surge tokens during that attack.\nAdditionally, while a unit that was issued an Order with this card is Engaged with an enemy unit this Round, that enemy unit cannot spend Aim tokens, Dodge tokens, or Surge tokens."
@@ -904,7 +931,11 @@
   "pips": 1,
   "orders": "Han Solo",
   "requirement": {
-   "text": "Han Solo, Reluctant Hero"
+   "units": [
+    [
+     "rebels-han-solo-reluctant-hero"
+    ]
+   ]
   },
   "requirementText": "Han Solo, Reluctant Hero",
   "text": "Permanent. Han Solo gains Unconcerned and Unstoppable.\nDuring the Round in which this card was played, Han Solo gains Disengage and gains 1 Aim token, 1 Dodge token, and cannot be Suppressed or Panicked."
@@ -944,7 +975,8 @@
    "units": [
     [
      "rebels-luke-skywalker-hero-of-the-rebellion",
-     "rebels-luke-skywalker-jedi-knight"
+     "rebels-luke-skywalker-jedi-knight",
+     "rebels-luke-skywalker-commander-skywalker"
     ]
    ]
   },
@@ -1018,7 +1050,8 @@
   "requirement": {
    "units": [
     [
-     "republic-anakin-skywalker-hero-without-fear"
+     "republic-anakin-skywalker-hero-without-fear",
+     "republic-anakin-skywalker-mounted-jedi-general"
     ]
    ]
   },
@@ -1031,7 +1064,11 @@
   "pips": 1,
   "orders": "Mace Windu",
   "requirement": {
-   "text": "Mace Windu"
+   "units": [
+    [
+     "republic-mace-windu-jedi-council"
+    ]
+   ]
   },
   "requirementText": "Mace Windu",
   "text": "When Mace Windu is issued and Order with this card, he may suffer 1-3 Wounds.\nThis Round, when Mace Windu would use the Vaapad Mastery keyword while he is Engaged, add red attack or defense dice instead of white attack or defense dice."
@@ -1044,7 +1081,8 @@
   "requirement": {
    "units": [
     [
-     "separatists-general-grievous-sinister-cyborg"
+     "separatists-general-grievous-sinister-cyborg",
+     "separatists-general-grievous-wheel-bike-warlord"
     ]
    ]
   },
@@ -1124,7 +1162,12 @@
   "pips": 1,
   "orders": "Maul & Savage Opress",
   "requirement": {
-   "text": "Savage Opress"
+   "units": [
+    [
+     "separatists-savage-opress-dooku-s-apprentice",
+     "mercenary-savage-opress-maul-s-enforcer"
+    ]
+   ]
   },
   "requirementText": "Savage Opress",
   "text": "Savage Opress may suffer up to the current Round number in Wounds. Then, for each Wound token Svage Opress has, Savage Opress gains 1 Aim token. Finally, for each Wound token Maul has, Maul gains 1 Aim token.\nChoose 1 of Maul's Command Cards in your Discard pile, if able. Return the chosen Command Card to your Command Hand."
@@ -1153,7 +1196,10 @@
   "requirement": {
    "units": [
     [
-     "republic-shaak-ti-jedi-council"
+     "republic-shaak-ti-jedi-council",
+     "republic-ki-adi-mundi-jedi-council",
+     "republic-mace-windu-jedi-council",
+     "republic-plo-koon-jedi-council"
     ]
    ]
   },
@@ -1213,7 +1259,10 @@
   "requirement": {
    "units": [
     [
-     "republic-shaak-ti-jedi-council"
+     "republic-shaak-ti-jedi-council",
+     "republic-ki-adi-mundi-jedi-council",
+     "republic-mace-windu-jedi-council",
+     "republic-plo-koon-jedi-council"
     ]
    ]
   },
@@ -1435,7 +1484,9 @@
   "requirement": {
    "units": [
     [
-     "republic-obi-wan-kenobi-mounted-jedi-general"
+     "republic-obi-wan-kenobi-mounted-jedi-general",
+     "republic-anakin-skywalker-mounted-jedi-general",
+     "republic-jedi-knight-mounted-jedi-general"
     ]
    ]
   },
@@ -1513,7 +1564,8 @@
    "units": [
     [
      "rebels-luke-skywalker-hero-of-the-rebellion",
-     "rebels-luke-skywalker-jedi-knight"
+     "rebels-luke-skywalker-jedi-knight",
+     "rebels-luke-skywalker-commander-skywalker"
     ]
    ]
   },
@@ -1606,7 +1658,11 @@
   "pips": 2,
   "orders": "Plo Koon & 2 Units",
   "requirement": {
-   "text": "Plo Koon"
+   "units": [
+    [
+     "republic-plo-koon-jedi-council"
+    ]
+   ]
   },
   "requirementText": "Plo Koon",
   "text": "When Plo Koon is issued an Order with this card, he may make 2 [Free action] Distract free Actions.\nUntil the end of the Round, when another allied unit issued an Order with this card starts its Activation within Range 2 of Plo Koon, Plo Koon may make a Speed-1 Move."
@@ -1662,7 +1718,11 @@
   "pips": 2,
   "orders": "Anakin Skywalker & 1 Unit",
   "requirement": {
-   "text": "Anakin Skywalker, Mounted Jedi General"
+   "units": [
+    [
+     "republic-anakin-skywalker-mounted-jedi-general"
+    ]
+   ]
   },
   "requirementText": "Anakin Skywalker, Mounted Jedi General",
   "text": "Anakin Skywalker gains Gunslinger this Round and gains 2 Aim tokens or 2 Surge tokens. When Anakin Skywalker makes an attack this Round, after all Attack Pools are resolved, he may make a Speed-2 Move."
@@ -1826,7 +1886,8 @@
    "units": [
     [
      "rebels-luke-skywalker-hero-of-the-rebellion",
-     "rebels-luke-skywalker-jedi-knight"
+     "rebels-luke-skywalker-jedi-knight",
+     "rebels-luke-skywalker-commander-skywalker"
     ]
    ]
   },
@@ -1870,7 +1931,11 @@
   "pips": 2,
   "orders": "Luke Skywalker & 1 Trooper Unit",
   "requirement": {
-   "text": "Luke Skywalker, Commander Skywalker"
+   "units": [
+    [
+     "rebels-luke-skywalker-commander-skywalker"
+    ]
+   ]
   },
   "requirementText": "Luke Skywalker, Commander Skywalker",
   "text": "When a unit is issued an Order with this card, it may make a Speed-1 Move, then make an [Free action] Observe 4 Action.\nAdditionally, when an enemy unit ends its Activation within Range 2 of an allied Creature Trooper unit this Round, the allied unit may gain 1 Dodge token."
@@ -1944,7 +2009,8 @@
   "requirement": {
    "units": [
     [
-     "separatists-general-grievous-sinister-cyborg"
+     "separatists-general-grievous-sinister-cyborg",
+     "separatists-general-grievous-wheel-bike-warlord"
     ]
    ]
   },
@@ -1996,7 +2062,8 @@
   "requirement": {
    "units": [
     [
-     "rebels-han-solo"
+     "rebels-han-solo",
+     "rebels-han-solo-reluctant-hero"
     ]
    ]
   },
@@ -2095,7 +2162,8 @@
   "requirement": {
    "units": [
     [
-     "separatists-general-grievous-sinister-cyborg"
+     "separatists-general-grievous-sinister-cyborg",
+     "separatists-general-grievous-wheel-bike-warlord"
     ]
    ]
   },
@@ -2180,7 +2248,13 @@
   "pips": 2,
   "orders": "2 Imperial Units",
   "requirement": {
-   "text": "Imperial High Command"
+   "units": [
+    [
+     "imperials-general-tagge-imperial-high-command",
+     "imperials-grand-admiral-thrawn-imperial-high-command",
+     "imperials-grand-moff-tarkin-imperial-high-command"
+    ]
+   ]
   },
   "requirementText": "Imperial High Command",
   "text": "When a unit issued an Order with this card starts its Activation this Round, it may gain 2 Aim tokens. If it does, at the end of that unitʼs Activation, if it did not defeat at least 1 enemy unit during that Activation, it suffers 2 Wounds.\nDuring the End Phase, if 1 or more units issued an Order with this card defeated 1 or more enemy Commander or Operative units this Round, you score 1 VP."
@@ -2300,7 +2374,11 @@
   "pips": 2,
   "orders": "No Units",
   "requirement": {
-   "text": "Grand Admiral Thrawn"
+   "units": [
+    [
+     "imperials-grand-admiral-thrawn-imperial-high-command"
+    ]
+   ]
   },
   "requirementText": "Grand Admiral Thrawn",
   "text": "Divulge: Resolve Setup Effects step.\nPermanent. Choose 3 allied Imperial units. The chosen units gain Reinforcements this Game.\nThis card cannot be selected during the Command Phase. When an enemy unit ends its Activation, you may discard this card. If you do, choose a non-Suppressed or non-Panicked allied unit within Range 2 of the enemy unit. The chosen unit may make a free Move action or Attack action."
@@ -2380,7 +2458,8 @@
   "requirement": {
    "units": [
     [
-     "republic-anakin-skywalker-hero-without-fear"
+     "republic-anakin-skywalker-hero-without-fear",
+     "republic-anakin-skywalker-mounted-jedi-general"
     ]
    ]
   },
@@ -2426,7 +2505,8 @@
    "units": [
     [
      "rebels-luke-skywalker-jedi-knight",
-     "republic-jedi-knight"
+     "republic-jedi-knight",
+     "republic-jedi-knight-mounted-jedi-general"
     ],
     [
      "republic-jedi-knight-general"
@@ -2517,7 +2597,11 @@
   "pips": 3,
   "orders": "3 Units",
   "requirement": {
-   "text": "General Tagge"
+   "units": [
+    [
+     "imperials-general-tagge-imperial-high-command"
+    ]
+   ]
   },
   "requirementText": "General Tagge",
   "text": "This Round, when an enemy unit within Range 4 of General Tagge spends 1 or more Aim tokens, Dodge tokens, or Surge tokens, add 1 Aim token, 1 Dodge token, or 1 Surge token to Logistical Prowess. Then, if the enemy unit is in LOS of General Tagge, that enemy unit gains 1 Observation token."
@@ -2530,7 +2614,8 @@
   "requirement": {
    "units": [
     [
-     "rebels-han-solo"
+     "rebels-han-solo",
+     "rebels-han-solo-reluctant-hero"
     ]
    ]
   },
@@ -2608,7 +2693,8 @@
   "requirement": {
    "units": [
     [
-     "separatists-general-grievous-sinister-cyborg"
+     "separatists-general-grievous-sinister-cyborg",
+     "separatists-general-grievous-wheel-bike-warlord"
     ]
    ]
   },
@@ -2699,7 +2785,8 @@
   "requirement": {
    "units": [
     [
-     "rebels-rebel-officer"
+     "rebels-rebel-officer",
+     "rebels-rebel-officer-fighting-for-freedom"
     ]
    ]
   },
@@ -2730,7 +2817,11 @@
   "pips": 3,
   "orders": "3 Units",
   "requirement": {
-   "text": "Grand Moff Tarkin"
+   "units": [
+    [
+     "imperials-grand-moff-tarkin-imperial-high-command"
+    ]
+   ]
   },
   "requirementText": "Grand Moff Tarkin",
   "text": "Divulge: Resolve Setup Effects step.\nPermanent. When an allied Imperial unit is issued an Order, it has Demoralize 1 until the end of the Round.\nAllied Imperial units have Demoralize 1 this Round."
@@ -2763,7 +2854,11 @@
   "pips": 3,
   "orders": "3 Units",
   "requirement": {
-   "text": "Ki-Adi-Mundi"
+   "units": [
+    [
+     "republic-ki-adi-mundi-jedi-council"
+    ]
+   ]
   },
   "requirementText": "Ki-Adi-Mundi",
   "text": "This Round, at the start of Ki-Adi-Mundi's Rally step, you may choose up to 3 allied units within Range 2 of him. Each chosen unit may remove up to 2 Suppression tokens. Then, for each Suppression token removed in this way, Ki-Adi-Mundi gains 1 Suppression token and may ready 1 of his exhausted Force upgrades.\nAdditionally, each time Ki-Adi-Mundi uses a Force upgrade this Round, after the effect is resolved, he gains 1 Surge token."
@@ -2776,7 +2871,8 @@
   "requirement": {
    "units": [
     [
-     "separatists-general-grievous-sinister-cyborg"
+     "separatists-general-grievous-sinister-cyborg",
+     "separatists-general-grievous-wheel-bike-warlord"
     ]
    ]
   },
@@ -2807,7 +2903,8 @@
   "requirement": {
    "units": [
     [
-     "republic-anakin-skywalker-hero-without-fear"
+     "republic-anakin-skywalker-hero-without-fear",
+     "republic-anakin-skywalker-mounted-jedi-general"
     ]
    ]
   },
@@ -2831,7 +2928,11 @@
   "pips": 3,
   "orders": "3 Units",
   "requirement": {
-   "text": "Mandalorian Leader"
+   "units": [
+    [
+     "mercenary-mandalorian-leader"
+    ]
+   ]
   },
   "requirementText": "Mandalorian Leader",
   "text": "This Round, while the nominated Commander is not Suppressed or Panicked, other allied Mandalorian Trooper units within Range 2 of it may upgrade 2 of their attack dice when attacking.\nWhile the nominated Commander is not Suppressed or Panicked, enemy units within Range 1 of it downgrade 1 of their attack dice when attacking."
@@ -2929,7 +3030,11 @@
   "pips": 3,
   "orders": "3 Units",
   "requirement": {
-   "text": "Grand Admiral Thrawn"
+   "units": [
+    [
+     "imperials-grand-admiral-thrawn-imperial-high-command"
+    ]
+   ]
   },
   "requirementText": "Grand Admiral Thrawn",
   "text": "This Round, when an allied Imperial unit attacks, during the Form Attack Pools step it gains 1 Aim token if the defending unit does not have 1 or more facedown Order tokens."
@@ -2972,7 +3077,8 @@
   "requirement": {
    "units": [
     [
-     "imperials-imperial-officer"
+     "imperials-imperial-officer",
+     "imperials-imperial-officer-ruthless-efficiency"
     ]
    ]
   },
@@ -3042,7 +3148,11 @@
   "pips": 3,
   "orders": "Bo-Katan Kryze & 2 Units",
   "requirement": {
-   "text": "Bo-Katan Kryze"
+   "units": [
+    [
+     "mercenary-bo-katan-kryze-savior-of-mandalore"
+    ]
+   ]
   },
   "requirementText": "Bo-Katan Kryze",
   "text": "When a unit issued an Order with this card, it may remove 1 Suppression token.\nThis Round, when an allied Clan Kryze unit that has a faceup Order token makes an Attack action during its Activation, after the effect is resolved, that unit may make a Speed-1 Move."
@@ -3086,11 +3196,13 @@
   "requirement": {
    "units": [
     [
-     "rebels-han-solo"
+     "rebels-han-solo",
+     "rebels-han-solo-reluctant-hero"
     ],
     [
      "rebels-luke-skywalker-hero-of-the-rebellion",
-     "rebels-luke-skywalker-jedi-knight"
+     "rebels-luke-skywalker-jedi-knight",
+     "rebels-luke-skywalker-commander-skywalker"
     ]
    ],
    "all": true
@@ -3139,7 +3251,8 @@
    "units": [
     [
      "rebels-luke-skywalker-hero-of-the-rebellion",
-     "rebels-luke-skywalker-jedi-knight"
+     "rebels-luke-skywalker-jedi-knight",
+     "rebels-luke-skywalker-commander-skywalker"
     ]
    ]
   },

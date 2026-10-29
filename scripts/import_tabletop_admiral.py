@@ -230,14 +230,18 @@ def build(ours_path: Path) -> None:
             our_to_tta[u["id"]] = t["id"]
             unit_layer[u["id"]] = unit_patch(t)
 
-    # New units: classic printings we don't carry yet, skipping removed
-    # units and other-faction/Revamp reprints of units we already have.
+    # New units: printings we don't carry yet, skipping removed units and
+    # other-faction/Revamp reprints of units we already have. Cards printed
+    # only for Revamp (Thrawn, Mace Windu, Bo-Katan...) come after the
+    # classic ones and are marked revamp_only.
     have = {(norm(by_id[i]["name"]), norm(by_id[i].get("title"))) for i in our_to_tta.values()}
     new_units = []
-    for t in tta:
+    for t in sorted(tta, key=lambda t: not t["classic"]):
         key = (norm(t["name"]), norm(t.get("title")))
-        if t.get("hidden") is True or not t["classic"] or t["id"] in our_to_tta.values():
+        if t.get("hidden") is True or not (t["classic"] or t["revamp"]) or t["id"] in our_to_tta.values():
             continue
+        if not t["classic"] and not t["original_cost"]:
+            continue  # placeholder entries with no card (Guerilla Troopers)
         if key in have or key[0] in EXCLUDED:
             continue
         have.add(key)
@@ -254,6 +258,7 @@ def build(ours_path: Path) -> None:
             "has_defense_surge": bool(t.get("surge_defense")),
             **({"attack_surge": "crit" if t.get("surge_crit") else "hit"} if t.get("surge_crit") or t.get("surge_hit") else {}),
             **unit_patch(t),
+            **({"revamp_only": True} if not t["classic"] else {}),
         }
         nu.update(NEW_UNIT_FIXES.get(uid, {}))
         new_units.append(nu)

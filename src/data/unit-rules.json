@@ -386,6 +386,34 @@
    }
   ]
  },
+ "imperials-general-tagge-imperial-high-command": {
+  "keywords": [
+   "Calculate Odds",
+   "Equip: Logistical Prowess",
+   "Exemplar",
+   "Inspire 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Tagge's Blaster"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ],
+  "defense": "white",
+  "has_defense_surge": true
+ },
  "imperials-general-veers": {
   "keywords": [
    "Guidance: Ground Vehicle",
@@ -412,6 +440,56 @@
     "name": "Combat Expertise"
    }
   ]
+ },
+ "imperials-grand-admiral-thrawn-imperial-high-command": {
+  "keywords": [
+   "Strategize 2",
+   "Cunning",
+   "Direct: Imperial Unit",
+   "Duelist",
+   "Exemplar",
+   "One Step Ahead",
+   "Tactical 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 3
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Thrawn's Blaster"
+   },
+   {
+    "dice": {
+     "red": 4
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Chiss Martial Arts"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": false,
+  "attack_surge": "hit"
+ },
+ "imperials-grand-moff-tarkin-imperial-high-command": {
+  "keywords": [
+   "Pulling the Strings: Imperial Trooper",
+   "Entourage: Darth Vader"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "white": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Contempt"
+   }
+  ],
+  "defense": "white",
+  "has_defense_surge": false
  },
  "imperials-iden-versio": {
   "keywords": [
@@ -655,6 +733,57 @@
     "name": "Combat Training"
    }
   ]
+ },
+ "imperials-imperial-officer-ruthless-efficiency": {
+  "keywords": [
+   "Equip: Doctrine",
+   "Inspire 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 2
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Blaster Pistol"
+   },
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Combat Training"
+   }
+  ],
+  "defense": "white",
+  "has_defense_surge": true,
+  "attack_surge": "hit"
+ },
+ "imperials-imperial-probe-droid": {
+  "keywords": [
+   "Observe 3",
+   "Self-Destruct 3",
+   "Detachment: Special Forces",
+   "Disengage",
+   "Infiltrate",
+   "Hover: Air 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "white": 2
+    },
+    "max_range": 1,
+    "min_range": 0,
+    "name": "Light Blaster"
+   }
+  ],
+  "defense": "white",
+  "has_defense_surge": true
  },
  "imperials-imperial-special-forces": {
   "keywords": [
@@ -1105,6 +1234,34 @@
   ],
   "weapons": []
  },
+ "mercenary-axe-woves-cunning-warrior": {
+  "keywords": [
+   "Mercenary: Rebel, Republic",
+   "Jump 2",
+   "Charge",
+   "Coordinate: clan_kryze Unit",
+   "Impervious",
+   "Mandalorians Are Stronger Together",
+   "Tactical 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Lethal 1"
+    ],
+    "max_range": 2,
+    "min_range": 0,
+    "name": "Vibroknife & Pistol"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": true,
+  "attack_surge": "hit"
+ },
  "mercenary-black-sun-enforcers": {
   "keywords": [
    "Mercenary: Imperial, Separatist",
@@ -1152,6 +1309,33 @@
    }
   ]
  },
+ "mercenary-bo-katan-kryze-savior-of-mandalore": {
+  "keywords": [
+   "Mercenary: Rebel, Republic",
+   "Jump 2",
+   "Death From Above",
+   "Impervious",
+   "Mandalorians Are Stronger Together",
+   "Tactical 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 2
+    },
+    "keywords": [
+     "High Velocity"
+    ],
+    "max_range": 2,
+    "min_range": 0,
+    "name": "Dual Blaster Pistols"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": true,
+  "attack_surge": "crit"
+ },
  "mercenary-cad-bane-needs-no-introduction": {
   "keywords": [
    "Jump 1",
@@ -1183,6 +1367,69 @@
     "name": "Martial Arts"
    }
   ]
+ },
+ "mercenary-clan-kryze-veterans": {
+  "keywords": [
+   "Mercenary: Rebel, Republic",
+   "Jump 2",
+   "Impervious",
+   "Mandalorians Are Stronger Together",
+   "Tactical 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "GALAAR-15 Carbines"
+   },
+   {
+    "dice": {
+     "red": 1,
+     "white": 1
+    },
+    "max_range": 2,
+    "min_range": 0,
+    "name": "Blaster Pistols"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": true,
+  "attack_surge": "hit"
+ },
+ "mercenary-clan-wren-veterans": {
+  "keywords": [
+   "Mercenary: Rebel",
+   "Jump 2",
+   "Dauntless",
+   "Impervious",
+   "Nimble",
+   "We Fight for Our Family"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Galar-15 Carbines"
+   },
+   {
+    "dice": {
+     "red": 1,
+     "white": 1
+    },
+    "max_range": 2,
+    "min_range": 0,
+    "name": "Blaster Pistols"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": true,
+  "attack_surge": "hit"
  },
  "mercenary-gar-saxon-head-of-clan-saxon": {
   "keywords": [
@@ -1251,6 +1498,19 @@
    }
   ]
  },
+ "mercenary-han-chewie-notorious-scoundrels": {
+  "keywords": [
+   "Mercenary: Rebel",
+   "Equip: Han Solo, Reckless Smuggler; Chewbacca, Courageous Co-Pilot",
+   "Eyes on the Prize: Steady",
+   "Self-Preservation",
+   "Uncanny Luck 2"
+  ],
+  "weapons": [],
+  "defense": "white",
+  "has_defense_surge": true,
+  "attack_surge": "crit"
+ },
  "mercenary-hondo-ohnaka": {
   "keywords": [
    "Mercenary: Imperial, Rebel, Republic, Separatist",
@@ -1284,6 +1544,101 @@
     "name": "Weequay's Cunning"
    }
   ]
+ },
+ "mercenary-mandalorian-hunter": {
+  "keywords": [
+   "Mercenary: Imperial, Republic, Rebel, Separatist",
+   "Jump 2",
+   "Equip: Armament, Doctrine",
+   "Impervious"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 2,
+     "white": 2
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Blaster Pistol"
+   },
+   {
+    "dice": {
+     "black": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Pierce 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Vibroknife"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": false,
+  "attack_surge": "hit"
+ },
+ "mercenary-mandalorian-initiates": {
+  "keywords": [],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "keywords": [
+     "Long Shot"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Blaster Rifles"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Vibro Blades"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": false,
+  "attack_surge": "hit"
+ },
+ "mercenary-mandalorian-leader": {
+  "keywords": [
+   "Jump 2",
+   "Equip: Armament, Doctrine",
+   "Impervious",
+   "Retinue: Mandalorian Warriors"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 2,
+     "white": 2
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Blaster Pistol"
+   },
+   {
+    "dice": {
+     "black": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Pierce 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Vibroknife"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": true,
+  "attack_surge": "hit"
  },
  "mercenary-mandalorian-super-commandos": {
   "keywords": [
@@ -1392,6 +1747,45 @@
    }
   ]
  },
+ "mercenary-paz-vizsla-proud-warrior": {
+  "keywords": [
+   "Jump 2",
+   "Field Commander",
+   "Impervious",
+   "Steady",
+   "This Is the Way: Aim 2"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 1,
+     "white": 3
+    },
+    "keywords": [
+     "Overwhelm"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Repeating Blaster"
+   },
+   {
+    "dice": {
+     "red": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Pierce 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Vibroknife"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": true,
+  "attack_surge": "hit"
+ },
  "mercenary-pyke-syndicate-capo": {
   "keywords": [
    "Mercenary: Imperial, Rebel, Republic, Separatist",
@@ -1492,6 +1886,46 @@
     "name": "Pistols & Grenades"
    }
   ]
+ },
+ "mercenary-savage-opress-maul-s-enforcer": {
+  "keywords": [
+   "Jump 1",
+   "Demoralize",
+   "Enrage 2",
+   "Immune: Pierce",
+   "Retinue: Maul"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3
+    },
+    "keywords": [
+     "Poison 1",
+     "Scatter"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Dark Fury"
+   },
+   {
+    "dice": {
+     "black": 2,
+     "red": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 2",
+     "Ram 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Double-Bladed Lightsaber"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": false
  },
  "mercenary-super-commandos": {
   "keywords": [
@@ -2049,6 +2483,48 @@
    }
   ]
  },
+ "rebels-han-solo-reluctant-hero": {
+  "keywords": [
+   "Arsenal 2",
+   "Charge",
+   "Independent: Aim 1 and Dodge 1",
+   "Reposition",
+   "Spur",
+   "Uncanny Luck 3",
+   "Unhindered"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "red": 1,
+     "white": 1
+    },
+    "keywords": [
+     "Pierce 1",
+     "Versatile"
+    ],
+    "max_range": 2,
+    "min_range": 0,
+    "name": "Han's DL-44 Blaster"
+   },
+   {
+    "dice": {
+     "black": 2,
+     "white": 1
+    },
+    "keywords": [
+     "Ram 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Stampede"
+   }
+  ],
+  "defense": "white",
+  "has_defense_surge": true,
+  "attack_surge": "crit"
+ },
  "rebels-jyn-erso": {
   "keywords": [
    "Agile 1",
@@ -2184,6 +2660,50 @@
     "name": "Staff"
    }
   ]
+ },
+ "rebels-luke-skywalker-commander-skywalker": {
+  "keywords": [
+   "Spotter 1",
+   "Take Cover 1",
+   "Immune: Pierce",
+   "Inspire 2",
+   "Relentless",
+   "Reposition",
+   "Spur",
+   "Unhindered"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3,
+     "red": 1
+    },
+    "keywords": [
+     "Long Shot"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Luke's Blaster"
+   },
+   {
+    "dice": {
+     "black": 3,
+     "white": 3
+    },
+    "keywords": [
+     "Impact 2",
+     "Lethal 1",
+     "Pierce 1",
+     "Ram 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Lightsaber & Horn"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": false,
+  "attack_surge": "hit"
  },
  "rebels-luke-skywalker-hero-of-the-rebellion": {
   "keywords": [
@@ -2403,6 +2923,34 @@
     "name": "Combat Training"
    }
   ]
+ },
+ "rebels-rebel-officer-fighting-for-freedom": {
+  "keywords": [
+   "Equip: Doctrine",
+   "Inspire 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 2
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Blaster Pistol"
+   },
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Combat Training"
+   }
+  ],
+  "defense": "white",
+  "has_defense_surge": true,
+  "attack_surge": "hit"
  },
  "rebels-rebel-sleeper-cell": {
   "keywords": [
@@ -2735,6 +3283,47 @@
     "name": "Ahsoka's Lightsabers"
    }
   ]
+ },
+ "republic-anakin-skywalker-mounted-jedi-general": {
+  "keywords": [
+   "Cover 2",
+   "Independent: Aim 2 or Surge 2",
+   "Immune: Pierce",
+   "Reposition",
+   "Speeder 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "white": 4
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Lethal 1"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Twin Blaster Cannon"
+   },
+   {
+    "dice": {
+     "black": 2,
+     "red": 2
+    },
+    "keywords": [
+     "Impact 2",
+     "Overrun 1",
+     "Pierce 2",
+     "Scatter"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Anakin's Lightsaber"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": false
  },
  "republic-arc-troopers": {
   "keywords": [
@@ -3135,6 +3724,78 @@
   ],
   "weapons": []
  },
+ "republic-jedi-knight-mounted-jedi-general": {
+  "keywords": [
+   "Aid: Clone Trooper",
+   "Command Vehicle 2",
+   "Cover 1",
+   "Defend 1",
+   "Immune: Pierce",
+   "Speeder 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3,
+     "white": 3
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Lethal 1"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Twin Blaster Cannon"
+   },
+   {
+    "dice": {
+     "black": 1,
+     "red": 2,
+     "white": 3
+    },
+    "keywords": [
+     "Impact 2",
+     "Overrun 1",
+     "Pierce 1",
+     "Scatter"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Lightsaber"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": false
+ },
+ "republic-ki-adi-mundi-jedi-council": {
+  "keywords": [
+   "Jump 2",
+   "Ataru Mastery",
+   "Charge",
+   "Danger Sense 1",
+   "Deflect",
+   "Immune: Pierce",
+   "Master of the Force 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 2
+    },
+    "keywords": [
+     "Impact 2",
+     "Lethal 1",
+     "Pierce 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Mundi's Lightsaber"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": false
+ },
  "republic-laat-le-patrol-transport-republic": {
   "keywords": [
    "Armor 5",
@@ -3159,6 +3820,49 @@
     "name": "Twin Laser Cannons"
    }
   ]
+ },
+ "republic-mace-windu-jedi-council": {
+  "keywords": [
+   "Jump 1",
+   "Charge",
+   "Compel: Corps Trooper",
+   "Deflect",
+   "Immune: Pierce",
+   "Master of the Force 1",
+   "Vaapad Mastery"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 4
+    },
+    "keywords": [
+     "Blast",
+     "Immobilize 1",
+     "Suppressive"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Force Crush"
+   },
+   {
+    "dice": {
+     "black": 2,
+     "red": 3,
+     "white": 1
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 2"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Windu's Lightsaber"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": true,
+  "attack_surge": "crit"
  },
  "republic-obi-wan-kenobi-civilized-warrior": {
   "keywords": [
@@ -3248,6 +3952,36 @@
     "name": "Martial Arts"
    }
   ]
+ },
+ "republic-plo-koon-jedi-council": {
+  "keywords": [
+   "Jump 1",
+   "Distract",
+   "Charge",
+   "Defend 1",
+   "Deflect",
+   "Direct: Clone Trooper Infantry",
+   "Immune: Pierce",
+   "Inspire 2",
+   "Shien Mastery"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 5
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 2"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Po Kloon's Lightsaber"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": false,
+  "attack_surge": "hit"
  },
  "republic-r2-d2-independent-astromech": {
   "keywords": [
@@ -3876,6 +4610,53 @@
    }
   ]
  },
+ "separatists-general-grievous-wheel-bike-warlord": {
+  "keywords": [
+   "Armor 1",
+   "Climbing Vehicle",
+   "Command Vehicle 2",
+   "Entourage: TSMEU-6 Wheel Bikes",
+   "Immune: Melee Pierce",
+   "Mobile"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 1,
+     "white": 2
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Impact 1",
+     "Pierce 1"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Laser Cannon and Pistol"
+   },
+   {
+    "dice": {
+     "black": 3,
+     "red": 1,
+     "white": 1
+    },
+    "keywords": [
+     "Impact 2",
+     "Overrun 1",
+     "Pierce 1",
+     "Ram 1",
+     "Scatter"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Trophy Lightsabers"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": false,
+  "attack_surge": "crit"
+ },
  "separatists-geonosian-warriors": {
   "keywords": [
    "Jump 3",
@@ -3902,6 +4683,37 @@
     "name": "Spears"
    }
   ]
+ },
+ "separatists-geonosian-warriors-geonosian-engineers": {
+  "keywords": [
+   "Jump 3",
+   "Repair 1: Capacity 1",
+   "Death From Above",
+   "Scale",
+   "Special Issue: Rapid Interdiction Force",
+   "Weighed Down"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Sonic Blasters"
+   },
+   {
+    "dice": {
+     "white": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Spears"
+   }
+  ],
+  "defense": "white",
+  "has_defense_surge": true,
+  "attack_surge": "hit"
  },
  "separatists-ig-100-magnaguards": {
   "keywords": [
@@ -4181,6 +4993,46 @@
    }
   ]
  },
+ "separatists-savage-opress-dooku-s-apprentice": {
+  "keywords": [
+   "Jump 1",
+   "Demoralize 1",
+   "Enrage 2",
+   "Immune: Pierce",
+   "Retinue: Count Dooku"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3
+    },
+    "keywords": [
+     "Poison 1",
+     "Scatter"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Dark Fury"
+   },
+   {
+    "dice": {
+     "black": 2,
+     "red": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 2",
+     "Ram 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Double-Bladed Lightsaber"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": false
+ },
  "separatists-stap-riders": {
   "keywords": [
    "Agile 1",
@@ -4317,5 +5169,42 @@
     "name": "Bludgeon"
    }
   ]
+ },
+ "separatists-tsmeu-6-wheel-bikes": {
+  "keywords": [
+   "AI: Dodge",
+   "Armor 1",
+   "Climbing Vehicle",
+   "Mobile"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 1,
+     "white": 1
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Impact 1"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Double Laser Cannon"
+   },
+   {
+    "dice": {
+     "black": 3
+    },
+    "keywords": [
+     "Overrun 2"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Spiked Wheel"
+   }
+  ],
+  "defense": "red",
+  "has_defense_surge": false,
+  "attack_surge": "hit"
  }
 }

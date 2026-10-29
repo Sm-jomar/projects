@@ -82,6 +82,10 @@ input, select {
   background: var(--accent);
   color: #1a1a1a;
 }
+.badge.revamp {
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
 
 /* App layout */
 .app {

@@ -34,6 +34,7 @@ NOT_RULES = {
 # Legion Helper doesn't list (Anakin Hero Without Fear, Mandalorian
 # Resistance, the old Super Tactical Droid) keep no rules.
 MANUAL = {
+    "mercenary-han-chewie-notorious-scoundrels": "han-and-chewie-notorious-scoundrels",
     "rebels-han-solo": "han-solo-unorthodox-general",
     "rebels-the-bad-batch": "the-bad-batch-clone-force-99-mercenary",
     "republic-clone-commander": "clone-commander-trained-for-leadership",
@@ -94,6 +95,10 @@ def keyword_list(htmls: list[str], weapon: bool = False) -> list[str]:
         # "Fixed Front, Rear" -> "Fixed: Front/Rear"
         t = re.sub(r"(?i)fixed:? ((?:front|rear|sides)(?:, (?:front|rear|sides))*)",
                    lambda m: "Fixed: " + "/".join(a.capitalize() for a in m.group(1).split(", ")), t)
+        # Han & Chewie print their second Equip upgrade on its own line.
+        if not weapon and out and out[-1].startswith("Equip: ") and ":" not in t and re.fullmatch(r"[^,]+, [^,]+", t.strip()):
+            out[-1] += "; " + t.strip()
+            continue
         # "Recharge 1, Shielded 1" is two keywords; "Equip: Del Meeko, Gideon Hask" is one.
         # Weapon keywords are a plain comma list.
         for k in re.split(r"\. |, " if weapon else r"\. |, (?=[A-Z][^:]*$)" if ":" not in t else r"\. ", t):
@@ -157,7 +162,19 @@ def unit_page(url: str):
     kw_html = raw[i:j] if i >= 0 else ""
     keywords = keyword_list(re.findall(r"<li>(.*?)</li>", kw_html))
     weapons = [parse_weapon(w) for w in re.split(r'<div class="weapon">', raw[j:end if end > 0 else None])[1:]]
-    return url.rstrip("/").rsplit("/", 1)[1], FACTIONS.get(faction.group(1)), {"keywords": keywords, "weapons": weapons}
+    rules = {"keywords": keywords, "weapons": weapons}
+    # Defense die and surges, which Tabletop Admiral leaves out for the
+    # Revamp-only units; used for those units only.
+    die = re.search(r'class="defenseDie defenseDie(Red|White)"', raw)
+    atk = re.search(r'Atk Surge</span><span class="statValue[^"]*">(\w+)', raw)
+    dfn = re.search(r'Def Surge</span><span class="statValue[^"]*">([^<]+)', raw)
+    if die:
+        rules["_stats"] = {
+            "defense": die.group(1).lower(),
+            "has_defense_surge": bool(dfn and dfn.group(1).strip() != "-"),
+            **({"attack_surge": atk.group(1).lower()} if atk and atk.group(1).lower() in ("hit", "crit") else {}),
+        }
+    return url.rstrip("/").rsplit("/", 1)[1], FACTIONS.get(faction.group(1)), rules
 
 
 def rules_page(url: str):
@@ -194,9 +211,11 @@ def units_main(units: list, sitemap: str) -> None:
         name, sub, fac = slug(u["name"]), slug(u.get("sub_title") or ""), u["faction"]
         exact = [k for k in (MANUAL.get(u["id"]), f"{name}-{sub}" if sub else None, name, u["id"].split("-", 1)[1]) if k in pages]
         cands = exact[:1] or [k for k in pages if k.startswith(name + "-") and pages[k][0] == fac]
-        rules = {json.dumps(pages[k][1], sort_keys=True) for k in cands}
+        rules = {json.dumps({k: v for k, v in pages[k][1].items() if k != "_stats"}, sort_keys=True) for k in cands}
         if len(rules) == 1:
             out[u["id"]] = json.loads(rules.pop())
+            if u.get("revamp_only") and "_stats" in pages[cands[0]][1]:
+                out[u["id"]].update(pages[cands[0]][1]["_stats"])
         else:
             unmatched.append(u["id"])
     json.dump(dict(sorted(out.items())), open(OUT, "w"), indent=1)

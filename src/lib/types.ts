@@ -131,6 +131,8 @@ export type Unit = {
   /** Classic tournament (2.6) and Revamp costs, from Tabletop Admiral. */
   points_v2_6?: number;
   points_revamp?: number;
+  /** Card printed only for Revamp (Tabletop Admiral's Revamp mode). */
+  revamp_only?: boolean;
   tta_id?: string;
 };
 

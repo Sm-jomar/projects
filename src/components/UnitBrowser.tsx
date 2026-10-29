@@ -127,6 +127,9 @@ export function UnitBrowser({
                     <span className="unit-variant"> ({u.sub_title})</span>
                   )}
                   {u.is_unique && <span className="badge unique">Unique</span>}
+                  {u.revamp_only && (
+                    <span className="badge revamp" title="Card printed for Revamp; it has no classic or 2.6 points of its own">Revamp</span>
+                  )}
                   {isFlagged(u.id) && (
                     <span className="flag-indicator" title="Flagged as wrong">
                       🚩
