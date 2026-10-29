@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { CardBrowser } from "./CardBrowser";
 import { RulebookViewer } from "./RulebookViewer";
+import { RulesGlossary } from "./RulesGlossary";
 
-type Tab = "cards" | "rulebooks";
+type Tab = "cards" | "rules" | "rulebooks";
 
 type Props = {
   onClose: () => void;
@@ -22,6 +23,12 @@ export function ReferencePanel({ onClose }: Props) {
               Cards
             </button>
             <button
+              className={"ref-tab" + (tab === "rules" ? " active" : "")}
+              onClick={() => setTab("rules")}
+            >
+              Keywords &amp; rules
+            </button>
+            <button
               className={"ref-tab" + (tab === "rulebooks" ? " active" : "")}
               onClick={() => setTab("rulebooks")}
             >
@@ -33,7 +40,7 @@ export function ReferencePanel({ onClose }: Props) {
           </button>
         </header>
         <div className="reference-body">
-          {tab === "cards" ? <CardBrowser /> : <RulebookViewer />}
+          {tab === "cards" ? <CardBrowser /> : tab === "rules" ? <RulesGlossary /> : <RulebookViewer />}
         </div>
       </div>
     </div>

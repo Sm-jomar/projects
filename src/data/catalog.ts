@@ -5,6 +5,7 @@ import overridesRaw from "./catalog-overrides.json";
 import ttaRaw from "./tabletop-admiral.json";
 import miniaturesRaw from "./unit-miniatures.json";
 import upgradeMinisRaw from "./upgrade-miniatures.json";
+import unitRulesRaw from "./unit-rules.json";
 
 const base = baseRaw as unknown as Catalog;
 
@@ -47,9 +48,14 @@ const TTA = ttaRaw as unknown as TtaLayer;
 // seed and Tabletop Admiral leave many units at 1.
 const MINIATURES = miniaturesRaw as Record<string, number>;
 
+// Keywords and weapons as printed on each unit card, from Legion Helper
+// (scripts/import_legion_helper_rules.py).
+const UNIT_RULES = unitRulesRaw as unknown as Record<string, Pick<Unit, "keywords" | "weapons">>;
+
 const units = applyOverrides(SEED_UNITS, TTA.units)
   .concat(TTA.new_units)
-  .map((u) => (u.id in MINIATURES ? { ...u, miniatures: MINIATURES[u.id]! } : u));
+  .map((u) => (u.id in MINIATURES ? { ...u, miniatures: MINIATURES[u.id]! } : u))
+  .map((u) => (u.id in UNIT_RULES ? { ...u, ...UNIT_RULES[u.id] } : u));
 // Minis added by heavy weapon, personnel and squad leader upgrades, from
 // the same Legion Helper import ("Add N ... miniature" on the card).
 const UPGRADE_MINIS = upgradeMinisRaw as Record<string, { adds: number; leader?: boolean }>;

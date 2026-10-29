@@ -29,6 +29,7 @@ import { unitById, upgradeById } from "../data/catalog";
 import { TtaImportModal } from "./TtaImportModal";
 import { endPhaseStatus, showsUnitStatus, WOUND_INFO, WOUND_URL } from "../lib/statusTokens";
 import { StatusTokenPanel } from "./StatusTokenPanel";
+import { UnitRules } from "./UnitRules";
 import { MissionSection } from "./MissionSection";
 import { InfoDot } from "./InfoDot";
 import { cardForUnit } from "../lib/cardLookup";
@@ -1211,6 +1212,12 @@ export function TabletopPanel({ onClose }: Props) {
                     </label>
                     <StatusTokenPanel state={state} token={selectedToken} readOnly={readOnly} onCommit={commit}
                                       rank={selectedToken.unitId ? unitById(selectedToken.unitId)?.rank : undefined} />
+                    {selectedToken.unitId && unitById(selectedToken.unitId) && (
+                      <details className="tt-unit-rules">
+                        <summary>Keywords &amp; weapons</summary>
+                        <UnitRules unit={unitById(selectedToken.unitId)!} />
+                      </details>
+                    )}
                     <label>Side
                       <select value={selectedToken.side ?? "(auto)"}
                               onChange={(e) => {

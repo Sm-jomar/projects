@@ -22,6 +22,7 @@ import {
   type ArmyState,
 } from "../lib/validation";
 import { UpgradePicker } from "./UpgradePicker";
+import { UnitRules } from "./UnitRules";
 
 type Props = {
   army: ArmyState;
@@ -52,6 +53,7 @@ export function ArmyRoster({
   onAttachUpgrade,
   onDetachUpgrade,
 }: Props) {
+  const [rulesOpen, setRulesOpen] = useState<string | null>(null);
   const [pickerEntryId, setPickerEntryId] = useState<string | null>(null);
   const pickerEntry = pickerEntryId
     ? army.entries.find((e) => e.entryId === pickerEntryId) ?? null
@@ -184,6 +186,14 @@ export function ArmyRoster({
                       <li key={entry.entryId} className="entry-row-wrap">
                         <div className="entry-row">
                           <div className="entry-row-main">
+                            <button
+                              className="entry-rules-toggle"
+                              aria-expanded={rulesOpen === entry.entryId}
+                              title="Show keywords and weapons"
+                              onClick={() => setRulesOpen(rulesOpen === entry.entryId ? null : entry.entryId)}
+                            >
+                              {rulesOpen === entry.entryId ? "▾" : "▸"}
+                            </button>
                             <span className="entry-name">{u.name}</span>
                             <span className="muted small">
                               {" "}
@@ -218,6 +228,7 @@ export function ArmyRoster({
                             </button>
                           </div>
                         </div>
+                        {rulesOpen === entry.entryId && <UnitRules unit={u} />}
                         {upgrades.length > 0 && (
                           <ul className="attached-upgrades">
                             {upgrades.map((upId) => {

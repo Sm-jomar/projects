@@ -1,0 +1,4321 @@
+{
+ "imperials-74-z-speeder-bikes": {
+  "keywords": [
+   "Cover 1",
+   "Speeder 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "EC-17 Hold-out Blaster"
+   },
+   {
+    "dice": {
+     "black": 1,
+     "red": 1,
+     "white": 1
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Impact 1"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Blaster Cannon"
+   }
+  ]
+ },
+ "imperials-agent-kallus": {
+  "keywords": [
+   "Observe 2",
+   "Bounty",
+   "Charge",
+   "Direct: Corps Trooper Unit",
+   "Immune: Melee Pierce",
+   "Interrogate"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3,
+     "red": 1
+    },
+    "keywords": [
+     "Critical 1",
+     "Lethal 1",
+     "Long Shot"
+    ],
+    "max_range": 2,
+    "min_range": 0,
+    "name": "J-19 Bo-Rifle"
+   }
+  ]
+ },
+ "imperials-at-st": {
+  "keywords": [
+   "Armor 5",
+   "Arsenal 2",
+   "Weak Point 1: Rear"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Impact 3"
+    ],
+    "max_range": 4,
+    "min_range": 1,
+    "name": "MS-4 Twin Blaster"
+   },
+   {
+    "dice": {
+     "red": 4
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Fence-Cutting Blades"
+   }
+  ]
+ },
+ "imperials-boba-fett-infamous-bounty-hunter": {
+  "keywords": [
+   "Jump 2",
+   "Mercenary: Imperial",
+   "Arsenal 2",
+   "Bounty",
+   "Independent: Aim 1 or Dodge 1",
+   "Impervious",
+   "Sharpshooter 2"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2
+    },
+    "keywords": [
+     "Pierce 1"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "EE-3 Carbine Rifle"
+   },
+   {
+    "dice": {
+     "black": 3
+    },
+    "keywords": [
+     "Impact 1",
+     "Versatile"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Integrated Rockets"
+   },
+   {
+    "dice": {
+     "red": 3
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Boot Spikes"
+   }
+  ]
+ },
+ "imperials-bossk-trandoshan-terror": {
+  "keywords": [
+   "Mercenary: Imperial, Separatist",
+   "Bounty",
+   "Enrage 3",
+   "Independent: Surge 2",
+   "Regenerate 3",
+   "Scale"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 1,
+     "white": 4
+    },
+    "keywords": [
+     "Pierce 1",
+     "Suppressive"
+    ],
+    "max_range": 4,
+    "min_range": 2,
+    "name": "Mortar Rifle"
+   },
+   {
+    "dice": {
+     "black": 2,
+     "red": 1,
+     "white": 1
+    },
+    "keywords": [
+     "Pierce 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Frenzy"
+   }
+  ]
+ },
+ "imperials-darth-vader-dark-lord-of-the-sith": {
+  "keywords": [
+   "Compel: Corps Trooper",
+   "Deflect",
+   "Immune: Pierce",
+   "Master of the Force 1",
+   "Relentless"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 6
+    },
+    "keywords": [
+     "Impact 3",
+     "Pierce 3"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Vader's Lightsaber"
+   }
+  ]
+ },
+ "imperials-darth-vader-the-emperor-s-apprentice": {
+  "keywords": [
+   "Deflect",
+   "Immune: Pierce",
+   "Jedi Hunter",
+   "Master of the Force 1",
+   "Relentless"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2
+    },
+    "keywords": [
+     "Blast",
+     "Scatter"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Force Throw"
+   },
+   {
+    "dice": {
+     "red": 5
+    },
+    "keywords": [
+     "Impact 3",
+     "Pierce 3"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Vader's Lightsaber"
+   }
+  ]
+ },
+ "imperials-dewback-rider": {
+  "keywords": [
+   "Armor 1",
+   "Relentless",
+   "Reposition",
+   "Spur",
+   "Unhindered"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 3,
+     "white": 3
+    },
+    "keywords": [
+     "Critical 2",
+     "Suppressive"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Shock Prod & Claws"
+   }
+  ]
+ },
+ "imperials-df-90-mortar-trooper": {
+  "keywords": [
+   "Detachment: Shoretroopers",
+   "Fire Support",
+   "Full Pivot",
+   "Prepared Position",
+   "Reposition",
+   "Sentinel"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Critical 1",
+     "Cumbersome",
+     "Suppressive"
+    ],
+    "max_range": 4,
+    "min_range": 3,
+    "name": "DF-90 Mortar"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 3,
+    "min_range": 0,
+    "name": "E-22 Blaster Rifle"
+   }
+  ]
+ },
+ "imperials-director-orson-krennic": {
+  "keywords": [
+   "Spotter 1",
+   "Compel",
+   "Cunning",
+   "Entourage: Imperial Death Troopers",
+   "Exemplar"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 3
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Krennic's Blaster"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "imperials-e-web-heavy-blaster-team": {
+  "keywords": [
+   "Prepared Position",
+   "Reposition",
+   "Sentinel"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 1,
+     "white": 2
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Cumbersome",
+     "Impact 1"
+    ],
+    "max_range": 4,
+    "min_range": 1,
+    "name": "E-Web Heavy Blaster"
+   },
+   {
+    "dice": {
+     "white": 2
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Blaster Rifles"
+   },
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "imperials-fifth-brother": {
+  "keywords": [
+   "Block",
+   "Dauntless",
+   "Enrage 2",
+   "Immune: Pierce"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 1"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Thrown Lightsaber"
+   },
+   {
+    "dice": {
+     "black": 5
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 1",
+     "Ram 2"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Spinning Lightsaber"
+   }
+  ]
+ },
+ "imperials-general-veers": {
+  "keywords": [
+   "Guidance: Ground Vehicle",
+   "Spotter 2",
+   "Exemplar",
+   "Inspire 1",
+   "Sharpshooter 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 3
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Veers' Blaster Rifle"
+   },
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Combat Expertise"
+   }
+  ]
+ },
+ "imperials-iden-versio": {
+  "keywords": [
+   "Quick Thinking",
+   "Infiltrate",
+   "Marksman",
+   "Nimble",
+   "Sharpshooter 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "red": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Critical 1",
+     "Impact 1"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Iden's TL-50 Repeater"
+   },
+   {
+    "dice": {
+     "black": 2
+    },
+    "keywords": [
+     "High Velocity",
+     "Pierce 1"
+    ],
+    "max_range": 6,
+    "min_range": 1,
+    "name": "Iden's DLT-20A Rifle"
+   },
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Martial Arts"
+   }
+  ]
+ },
+ "imperials-ig-11-nurse-droid": {
+  "keywords": [
+   "Mercenary: Imperial, Rebel",
+   "Armor 1",
+   "Gunslinger",
+   "Impervious",
+   "Programmed",
+   "Sharpshooter 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "white": 1
+    },
+    "max_range": 4,
+    "min_range": 1,
+    "name": "Modified DLT-20A"
+   },
+   {
+    "dice": {
+     "black": 1,
+     "white": 2
+    },
+    "keywords": [
+     "Pierce 1"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Modified E-11 Blaster"
+   },
+   {
+    "dice": {
+     "red": 4
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Overwhelm"
+   }
+  ]
+ },
+ "imperials-ig-88-assassin-droid": {
+  "keywords": [
+   "Mercenary: Imperial",
+   "Armor 1",
+   "Arsenal 2",
+   "Bounty",
+   "Impervious",
+   "Sharpshooter 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "white": 1
+    },
+    "max_range": 4,
+    "min_range": 1,
+    "name": "Modified DLT-20A"
+   },
+   {
+    "dice": {
+     "black": 1,
+     "white": 2
+    },
+    "keywords": [
+     "Pierce 1",
+     "Versatile"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Modified E-11 Blaster"
+   },
+   {
+    "dice": {
+     "black": 1,
+     "red": 1,
+     "white": 1
+    },
+    "keywords": [
+     "Pierce 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Vibrocleaver"
+   }
+  ]
+ },
+ "imperials-imperial-agent": {
+  "keywords": [
+   "Equip: Doctrine",
+   "Relentless"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 2
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Blaster Pistol"
+   },
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Combat Training"
+   }
+  ]
+ },
+ "imperials-imperial-dark-troopers": {
+  "keywords": [
+   "Armor 3",
+   "Plodding",
+   "Unconcerned",
+   "Unstoppable"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "E-11D Blaster"
+   },
+   {
+    "dice": {
+     "red": 1,
+     "white": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Crushing Punch"
+   }
+  ]
+ },
+ "imperials-imperial-death-troopers": {
+  "keywords": [
+   "Disciplined 1",
+   "Precise 2",
+   "Ready 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "E-11D Blaster Rifle"
+   },
+   {
+    "dice": {
+     "white": 2
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "SE-14r Light Blaster"
+   },
+   {
+    "dice": {
+     "red": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Close Quarters Combat"
+   }
+  ]
+ },
+ "imperials-imperial-officer": {
+  "keywords": [
+   "Equip: Doctrine",
+   "Inspire 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 2
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Blaster Pistol"
+   },
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Combat Training"
+   }
+  ]
+ },
+ "imperials-imperial-special-forces": {
+  "keywords": [
+   "Infiltrate",
+   "Marksman",
+   "Reliable 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "E-11 Blaster Rifle"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "imperials-imperial-special-forces-inferno-squad": {
+  "keywords": [
+   "Equip: Del Meeko, Gideon Hask",
+   "Infiltrate",
+   "Marksman",
+   "Reliable 1",
+   "Retinue: Iden Versio"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "E-11 Blaster Rifle"
+   },
+   {
+    "dice": {
+     "red": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Close Quarters Combat"
+   }
+  ]
+ },
+ "imperials-laat-le-patrol-transport": {
+  "keywords": [
+   "Armor 5",
+   "Arsenal 2",
+   "Cover 1",
+   "Hover: Air 2",
+   "Immune: Blast, Melee, Range 1 Weapons",
+   "Transport"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 2
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Impact 1"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Twin Laser Cannons"
+   }
+  ]
+ },
+ "imperials-major-marquand": {
+  "keywords": [
+   "Armor 5",
+   "Arsenal 2",
+   "Direct: Vehicle",
+   "Field Commander",
+   "Special Issue: Tempest Force",
+   "Weak Point: Rear 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Impact 3"
+    ],
+    "max_range": 4,
+    "min_range": 1,
+    "name": "MS-4 Twin Blaster"
+   },
+   {
+    "dice": {
+     "black": 1,
+     "red": 1,
+     "white": 1
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Impact 1"
+    ],
+    "max_range": 3,
+    "min_range": 0,
+    "name": "88i Twin Light Blaster"
+   },
+   {
+    "dice": {
+     "black": 2
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Blast"
+    ],
+    "max_range": 2,
+    "min_range": 0,
+    "name": "Grenade Launcher"
+   }
+  ]
+ },
+ "imperials-moff-gideon": {
+  "keywords": [
+   "Observe 1",
+   "Entourage: Imperial Dark Troopers",
+   "Ruthless",
+   "Sharpshooter 1",
+   "Tactical 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 1
+    },
+    "keywords": [
+     "Pierce 1"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Gideon's Blaster"
+   },
+   {
+    "dice": {
+     "red": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Combat Training"
+   }
+  ]
+ },
+ "imperials-range-troopers": {
+  "keywords": [
+   "Advanced Targeting: Trooper 1",
+   "Armor 1",
+   "Indomitable",
+   "Scale",
+   "Spur"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 4,
+    "min_range": 1,
+    "name": "E-10R Blaster Rifle"
+   },
+   {
+    "dice": {
+     "white": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Gription Boot Kick"
+   }
+  ]
+ },
+ "imperials-scout-troopers": {
+  "keywords": [
+   "Low Profile",
+   "Scout 3",
+   "Sharpshooter 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "EC-17 Hold-out Blaster"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "imperials-scout-troopers-strike-team": {
+  "keywords": [
+   "Detachment: Special Forces Scout Troopers",
+   "Heavy Weapon Team",
+   "Incognito",
+   "Low Profile",
+   "Prepared Positions"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "EC-17 Hold-out Blaster"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "imperials-seventh-sister": {
+  "keywords": [
+   "Jump 1",
+   "Associate: Fifth Brother",
+   "Block",
+   "Charge",
+   "Disciplined 1",
+   "Immune: Pierce",
+   "Interrogate"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 1"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Thrown Lightsaber"
+   },
+   {
+    "dice": {
+     "black": 5
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Spinning Lightsaber"
+   }
+  ]
+ },
+ "imperials-shoretroopers": {
+  "keywords": [
+   "Coordinate: Emplacement Trooper",
+   "Prepared Position"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "keywords": [
+     "Long Shot"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "E-11 Blaster Rifle"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "imperials-snowtroopers": {
+  "keywords": [
+   "Steady"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "white": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "E-11 Blaster Rifle"
+   },
+   {
+    "dice": {
+     "white": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Bludgeon"
+   }
+  ]
+ },
+ "imperials-stormtrooper-riot-squad": {
+  "keywords": [
+   "Charge",
+   "Hold the Line"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "white": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "E-11 Blaster Rifle"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "keywords": [
+     "Suppressive"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Stun Baton"
+   }
+  ]
+ },
+ "imperials-stormtroopers": {
+  "keywords": [
+   "Precise 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "white": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "E-11 Blaster Rifle"
+   },
+   {
+    "dice": {
+     "white": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Bludgeon"
+   }
+  ]
+ },
+ "imperials-stormtroopers-heavy-response-unit": {
+  "keywords": [
+   "Flexible Response 2",
+   "Precise 1",
+   "Special Issue: Blizzard Force",
+   "Unhindered"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "white": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "E-11 Blaster Rifle"
+   },
+   {
+    "dice": {
+     "white": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Bludgeon"
+   }
+  ]
+ },
+ "imperials-tx-225-gavw-occupier-tank": {
+  "keywords": [
+   "Armor 5",
+   "Arsenal 2",
+   "Reposition",
+   "Transport",
+   "Weak Point 1: Sides"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 2
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Impact 2"
+    ],
+    "max_range": 4,
+    "min_range": 1,
+    "name": "Quad Cannons"
+   },
+   {
+    "dice": {
+     "black": 1,
+     "red": 1
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Suppressive"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Twin Cannons"
+   }
+  ]
+ },
+ "mercenary-a-a5-speeder-truck": {
+  "keywords": [
+   "Armor 5",
+   "Hover: Ground",
+   "Reposition",
+   "Transport",
+   "Weak Point 2: Rear"
+  ],
+  "weapons": []
+ },
+ "mercenary-black-sun-enforcers": {
+  "keywords": [
+   "Mercenary: Imperial, Separatist",
+   "Dauntless",
+   "Independent: Aim 1",
+   "Precise 1",
+   "Self-Preservation"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Double Blaster"
+   },
+   {
+    "dice": {
+     "red": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Close Quarters Combat"
+   }
+  ]
+ },
+ "mercenary-black-sun-vigo": {
+  "keywords": [
+   "Mercenary: Imperial, Separatist",
+   "Aid: Black Sun",
+   "Dauntless",
+   "Independent: Aim 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "white": 2
+    },
+    "max_range": 2,
+    "min_range": 0,
+    "name": "Vigo's Double Blaster"
+   }
+  ]
+ },
+ "mercenary-cad-bane-needs-no-introduction": {
+  "keywords": [
+   "Jump 1",
+   "Mercenary: Imperial, Separatist",
+   "Bounty",
+   "Danger Sense 3",
+   "Independent: Dodge 2",
+   "Sharpshooter 1",
+   "Steady"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 4
+    },
+    "keywords": [
+     "Pierce 1"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "LL-30 Blaster Pistols"
+   },
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Martial Arts"
+   }
+  ]
+ },
+ "mercenary-gar-saxon-head-of-clan-saxon": {
+  "keywords": [
+   "Jump 2",
+   "Advanced Targeting: Trooper 1",
+   "Allies of Convenience",
+   "Compel",
+   "Impervious",
+   "Marksman",
+   "Victory or Death"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "red": 2
+    },
+    "keywords": [
+     "High Velocity",
+     "Lethal 2"
+    ],
+    "max_range": 5,
+    "min_range": 1,
+    "name": "GALAR-90 Sniper Rifle"
+   },
+   {
+    "dice": {
+     "black": 2,
+     "red": 2
+    },
+    "max_range": 2,
+    "min_range": 0,
+    "name": "Dual Pistols"
+   }
+  ]
+ },
+ "mercenary-gar-saxon-militant-commando": {
+  "keywords": [
+   "Jump 2",
+   "Allies of Convenience",
+   "Compel",
+   "Impervious",
+   "Sharpshooter 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 1,
+     "white": 1
+    },
+    "keywords": [
+     "Pierce 1"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Gar's Blaster Pistol"
+   },
+   {
+    "dice": {
+     "red": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Combat Training"
+   }
+  ]
+ },
+ "mercenary-hondo-ohnaka": {
+  "keywords": [
+   "Mercenary: Imperial, Rebel, Republic, Separatist",
+   "Arsenal X",
+   "Uncanny Luck X",
+   "Disengage",
+   "Independent: Dodge X",
+   "My Mood Is Based On Profit",
+   "Nimble",
+   "Reliable X"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3,
+     "white": 1
+    },
+    "keywords": [
+     "Versatile"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Hondo's Blaster"
+   },
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 1,
+    "min_range": 0,
+    "name": "Weequay's Cunning"
+   }
+  ]
+ },
+ "mercenary-mandalorian-super-commandos": {
+  "keywords": [
+   "Jump 2",
+   "Defend 1",
+   "Impervious",
+   "Independent: Aim 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Blaster Carbines"
+   },
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 2,
+    "min_range": 0,
+    "name": "WESTAR-35 Blasters"
+   }
+  ]
+ },
+ "mercenary-mandalorian-warriors": {
+  "keywords": [
+   "Jump 2",
+   "Duelist",
+   "Impervious"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "keywords": [
+     "Long Shot"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Blaster Rifles"
+   },
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Vibro Blades"
+   }
+  ]
+ },
+ "mercenary-mandalorian-warriors-fire-support": {
+  "keywords": [
+   "Jump 2",
+   "Duelist",
+   "Impervious"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "GALAAR-15 Carbines"
+   },
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Vibro Blades"
+   }
+  ]
+ },
+ "mercenary-maul-a-rival": {
+  "keywords": [
+   "Jump 1",
+   "Allies of Convenience",
+   "Deflect",
+   "Immune: Pierce",
+   "Juyo Mastery",
+   "Wound 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 4,
+     "white": 4
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 2"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Maul's Lightsaber"
+   }
+  ]
+ },
+ "mercenary-pyke-syndicate-capo": {
+  "keywords": [
+   "Mercenary: Imperial, Rebel, Republic, Separatist",
+   "Aid: Pyke Syndicate",
+   "Danger Sense 2",
+   "Independent: Dodge 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Capo's Long Blaster"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "mercenary-pyke-syndicate-foot-soldiers": {
+  "keywords": [
+   "Mercenary: Imperial, Rebel, Republic, Separatist",
+   "Danger Sense 2",
+   "Independent: Dodge 1",
+   "Outmaneuver",
+   "Self-Preservation"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "P13 Long Blaster"
+   },
+   {
+    "dice": {
+     "white": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Stun Baton"
+   }
+  ]
+ },
+ "mercenary-rook-kast-devoted-to-the-cause": {
+  "keywords": [
+   "Jump 2",
+   "Coordinate: Clan Saxon",
+   "Impervious",
+   "Retinue: Clan Saxon Commander",
+   "Target 1",
+   "Victory or Death"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 2
+    },
+    "keywords": [
+     "Overwhelm"
+    ],
+    "max_range": 2,
+    "min_range": 0,
+    "name": "Dual Pistols"
+   }
+  ]
+ },
+ "mercenary-sabine-wren-back-in-the-fold": {
+  "keywords": [
+   "Jump 2",
+   "Gunslinger",
+   "Impervious",
+   "Nimble",
+   "We Fight for Our Family"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 2
+    },
+    "keywords": [
+     "Blast",
+     "Overwhelm"
+    ],
+    "max_range": 2,
+    "min_range": 0,
+    "name": "Pistols & Grenades"
+   }
+  ]
+ },
+ "mercenary-super-commandos": {
+  "keywords": [
+   "Jump 2",
+   "Defend 1",
+   "Impervious",
+   "Independent: Aim 1",
+   "Victory or Death"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Blaster Rifles"
+   },
+   {
+    "dice": {
+     "red": 1,
+     "white": 1
+    },
+    "max_range": 2,
+    "min_range": 0,
+    "name": "Dual Pistols"
+   }
+  ]
+ },
+ "mercenary-swoop-bike-riders": {
+  "keywords": [
+   "Mercenary: Rebel, Republic",
+   "Cover 1",
+   "Independent: Aim 1 or Dodge 1",
+   "Reinforcements",
+   "Speeder 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "red": 1
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Heavy Blaster Pistol"
+   },
+   {
+    "dice": {
+     "red": 1,
+     "white": 2
+    },
+    "keywords": [
+     "Overrun 2"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Vibro-Ax"
+   }
+  ]
+ },
+ "mercenary-the-armorer-forging-the-future": {
+  "keywords": [
+   "Jump 2",
+   "Aid: Clan Covert",
+   "Charge",
+   "Impervious",
+   "Reliable 1",
+   "This Is the Way: Move 1 or Recover 2"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3,
+     "red": 3
+    },
+    "keywords": [
+     "Critical 1",
+     "Impact 2",
+     "Pierce 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Hammer and Tongs"
+   }
+  ]
+ },
+ "mercenary-ursa-wren-leader-of-clan-wren": {
+  "keywords": [
+   "Mercenary: Rebel",
+   "Bolster 2",
+   "Jump 2",
+   "Entourage: Clan Wren Veterans",
+   "Impervious",
+   "Inspire 1",
+   "Nimble",
+   "We Fight for Our Family"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 2
+    },
+    "max_range": 2,
+    "min_range": 0,
+    "name": "Blaster Pistols"
+   }
+  ]
+ },
+ "mercenary-weequay-pirates": {
+  "keywords": [
+   "Mercenary: Imperial, Rebel, Republic, Separatist",
+   "Charge",
+   "Independent: Aim 1",
+   "Self-Preservation",
+   "Swashbuckler"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "keywords": [
+     "Versatile"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Weequay Blaster"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Vibroblade"
+   }
+  ]
+ },
+ "mercenary-wlo-5-speeder-tank": {
+  "keywords": [
+   "Mercenary: Imperial, Rebel, Republic, Separatist",
+   "Armor 5",
+   "Arsenal 2",
+   "Hover: Ground",
+   "Transport",
+   "Weak Point 2: Rear"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 1,
+     "white": 2
+    },
+    "keywords": [
+     "Impact 2"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Heavy Laser Cannon"
+   },
+   {
+    "dice": {
+     "black": 3,
+     "white": 2
+    },
+    "keywords": [
+     "Fixed: Front"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Anti-Personnel Lasers"
+   }
+  ]
+ },
+ "rebels-1-4-fd-laser-cannon-team": {
+  "keywords": [
+   "Full Pivot",
+   "Prepared Position",
+   "Sentinel",
+   "Stationary"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 5
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Impact 2"
+    ],
+    "max_range": 5,
+    "min_range": 1,
+    "name": "1.4 FD Laser Cannon"
+   },
+   {
+    "dice": {
+     "white": 4
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Blaster Pistols"
+   },
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "rebels-ahsoka-tano-fulcrum": {
+  "keywords": [
+   "Jump 2",
+   "Charge",
+   "Defend 1",
+   "Deflect",
+   "Immune: Pierce",
+   "Jar'Kai Mastery"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 2"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Ahsoka's Lightsabers"
+   }
+  ]
+ },
+ "rebels-at-rt": {
+  "keywords": [
+   "Armor 2",
+   "Climbing Vehicle",
+   "Expert Climber",
+   "Scout 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "white": 2
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "A300 Blaster Rifle"
+   },
+   {
+    "dice": {
+     "red": 3
+    },
+    "keywords": [
+     "Impact 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Grappling Claws"
+   }
+  ]
+ },
+ "rebels-boba-fett-daimyo-of-mos-espa": {
+  "keywords": [
+   "Jump 1",
+   "Mercenary: Rebel",
+   "Arsenal 2",
+   "Impervious",
+   "Independent: Standby 1",
+   "Sentinel",
+   "Sharpshooter 1",
+   "Tactical 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3
+    },
+    "keywords": [
+     "Pierce 1"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "EE-3 Carbine Rifle"
+   },
+   {
+    "dice": {
+     "black": 1,
+     "red": 3
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Gaderffii Stick"
+   }
+  ]
+ },
+ "rebels-c-3po-golden-god": {
+  "keywords": [
+   "Master Storyteller",
+   "Compel: Ewok Trooper",
+   "Divine Influence",
+   "Infiltrate"
+  ],
+  "weapons": []
+ },
+ "rebels-cassian-andor": {
+  "keywords": [
+   "Danger Sense 3",
+   "Equip: A280",
+   "Field Commander",
+   "Infiltrate",
+   "Marksman: Sharpshooter 1",
+   "Tactical 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "white": 2
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Cassian's Covert Blaster"
+   },
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Martial Arts"
+   }
+  ]
+ },
+ "rebels-chewbacca": {
+  "keywords": [
+   "Enrage 4",
+   "Guardian 3",
+   "Scale",
+   "Teamwork: Han Solo"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Impact 1",
+     "Pierce 1"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Chewbacca's Bowcaster"
+   },
+   {
+    "dice": {
+     "red": 4
+    },
+    "keywords": [
+     "Lethal 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Overwhelm"
+   }
+  ]
+ },
+ "rebels-chewbacca-let-the-wookiee-win": {
+  "keywords": [
+   "Armor 5",
+   "Arsenal 2",
+   "Incognito",
+   "Inspire 3",
+   "Weak Point 1: Rear"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Impact 3"
+    ],
+    "max_range": 4,
+    "min_range": 1,
+    "name": "MS-4 Twin Blaster"
+   },
+   {
+    "dice": {
+     "black": 1,
+     "red": 1,
+     "white": 1
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Impact 1"
+    ],
+    "max_range": 3,
+    "min_range": 0,
+    "name": "88i Twin Light Blaster"
+   },
+   {
+    "dice": {
+     "black": 2
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Blast"
+    ],
+    "max_range": 2,
+    "min_range": 0,
+    "name": "Grenade Launcher"
+   }
+  ]
+ },
+ "rebels-din-djarin-the-mandalorian": {
+  "keywords": [
+   "Mercenary: Imperial, Rebel",
+   "Arsenal 2",
+   "Bounty",
+   "Impervious",
+   "Independent: Aim 1 and Dodge 1",
+   "Tactical 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "red": 2
+    },
+    "keywords": [
+     "Lethal 1",
+     "Long Shot",
+     "Versatile"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "IB-94 Blaster Pistol"
+   },
+   {
+    "dice": {
+     "black": 2
+    },
+    "keywords": [
+     "Lethal 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Vibroknife"
+   }
+  ]
+ },
+ "rebels-ewok-skirmishers": {
+  "keywords": [
+   "Mercenary: Rebel",
+   "Low Profile",
+   "Unhindered"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Spears"
+   }
+  ]
+ },
+ "rebels-ewok-slingers": {
+  "keywords": [
+   "Mercenary: Rebel",
+   "Independent: Surge 1",
+   "Low Profile",
+   "Target 1",
+   "Unhindered"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "keywords": [
+     "Primitive"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Slings"
+   },
+   {
+    "dice": {
+     "white": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Stones"
+   }
+  ]
+ },
+ "rebels-fleet-troopers": {
+  "keywords": [
+   "Charge"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "white": 2
+    },
+    "max_range": 2,
+    "min_range": 0,
+    "name": "DH-17 Blaster Pistol"
+   }
+  ]
+ },
+ "rebels-han-solo": {
+  "keywords": [
+   "Gunslinger",
+   "Low Profile",
+   "Sharpshooter 1",
+   "Steady",
+   "Uncanny Luck 3"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 2
+    },
+    "keywords": [
+     "Pierce 2"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Han's DL-44 Blaster"
+   },
+   {
+    "dice": {
+     "white": 3
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Brawl"
+   }
+  ]
+ },
+ "rebels-jyn-erso": {
+  "keywords": [
+   "Agile 1",
+   "Disengage",
+   "Independent: Move",
+   "Infiltrate",
+   "Nimble",
+   "Sharpshooter 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 2,
+     "white": 1
+    },
+    "keywords": [
+     "Long Shot",
+     "Pierce 1"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "A-180 Blaster Pistol"
+   },
+   {
+    "dice": {
+     "black": 4
+    },
+    "keywords": [
+     "Suppressive"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Collapsible Tonfa"
+   }
+  ]
+ },
+ "rebels-k-2so": {
+  "keywords": [
+   "Calculate Odds",
+   "Armor 1",
+   "Detachment: Cassian Andor",
+   "Incognito",
+   "Infiltrate",
+   "Teamwork: Cassian Andor"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 4
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Overpower"
+   }
+  ]
+ },
+ "rebels-lando-calrissian": {
+  "keywords": [
+   "Guidance: Corps Trooper Unit",
+   "Allies of Convenience",
+   "One Step Ahead",
+   "Steady",
+   "Uncanny Luck 2"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3,
+     "red": 1
+    },
+    "keywords": [
+     "Long Shot"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Lando's X-8 Blaster"
+   },
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Backup Plan"
+   }
+  ]
+ },
+ "rebels-leia-organa": {
+  "keywords": [
+   "Take Cover 2",
+   "Exemplar",
+   "Inspire 2",
+   "Nimble",
+   "Sharpshooter 2"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 3
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Leia's Blaster"
+   },
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Martial Arts"
+   }
+  ]
+ },
+ "rebels-logray-superstitious-shaman": {
+  "keywords": [
+   "Aid: Ewok Trooper",
+   "Independent: Aim 1 or Dodge 1",
+   "Inspire 2",
+   "Low Profile",
+   "Nimble"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2
+    },
+    "keywords": [
+     "Suppressive"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Staff"
+   }
+  ]
+ },
+ "rebels-luke-skywalker-hero-of-the-rebellion": {
+  "keywords": [
+   "Jump 1",
+   "Block",
+   "Charge",
+   "Immune: Pierce",
+   "Inspire 2",
+   "Sharpshooter 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3,
+     "red": 1
+    },
+    "keywords": [
+     "Long Shot",
+     "Pierce 1"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Luke's Blaster"
+   },
+   {
+    "dice": {
+     "black": 3,
+     "red": 2
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Anakin's Lightsaber"
+   }
+  ]
+ },
+ "rebels-luke-skywalker-jedi-knight": {
+  "keywords": [
+   "Jump 1",
+   "Charge",
+   "Deflect",
+   "Disengage",
+   "Immune: Pierce",
+   "Master of the Force 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 7
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 2"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Luke's Lightsaber"
+   }
+  ]
+ },
+ "rebels-mark-ii-medium-blaster-trooper": {
+  "keywords": [
+   "Detachment: Rebel Veterans",
+   "Fire Support",
+   "Full Pivot",
+   "Prepared Position",
+   "Reposition",
+   "Sentinel"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 4
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Critical 2",
+     "Cumbersome"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Mark II Medium Blaster"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "rebels-r2-d2": {
+  "keywords": [
+   "Repair 2: Capacity 2",
+   "Inconspicous",
+   "Infiltrate",
+   "Secret Mission"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "white": 3
+    },
+    "keywords": [
+     "Suppressive"
+    ],
+    "max_range": 1,
+    "min_range": 0,
+    "name": "Electro-Shock"
+   }
+  ]
+ },
+ "rebels-rebel-agent": {
+  "keywords": [
+   "Equip: Doctrine",
+   "Independent: Dodge 1",
+   "Nimble"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 2
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Blaster Pistol"
+   },
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Combat Training"
+   }
+  ]
+ },
+ "rebels-rebel-commandos": {
+  "keywords": [
+   "Low Profile",
+   "Scout 2",
+   "Sharpshooter 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "A280 Blaster Rifle"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "rebels-rebel-commandos-strike-team": {
+  "keywords": [
+   "Detachment: Special Forces Rebel Commandos",
+   "Heavy Weapon Team",
+   "Incognito",
+   "Low Profile",
+   "Prepared Position"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "A280 Blaster Rifle"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "rebels-rebel-officer": {
+  "keywords": [
+   "Equip: Doctrine",
+   "Inspire 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 2
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Blaster Pistol"
+   },
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Combat Training"
+   }
+  ]
+ },
+ "rebels-rebel-sleeper-cell": {
+  "keywords": [
+   "Nimble",
+   "Scout 2",
+   "Tactical 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Blaster Pistols"
+   },
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "keywords": [
+     "Suppressive"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Blaster Pistols"
+   },
+   {
+    "dice": {
+     "red": 1
+    },
+    "keywords": [
+     "Impact 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Det Packs"
+   }
+  ]
+ },
+ "rebels-rebel-troopers": {
+  "keywords": [
+   "Agile 1",
+   "Nimble"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "A280 Blaster Rifle"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "rebels-rebel-veterans": {
+  "keywords": [
+   "Coordinate: Emplacement Trooper",
+   "Low Profile",
+   "Prepared Position"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "A280 Blaster Rifle"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "rebels-sabine-wren": {
+  "keywords": [
+   "Jump 2",
+   "Gunslinger",
+   "Impervious",
+   "Nimble"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "red": 1,
+     "white": 1
+    },
+    "keywords": [
+     "Pierce 1"
+    ],
+    "max_range": 2,
+    "min_range": 0,
+    "name": "WESTAR-35 Blasters"
+   }
+  ]
+ },
+ "rebels-t-47-airspeeder": {
+  "keywords": [
+   "Armor 3",
+   "Arsenal 2",
+   "Cover 1",
+   "Immune: Blast, Melee, Range 1 Weapons",
+   "Speeder 2"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3,
+     "red": 3
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Impact 3"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Double Laser Cannon"
+   }
+  ]
+ },
+ "rebels-tauntaun-riders": {
+  "keywords": [
+   "Agile 1",
+   "Relentless",
+   "Reposition",
+   "Sharpshooter 1",
+   "Unhindered"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 2
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Blaster Pistols"
+   },
+   {
+    "dice": {
+     "black": 2,
+     "white": 1
+    },
+    "keywords": [
+     "Ram 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Stampede"
+   }
+  ]
+ },
+ "rebels-the-bad-batch": {
+  "keywords": [
+   "Mercenary: Rebel",
+   "Equip: Echo, Hunter, Wrecker, Tech",
+   "Impervious",
+   "Scale",
+   "Steady",
+   "Sharpshooter 1",
+   "We're Not Regs"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "DC-17 Blaster Pistols"
+   },
+   {
+    "dice": {
+     "red": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Advanced Training"
+   }
+  ]
+ },
+ "rebels-wicket-hero-of-bright-tree": {
+  "keywords": [
+   "Mercenary: Rebel",
+   "Independent: Dodge 1",
+   "Low Profile",
+   "Nimble",
+   "Relentless",
+   "Scout 1",
+   "Scouting Party 2",
+   "Unhindered"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "keywords": [
+     "Pierce 1",
+     "Primitive"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Sling"
+   },
+   {
+    "dice": {
+     "black": 1,
+     "red": 2
+    },
+    "keywords": [
+     "Pierce 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Spear"
+   }
+  ]
+ },
+ "rebels-wookiee-warriors-freedom-fighters": {
+  "keywords": [
+   "Charge",
+   "Duelist",
+   "Indomitable",
+   "Scale"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Kashyyyk Pistol"
+   },
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Ryyk Blade"
+   }
+  ]
+ },
+ "rebels-wookiee-warriors-kashyyyk-resistance": {
+  "keywords": [
+   "Indomitable",
+   "Scale",
+   "Sharpshooter 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "white": 2
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "X1 Carbine"
+   },
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Ryyk Blade"
+   }
+  ]
+ },
+ "rebels-x-34-landspeeder": {
+  "keywords": [
+   "Armor 2",
+   "Arsenal 3",
+   "Cover 1",
+   "Speeder 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "white": 2
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Blaster Pistol"
+   }
+  ]
+ },
+ "republic-ahsoka-tano-padawan-commander": {
+  "keywords": [
+   "Jump 2",
+   "Associate: Anakin Skywalker",
+   "Deflect",
+   "Immune: Pierce",
+   "Independent: Recover",
+   "Scout 1",
+   "Shien Mastery"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 5,
+     "white": 3
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Ahsoka's Lightsabers"
+   }
+  ]
+ },
+ "republic-arc-troopers": {
+  "keywords": [
+   "Charge",
+   "Impervious",
+   "Scale",
+   "Scout 2",
+   "Sharpshooter 1",
+   "Tactical 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 2,
+    "min_range": 0,
+    "name": "DC-17 Hand Blasters"
+   }
+  ]
+ },
+ "republic-arc-troopers-strike-team": {
+  "keywords": [
+   "Defend 1",
+   "Detachment: Special Forces ARC Troopers",
+   "Heavy Weapon Team",
+   "Impervious",
+   "Incognito",
+   "Prepared Positions"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 2,
+    "min_range": 0,
+    "name": "DC-17 Hand Blasters"
+   }
+  ]
+ },
+ "republic-arf-troopers": {
+  "keywords": [
+   "Observe 2",
+   "Scout 1",
+   "Low Profile",
+   "Unhindered"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 4,
+    "min_range": 1,
+    "name": "DC-15A Blaster Rifle"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "republic-at-rt-galactic-republic": {
+  "keywords": [
+   "Armor 2",
+   "Climbing Vehicle",
+   "Expert Climber",
+   "Scout 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 2
+    },
+    "keywords": [
+     "Critical 1",
+     "Impact 1"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Rocket Launcher"
+   },
+   {
+    "dice": {
+     "red": 3
+    },
+    "keywords": [
+     "Impact 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Grappling Claws"
+   }
+  ]
+ },
+ "republic-barc-speeder": {
+  "keywords": [
+   "Arsenal 2",
+   "Cover 1",
+   "Speeder 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "red": 1,
+     "white": 1
+    },
+    "keywords": [
+     "Fixed: Front"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Twin Blaster Cannons"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "DC-15A Blaster Rifle"
+   }
+  ]
+ },
+ "republic-chewbacca-republic": {
+  "keywords": [
+   "Enrage 4",
+   "Guardian 2: Commander",
+   "Reliable 2",
+   "Scale"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Critical 1",
+     "Impact 1",
+     "Pierce 1"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Chewbacca's Bowcaster"
+   },
+   {
+    "dice": {
+     "red": 4
+    },
+    "keywords": [
+     "Lethal 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Overwhelm"
+   }
+  ]
+ },
+ "republic-clone-captain-rex": {
+  "keywords": [
+   "Gunslinger",
+   "Scout 1",
+   "Scouting Party 2",
+   "Sharpshooter 1",
+   "Tactical 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 3
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "DC-17 Hand Blasters"
+   },
+   {
+    "dice": {
+     "red": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Combat Training"
+   }
+  ]
+ },
+ "republic-clone-commander": {
+  "keywords": [
+   "Bolster 2",
+   "Direct: Corps Clone Trooper Unit",
+   "Sharpshooter 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "DC-15 Blaster Rifle"
+   },
+   {
+    "dice": {
+     "red": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Combat Training"
+   }
+  ]
+ },
+ "republic-clone-commander-cody": {
+  "keywords": [
+   "Observe 2",
+   "Jump 1",
+   "Take Cover 1",
+   "Direct: Vehicle",
+   "Target 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "red": 2,
+     "white": 1
+    },
+    "keywords": [
+     "Lethal 1",
+     "Impact 1"
+    ],
+    "max_range": 4,
+    "min_range": 1,
+    "name": "DC-15A Blaster Rifle"
+   },
+   {
+    "dice": {
+     "red": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Combat Training"
+   }
+  ]
+ },
+ "republic-clone-commandos": {
+  "keywords": [
+   "Complete the Mission",
+   "Equip: Katarn Pattern Armor",
+   "Infiltrate",
+   "Recharge 1",
+   "Shielded 1",
+   "Target 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "keywords": [
+     "Suppressive"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "DC-17M ICWS Blaster"
+   },
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Gauntlet Vibroblade"
+   }
+  ]
+ },
+ "republic-clone-commandos-delta-squad": {
+  "keywords": [
+   "Complete the Mission",
+   "Equip: Katarn Pattern Armor",
+   "Independent: Recover",
+   "Infiltrate",
+   "Recharge 1",
+   "Shielded 1",
+   "Target 2"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2
+    },
+    "keywords": [
+     "Suppressive"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "DC-17M ICWS Blaster"
+   },
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Gauntlet Vibroblade"
+   }
+  ]
+ },
+ "republic-clone-trooper-infantry": {
+  "keywords": [
+   "Reliable 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "DC-15A Blaser Carbine"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "republic-clone-trooper-marksmen": {
+  "keywords": [
+   "Prepared Position",
+   "Marksman"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1
+    },
+    "keywords": [
+     "Long Shot"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "DC-15A Blaster Rifle"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "republic-infantry-support-platform": {
+  "keywords": [
+   "Armor 3",
+   "Cover 1",
+   "Hover: Ground",
+   "Weak Point 1: Rear, Sides"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "DC-15A Blaster Rifles"
+   }
+  ]
+ },
+ "republic-jedi-knight": {
+  "keywords": [
+   "Deflect",
+   "Equip: Armament, Doctrine",
+   "Immune: Pierce"
+  ],
+  "weapons": []
+ },
+ "republic-jedi-knight-general": {
+  "keywords": [
+   "Deflect",
+   "Equip: Armament, Doctrine",
+   "Immune: Pierce",
+   "Master of the Force 1"
+  ],
+  "weapons": []
+ },
+ "republic-laat-le-patrol-transport-republic": {
+  "keywords": [
+   "Armor 5",
+   "Arsenal 2",
+   "Cover 1",
+   "Hover: Air 2",
+   "Immune: Blast, Melee, Range 1 Weapons",
+   "Transport"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 2
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Impact 1"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Twin Laser Cannons"
+   }
+  ]
+ },
+ "republic-obi-wan-kenobi-civilized-warrior": {
+  "keywords": [
+   "Jump 1",
+   "Charge",
+   "Deflect",
+   "Guardian 3",
+   "Immune: Pierce",
+   "Master of the Force 1",
+   "Soresu Mastery"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Critical 2",
+     "Impact 2",
+     "Pierce 2"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Obi-Wan's Lightsaber"
+   }
+  ]
+ },
+ "republic-obi-wan-kenobi-mounted-jedi-general": {
+  "keywords": [],
+  "weapons": [
+   {
+    "dice": {
+     "black": 4,
+     "white": 2
+    },
+    "keywords": [
+     "Fixed"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Twin Blaster Cannon"
+   },
+   {
+    "dice": {
+     "black": 2,
+     "red": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Critical 2",
+     "Impact 2",
+     "Overrun 1",
+     "Pierce 1",
+     "Scatter"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Obi-Wan's Lightsaber"
+   }
+  ]
+ },
+ "republic-padm-amidala-spirited-senator": {
+  "keywords": [
+   "Bolster 2",
+   "Agile 1",
+   "Inspire 2",
+   "Nimble",
+   "Sharpshooter 2"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 3
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Padme's Blaster"
+   },
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Martial Arts"
+   }
+  ]
+ },
+ "republic-r2-d2-independent-astromech": {
+  "keywords": [
+   "Repair 2: Capacity 2",
+   "Inconspicous",
+   "Infiltrate",
+   "Secret Mission"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "white": 3
+    },
+    "keywords": [
+     "Suppressive"
+    ],
+    "max_range": 1,
+    "min_range": 0,
+    "name": "Electro-Shock"
+   }
+  ]
+ },
+ "republic-raddaugh-gnasp-fluttercraft": {
+  "keywords": [
+   "Cover 2",
+   "Immune: Blast, Melee, Range 1 Weapons",
+   "Reposition",
+   "Speeder 2"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Pilot's Kashyyyk Pistol"
+   }
+  ]
+ },
+ "republic-raddaugh-gnasp-fluttercraft-attack-craft": {
+  "keywords": [
+   "Attack Run",
+   "Cover 2",
+   "Immune: Blast, Melee, Range 1 Weapons",
+   "Reposition",
+   "Special Issue: Wookiee Defenders",
+   "Speeder 2"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Pilot's Kashyyyk Pistol"
+   }
+  ]
+ },
+ "republic-shaak-ti-jedi-council": {
+  "keywords": [
+   "Jump 1",
+   "Quick Thinking",
+   "Aid: Non-Republic Unit",
+   "Allies of Convenience",
+   "Charge",
+   "Deflect",
+   "Immune: Pierce",
+   "Makashi Mastery"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3,
+     "red": 3
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 2"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Shaak Ti's Lightsaber"
+   }
+  ]
+ },
+ "republic-tx-130-saber-class-fighter-tank": {
+  "keywords": [
+   "Armor 5",
+   "Arsenal 2",
+   "Hover: Ground",
+   "Outmaneuver",
+   "Weak Point 1: Rear, Sides"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Critical 1",
+     "Impact 2"
+    ],
+    "max_range": 4,
+    "min_range": 1,
+    "name": "Heavy Laser Cannons"
+   }
+  ]
+ },
+ "republic-wookiee-chieftain": {
+  "keywords": [
+   "Agile 1",
+   "Charge",
+   "Duelist",
+   "Indomitable",
+   "Scale"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 4
+    },
+    "keywords": [
+     "Impact 1",
+     "Pierce 1"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Chieftain's Bowcaster"
+   },
+   {
+    "dice": {
+     "black": 2,
+     "red": 2,
+     "white": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Acenstral Weapon"
+   }
+  ]
+ },
+ "republic-wookiee-warriors-kashyyyk-defenders": {
+  "keywords": [
+   "Indomitable",
+   "Scale",
+   "Sharpshooter 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "white": 2
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "X1 Carbine"
+   },
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Combat Training"
+   }
+  ]
+ },
+ "republic-wookiee-warriors-noble-fighters": {
+  "keywords": [
+   "Charge",
+   "Duelist",
+   "Indomitable",
+   "Scale"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Kashyyyk Pistol"
+   },
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Ryyk Blade"
+   }
+  ]
+ },
+ "republic-yoda-grand-master-of-the-jedi-order": {
+  "keywords": [
+   "Guidance: Trooper",
+   "Ataru Mastery",
+   "Deflect",
+   "Immune: Pierce",
+   "Master of the Force 2"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 4
+    },
+    "keywords": [
+     "Blast",
+     "Suppressive"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Force Wave"
+   },
+   {
+    "dice": {
+     "red": 4
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 2"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Yoda's Lightsaber"
+   }
+  ]
+ },
+ "separatists-aat-battle-tank": {
+  "keywords": [
+   "AI: Attack",
+   "Armor 5",
+   "Arsenal 2",
+   "Barrage",
+   "Hover: Ground",
+   "Weak Point 2: Rear"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3
+    },
+    "keywords": [
+     "Fixed: Front"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Anti-Personnel Lasers"
+   },
+   {
+    "dice": {
+     "red": 4
+    },
+    "keywords": [
+     "Critical 2",
+     "High Velocity",
+     "Impact 2"
+    ],
+    "max_range": 4,
+    "min_range": 2,
+    "name": "Artillery Cannon"
+   }
+  ]
+ },
+ "separatists-admiral-trench-fleet-commander": {
+  "keywords": [
+   "Direct: Flying Vehicle",
+   "Entourage: Kraken",
+   "Equip: Caught in a Web",
+   "Override"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3
+    },
+    "keywords": [
+     "Immune: Deflect",
+     "Impact 3"
+    ],
+    "max_range": 6,
+    "min_range": 4,
+    "name": "Orbital Strike"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Swagger Stick"
+   }
+  ]
+ },
+ "separatists-aqua-droids": {
+  "keywords": [
+   "AI: Attack",
+   "Armor 2",
+   "Infiltrate",
+   "Reposition",
+   "Unconcerned"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Laser Cannon"
+   },
+   {
+    "dice": {
+     "red": 1
+    },
+    "keywords": [
+     "Impact 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Crushing Punch"
+   }
+  ]
+ },
+ "separatists-asajj-ventress-sith-assassin": {
+  "keywords": [
+   "Jump 2",
+   "Deflect",
+   "Immune: Pierce",
+   "Independent: Dodge 1",
+   "Indomitable",
+   "Jar'Kai Mastery",
+   "Relentless"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 8
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 2"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Asajj's Lightsabers"
+   }
+  ]
+ },
+ "separatists-b1-battle-droids": {
+  "keywords": [
+   "AI: Attack",
+   "Coordinate: Droid Trooper"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "white": 1
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "E-5 Blaster Rifle"
+   },
+   {
+    "dice": {
+     "white": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Bludgeon"
+   }
+  ]
+ },
+ "separatists-b2-super-battle-droids": {
+  "keywords": [
+   "AI: Attack"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 2,
+    "min_range": 0,
+    "name": "Arm Cannons"
+   },
+   {
+    "dice": {
+     "red": 1
+    },
+    "keywords": [
+     "Impact 1"
+    ],
+    "min_range": 1,
+    "name": "Wrist Rockets"
+   }
+  ]
+ },
+ "separatists-b2-super-rocket-battle-droids": {
+  "keywords": [
+   "Jump 2",
+   "AI: Attack",
+   "Target 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2
+    },
+    "keywords": [
+     "Overwhelm"
+    ],
+    "max_range": 2,
+    "min_range": 0,
+    "name": "Twin Arm Cannons"
+   }
+  ]
+ },
+ "separatists-bx-series-droid-commandos": {
+  "keywords": [
+   "Jump 1",
+   "AI: Dodge, Move",
+   "Impervious",
+   "Scale",
+   "Scout 3",
+   "Sharpshooter 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "white": 2
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Commando E-5 Blaster"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "separatists-bx-series-droid-commandos-strike-team": {
+  "keywords": [
+   "AI: Dodge",
+   "Detachment: Special Forces BX-Series Droid Commandos",
+   "Heavy Weapon Team",
+   "Impervious",
+   "Incognito",
+   "Prepared Positions"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "white": 2
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Commando E-5 Blaster"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Unarmed"
+   }
+  ]
+ },
+ "separatists-count-dooku-darth-tyranus": {
+  "keywords": [
+   "Cunning",
+   "Deflect",
+   "Direct: Trooper Unit",
+   "Immune: Pierce",
+   "Makashi Mastery",
+   "Master of the Force 2"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 6
+    },
+    "keywords": [
+     "Pierce 1",
+     "Scatter",
+     "Suppressive"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Force Lightning"
+   },
+   {
+    "dice": {
+     "red": 5
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 2"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Dooku's Lightsaber"
+   }
+  ]
+ },
+ "separatists-drk-1-sith-probe-droids": {
+  "keywords": [
+   "Observe 3",
+   "Detachment: Maul",
+   "Hover: Air 1",
+   "Incognito"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "white": 2
+    },
+    "keywords": [
+     "Suppressive"
+    ],
+    "max_range": 2,
+    "min_range": 0,
+    "name": "Electro-stun Blaster"
+   }
+  ]
+ },
+ "separatists-droidekas": {
+  "keywords": [
+   "AI: Attack",
+   "Generator 1",
+   "Reposition",
+   "Shielded 4",
+   "Unconcerned",
+   "Wheel Mode"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "red": 1
+    },
+    "keywords": [
+     "Immune: Deflect",
+     "Suppressive"
+    ],
+    "max_range": 3,
+    "min_range": 0,
+    "name": "Dual Blaster Cannons"
+   }
+  ]
+ },
+ "separatists-dsd1-dwarf-spider-droid": {
+  "keywords": [
+   "Self-Destruct 3",
+   "Armor 3",
+   "Climbing Vehicle",
+   "Expert Climber",
+   "Programmed"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "red": 1,
+     "white": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Wicked Kick"
+   }
+  ]
+ },
+ "separatists-general-grievous-sinister-cyborg": {
+  "keywords": [
+   "Block",
+   "Entourage: IG-100 MagnaGuard",
+   "Immune: Pierce",
+   "Jedi Hunter",
+   "Relentless",
+   "Scale"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Critical 1",
+     "Pierce 1",
+     "Versatile"
+    ],
+    "max_range": 2,
+    "min_range": 0,
+    "name": "DT-57 \"Annihilator\""
+   },
+   {
+    "dice": {
+     "black": 4,
+     "red": 2,
+     "white": 2
+    },
+    "keywords": [
+     "Critical 1",
+     "Impact 2",
+     "Pierce 2"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Trophy Lightsabers"
+   }
+  ]
+ },
+ "separatists-geonosian-warriors": {
+  "keywords": [
+   "Jump 3",
+   "Death From Above",
+   "Scale",
+   "Weighed Down"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Sonic Blasters"
+   },
+   {
+    "dice": {
+     "black": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Spears"
+   }
+  ]
+ },
+ "separatists-ig-100-magnaguards": {
+  "keywords": [
+   "AI: Dodge, Move",
+   "Charge",
+   "Guardian 2: Commander",
+   "Immune: Melee Pierce",
+   "Retinue: Commander",
+   "Unhindered"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Precision Laser Dart"
+   },
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Electrostaff"
+   }
+  ]
+ },
+ "separatists-ig-100-magnaguards-prototype-assassin-droids": {
+  "keywords": [
+   "AI: Dodge, Move",
+   "Charge",
+   "Immune: Melee Pierce",
+   "Special Issue: Experimental Droids",
+   "Unhindered"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Precision Laser Dart"
+   },
+   {
+    "dice": {
+     "black": 1,
+     "white": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Electrostaff"
+   }
+  ]
+ },
+ "separatists-kalani": {
+  "keywords": [
+   "Strategize 2",
+   "Direct: AI Unit",
+   "Exemplar",
+   "Reinforcements",
+   "Sharpshooter 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3
+    },
+    "keywords": [
+     "Lethal 1"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Blaster Rifle"
+   },
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Combat Expertise"
+   }
+  ]
+ },
+ "separatists-kraken": {
+  "keywords": [
+   "Strategize 1",
+   "Charge",
+   "Exemplar",
+   "Override",
+   "Sharpshooter 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 3
+    },
+    "keywords": [
+     "Lethal 1"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Blaster Rifle"
+   },
+   {
+    "dice": {
+     "red": 4
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Overwhelm"
+   }
+  ]
+ },
+ "separatists-lm-432-crab-droid": {
+  "keywords": [
+   "Armor 2",
+   "Climbing Vehicle",
+   "Programmed",
+   "Reposition",
+   "Scale",
+   "Scout 1",
+   "Scouting Party 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "red": 2,
+     "white": 1
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Crab Claws"
+   }
+  ]
+ },
+ "separatists-maul-impatient-apprentice": {
+  "keywords": [
+   "Jump 1",
+   "Deflect",
+   "Immune: Pierce",
+   "Juyo Mastery"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "red": 4,
+     "white": 4
+    },
+    "keywords": [
+     "Impact 2",
+     "Pierce 2"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Mauls's Lightsaber"
+   }
+  ]
+ },
+ "separatists-nr-n99-persuader-class-tank-droid": {
+  "keywords": [
+   "Armor 5",
+   "Arsenal 2",
+   "Programmed",
+   "Reposition",
+   "Transport",
+   "Weak Point 1: Sides"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "red": 1,
+     "white": 1
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Critical 1",
+     "Impact 1",
+     "Ion 1"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Ion Cannons"
+   },
+   {
+    "dice": {
+     "black": 2,
+     "red": 1,
+     "white": 2
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Critical 1"
+    ],
+    "max_range": 4,
+    "min_range": 1,
+    "name": "Heavy Blasters"
+   }
+  ]
+ },
+ "separatists-nr-n99-persuader-class-tank-droid-prototype-tank-droid": {
+  "keywords": [
+   "Armor 5",
+   "Arsenal 3",
+   "Direct: Corps Trooper Unit",
+   "Programmed",
+   "Reposition",
+   "Special Issue: Experimental Droids",
+   "Weak Point 1: Sides"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "red": 1
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Impact 1",
+     "Ion 1"
+    ],
+    "max_range": 2,
+    "min_range": 1,
+    "name": "Prototype Ion Cannons"
+   },
+   {
+    "dice": {
+     "black": 2,
+     "red": 1,
+     "white": 2
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Critical 1"
+    ],
+    "max_range": 4,
+    "min_range": 1,
+    "name": "Heavy Blasters"
+   }
+  ]
+ },
+ "separatists-poggle-the-lesser": {
+  "keywords": [
+   "Jump 2",
+   "Compel: Corps Separatist Trooper",
+   "Entourage: B2 Super Battle Droids",
+   "Override",
+   "Weighed Down"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Concealed Blaster"
+   },
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Staff of Command"
+   }
+  ]
+ },
+ "separatists-stap-riders": {
+  "keywords": [
+   "Agile 1",
+   "AI: Dodge",
+   "Coordinate: Droid Trooper, Vehicle",
+   "Cover 1",
+   "Speeder 1"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3
+    },
+    "keywords": [
+     "Fixed: Front",
+     "Critical 1"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Dual Blaster Cannons"
+   }
+  ]
+ },
+ "separatists-sun-fac": {
+  "keywords": [
+   "Jump 3",
+   "Cover 1",
+   "Death From Above",
+   "Direct: Geonosian Warriors",
+   "Retinue: Poggle the Lesser",
+   "Scale",
+   "Weighed Down"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 1,
+     "red": 1,
+     "white": 1
+    },
+    "keywords": [
+     "Suppressive"
+    ],
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Sonic Carbine"
+   },
+   {
+    "dice": {
+     "black": 1,
+     "red": 2
+    },
+    "keywords": [
+     "Pierce 1"
+    ],
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Force Pike"
+   }
+  ]
+ },
+ "separatists-super-tactical-command-droid": {
+  "keywords": [
+   "Equip: Doctrine",
+   "Override"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "E-5 Blaster Rifle"
+   },
+   {
+    "dice": {
+     "black": 2,
+     "white": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Aggression Protocol"
+   }
+  ]
+ },
+ "separatists-super-tactical-command-droid-operative": {
+  "keywords": [
+   "Aid: Droid Trooper",
+   "Equip: Doctrine",
+   "Override"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 3
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "E-5 Blaster Rifle"
+   },
+   {
+    "dice": {
+     "black": 2,
+     "white": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Aggression Protocol"
+   }
+  ]
+ },
+ "separatists-t-series-tactical-droid": {
+  "keywords": [
+   "Bolster 2",
+   "Direct: Corps Droid Trooper Unit",
+   "Exemplar"
+  ],
+  "weapons": [
+   {
+    "dice": {
+     "black": 2
+    },
+    "max_range": 3,
+    "min_range": 1,
+    "name": "Blaster Rifle"
+   },
+   {
+    "dice": {
+     "white": 1
+    },
+    "max_range": 0,
+    "min_range": 0,
+    "name": "Bludgeon"
+   }
+  ]
+ }
+}

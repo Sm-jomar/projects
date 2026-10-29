@@ -2346,3 +2346,62 @@ input, select {
 .tt-mini-dot.extra { background: #6fd09b; opacity: 1; }
 .tt-mini-dot.lead.extra { background: #ffd24a; box-shadow: 0 0 0 1px #6fd09b; }
 .tt-roster-row.deployed { opacity: 0.5; cursor: default; }
+
+/* Unit card text (keywords, weapons) from Legion Helper: UnitRules.tsx */
+.unit-rules {
+  padding: 8px 14px 10px;
+  display: flex; flex-direction: column; gap: 6px;
+  font-size: 13px;
+}
+.entry-row-wrap .unit-rules, .tt-unit-rules .unit-rules { padding: 6px 0 4px; }
+.rules-stats { display: flex; flex-wrap: wrap; gap: 4px 12px; color: var(--muted); align-items: center; }
+.rules-stats b { color: var(--text); }
+.rules-keywords { position: relative; display: flex; flex-wrap: wrap; gap: 4px; } /* tips open under the row */
+.rules-chip {
+  min-width: 0; padding: 1px 7px; border-radius: 10px;
+  font-size: 12px; font-weight: 500; text-transform: none; letter-spacing: 0;
+  background: var(--panel-2); color: var(--text); border: 1px solid var(--border); cursor: help;
+}
+.rules-chip:hover, .rules-chip-wrap.open .rules-chip { border-color: var(--accent); color: var(--accent); }
+.rules-chip.plain { cursor: default; }
+.rules-tip { white-space: pre-line; max-height: 40vh; overflow-y: auto; }
+.rules-weapons { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.rules-weapon-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.rules-weapon-name { font-weight: 600; }
+.rules-dice { display: inline-flex; gap: 2px; }
+.rules-die {
+  display: inline-block; width: 11px; height: 11px; border-radius: 3px; vertical-align: middle;
+  border: 1px solid #555;
+}
+.rules-die-red { background: #c0392b; border-color: #e06050; }
+.rules-die-black { background: #111; border-color: #777; }
+.rules-die-white { background: #eee; border-color: #aaa; }
+.rules-source { font-size: 11px; }
+.rules-source a { color: #7fd6ff; }
+.card-zoom { overflow-y: auto; }
+.entry-rules-toggle {
+  min-width: 0; padding: 0 4px; margin-right: 2px; border: none; background: none;
+  color: var(--muted); font-size: 11px; cursor: pointer;
+}
+.tt-unit-rules summary { cursor: pointer; font-size: 12px; color: var(--muted); padding: 4px 0; }
+
+/* Keywords & rules tab in Reference: RulesGlossary.tsx */
+.rules-glossary { display: flex; flex-direction: column; min-height: 0; flex: 1; }
+.rules-glossary .rb-bar input[type="search"] { flex: 1; }
+.rules-list { flex: 1; overflow-y: auto; padding: 6px 14px; }
+.rules-entry { border-bottom: 1px solid var(--border); }
+.rules-entry-head {
+  width: 100%; display: flex; justify-content: space-between; gap: 12px; align-items: baseline;
+  background: none; border: none; padding: 8px 0; color: var(--text); text-align: left;
+  font-weight: 500; text-transform: none; letter-spacing: 0; cursor: pointer;
+}
+.rules-entry.open .rules-entry-head span:first-child { color: var(--accent); }
+.rules-entry-body { padding: 0 0 10px; }
+.rules-entry-body p { margin: 0 0 6px; white-space: pre-line; line-height: 1.45; }
+.rules-entry-body a { color: #7fd6ff; }
+.rules-related { margin-bottom: 4px; color: var(--muted); }
+.link-btn {
+  min-width: 0; padding: 0 6px 0 0; border: none; background: none; color: #7fd6ff;
+  font-size: inherit; text-transform: none; letter-spacing: 0; cursor: pointer;
+}
+.rules-glossary > .rules-source { padding: 6px 14px; border-top: 1px solid var(--border); }

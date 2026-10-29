@@ -28,9 +28,12 @@ export type Weapon = {
   name: string;
   dice: { white?: number; black?: number; red?: number };
   area_of_effect?: number;
+  /** 0 = melee; no max_range = no upper limit ("2+"). */
   min_range: number;
   max_range?: number;
-  keywords?: Record<string, string | number>;
+  /** As printed ("Pierce 1", "Fixed: Front"); older catalog data keys
+   * them by name. */
+  keywords?: string[] | Record<string, string | number>;
 };
 
 export type UpgradeSlotKey =
@@ -115,7 +118,9 @@ export type Unit = {
   speed?: number;
   upgrades?: UpgradeSlots;
   weapons?: Weapon[];
-  keywords?: Record<string, string | number>;
+  /** Keywords as printed on the card ("Armor 5", "Weak Point 1: Rear"),
+   * from Legion Helper (src/data/unit-rules.json). */
+  keywords?: string[];
   waves?: string[];
   force_alignment?: "light" | "dark";
   /** Detailed trooper type from Tabletop Admiral: clone-trooper,
