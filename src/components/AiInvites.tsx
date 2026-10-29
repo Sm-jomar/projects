@@ -2,6 +2,8 @@ import { useState } from "react";
 import type { Peer, RoomApp } from "../lib/roomClient";
 import { aiJoinUrl, aiPermissions, aiRoleLabel, type AiRole } from "../lib/aiInvite";
 import { canManageAiInvites, type AiInvitesState } from "./useAiInvites";
+import type { AiPlayersState } from "./useAiPlayers";
+import type { AiInvite } from "../lib/aiInvite";
 import "./aiInvites.css";
 
 function PermissionList({ app, role, board }: { app: RoomApp; role: AiRole; board: boolean }) {
@@ -19,8 +21,67 @@ function PermissionList({ app, role, board }: { app: RoomApp; role: AiRole; boar
 
 // The "Invite an AI" section of the multiplayer panel: pick a role, mint a
 // code, then copy it, preview it in a new tab, or revoke it.
-export function AiInvitePanel({ app, ai, you, peers }: {
+// "Let Claude play" for one player invite: pick what it fields, start it in
+// this tab, and see what it's doing.
+function ClaudePlayer({ inv, players, you, peers, onSpectate }: {
+  inv: AiInvite; players: AiPlayersState; you: Peer | null; peers: Peer[];
+  /** Give up my side so the AI can have it. */
+  onSpectate?: () => void;
+}) {
+  const [army, setArmy] = useState(players.armies[0]?.key ?? "auto");
+  const st = players.running[inv.id];
+  if (inv.role !== "player") return null;
+  if (!inv.board) {
+    return <p className="muted small ai-play-note">To let Claude play this seat on its own, make a code with <b>Can move pieces</b>.</p>;
+  }
+  if (st) {
+    const side = st.you?.color;
+    const who = st.fallback ? "built-in tactics" : st.lastBy === "claude" ? "Claude" : st.lastBy === "tactics" ? "built-in tactics" : "Claude";
+    return (
+      <div className="ai-play">
+        <span className={"ai-play-dot" + (st.conn === "open" ? " live" : "")} />
+        <span className="small">
+          {side === "blue" || side === "red" ? <><b className={`ai-play-side ${side}`}>{side === "blue" ? "Blue" : "Red"}</b> · </> : null}
+          {st.over ? "Game over" : st.activity}
+          {st.conn === "open" && !st.over && <span className="muted"> · {who}</span>}
+        </span>
+        <button className="ghost-btn small" onClick={() => players.stop(inv.id)}>Stop</button>
+        {st.fallback && <span className="muted small ai-play-why">Claude isn't answering ({st.fallback}), so it plays with built-in tactics.</span>}
+      </div>
+    );
+  }
+  const connected = peers.some((p) => p.aiInvite === inv.id);
+  const taken = new Set(peers.map((p) => p.color));
+  const free = ["blue", "red"].filter((c) => !taken.has(c)).length;
+  const mine = you?.color === "blue" || you?.color === "red";
+  const handOver = free === 0 && mine && !!onSpectate;
+  function go() {
+    if (handOver) {
+      // Watch instead, then seat the AI once my side is free.
+      onSpectate!();
+      setTimeout(() => players.start(inv, army), 900);
+    } else players.start(inv, army);
+  }
+  return (
+    <div className="ai-play">
+      <label className="small">Army
+        <select value={army} onChange={(e) => setArmy(e.target.value)}>
+          {players.armies.map((a) => <option key={a.key} value={a.key}>{a.label}</option>)}
+        </select>
+      </label>
+      <button className="ai-play-go" disabled={connected || (free === 0 && !handOver)} onClick={go}
+        title={connected ? "This code is already in the game (close its preview first)" : free === 0 && !handOver ? "Both sides are taken" : "Run this AI in this tab with Claude making its choices"}>
+        ▶ Let Claude play{handOver ? " (you watch)" : ""}
+      </button>
+    </div>
+  );
+}
+
+export function AiInvitePanel({ app, ai, you, peers, players, onSpectate }: {
   app: RoomApp; ai: AiInvitesState; you: Peer | null; peers: Peer[];
+  /** "Let Claude play" seats (Legion). */
+  players?: AiPlayersState;
+  onSpectate?: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const [role, setRole] = useState<AiRole>("player");
@@ -52,11 +113,22 @@ export function AiInvitePanel({ app, ai, you, peers }: {
           {you?.color === "spectator" ? "Spectators can't invite an AI." : "Only the DM can invite an AI while a DM is seated."}
         </p>
       )}
+      {!canManage && players && ai.invites.some((inv) => players.running[inv.id]) && (
+        <div className="ai-inv-list">
+          {ai.invites.filter((inv) => players.running[inv.id]).map((inv) => (
+            <div key={inv.id} className="ai-inv-item">
+              <div className="ai-inv-item-head"><span className="ai-tag">AI</span><b>{inv.name}</b></div>
+              <ClaudePlayer inv={inv} players={players} you={you} peers={peers} />
+            </div>
+          ))}
+        </div>
+      )}
       {open && canManage && (
         <div className="ai-inv-body">
           <p className="muted small">
             Make a code that lets an AI (like ChatGPT) join this game. Open it yourself
             with <b>Preview as AI</b> to see exactly what it can do.
+            {players && <> Or press <b>Let Claude play</b> to have Claude play that seat from this tab; two player codes make an AI vs AI game.</>}
           </p>
           <div className="ai-inv-roles" role="radiogroup" aria-label="Invite the AI as">
             <label className={"ai-role" + (pickedRole === "player" ? " active" : "")}>
@@ -102,6 +174,7 @@ export function AiInvitePanel({ app, ai, you, peers }: {
                       {connected && <span className="ai-inv-live small">● in game</span>}
                     </div>
                     <code className="ai-inv-code">{inv.code}</code>
+                    {players && <ClaudePlayer inv={inv} players={players} you={you} peers={peers} onSpectate={onSpectate} />}
                     <div className="ai-inv-actions">
                       <button className="ghost-btn small" onClick={() => copy(inv.code, inv.id + "c")}>{copied === inv.id + "c" ? "Copied" : "Copy code"}</button>
                       <button className="ghost-btn small" onClick={() => copy(aiJoinUrl(app, inv.code), inv.id + "l")}>{copied === inv.id + "l" ? "Copied" : "Copy link"}</button>
@@ -138,6 +211,7 @@ export function AiSeatBanner({ app, ai, onLeave, error }: {
           You're in this game as <b>{inv.name}</b>, with an AI {inv.role === "dm" ? "DM" : "player"} invite.
           This is exactly what an AI with this code sees and can do.
         </span>
+        {inv.briefing && <a className="ghost-btn small" href={inv.briefing} target="_blank" rel="noopener">AI briefing ↗</a>}
         <button className="ghost-btn small" onClick={() => setExpanded((v) => !v)}>{expanded ? "Hide" : "Show"} permissions</button>
         <button className="ghost-btn small" onClick={onLeave}>Leave preview</button>
       </div>

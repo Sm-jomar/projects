@@ -31,8 +31,9 @@
  */
 import { DurableObject } from "cloudflare:workers";
 import { parseCode, type CampaignDO } from "./campaign";
+import { AiBrainError, decide, parseDecide, type AiBrainEnv } from "./aiBrain";
 
-export interface RoomEnv {
+export interface RoomEnv extends AiBrainEnv {
   ROOM: DurableObjectNamespace;
   LOBBY: DurableObjectNamespace;
   CAMPAIGN: DurableObjectNamespace<CampaignDO>;
@@ -125,6 +126,14 @@ const AI_MAX_INVITES = 8;
 // The colour an AI takes in D&D (a person picks their own).
 const AI_DND_COLOR = "#9b6dff";
 const AI_CODE_RE = /^([A-Z0-9]{4,12})-AI-([A-Z0-9]{8,24})$/;
+// Each app's rules for an AI player, served from public/ai/ (see
+// aiBrain.ts, which also uses it as the built-in player's system prompt).
+const AI_BRIEFING: Record<string, string> = { legion: "/ai/legion-briefing.md" };
+// "Let Claude play" decisions (POST .../ai): per invite and per room, a
+// minute at a time, so a stuck seat can't run up the API bill.
+const AI_DECIDE_PER_SEAT = 40;
+const AI_DECIDE_PER_ROOM = 100;
+const AI_DECIDE_WINDOW_MS = 60_000;
 const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
 // Legion's two exclusive sides; D&D has no exclusive colors.
@@ -202,6 +211,7 @@ function sanitizeRollRequest(raw: unknown): Record<string, unknown> {
 
 export class RoomDO extends DurableObject<RoomEnv> {
   async fetch(request: Request): Promise<Response> {
+    if (request.method === "POST" && new URL(request.url).pathname.endsWith("/ai")) return this.aiDecide(request);
     const upgrade = request.headers.get("Upgrade");
     if (upgrade !== "websocket") {
       return new Response("Expected WebSocket upgrade", { status: 426 });
@@ -283,7 +293,7 @@ export class RoomDO extends DurableObject<RoomEnv> {
       peers: this.peers(),
       chat: chat.messages,
       chatMore: chat.more,
-      ...(invite ? { ai: aiPublic(invite, (await this.ctx.storage.get<string>(CODE_KEY)) ?? "") } : {}),
+      ...(invite ? { ai: { ...aiPublic(invite, (await this.ctx.storage.get<string>(CODE_KEY)) ?? ""), ...(AI_BRIEFING[app] ? { briefing: AI_BRIEFING[app] } : {}) } } : {}),
     });
     // A DM invite seats the AI as DM, taking the seat from whoever has it:
     // only the DM could mint it, so this is the DM handing over.
@@ -565,6 +575,44 @@ export class RoomDO extends DurableObject<RoomEnv> {
   private chatSends = new Map<string, number[]>();
 
   // --- AI invites ---------------------------------------------------------
+
+  /** Recent "Let Claude play" calls per invite id, and for the room ("*"). */
+  private aiCalls = new Map<string, number[]>();
+
+  private aiRate(key: string, max: number): boolean {
+    const now = Date.now();
+    const recent = (this.aiCalls.get(key) ?? []).filter((t) => now - t < AI_DECIDE_WINDOW_MS);
+    if (recent.length >= max) return false;
+    recent.push(now);
+    this.aiCalls.set(key, recent);
+    return true;
+  }
+
+  // POST /api/room/<ROOM>/ai {code, app, observation, notes, decision}: an
+  // AI seat asks Claude which option to take. Only for a live invite whose
+  // AI is connected and holds a side, so the key can't be spent by anyone
+  // without a code from this table.
+  private async aiDecide(request: Request): Promise<Response> {
+    const fail = (status: number, error: string) => Response.json({ error }, { status });
+    let body: Record<string, unknown>;
+    try { body = (await request.json()) as Record<string, unknown>; } catch { return fail(400, "bad-json"); }
+    const room = (await this.ctx.storage.get<string>(CODE_KEY)) ?? "";
+    const invite = await this.findAiInvite(aiSecretOf(String(body.code ?? ""), room));
+    if (!invite) return fail(403, "ai-invite-invalid");
+    const seat = this.ctx.getWebSockets()
+      .map((ws) => ws.deserializeAttachment() as Attachment | null)
+      .find((a) => a?.ai === invite.id && a.color !== "spectator");
+    if (!seat) return fail(409, "ai-not-seated");
+    const req = parseDecide(body);
+    if (!req) return fail(400, "bad-decision");
+    if (!this.aiRate(invite.id, AI_DECIDE_PER_SEAT) || !this.aiRate("*", AI_DECIDE_PER_ROOM)) return fail(429, "rate-limited");
+    try {
+      return Response.json(await decide(this.env, req, { name: seat.name, side: seat.dm ? "the DM" : seat.color }));
+    } catch (e) {
+      if (e instanceof AiBrainError) return fail(e.status, e.message);
+      return fail(502, "claude-error");
+    }
+  }
 
   // Who may mint, list and revoke AI invites: a person at the table (not a
   // spectator, not an AI). In D&D, once a person holds the DM seat, only

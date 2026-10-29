@@ -85,3 +85,31 @@
 .ai-seat .ai-perms { columns: 2 260px; display: block; }
 .ai-seat .ai-perms li { break-inside: avoid; padding: 1px 0; }
 .ai-seat-error { margin: 0; color: var(--danger); font-weight: 600; }
+
+/* "Let Claude play": one AI seat run from this tab. */
+.ai-play { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.ai-play label { display: flex; align-items: center; gap: 4px; min-width: 0; }
+.ai-play select { max-width: 210px; }
+.ai-play-go {
+  padding: 4px 10px; border: 1px solid var(--ai-accent); border-radius: 6px;
+  background: var(--ai-accent); color: #fff; font-weight: 600; cursor: pointer;
+}
+.ai-play-go:disabled { opacity: 0.5; cursor: not-allowed; }
+.ai-play-dot { width: 8px; height: 8px; border-radius: 50%; background: #777; flex: none; }
+.ai-play-dot.live { background: #5fd38d; box-shadow: 0 0 6px #5fd38d; }
+.ai-play-side.blue { color: #6fa8e6; }
+.ai-play-side.red { color: #e67a6f; }
+.ai-play-why { flex-basis: 100%; }
+.ai-play-note { margin: 0; }
+
+/* Status of the AI seats this tab runs, above the board. */
+.ai-run-bar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px;
+  padding: 6px 10px; border-bottom: 1px solid var(--border);
+  background: color-mix(in srgb, var(--ai-accent) 10%, transparent);
+}
+.ai-run-seat { display: inline-flex; align-items: center; gap: 6px; }
+.tt-result {
+  padding: 8px 12px; text-align: center; font-weight: 700;
+  background: color-mix(in srgb, #f6c14a 18%, transparent); border-bottom: 1px solid #f6c14a;
+}

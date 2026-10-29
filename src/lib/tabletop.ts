@@ -212,7 +212,11 @@ export type TabletopState = {
   orders?: OrderPools;
   /** Roll-off for priority when both revealed cards have the same pips. */
   priorityRoll?: { blue: number; red: number } | null;
+  /** Set when the game is over (round 6 ended or a side was wiped out). */
+  result?: GameResult | null;
 };
+
+export type GameResult = { winner: "blue" | "red" | "draw"; text: string };
 
 /** Drop models no token or terrain refers to any more. */
 export function pruneModels(s: TabletopState): TabletopState {

@@ -19,6 +19,9 @@ export type AiInvite = {
   board: boolean;
   by: string;
   createdAt: number;
+  /** The game's instructions for an AI player (a Markdown file), sent to
+   * the AI itself when it joins. */
+  briefing?: string;
 };
 
 const AI_CODE_RE = /^([A-Z0-9]{4,12})-AI-([A-Z0-9]{8,24})$/;
@@ -41,6 +44,7 @@ export function parseAiInvite(raw: unknown): AiInvite | null {
     board: r.board === true,
     by: typeof r.by === "string" ? r.by : "",
     createdAt: typeof r.createdAt === "number" ? r.createdAt : 0,
+    ...(typeof r.briefing === "string" && r.briefing.startsWith("/") ? { briefing: r.briefing } : {}),
   };
 }
 
