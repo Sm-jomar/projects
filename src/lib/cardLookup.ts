@@ -246,24 +246,40 @@ const UNIT_CARD_OVERRIDES: Record<string, string | null> = {
 
 // Units added from Tabletop Admiral (see src/data/tabletop-admiral.json).
 // Fuzzy matching would pair most of them with a different printing of the
-// same character, so only hand-checked scans are listed; the rest stay
-// card-less until their images are imported.
+// same character, so only hand-checked scans are listed. R2-D2 (Independent
+// Astromech) has no scan anywhere we've looked.
 Object.assign(UNIT_CARD_OVERRIDES, {
   "separatists-maul-impatient-apprentice": "cards/separatists/unit/maul.jpg",
   "separatists-super-tactical-droid": "cards/separatists/unit/super-tactical-droid.jpg",
-  "separatists-admiral-trench-fleet-commander": null,
-  "separatists-b2-super-rocket-battle-droids": null,
-  "mercenary-gar-saxon-head-of-clan-saxon": null,
-  "mercenary-mandalorian-warriors-fire-support": null,
-  "mercenary-mandalorian-warriors": null,
-  "republic-obi-wan-kenobi-mounted-jedi-general": null,
+  "separatists-admiral-trench-fleet-commander": "cards/separatists/unit/admiral-trench-fleet-commander.jpg",
+  "separatists-b2-super-rocket-battle-droids": "cards/separatists/unit/b2-super-rocket-battle-droids.jpg",
+  "mercenary-gar-saxon-head-of-clan-saxon": "cards/mercenary/unit/gar-saxon-head-of-clan-saxon.jpg",
+  "mercenary-mandalorian-warriors-fire-support": "cards/mercenary/unit/mandalorian-warriors-fire-support.jpg",
+  "mercenary-mandalorian-warriors": "cards/mercenary/unit/mandalorian-warriors.jpg",
+  "republic-obi-wan-kenobi-mounted-jedi-general": "cards/republic/unit/obi-wan-kenobi-mounted-jedi-general.jpg",
   "republic-r2-d2-independent-astromech": null,
-  "mercenary-rook-kast-devoted-to-the-cause": null,
-  "mercenary-sabine-wren-back-in-the-fold": null,
-  "republic-shaak-ti-jedi-council": null,
-  "mercenary-super-commandos": null,
-  "mercenary-the-armorer-forging-the-future": null,
-  "mercenary-ursa-wren-leader-of-clan-wren": null,
+  "mercenary-rook-kast-devoted-to-the-cause": "cards/mercenary/unit/rook-kast-devoted-to-the-cause.jpg",
+  "mercenary-sabine-wren-back-in-the-fold": "cards/mercenary/unit/sabine-wren-back-in-the-fold.jpg",
+  "republic-shaak-ti-jedi-council": "cards/republic/unit/shaak-ti-jedi-council.jpg",
+  "mercenary-super-commandos": "cards/mercenary/unit/super-commandos.jpg",
+  "mercenary-the-armorer-forging-the-future": "cards/mercenary/unit/the-armorer-forging-the-future.jpg",
+  "mercenary-ursa-wren-leader-of-clan-wren": "cards/mercenary/unit/ursa-wren-leader-of-clan-wren.jpg",
+  // From Legion Helper (scripts/import_legion_helper_cards.py); some are
+  // the stat side only.
+  "rebels-rebel-agent": "cards/rebels/unit/rebel-agent-defender-of-democracy.jpg",
+  "imperials-imperial-agent": "cards/imperials/unit/imperial-agent-bringing-order-to-the-galaxy.jpg",
+  "republic-ahsoka-tano-padawan-commander": "cards/republic/unit/ahsoka-tano-padawan-commander.jpg",
+  "republic-jedi-knight-general": "cards/republic/unit/jedi-knight-general-strong-in-the-force.jpg",
+  "republic-jedi-knight": "cards/republic/unit/jedi-knight-keeper-of-the-peace.jpg",
+  "republic-clone-trooper-marksmen": "cards/republic/unit/clone-trooper-marksmen.jpg",
+  "republic-arf-troopers": "cards/republic/unit/arf-troopers.jpg",
+  "separatists-super-tactical-command-droid": "cards/separatists/unit/super-tactical-command-droid-command-and-control-droid.jpg",
+  "separatists-super-tactical-command-droid-operative": "cards/separatists/unit/super-tactical-command-droid-auxilirary-command-droid.jpg",
+  "separatists-lm-432-crab-droid": "cards/separatists/unit/lm-432-crab-droid.jpg",
+  "separatists-aqua-droids": "cards/separatists/unit/aqua-droids.jpg",
+  "mercenary-hondo-ohnaka": "cards/mercenary/unit/hondo-ohnaka-trustworthy-compatriot.jpg",
+  "mercenary-weequay-pirates": "cards/mercenary/unit/weequay-pirates.jpg",
+  "mercenary-wlo-5-speeder-tank": "cards/mercenary/unit/wlo-5-speeder-tank.jpg",
 } satisfies Record<string, string | null>);
 
 export function cardForUnit(unit: Pick<Unit, "id" | "name" | "faction"> & { also_factions?: string[] }): string | null {
