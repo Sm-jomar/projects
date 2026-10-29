@@ -19,6 +19,9 @@
  *   TRIPO_API_KEY        - API key for the Tripo AI 3D-generation API,
  *                          used by model.ts AND bridge.ts (shared client
  *                          in tripo.ts)
+ *   ANTHROPIC_API_KEY    - lets "Let Claude play" AI seats ask Claude for
+ *                          their moves (see aiBrain.ts). Optional: without
+ *                          it the seats play with built-in tactics.
  *   BRIDGE_API_KEY       - Bearer key the Tripo Forge Custom GPT's Action
  *                          uses to call /api/balance, /api/upload-session,
  *                          /api/generate/*, /api/task/*, /api/convert
@@ -231,13 +234,15 @@ function handleRoom(request: Request, env: Env, url: URL): Response | Promise<Re
   if (!code || !CODE_RE.test(code)) {
     return new Response("bad room code", { status: 400 });
   }
+  const id = env.ROOM.idFromName(code);
+  // An AI seat asking Claude for its next choice (see aiBrain.ts).
+  if (action === "ai" && request.method === "POST") return env.ROOM.get(id).fetch(request);
   if (action !== "ws") {
     return new Response("not found", { status: 404 });
   }
   if (request.headers.get("Upgrade") !== "websocket") {
     return new Response("expected websocket", { status: 426 });
   }
-  const id = env.ROOM.idFromName(code);
   const stub = env.ROOM.get(id);
   return stub.fetch(request);
 }

@@ -101,9 +101,66 @@ All of it lives in the board snapshot (`TabletopState`, see
 - `orders`: each side's order token pool and whose draw it is (see
   `src/lib/orderPool.ts`).
 
+## Briefing
+
+When an AI joins Legion with a code, the welcome's `ai.briefing` is
+`/ai/legion-briefing.md` (`public/ai/`): how the game runs, what's legal
+and what isn't, and a request to save what it learns for next time. The
+preview banner links it as **AI briefing ↗**. The built-in Claude player
+uses the same file as its system prompt, so keep it in step with the
+rules the Legion adapter plays by.
+
+## Let Claude play (built-in AI player)
+
+Each player invite with **Can move pieces** has **▶ Let Claude play** and
+an army picker (a starter force per faction, or a saved list). Pressing it
+runs an AI seat in that tab: its own room connection with the code, held to
+the same server checks as any AI. Do it for two invites and the two AIs
+play a whole game. If both sides are taken, the button becomes **Let
+Claude play (you watch)** and moves you to spectator first. Seats stop
+when the tab closes or the room changes; a bar above the board shows what
+each one is doing.
+
+The code is split so other games can reuse it:
+
+- `src/lib/ai/seat.ts`: the seat. Joins with the code, watches the board,
+  asks the adapter for the next step, asks the brain to pick, pushes the
+  result and posts its chat lines (spaced under the room's chat limit).
+- `src/lib/ai/brain.ts`: `claudeBrain` asks the room server; when that
+  fails it falls back to the adapter's built-in tactics (the option with
+  the best score), so a game never stalls. It also keeps the AI's notebook
+  (lessons from earlier games, in localStorage by AI name) and sends it
+  with every question.
+- `src/lib/ai/legion.ts` (+ `legionArmy`, `legionCombat`, `legionGeometry`):
+  the Legion adapter. Setup (deploy a list in its Territory, take order
+  tokens and a command hand; blue first), command cards (lock in, reveal
+  once both are locked, roll off ties), activations (draw, give the token
+  to a unit of that rank, up to two actions: move, attack, aim, dodge,
+  recover), End phase (score the objectives, `endRound` from
+  `src/lib/round.ts`, after round 6 or a wipe-out set `result`). Blue's AI
+  ends rounds and declares the result when blue is an AI. Attacks roll the
+  app's dice with aim, surges, Critical/Impact/Pierce, Armor, cover from
+  terrain in the way, dodge and suppression; wounds go on one mini at a time.
+- A D&D adapter can implement the same `GameAdapter` (`src/lib/ai/types.ts`).
+
+### The Claude endpoint
+
+`POST /api/room/<ROOM>/ai` with `{code, app, observation, notes, decision:
+{kind, question, options:[{id,label}]}}` answers `{id, say?}`.
+`worker/src/aiBrain.ts` asks Claude (`claude-opus-5-5`, low effort,
+server-side refusal fallback) to call a `choose` tool with one of the
+option ids. RoomDO only lets it through for a live invite whose AI is
+connected on a side, and rate-limits it (40 a minute per seat, 100 per
+room). Errors: `403 ai-invite-invalid`, `409 ai-not-seated`, `429
+rate-limited`, `503 no-key` (no `ANTHROPIC_API_KEY` secret: the seats play
+with built-in tactics), `502` for API failures.
+
+Worker settings: secret `ANTHROPIC_API_KEY` (required for Claude); vars
+`AI_MODEL` and `ANTHROPIC_BASE_URL` (optional). For local dev put them in
+`.dev.vars`.
+
 ## Not built yet
 
-The AI itself. A real agent needs an adapter that holds the socket for it
-(or a small HTTP API on top of the same checks, e.g. `POST
-/api/room/<ROOM>/chat` authenticated by the AI code) and turns the room's
-messages into something a model can read and act on.
+An adapter for outside AIs (ChatGPT and the like) that holds the socket for
+them or a small HTTP API on the same checks, and a D&D game adapter for the
+built-in player.

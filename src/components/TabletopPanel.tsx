@@ -3,10 +3,10 @@ import { TabletopCanvas, type Tool } from "./TabletopCanvas";
 import { DiceRoller } from "./DiceRoller";
 import {
   GAME_TYPES, DEPLOYMENTS, newTabletop, terrainElevation, pruneModels, addToken, addTerrain, unitTokenFields,
-  loadTabletop, saveTabletop, newId, freshHand, isStandingOrders, tokenSide, diffLegion, boardBytes, BOARD_BYTES_SAFE,
+  loadTabletop, saveTabletop, newId, freshHand, tokenSide, diffLegion, boardBytes, BOARD_BYTES_SAFE,
   templateAnchor, templatePoints,
   type GameType, type TabletopState, type Terrain, type Token, type FactionColor,
-  type DeploymentKey, type MoveTemplate, type CommandHand, type MapImage,
+  type DeploymentKey, type MoveTemplate, type MapImage,
 } from "../lib/tabletop";
 import { downscaleImage } from "../lib/image";
 import { appendLog, type LogActor, type LogEntry } from "../lib/auditLog";
@@ -16,6 +16,9 @@ import { ChatButton, ChatDock } from "./ChatDock";
 import { useChatToggle, useSessionChat } from "./useSessionChat";
 import { AiInvitePanel, AiSeatBanner } from "./AiInvites";
 import { useAiInvites, type AiInvitesState } from "./useAiInvites";
+import { useAiPlayers, type AiArmyOption, type AiPlayersState } from "./useAiPlayers";
+import { LegionAdapter } from "../lib/ai/legion";
+import { FACTION_NAME, type ArmyChoice } from "../lib/ai/legionArmy";
 import { AI_DENIED_TEXT, aiCodeFromUrl, parseAiCode } from "../lib/aiInvite";
 import { MediaButton, MediaDock } from "./MediaPlayer";
 import { useMediaPlayback, useMediaToggle } from "./useMediaPlayer";
@@ -27,17 +30,18 @@ import {
 import { listArmies, saveArmy } from "../lib/storage";
 import { unitById, upgradeById } from "../data/catalog";
 import { TtaImportModal } from "./TtaImportModal";
-import { endPhaseStatus, showsUnitStatus, WOUND_INFO, WOUND_URL } from "../lib/statusTokens";
+import { showsUnitStatus, WOUND_INFO, WOUND_URL } from "../lib/statusTokens";
 import { StatusTokenPanel } from "./StatusTokenPanel";
 import { UnitRules } from "./UnitRules";
 import { MissionSection } from "./MissionSection";
 import { OrderPools } from "./OrderPoolPanel";
 import { CommandHands } from "./CommandHandFan";
-import { buildPool, resetPools, restartPools, setPool, type Side } from "../lib/orderPool";
+import { buildPool, restartPools, setPool, type Side } from "../lib/orderPool";
 import { InfoDot } from "./InfoDot";
 import { cardForUnit } from "../lib/cardLookup";
+import { endRound as endRoundState } from "../lib/round";
 import { FACTIONS, RANK_LABEL, RANK_LIMITS, RANK_ORDER } from "../lib/factions";
-import type { Rank, SavedArmy, Unit, Upgrade } from "../lib/types";
+import type { FactionId, Rank, SavedArmy, Unit, Upgrade } from "../lib/types";
 import {
   RoomClient, generateRoomCode,
   type ConnStatus, type Peer, type RoomHandlers, type PlayerColor,
@@ -232,6 +236,19 @@ export function TabletopPanel({ onClose }: Props) {
   const cardsOnly = !!readOnly && !!online?.you?.ai && (online.you.color === "blue" || online.you.color === "red");
   useEffect(() => { cardsOnlyRef.current = cardsOnly; }, [cardsOnly]);
   const chat = useSessionChat("legion", () => roomRef.current, online?.code ?? null, online?.you ?? null, online?.status === "open");
+  // "Let Claude play": AI seats for this room's invites, run in this tab.
+  const aiArmies: AiArmyOption[] = useMemo(() => [
+    { key: "auto", label: "Starter force (Blue: Rebels, Red: Empire)" },
+    ...(Object.keys(FACTION_NAME) as FactionId[]).map((f) => ({ key: `starter:${f}`, label: `Starter force: ${FACTION_NAME[f]}` })),
+    ...listArmies().map((a) => ({ key: `saved:${a.id}`, label: `Saved list: ${a.name || "Untitled"}` })),
+  ], [onlineOpen]); // eslint-disable-line react-hooks/exhaustive-deps
+  const aiPlayers = useAiPlayers<TabletopState>("legion", online?.status === "open" ? online.code : null, aiArmies, (key) => {
+    let choice: ArmyChoice | null = null;
+    if (key.startsWith("starter:")) choice = { kind: "starter", faction: key.slice(8) as FactionId };
+    const saved = key.startsWith("saved:") ? listArmies().find((a) => a.id === key.slice(6)) : undefined;
+    if (saved) choice = { kind: "saved", army: saved };
+    return new LegionAdapter(choice);
+  });
   const chatToggle = useChatToggle(chat, online?.you?.id ?? null);
   const mediaToggle = useMediaToggle("legion");
   const music = parseTableMusic(state.music);
@@ -695,26 +712,7 @@ export function TabletopPanel({ onClose }: Props) {
   }
 
   function endRound() {
-    // Discard each side's revealed card (Standing Orders goes back to
-    // hand), clear the picks for the next round, then ready and de-order
-    // every unit.
-    const sweep = (h: CommandHand): CommandHand => ({
-      ...h,
-      cards: h.thisRound != null
-        ? h.cards.map((c, i) => i === h.thisRound && !isStandingOrders(c) ? { ...c, played: true } : c)
-        : h.cards,
-      thisRound: null,
-      locked: false,
-    });
-    commit({
-      ...state,
-      round: state.round + 1,
-      tokens: state.tokens.map((t) => endPhaseStatus({ ...t, activated: false, ordered: false })),
-      hands: { blue: sweep(state.hands.blue), red: sweep(state.hands.red) },
-      priorityRoll: null,
-      // Every order token goes back in the pool, shuffled.
-      orders: resetPools(state.orders),
-    });
+    commit(endRoundState(state));
   }
 
   // --- Order token pool -------------------------------------------------------
@@ -739,6 +737,7 @@ export function TabletopPanel({ onClose }: Props) {
       hands: { blue: freshHand(state.hands.blue), red: freshHand(state.hands.red) },
       priorityRoll: null,
       orders: restartPools(state.orders),
+      result: null,
     });
   }
 
@@ -845,6 +844,7 @@ export function TabletopPanel({ onClose }: Props) {
                 onLeave={leaveRoom}
                 onClosePanel={() => setOnlineOpen(false)}
                 ai={ai}
+                aiPlayers={aiPlayers}
               />
             )}
           </div>
@@ -862,6 +862,22 @@ export function TabletopPanel({ onClose }: Props) {
             {online && ai.self && (
               <AiSeatBanner app="legion" ai={ai} onLeave={leaveRoom} error={online.status === "open" ? undefined : online.error} />
             )}
+            {Object.keys(aiPlayers.running).length > 0 && (
+              <div className="ai-run-bar" role="status">
+                <span className="ai-tag">AI</span>
+                {Object.entries(aiPlayers.running).map(([id, st]) => {
+                  const side = st.you?.color;
+                  return (
+                    <span key={id} className="ai-run-seat small">
+                      <b className={`ai-play-side ${side ?? ""}`}>{st.you?.name ?? "AI"}{side === "blue" || side === "red" ? ` (${side === "blue" ? "Blue" : "Red"})` : ""}</b>
+                      {" "}{st.over ? "Game over" : st.activity}
+                      <button className="ghost-btn small" onClick={() => aiPlayers.stop(id)}>Stop</button>
+                    </span>
+                  );
+                })}
+              </div>
+            )}
+            {state.result && <div className="tt-result" role="status">🏆 {state.result.text}</div>}
             {readOnly && (
               <div className="tt-spectating-bar">
                 {online?.you?.ai
@@ -1469,11 +1485,12 @@ function OnlinePanel(props: {
   onLeave: () => void;
   onClosePanel: () => void;
   ai: AiInvitesState;
+  aiPlayers: AiPlayersState;
 }) {
   const {
     online, joinCode, onJoinCodeChange, playerName, onNameChange,
     preferredColor, onPreferredColorChange, colorNote, wantPrivate, onWantPrivateChange,
-    onHost, onJoin, onChangeColor, onRename, onLeave, onClosePanel, ai,
+    onHost, onJoin, onChangeColor, onRename, onLeave, onClosePanel, ai, aiPlayers,
   } = props;
   const connected = online?.status === "open";
   const connecting = online && (online.status === "connecting" || online.status === "reconnecting");
@@ -1669,7 +1686,8 @@ function OnlinePanel(props: {
             )}
           </div>
 
-          {connected && !amAi && <AiInvitePanel app="legion" ai={ai} you={online.you} peers={online.peers} />}
+          {connected && !amAi && <AiInvitePanel app="legion" ai={ai} you={online.you} peers={online.peers}
+            players={aiPlayers} onSpectate={() => onChangeColor("spectator")} />}
 
           {failed && online.error && <p className="muted small tt-online-warn">{online.error}</p>}
           {failed && !online.error && (
