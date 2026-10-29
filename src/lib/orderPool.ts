@@ -111,14 +111,19 @@ export function shufflePool(s: TabletopState, side: Side): TabletopState {
 }
 
 /** The side whose command card has fewer pips takes priority and draws
- * first. Null until both have picked a card, or on a tie (roll off). */
-export function prioritySide(s: Pick<TabletopState, "hands">): Side | null {
+ * first. Null until both have revealed a card, or on a tie until the
+ * roll-off is made. */
+export function prioritySide(s: Pick<TabletopState, "hands" | "priorityRoll">): Side | null {
   const pips = (side: Side) => {
     const h = s.hands[side];
     return h.thisRound == null ? null : h.cards[h.thisRound]?.pips ?? null;
   };
   const b = pips("blue"), r = pips("red");
-  if (b == null || r == null || b === r) return null;
+  if (b == null || r == null) return null;
+  if (b === r) {
+    const roll = s.priorityRoll;
+    return roll && roll.blue !== roll.red ? (roll.blue > roll.red ? "blue" : "red") : null;
+  }
   return b < r ? "blue" : "red";
 }
 

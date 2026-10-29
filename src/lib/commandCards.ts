@@ -102,3 +102,9 @@ export function handIssues(ids: string[], army: HandArmy): string[] {
   }
   return issues;
 }
+
+/** True when the picks make a full hand: two cards of each pip value. */
+export function handComplete(ids: string[]): boolean {
+  return ids.length === HAND_PIPS.length * PER_PIP &&
+    HAND_PIPS.every((p) => ids.filter((id) => COMMAND_BY_ID.get(id)?.pips === p).length === PER_PIP);
+}

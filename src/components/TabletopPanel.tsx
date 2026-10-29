@@ -3,14 +3,14 @@ import { TabletopCanvas, type Tool } from "./TabletopCanvas";
 import { DiceRoller } from "./DiceRoller";
 import {
   GAME_TYPES, DEPLOYMENTS, newTabletop, terrainElevation, pruneModels, addToken, addTerrain, unitTokenFields,
-  loadTabletop, saveTabletop, newId, newCommandHand, tokenSide, diffLegion, boardBytes, BOARD_BYTES_SAFE,
+  loadTabletop, saveTabletop, newId, freshHand, isStandingOrders, tokenSide, diffLegion, boardBytes, BOARD_BYTES_SAFE,
   templateAnchor, templatePoints,
   type GameType, type TabletopState, type Terrain, type Token, type FactionColor,
   type DeploymentKey, type MoveTemplate, type CommandHand, type MapImage,
 } from "../lib/tabletop";
 import { downscaleImage } from "../lib/image";
 import { appendLog, type LogActor, type LogEntry } from "../lib/auditLog";
-import { legionPlayUrl, roomsAvailableHere } from "../lib/appRouting";
+import { legionPlayUrl, legionUrl, roomsAvailableHere } from "../lib/appRouting";
 import { AuditLogView } from "./AuditLogView";
 import { ChatButton, ChatDock } from "./ChatDock";
 import { useChatToggle, useSessionChat } from "./useSessionChat";
@@ -32,6 +32,7 @@ import { StatusTokenPanel } from "./StatusTokenPanel";
 import { UnitRules } from "./UnitRules";
 import { MissionSection } from "./MissionSection";
 import { OrderPools } from "./OrderPoolPanel";
+import { CommandHands } from "./CommandHandFan";
 import { buildPool, resetPools, restartPools, setPool, type Side } from "../lib/orderPool";
 import { InfoDot } from "./InfoDot";
 import { cardForUnit } from "../lib/cardLookup";
@@ -175,6 +176,15 @@ export function TabletopPanel({ onClose }: Props) {
     setState(next);
   }
 
+  // Command cards and order tokens: an AI that can't move pieces still
+  // plays its own side's (the room keeps only those parts of its board).
+  const cardsOnlyRef = useRef(false);
+  function commitSide(next: TabletopState) {
+    if (readOnlyRef.current && !cardsOnlyRef.current) return;
+    pushHistory(state);
+    setState(next);
+  }
+
   function undo() {
     const prev = historyRef.current.pop();
     if (prev) {
@@ -219,6 +229,8 @@ export function TabletopPanel({ onClose }: Props) {
   const aiCodeRef = useRef<string | null>(null);
   const readOnly = online?.status === "open" && (online.you?.color === "spectator" || (!!online.you?.ai && !ai.self?.board));
   useEffect(() => { readOnlyRef.current = !!readOnly; }, [readOnly]);
+  const cardsOnly = !!readOnly && !!online?.you?.ai && (online.you.color === "blue" || online.you.color === "red");
+  useEffect(() => { cardsOnlyRef.current = cardsOnly; }, [cardsOnly]);
   const chat = useSessionChat("legion", () => roomRef.current, online?.code ?? null, online?.you ?? null, online?.status === "open");
   const chatToggle = useChatToggle(chat, online?.you?.id ?? null);
   const mediaToggle = useMediaToggle("legion");
@@ -398,12 +410,12 @@ export function TabletopPanel({ onClose }: Props) {
   // never push — the server ignores them anyway, but this avoids the noise.
   useEffect(() => {
     const client = roomRef.current;
-    if (!client || online?.status !== "open" || readOnly) return;
+    if (!client || online?.status !== "open" || (readOnly && !cardsOnly)) return;
     const js = JSON.stringify(state);
     if (js === remoteEchoRef.current) return;
     remoteEchoRef.current = js;
     client.sendState(state);
-  }, [state, online?.status, readOnly]);
+  }, [state, online?.status, readOnly, cardsOnly]);
 
   // Tear the socket down when the Tabletop closes.
   useEffect(() => () => roomRef.current?.close(), []);
@@ -418,6 +430,14 @@ export function TabletopPanel({ onClose }: Props) {
   });
   const [ttaOpen, setTtaOpen] = useState(false);
   const [opponentFaction, setOpponentFaction] = useState<FactionColor>("imperials");
+
+  // A list saved in another tab (e.g. "Build my own list") shows up here.
+  useEffect(() => {
+    const onStorage = () => setArmies(listArmies());
+    window.addEventListener("storage", onStorage);
+    window.addEventListener("focus", onStorage);
+    return () => { window.removeEventListener("storage", onStorage); window.removeEventListener("focus", onStorage); };
+  }, []);
 
   function openArmyPicker() {
     // Re-read in case the user saved a list in another tab while this
@@ -666,35 +686,32 @@ export function TabletopPanel({ onClose }: Props) {
   }
 
   // --- Command hand -------------------------------------------------------
-  function togglePlayed(side: "blue" | "red", index: number) {
-    const hand = state.hands[side];
-    const cards = hand.cards.map((c, i) => i === index ? { ...c, played: !c.played } : c);
-    commit({ ...state, hands: { ...state.hands, [side]: { ...hand, cards } } });
-  }
-
-  function pickThisRound(side: "blue" | "red", index: number | null) {
-    const hand = state.hands[side];
-    commit({ ...state, hands: { ...state.hands, [side]: { ...hand, thisRound: index } } });
-  }
-
-  function resetHand(side: "blue" | "red") {
-    commit({ ...state, hands: { ...state.hands, [side]: newCommandHand() } });
+  function saveHandCards(ids: string[]) {
+    if (!loadedArmy) return;
+    const next = { ...loadedArmy, commandCards: ids, updatedAt: Date.now() };
+    saveArmy(next);
+    setLoadedArmy(next);
+    setArmies(listArmies());
   }
 
   function endRound() {
-    // Mark each side's "this round" card as played, clear the bid for the
-    // next round, then ready and de-order every unit.
+    // Discard each side's revealed card (Standing Orders goes back to
+    // hand), clear the picks for the next round, then ready and de-order
+    // every unit.
     const sweep = (h: CommandHand): CommandHand => ({
+      ...h,
       cards: h.thisRound != null
-        ? h.cards.map((c, i) => i === h.thisRound ? { ...c, played: true } : c)
+        ? h.cards.map((c, i) => i === h.thisRound && !isStandingOrders(c) ? { ...c, played: true } : c)
         : h.cards,
       thisRound: null,
+      locked: false,
     });
     commit({
       ...state,
       round: state.round + 1,
       tokens: state.tokens.map((t) => endPhaseStatus({ ...t, activated: false, ordered: false })),
       hands: { blue: sweep(state.hands.blue), red: sweep(state.hands.red) },
+      priorityRoll: null,
       // Every order token goes back in the pool, shuffled.
       orders: resetPools(state.orders),
     });
@@ -705,20 +722,22 @@ export function TabletopPanel({ onClose }: Props) {
     if (!loadedArmy || roster.length === 0) return;
     const pool = buildPool(loadedArmy.name || "Untitled",
       roster.map((r) => ({ entryId: r.entryId, rank: r.unit.rank, unitName: r.unit.name })));
-    commit(setPool(state, side, pool));
+    commitSide(setPool(state, side, pool));
   }
   const canControlOrders = (side: Side) =>
-    !readOnly && (online?.status !== "open" || online.you?.color === side);
+    (!readOnly || cardsOnly) && (online?.status !== "open" || online.you?.color === side);
 
   function resetGame() {
-    if (!confirm("Reset round to 1, zero both VP scores, ready all units, clear all wounds and tokens, and shuffle both command decks? The board layout stays.")) return;
+    if (!confirm("Reset round to 1, zero both VP scores, ready all units, clear all wounds and tokens, and put every command card back in hand? The board layout stays.")) return;
     commit({
       ...state,
       round: 1,
       vp: { blue: 0, red: 0 },
       moveTemplate: null,
       tokens: state.tokens.map((t) => ({ ...t, activated: false, ordered: false, wounds: 0, suppression: 0, status: undefined })),
-      hands: { blue: newCommandHand(), red: newCommandHand() },
+      // The picked cards stay; they all go back in hand.
+      hands: { blue: freshHand(state.hands.blue), red: freshHand(state.hands.red) },
+      priorityRoll: null,
       orders: restartPools(state.orders),
     });
   }
@@ -846,7 +865,7 @@ export function TabletopPanel({ onClose }: Props) {
             {readOnly && (
               <div className="tt-spectating-bar">
                 {online?.you?.ai
-                  ? "👁 This AI invite can't move pieces — it can watch, pan and measure, chat and roll."
+                  ? "👁 This AI invite can't move pieces — it can watch, measure, chat, roll, and play its side's list, command cards and order tokens."
                   : "👁 Spectating — you can watch, pan and measure, but not change the board."}
               </div>
             )}
@@ -920,20 +939,18 @@ export function TabletopPanel({ onClose }: Props) {
               />
               )}
 
-              {/* Command card hands docked beneath the canvas — one row
-                  per side. Click a pip to mark it played; click again to
-                  bring it back. The yellow ring marks this round's pick. */}
-              <div className={"tt-hands" + (readOnly ? " readonly" : "")}>
-                <HandRow side="blue" hand={state.hands.blue}
-                  onTogglePlayed={togglePlayed}
-                  onPickRound={pickThisRound}
-                  onReset={resetHand} />
-                <HandRow side="red" hand={state.hands.red}
-                  onTogglePlayed={togglePlayed}
-                  onPickRound={pickThisRound}
-                  onReset={resetHand} />
-              </div>
-              <OrderPools state={state} onCommit={commit} canControl={canControlOrders}
+              {/* Command card hands docked beneath the canvas: pick a
+                  hand for your list, then each round lock in a card face
+                  down; both are revealed together to settle priority. */}
+              <CommandHands state={state} onCommit={commitSide} canControl={canControlOrders}
+                online={online?.status === "open"}
+                myArmy={loadedArmy ? {
+                  army: { faction: loadedArmy.faction, battleForce: loadedArmy.battleForce, entries: loadedArmy.entries },
+                  name: loadedArmy.name || "Untitled",
+                  saved: loadedArmy.commandCards ?? [],
+                } : null}
+                onSaveCards={saveHandCards} />
+              <OrderPools state={state} onCommit={commitSide} canControl={canControlOrders}
                 myList={loadedArmy && roster.length ? { name: loadedArmy.name || "Untitled", count: roster.length } : null}
                 onUseMyList={takeOrderTokens} />
             </div>
@@ -947,13 +964,25 @@ export function TabletopPanel({ onClose }: Props) {
 
             {sidebar === "setup" ? (
               <div className={"tt-setup" + (readOnly ? " readonly" : "")}>
-                {readOnly && (
+                {readOnly && !cardsOnly && (
                   <p className="tt-spectating-note">
                     👁 Spectating — board editing is disabled. Switch to Blue or Red
                     in <b>Play online</b> to take a side.
                   </p>
                 )}
-                <section>
+                {cardsOnly && (
+                  <p className="tt-spectating-note">
+                    This AI invite can't move pieces, but it plays {online?.you?.color === "blue" ? "Blue" : "Red"}'s
+                    list, command cards and order tokens.
+                  </p>
+                )}
+                {online?.you?.ai && !loadedArmy && (online.you.color === "blue" || online.you.color === "red") && (
+                  <p className="tt-ai-list-offer">
+                    🤖 You're playing <b>{online.you.color === "blue" ? "Blue" : "Red"}</b>. Build your own unit list
+                    in the Builder (it opens in a new tab and shows up here once saved), or pick a saved list or import one below.
+                  </p>
+                )}
+                <section className={cardsOnly ? "tt-own-list" : undefined}>
                   <h3>Your army</h3>
                   {loadedArmy ? (
                     <div className="tt-army-loaded">
@@ -974,6 +1003,8 @@ export function TabletopPanel({ onClose }: Props) {
                     </button>
                   )}
                   <button className="tt-palette-btn" onClick={() => setTtaOpen(true)}>Import a list…</button>
+                  <button className="tt-palette-btn" title="Opens the list builder in a new tab; save the list there and it appears here"
+                    onClick={() => window.open(legionUrl(), "_blank", "noopener")}>Build my own list ↗</button>
                   {ttaOpen && (
                     <TtaImportModal
                       title="Import a list to deploy"
@@ -1416,59 +1447,6 @@ function SquadControls({ state, token, onCommit }: {
         <button onClick={() => onCommit(leaveSquad(state, token.id))}>Leave</button>
         <button onClick={() => onCommit(disbandSquad(state, token.squadId!))}>Disband</button>
       </div>
-    </div>
-  );
-}
-
-function HandRow(props: {
-  side: "blue" | "red";
-  hand: CommandHand;
-  onTogglePlayed: (side: "blue" | "red", index: number) => void;
-  onPickRound: (side: "blue" | "red", index: number | null) => void;
-  onReset: (side: "blue" | "red") => void;
-}) {
-  const { side, hand, onTogglePlayed, onPickRound, onReset } = props;
-  const remaining = hand.cards.filter((c) => !c.played).length;
-  return (
-    <div className={"tt-hand tt-hand-" + side}>
-      <span className="tt-hand-label">{side === "blue" ? "Blue" : "Red"} hand</span>
-      <div className="tt-hand-pips">
-        {hand.cards.map((c, i) => {
-          const isPick = hand.thisRound === i;
-          return (
-            <button key={i}
-              className={
-                "tt-pip" +
-                (c.played ? " played" : "") +
-                (isPick ? " bid" : "")
-              }
-              title={
-                c.played
-                  ? `Played (${c.pips} pip${c.pips === 1 ? "" : "s"}). Click to undo.`
-                  : isPick
-                    ? "This round's pick — click to clear"
-                    : `Click to bid this card (${c.pips} pip${c.pips === 1 ? "" : "s"}). Long press / shift-click to mark played.`
-              }
-              onClick={(e) => {
-                // Shift-click directly marks the card played; plain click
-                // bids it for this round (or clears the bid if already set).
-                if (e.shiftKey) {
-                  onTogglePlayed(side, i);
-                } else if (isPick) {
-                  onPickRound(side, null);
-                } else {
-                  onPickRound(side, i);
-                }
-              }}>
-              {c.pips}
-            </button>
-          );
-        })}
-      </div>
-      <span className="tt-hand-meta muted small">
-        {remaining}/{hand.cards.length} left
-      </span>
-      <button className="ghost-btn small" onClick={() => onReset(side)} title="Reshuffle / restore all seven cards">↻</button>
     </div>
   );
 }

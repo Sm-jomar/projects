@@ -6,6 +6,7 @@ import type { TableMusic } from "./media";
 import { missionById, missionTerritories, type MissionId } from "./missions";
 import type { OrderPools } from "./orderPool";
 import { RANK_LABEL } from "./factions";
+import { COMMAND_BY_ID, STANDING_ORDERS, type CommandCardDef } from "./commandCards";
 
 export type GameType = "skirmish" | "standard" | "grand-army" | "custom";
 
@@ -209,6 +210,8 @@ export type TabletopState = {
   music?: TableMusic | null;
   /** Each player's order token pool (see lib/orderPool). */
   orders?: OrderPools;
+  /** Roll-off for priority when both revealed cards have the same pips. */
+  priorityRoll?: { blue: number; red: number } | null;
 };
 
 /** Drop models no token or terrain refers to any more. */
@@ -226,13 +229,23 @@ export type CommandCard = {
   pips: number;
   /** True once the user has marked the card as played this game. */
   played: boolean;
+  /** The real card (commandCards.ts id) when the hand was picked from a
+   * list; a bare pip card otherwise. */
+  id?: string;
+  name?: string;
 };
 
 export type CommandHand = {
   /** The seven cards in hand; the standard Legion deck is 1,1,2,2,3,3,4. */
   cards: CommandCard[];
-  /** Index of the card the player set as their pick this round, or null. */
+  /** Index of the card the player revealed this round, or null. Only set
+   * once both players have locked in (see `locked`). */
   thisRound: number | null;
+  /** The player has locked in a card, face down. Which card stays on the
+   * player's own device until both sides have locked in. */
+  locked?: boolean;
+  /** The list the cards were picked for. */
+  listName?: string;
 };
 
 export function newCommandHand(): CommandHand {
@@ -241,6 +254,29 @@ export function newCommandHand(): CommandHand {
     thisRound: null,
   };
 }
+
+/** A hand of picked command cards (ids from commandCards.ts), lowest pips
+ * first, plus Standing Orders. */
+export function handFromCards(ids: string[], listName: string): CommandHand {
+  const cards = ids.map((id) => COMMAND_BY_ID.get(id)).filter((c): c is CommandCardDef => !!c)
+    .sort((a, b) => a.pips - b.pips || a.name.localeCompare(b.name));
+  return {
+    cards: [...cards, STANDING_ORDERS].map((c) => ({ pips: c.pips, played: false, id: c.id, name: c.name })),
+    thisRound: null,
+    listName,
+  };
+}
+
+/** The same cards, all back in hand (a new game). */
+export function freshHand(h: CommandHand): CommandHand {
+  return { ...h, cards: h.cards.map((c) => ({ ...c, played: false })), thisRound: null, locked: false };
+}
+
+/** Standing Orders goes back to hand after it's played. */
+export const isStandingOrders = (c: CommandCard) => c.id ? c.id === STANDING_ORDERS.id : c.pips === 4;
+
+/** Both players have locked in a card this round. */
+export const bothLocked = (s: Pick<TabletopState, "hands">) => !!s.hands.blue.locked && !!s.hands.red.locked;
 
 export function newTabletop(gameType: GameType = "standard"): TabletopState {
   return {
