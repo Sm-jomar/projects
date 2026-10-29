@@ -45,6 +45,7 @@ type WorkingArmy = {
   pointsCap: number;
   pointsMode: PointsMode;
   entries: ArmyEntry[];
+  commandCards?: string[];
 };
 
 export default function App() {
@@ -160,6 +161,7 @@ export default function App() {
       pointsCap: army.pointsCap,
       pointsMode: army.pointsMode,
       entries: army.entries,
+      ...(army.commandCards?.length ? { commandCards: army.commandCards } : {}),
       updatedAt: Date.now(),
     };
     saveArmy(toSave);
@@ -179,6 +181,7 @@ export default function App() {
       pointsCap: loaded.pointsCap,
       pointsMode: loaded.pointsMode ?? "printed",
       entries: loaded.entries,
+      commandCards: loaded.commandCards,
     });
     setShowSaved(false);
   }
@@ -280,6 +283,8 @@ export default function App() {
             onRemove={removeEntry}
             onAttachUpgrade={attachUpgrade}
             onDetachUpgrade={detachUpgrade}
+            commandCards={army.commandCards ?? []}
+            onCommandCardsChange={(commandCards) => setArmy({ ...army, commandCards })}
           />
         </main>
       )}

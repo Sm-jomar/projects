@@ -44,6 +44,7 @@ MANUAL = {
     "separatists-nr-n99-persuader-class-tank-droid": 1,
     "separatists-nr-n99-persuader-class-tank-droid-prototype-tank-droid": 1,
     "separatists-super-tactical-droid": 1,
+    "mercenary-han-chewie-notorious-scoundrels": 2,
 }
 
 

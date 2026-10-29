@@ -28,9 +28,12 @@ export type Weapon = {
   name: string;
   dice: { white?: number; black?: number; red?: number };
   area_of_effect?: number;
+  /** 0 = melee; no max_range = no upper limit ("2+"). */
   min_range: number;
   max_range?: number;
-  keywords?: Record<string, string | number>;
+  /** As printed ("Pierce 1", "Fixed: Front"); older catalog data keys
+   * them by name. */
+  keywords?: string[] | Record<string, string | number>;
 };
 
 export type UpgradeSlotKey =
@@ -77,6 +80,8 @@ export type Upgrade = {
   keywords_for_unit?: Record<string, string | number>;
   weapon?: Weapon;
   waves?: string[];
+  /** Printed restriction, e.g. "Stormtroopers Only" (Legion Helper). */
+  requirement_text?: string;
   /** Faction-only upgrade (e.g. Clone Captain Rex is Republic only). */
   faction?: FactionId;
   restricted_to_rank?: Rank[];
@@ -115,7 +120,9 @@ export type Unit = {
   speed?: number;
   upgrades?: UpgradeSlots;
   weapons?: Weapon[];
-  keywords?: Record<string, string | number>;
+  /** Keywords as printed on the card ("Armor 5", "Weak Point 1: Rear"),
+   * from Legion Helper (src/data/unit-rules.json). */
+  keywords?: string[];
   waves?: string[];
   force_alignment?: "light" | "dark";
   /** Detailed trooper type from Tabletop Admiral: clone-trooper,
@@ -124,6 +131,8 @@ export type Unit = {
   /** Classic tournament (2.6) and Revamp costs, from Tabletop Admiral. */
   points_v2_6?: number;
   points_revamp?: number;
+  /** Card printed only for Revamp (Tabletop Admiral's Revamp mode). */
+  revamp_only?: boolean;
   tta_id?: string;
 };
 
@@ -148,6 +157,9 @@ export type SavedArmy = {
   pointsCap: number;
   pointsMode?: "printed" | "v2_6" | "revamp";
   entries: ArmyEntry[];
+  /** Command hand: ids from src/data/command-cards.json (Standing Orders
+   * is always in the hand and isn't stored). */
+  commandCards?: string[];
   updatedAt: number;
 };
 

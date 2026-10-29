@@ -1,4 +1,5 @@
 import manifestRaw from "../data/card-manifest.json";
+import upgradeImagesRaw from "../data/upgrade-card-images.json";
 import type { Unit } from "./types";
 
 type CardEntry = {
@@ -13,6 +14,9 @@ type CardEntry = {
 
 const MANIFEST = manifestRaw as CardEntry[];
 const BASE = import.meta.env.BASE_URL;
+// Legion Helper pictures for upgrades we have no scan of, by upgrade id
+// (scripts/import_legion_helper_cards.py --upgrades).
+const UPGRADE_IMAGES = upgradeImagesRaw as Record<string, string>;
 
 function slugify(s: string): string {
   return s
@@ -246,24 +250,68 @@ const UNIT_CARD_OVERRIDES: Record<string, string | null> = {
 
 // Units added from Tabletop Admiral (see src/data/tabletop-admiral.json).
 // Fuzzy matching would pair most of them with a different printing of the
-// same character, so only hand-checked scans are listed; the rest stay
-// card-less until their images are imported.
+// same character, so only hand-checked scans are listed. R2-D2 (Independent
+// Astromech) has no scan anywhere we've looked.
 Object.assign(UNIT_CARD_OVERRIDES, {
   "separatists-maul-impatient-apprentice": "cards/separatists/unit/maul.jpg",
   "separatists-super-tactical-droid": "cards/separatists/unit/super-tactical-droid.jpg",
-  "separatists-admiral-trench-fleet-commander": null,
-  "separatists-b2-super-rocket-battle-droids": null,
-  "mercenary-gar-saxon-head-of-clan-saxon": null,
-  "mercenary-mandalorian-warriors-fire-support": null,
-  "mercenary-mandalorian-warriors": null,
-  "republic-obi-wan-kenobi-mounted-jedi-general": null,
+  "separatists-admiral-trench-fleet-commander": "cards/separatists/unit/admiral-trench-fleet-commander.jpg",
+  "separatists-b2-super-rocket-battle-droids": "cards/separatists/unit/b2-super-rocket-battle-droids.jpg",
+  "mercenary-gar-saxon-head-of-clan-saxon": "cards/mercenary/unit/gar-saxon-head-of-clan-saxon.jpg",
+  "mercenary-mandalorian-warriors-fire-support": "cards/mercenary/unit/mandalorian-warriors-fire-support.jpg",
+  "mercenary-mandalorian-warriors": "cards/mercenary/unit/mandalorian-warriors.jpg",
+  "republic-obi-wan-kenobi-mounted-jedi-general": "cards/republic/unit/obi-wan-kenobi-mounted-jedi-general.jpg",
   "republic-r2-d2-independent-astromech": null,
-  "mercenary-rook-kast-devoted-to-the-cause": null,
-  "mercenary-sabine-wren-back-in-the-fold": null,
-  "republic-shaak-ti-jedi-council": null,
-  "mercenary-super-commandos": null,
-  "mercenary-the-armorer-forging-the-future": null,
-  "mercenary-ursa-wren-leader-of-clan-wren": null,
+  "mercenary-rook-kast-devoted-to-the-cause": "cards/mercenary/unit/rook-kast-devoted-to-the-cause.jpg",
+  "mercenary-sabine-wren-back-in-the-fold": "cards/mercenary/unit/sabine-wren-back-in-the-fold.jpg",
+  "republic-shaak-ti-jedi-council": "cards/republic/unit/shaak-ti-jedi-council.jpg",
+  "mercenary-super-commandos": "cards/mercenary/unit/super-commandos.jpg",
+  "mercenary-the-armorer-forging-the-future": "cards/mercenary/unit/the-armorer-forging-the-future.jpg",
+  "mercenary-ursa-wren-leader-of-clan-wren": "cards/mercenary/unit/ursa-wren-leader-of-clan-wren.jpg",
+  // Revamp-only printings; the fuzzy match would pick the older card.
+  "republic-anakin-skywalker-mounted-jedi-general": "cards/republic/unit/anakin-skywalker-mounted-jedi-general.jpg",
+  "mercenary-axe-woves-cunning-warrior": "cards/mercenary/unit/axe-woves-cunning-warrior.jpg",
+  "mercenary-bo-katan-kryze-savior-of-mandalore": "cards/mercenary/unit/bo-katan-kryze-savior-of-mandalore.jpg",
+  "mercenary-clan-kryze-veterans": "cards/mercenary/unit/clan-kryze-veterans.jpg",
+  "mercenary-clan-wren-veterans": "cards/mercenary/unit/clan-wren-veterans.jpg",
+  "separatists-general-grievous-wheel-bike-warlord": "cards/separatists/unit/general-grievous-wheel-bike-warlord.jpg",
+  "imperials-general-tagge-imperial-high-command": "cards/imperials/unit/general-tagge-imperial-high-command.jpg",
+  "separatists-geonosian-warriors-geonosian-engineers": "cards/separatists/unit/geonosian-warriors-geonosian-engineers.jpg",  // stat side only
+  "imperials-grand-admiral-thrawn-imperial-high-command": "cards/imperials/unit/grand-admiral-thrawn-imperial-high-command.jpg",
+  "imperials-grand-moff-tarkin-imperial-high-command": "cards/imperials/unit/grand-moff-tarkin-imperial-high-command.jpg",
+  "mercenary-han-chewie-notorious-scoundrels": "cards/mercenary/unit/han-and-chewie-notorious-scoundrels.jpg",
+  "rebels-han-solo-reluctant-hero": "cards/rebels/unit/han-solo-reluctant-hero.jpg",
+  "imperials-imperial-officer-ruthless-efficiency": "cards/imperials/unit/imperial-officer-ruthless-efficiency.jpg",
+  "imperials-imperial-probe-droid": "cards/imperials/unit/imperial-probe-droid.jpg",
+  "republic-jedi-knight-mounted-jedi-general": "cards/republic/unit/jedi-knight-mounted-jedi-general.jpg",
+  "republic-ki-adi-mundi-jedi-council": "cards/republic/unit/ki-adi-mundi-jedi-council.jpg",
+  "rebels-luke-skywalker-commander-skywalker": "cards/rebels/unit/luke-skywalker-commander-skywalker.jpg",
+  "republic-mace-windu-jedi-council": "cards/republic/unit/mace-windu-jedi-council.jpg",
+  "mercenary-mandalorian-hunter": "cards/mercenary/unit/mandalorian-hunter.jpg",  // stat side only
+  "mercenary-mandalorian-initiates": "cards/mercenary/unit/mandalorian-initiates.jpg",
+  "mercenary-mandalorian-leader": "cards/mercenary/unit/mandalorian-leader.jpg",  // stat side only
+  "mercenary-paz-vizsla-proud-warrior": "cards/mercenary/unit/paz-vizsla-proud-warrior.jpg",
+  "republic-plo-koon-jedi-council": "cards/republic/unit/plo-koon-jedi-council.jpg",
+  "rebels-rebel-officer-fighting-for-freedom": "cards/rebels/unit/rebel-officer-fighting-for-freedom.jpg",
+  "separatists-savage-opress-dooku-s-apprentice": "cards/separatists/unit/savage-opress-dooku-s-apprentice.jpg",
+  "mercenary-savage-opress-maul-s-enforcer": "cards/mercenary/unit/savage-opress-maul-s-enforcer.jpg",
+  "separatists-tsmeu-6-wheel-bikes": "cards/separatists/unit/tsmeu-6-wheel-bikes.jpg",  // stat side only
+  // From Legion Helper (scripts/import_legion_helper_cards.py); some are
+  // the stat side only.
+  "rebels-rebel-agent": "cards/rebels/unit/rebel-agent-defender-of-democracy.jpg",
+  "imperials-imperial-agent": "cards/imperials/unit/imperial-agent-bringing-order-to-the-galaxy.jpg",
+  "republic-ahsoka-tano-padawan-commander": "cards/republic/unit/ahsoka-tano-padawan-commander.jpg",
+  "republic-jedi-knight-general": "cards/republic/unit/jedi-knight-general-strong-in-the-force.jpg",
+  "republic-jedi-knight": "cards/republic/unit/jedi-knight-keeper-of-the-peace.jpg",
+  "republic-clone-trooper-marksmen": "cards/republic/unit/clone-trooper-marksmen.jpg",
+  "republic-arf-troopers": "cards/republic/unit/arf-troopers.jpg",
+  "separatists-super-tactical-command-droid": "cards/separatists/unit/super-tactical-command-droid-command-and-control-droid.jpg",
+  "separatists-super-tactical-command-droid-operative": "cards/separatists/unit/super-tactical-command-droid-auxilirary-command-droid.jpg",
+  "separatists-lm-432-crab-droid": "cards/separatists/unit/lm-432-crab-droid.jpg",
+  "separatists-aqua-droids": "cards/separatists/unit/aqua-droids.jpg",
+  "mercenary-hondo-ohnaka": "cards/mercenary/unit/hondo-ohnaka-trustworthy-compatriot.jpg",
+  "mercenary-weequay-pirates": "cards/mercenary/unit/weequay-pirates.jpg",
+  "mercenary-wlo-5-speeder-tank": "cards/mercenary/unit/wlo-5-speeder-tank.jpg",
 } satisfies Record<string, string | null>);
 
 export function cardForUnit(unit: Pick<Unit, "id" | "name" | "faction"> & { also_factions?: string[] }): string | null {
@@ -311,5 +359,5 @@ export function cardForUpgrade(args: {
     const hit = findBest(f, "upgrade", target, idSlug);
     if (hit) return BASE + hit.file;
   }
-  return null;
+  return UPGRADE_IMAGES[args.id] ? BASE + UPGRADE_IMAGES[args.id] : null;
 }

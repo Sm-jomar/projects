@@ -5,6 +5,8 @@ import overridesRaw from "./catalog-overrides.json";
 import ttaRaw from "./tabletop-admiral.json";
 import miniaturesRaw from "./unit-miniatures.json";
 import upgradeMinisRaw from "./upgrade-miniatures.json";
+import unitRulesRaw from "./unit-rules.json";
+import upgradeRulesRaw from "./upgrade-rules.json";
 
 const base = baseRaw as unknown as Catalog;
 
@@ -47,15 +49,40 @@ const TTA = ttaRaw as unknown as TtaLayer;
 // seed and Tabletop Admiral leave many units at 1.
 const MINIATURES = miniaturesRaw as Record<string, number>;
 
+// Keywords and weapons as printed on each unit card, from Legion Helper
+// (scripts/import_legion_helper_rules.py), plus the defense die and surges
+// of Revamp-only units, which Tabletop Admiral leaves out.
+const UNIT_RULES = unitRulesRaw as unknown as Record<
+  string,
+  Pick<Unit, "keywords" | "weapons"> & Partial<Pick<Unit, "defense" | "has_defense_surge" | "attack_surge">>
+>;
+
 const units = applyOverrides(SEED_UNITS, TTA.units)
   .concat(TTA.new_units)
-  .map((u) => (u.id in MINIATURES ? { ...u, miniatures: MINIATURES[u.id]! } : u));
+  .map((u) => (u.id in MINIATURES ? { ...u, miniatures: MINIATURES[u.id]! } : u))
+  .map((u) => (u.id in UNIT_RULES ? { ...u, ...UNIT_RULES[u.id] } : u));
 // Minis added by heavy weapon, personnel and squad leader upgrades, from
 // the same Legion Helper import ("Add N ... miniature" on the card).
 const UPGRADE_MINIS = upgradeMinisRaw as Record<string, { adds: number; leader?: boolean }>;
 
+// Card text, printed restriction and weapon per upgrade, from Legion Helper
+// (scripts/import_legion_helper_card_text.py). It replaces the older
+// first-edition text some upgrades had.
+type UpgradeRules = { text?: string; requirement?: string; weapon?: Upgrade["weapon"] };
+const UPGRADE_RULES = upgradeRulesRaw as unknown as Record<string, UpgradeRules>;
+
 const upgrades = applyOverrides((base.upgrades ?? []) as Upgrade[], TTA.upgrades)
   .concat(TTA.new_upgrades)
+  .map((u) => {
+    const r = UPGRADE_RULES[u.id];
+    if (!r) return u;
+    return {
+      ...u,
+      text: r.text || u.text,
+      weapon: r.weapon ?? u.weapon,
+      ...(r.requirement ? { requirement_text: r.requirement } : {}),
+    };
+  })
   .map((u) => {
     const m = UPGRADE_MINIS[u.id];
     if (!m) return u;

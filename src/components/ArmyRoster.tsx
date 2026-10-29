@@ -22,6 +22,9 @@ import {
   type ArmyState,
 } from "../lib/validation";
 import { UpgradePicker } from "./UpgradePicker";
+import { UnitRules, UpgradeText } from "./UnitRules";
+import { CommandHandPanel } from "./CommandHandPanel";
+import { handIssues } from "../lib/commandCards";
 
 type Props = {
   army: ArmyState;
@@ -36,6 +39,8 @@ type Props = {
   onRemove: (entryId: string) => void;
   onAttachUpgrade: (entryId: string, upgradeId: string) => void;
   onDetachUpgrade: (entryId: string, upgradeId: string) => void;
+  commandCards: string[];
+  onCommandCardsChange: (ids: string[]) => void;
 };
 
 export function ArmyRoster({
@@ -51,12 +56,20 @@ export function ArmyRoster({
   onRemove,
   onAttachUpgrade,
   onDetachUpgrade,
+  commandCards,
+  onCommandCardsChange,
 }: Props) {
+  const [rulesOpen, setRulesOpen] = useState<string | null>(null);
   const [pickerEntryId, setPickerEntryId] = useState<string | null>(null);
   const pickerEntry = pickerEntryId
     ? army.entries.find((e) => e.entryId === pickerEntryId) ?? null
     : null;
   const report = validateArmy(army);
+  const handArmy = { faction, battleForce, entries: army.entries };
+  // An unfinished hand is a warning; it doesn't make the list illegal.
+  const issues = report.issues.concat(
+    handIssues(commandCards, handArmy).map((message) => ({ severity: "warning" as const, message })),
+  );
   const f = FACTIONS[faction];
 
   const grouped: Record<Rank, ArmyEntry[]> = {
@@ -147,9 +160,9 @@ export function ArmyRoster({
         </div>
       </div>
 
-      {report.issues.length > 0 && (
+      {issues.length > 0 && (
         <ul className="issues">
-          {report.issues.map((i, idx) => (
+          {issues.map((i, idx) => (
             <li key={idx} className={`issue ${i.severity}`}>
               {i.message}
             </li>
@@ -184,6 +197,14 @@ export function ArmyRoster({
                       <li key={entry.entryId} className="entry-row-wrap">
                         <div className="entry-row">
                           <div className="entry-row-main">
+                            <button
+                              className="entry-rules-toggle"
+                              aria-expanded={rulesOpen === entry.entryId}
+                              title="Show keywords and weapons"
+                              onClick={() => setRulesOpen(rulesOpen === entry.entryId ? null : entry.entryId)}
+                            >
+                              {rulesOpen === entry.entryId ? "▾" : "▸"}
+                            </button>
                             <span className="entry-name">{u.name}</span>
                             <span className="muted small">
                               {" "}
@@ -218,6 +239,7 @@ export function ArmyRoster({
                             </button>
                           </div>
                         </div>
+                        {rulesOpen === entry.entryId && <UnitRules unit={u} />}
                         {upgrades.length > 0 && (
                           <ul className="attached-upgrades">
                             {upgrades.map((upId) => {
@@ -244,7 +266,7 @@ export function ArmyRoster({
                                 pointsMode,
                               );
                               return (
-                                <li key={upId} className="attached-upgrade">
+                                <li key={upId} className="attached-upgrade" title={up.text}>
                                   <span className="up-name">↳ {up.name}</span>
                                   <span className="muted small">
                                     {" "}
@@ -265,6 +287,7 @@ export function ArmyRoster({
                                   >
                                     ×
                                   </button>
+                                  {rulesOpen === entry.entryId && <UpgradeText upgrade={up} />}
                                 </li>
                               );
                             })}
@@ -279,6 +302,8 @@ export function ArmyRoster({
           );
         })}
       </div>
+
+      <CommandHandPanel army={handArmy} cards={commandCards} onChange={onCommandCardsChange} />
 
       {pickerEntry && pickerUnit && (
         <UpgradePicker

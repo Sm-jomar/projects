@@ -60,6 +60,9 @@
  "battle-shield-wookiee": {
   "adds": 1
  },
+ "beskad-duelist": {
+  "adds": 1
+ },
  "black-sun-enforcer": {
   "adds": 1
  },
@@ -84,6 +87,9 @@
  "chewbacca": {
   "adds": 1,
   "leader": true
+ },
+ "chewbacca-courageous-co-pilot": {
+  "adds": 1
  },
  "clone-captain": {
   "adds": 1,
@@ -250,6 +256,9 @@
   "adds": 1,
   "leader": true
  },
+ "han-solo-reckless-smuggler": {
+  "adds": 1
+ },
  "heavy-aqua-droid": {
   "adds": 1
  },
@@ -311,6 +320,9 @@
  },
  "mag-det-enforcer": {
   "adds": 1
+ },
+ "mandalorian-initiate-squad": {
+  "adds": 4
  },
  "mandalorian-super-commando": {
   "adds": 1

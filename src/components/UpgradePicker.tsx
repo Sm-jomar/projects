@@ -5,6 +5,7 @@ import { effectiveUpgradePoints } from "../lib/points";
 import type { ArmyEntry, Unit, Upgrade } from "../lib/types";
 import { canAddUpgrade, slotUsage, upgradeFitsUnit, type ArmyState } from "../lib/validation";
 import { addOrUpdateFlag, flagFor, isFlagged, removeFlag } from "../lib/flags";
+import { UpgradeText } from "./UnitRules";
 
 const SLOT_LABEL: Record<string, string> = {
   armament: "Armament",
@@ -186,6 +187,7 @@ export function UpgradePicker({ army, entry, unit, onAttach, onClose }: Props) {
                     No card image found for "{preview.name}".
                   </div>
                 )}
+                <UpgradeText upgrade={preview} />
                 <button
                   className={"upgrade-flag-btn" + (isFlagged(preview.id) ? " danger" : "")}
                   title={
