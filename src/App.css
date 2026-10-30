@@ -1568,6 +1568,15 @@ input, select {
   color: var(--text);
 }
 
+/* The command hands and order tokens sit under the board, outside
+   .tt-canvas-host so its overflow:hidden doesn't clip them. They scroll
+   rather than squeeze the board too far. */
+.tt-under-board {
+  flex-shrink: 0;
+  max-height: 42vh;
+  overflow-y: auto;
+}
+
 /* ----- Command card hands ----- */
 .tt-hands {
   display: flex;
@@ -2022,6 +2031,7 @@ input, select {
   .tabletop-modal { width: 100vw; height: 100vh; border-radius: 0; }
   .tabletop-body { grid-template-columns: 1fr; grid-template-rows: 60vh 1fr; }
   .tt-canvas-col { border-right: none; border-bottom: 1px solid var(--border); }
+  .tt-under-board { max-height: 26vh; }
   .tt-status-bar { gap: 8px; }
   .tt-tool-row { justify-content: flex-start; }
   .tt-palette { grid-template-columns: 1fr 1fr 1fr; }

@@ -1010,7 +1010,11 @@ export function TabletopPanel({ onClose }: Props) {
                   </div>
                 );
               })()}
+            </div>
 
+            {/* Below the board, not inside its clipped box: command card
+                hands and order tokens, scrolling if they run tall. */}
+            <div className="tt-under-board">
               {/* Command card hands docked beneath the canvas: pick a
                   hand for your list, then each round lock in a card face
                   down; both are revealed together to settle priority. */}
