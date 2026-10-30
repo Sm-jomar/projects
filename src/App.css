@@ -1337,6 +1337,18 @@ input, select {
   padding: 3px 10px;
   font-size: 12px;
 }
+.tt-bar-btn {
+  padding: 3px 10px;
+  font-size: 12px;
+}
+/* The board column filling the whole window (Full screen button). */
+.tt-canvas-col.tt-board-full {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--panel);
+  border: none;
+}
 .tt-canvas-host {
   position: relative;
   flex: 1;
@@ -1371,7 +1383,7 @@ input, select {
 .tt-fit-btn {
   pointer-events: auto;
   padding: 2px 8px;
-  font-size: 14px;
+  font-size: 11px;
   line-height: 1;
   background: transparent;
   border: 1px solid var(--border);
@@ -1571,6 +1583,7 @@ input, select {
 /* The command hands and order tokens sit under the board, outside
    .tt-canvas-host so its overflow:hidden doesn't clip them. They scroll
    rather than squeeze the board too far. */
+.tt-under-board[hidden] { display: none; }
 .tt-under-board {
   flex-shrink: 0;
   max-height: 42vh;

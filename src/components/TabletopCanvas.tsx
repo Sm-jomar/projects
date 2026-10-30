@@ -624,7 +624,7 @@ export function TabletopCanvas({
 
       <div className="tt-overlay-info">
         {state.map.widthInches}" × {state.map.heightInches}" · zoom {(view.scale * 100).toFixed(0)}% · {state.tokens.length} tokens · {state.terrain.length} terrain
-        <button className="tt-fit-btn" onClick={fitToView} title="Fit to view">⤢</button>
+        <button className="tt-fit-btn" onClick={fitToView} title="Zoom and centre so the whole board fits">Fit board</button>
       </div>
     </div>
   );
