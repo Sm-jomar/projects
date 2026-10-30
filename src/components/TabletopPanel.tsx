@@ -147,6 +147,32 @@ export function TabletopPanel({ onClose }: Props) {
   const [snap, setSnap] = useState(1);
   const [showGrid, setShowGrid] = useState(true);
   const [view3d, setView3d] = useState(false);
+  // Hide the command hands and order tokens to give the board the room,
+  // and full screen for the board column. The hidden choice is remembered.
+  const [dockHidden, setDockHidden] = useState(() => {
+    try { return localStorage.getItem("legion-tabletop.dock-hidden") === "1"; } catch { return false; }
+  });
+  const [boardFull, setBoardFull] = useState(false);
+  useEffect(() => {
+    try { localStorage.setItem("legion-tabletop.dock-hidden", dockHidden ? "1" : "0"); } catch { /* blocked */ }
+  }, [dockHidden]);
+  useEffect(() => {
+    // Leaving the browser's full screen (Esc) leaves ours too.
+    const onChange = () => { if (!document.fullscreenElement) setBoardFull(false); };
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, []);
+  function toggleBoardFull() {
+    const next = !boardFull;
+    setBoardFull(next);
+    // The board fills the window either way; the browser's full screen
+    // also hides its own bars where it's allowed (not on iPhone).
+    if (next && document.fullscreenEnabled && !document.fullscreenElement) {
+      document.documentElement.requestFullscreen?.().catch(() => { /* stays as the in-page version */ });
+    } else if (!next && document.fullscreenElement) {
+      document.exitFullscreen?.().catch(() => { /* already out */ });
+    }
+  }
   const modelFileRef = useRef<HTMLInputElement | null>(null);
   // A unit under direct control in 3D is mid-run (see Legion3D's onMoveToken).
   const runningRef = useRef(false);
@@ -888,7 +914,7 @@ export function TabletopPanel({ onClose }: Props) {
 
         <div className="tabletop-body">
           <input ref={modelFileRef} type="file" accept=".stl,model/stl,application/sla" hidden onChange={onModelFile} />
-          <div className="tt-canvas-col">
+          <div className={"tt-canvas-col" + (boardFull ? " tt-board-full" : "")}>
             <ChatDock chat={chat} myId={online?.you?.id ?? null} toggle={chatToggle} colorOf={(a) => legionActorColor(a.color)} />
             <MediaDock music={music} playback={media} toggle={mediaToggle}
                        canSet={!readOnly} myName={playerName.trim()}
@@ -947,6 +973,14 @@ export function TabletopPanel({ onClose }: Props) {
                 </span>
               </div>
               <button className="tt-undo" onClick={undo} disabled={histLen === 0} title="Undo (Ctrl+Z)">↶ Undo</button>
+              <button className="tt-bar-btn" onClick={() => setDockHidden(!dockHidden)} aria-pressed={!dockHidden}
+                      title={dockHidden ? "Show the command cards and order tokens under the board" : "Hide the command cards and order tokens to make the board bigger"}>
+                {dockHidden ? "▴ Show cards & tokens" : "▾ Hide cards & tokens"}
+              </button>
+              <button className="tt-bar-btn" onClick={toggleBoardFull} aria-pressed={boardFull}
+                      title={boardFull ? "Leave full screen (Esc)" : "Show the board full screen"}>
+                {boardFull ? "✕ Exit full screen" : "⛶ Full screen"}
+              </button>
             </div>
             <div className="tt-canvas-host">
               {view3d ? (
@@ -1014,7 +1048,7 @@ export function TabletopPanel({ onClose }: Props) {
 
             {/* Below the board, not inside its clipped box: command card
                 hands and order tokens, scrolling if they run tall. */}
-            <div className="tt-under-board">
+            <div className="tt-under-board" hidden={dockHidden}>
               {/* Command card hands docked beneath the canvas: pick a
                   hand for your list, then each round lock in a card face
                   down; both are revealed together to settle priority. */}
